@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ScrollView } from "react-native-virtualized-view";
 import CurrentOrderCard from "../../component/orders/CurrentOrderCard";
@@ -14,7 +14,7 @@ import { ORDERS_DETAILS } from "../../navigation/routes";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 
 
-export default function CurrentOrders({navigation}) {
+ function CurrentOrders({navigation}) {
   
   const user = useSelector((state) => state?.user?.user);
   const ordersRedux = useSelector((state) => state?.orders?.orders);
@@ -74,7 +74,7 @@ const fetchData=()=>{
         </ScrollView>
   );
 }
-
+export default memo(CurrentOrders)
 const styles = StyleSheet.create({
   container: {
     height: "100%",
