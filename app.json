@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "Nijk",
+    "name": "Nijk-نجيك",
     "slug": "rn-Nijk",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/images/icon.png",
+    "icon": "./app/assets/images/icon2.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./app/assets/images/icon.png",
+      "image": "./app/assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F26527"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -24,7 +24,7 @@
       "googleServicesFile": "./google-services.json",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/images/icon.png",
+        "foregroundImage": "./app/assets/images/icon2.png",
         "backgroundColor": "#FFFFFF"
       }
     },
@@ -42,16 +42,16 @@
         }
       ]
     ],
-    "extra": {
-      "eas": {
-        "projectId": "82d0aeae-8255-4ee8-b129-b32e752a8cce"
-      }
-    },
     "runtimeVersion": {
       "policy": "sdkVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/82d0aeae-8255-4ee8-b129-b32e752a8cce"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ea07fb89-0fd4-4893-8f25-2e0affa9400f"
+      }
     }
   }
 }

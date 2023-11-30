@@ -40,6 +40,7 @@ const VerificationScreen = ({ navigation, route }) => {
     try {
       const res = await result?.confirm(otpInput);
       setResendDisabled(true);
+      setisLoading(true)
       setSecondsRemaining(30);
       dispatch(userRegisterSuccess(auth?.currentUser));
       await AsyncStorage.setItem("userData", JSON.stringify(auth?.currentUser));
@@ -58,6 +59,8 @@ const VerificationScreen = ({ navigation, route }) => {
       // Alert.alert(errorMessage);
     } finally {
       setOtpInput("");
+      setisLoading(false)
+
     }
   };
 

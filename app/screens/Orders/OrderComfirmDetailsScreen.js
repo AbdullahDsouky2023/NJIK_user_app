@@ -95,14 +95,6 @@ import useRegions from "../../../utils/region";
             />
           </View>
           <View style={styles.itemContainer}>
-            <AppText centered={false} text={" الوقت"} style={styles.title} />
-            <AppText
-              centered={false}
-              text={currentOrderData.time}
-              style={styles.price}
-            />
-          </View>
-          <View style={styles.itemContainer}>
             <AppText centered={false} text={" التاريخ"} style={styles.title} />
             <AppText
               centered={false}

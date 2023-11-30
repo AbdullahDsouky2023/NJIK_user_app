@@ -51,19 +51,14 @@ const [isLoading,setIsLoading]=useState(false)
   
       // Create valid Date objects
       const date = new Date(values?.Date);
-      const time = new Date(values?.Time);
   
       // Format the date and time
       const formattedDate = format(date, "dd MMMM yyyy", {
         locale: arDZ,
       });
-      const formattedTime = format(time, "hh:mm a", {
-        locale: arDZ,
-      });
   
       const formSubmitionData = {
         date: formattedDate?.toString(),
-        time: formattedTime?.toString(),
         description: values?.description || "",
         service: item?.id,
         phoneNumber: user?.phoneNumber,
@@ -84,7 +79,6 @@ const [isLoading,setIsLoading]=useState(false)
 
   const validationSchema = yup.object().shape({
     Date: yup.date().required("من فضلك اختار يوم التنفيذ"),
-    Time: yup.string().required("من فضلك اختار وقت التنفيذ"),
     description: yup.string(),
   });
   const uploadImage = async (image, values) => {
@@ -137,7 +131,7 @@ const [isLoading,setIsLoading]=useState(false)
         <ArrowBack />
         <AppForm
           enableReinitialize={true}
-          initialValues={{ Date: "", Time: "", description: "", image: null }}
+          initialValues={{ Date: "", description: "", image: null }}
           onSubmit={handleFormSubmit}
           validationSchema={validationSchema}
         >
@@ -159,12 +153,6 @@ const [isLoading,setIsLoading]=useState(false)
               />
               <FormDatePicker name="Date" placeholder="Date" />
               <AppText
-                text={"وقت التنفيذ"}
-                centered={false}
-                style={styles.label}
-              />
-              <FormTimePicker name="Time" placeholder="Time" />
-              <AppText
                 text={"معلومات  اخري"}
                 centered={false}
                 style={styles.label}
@@ -181,7 +169,7 @@ const [isLoading,setIsLoading]=useState(false)
                 // ... other props
               />
               <AppText
-                text={"اختيار صورة"}
+                text={"ارفق صورة"}
                 centered={false}
                 style={styles.label}
               />

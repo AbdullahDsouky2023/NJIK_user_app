@@ -78,7 +78,7 @@ const HomeScreen = ({ navigation }) => {
               <ReadyPackages />
               <OtherServicesList />
               <CleaningServices />
-              <AskWorker />
+              {/* <AskWorker /> */}
             </>
           }
           data={topCategoriesList}

@@ -5,8 +5,8 @@ const reverseGeoCode = async (location) => {
     try {
        const parseLocation =  JSON.parse(location)
       const reverGeoCodeAdress = await Location.reverseGeocodeAsync({
-        longitude: parseLocation.longitude,
-        latitude: parseLocation.latitude,
+        longitude: parseLocation?.longitude,
+        latitude: parseLocation?.latitude,
       });
       return (reverGeoCodeAdress[0]);
     } catch (error) {
@@ -16,9 +16,12 @@ const reverseGeoCode = async (location) => {
 export const getLocationFromStorage = async () => {
     try {
       const location = await AsyncStorage.getItem('userLocation');
-      const Readable = await  reverseGeoCode(location)
-    const res =  `${Readable?.city} - ${Readable?.subregion} - ${Readable?.country}`
-      if(Readable)  return res 
+      if(location){
+
+        const Readable = await  reverseGeoCode(location)
+        const res =  `${Readable?.city} - ${Readable?.subregion} - ${Readable?.country}`
+        if(Readable)  return res 
+      }
 
       
     } catch (error) {

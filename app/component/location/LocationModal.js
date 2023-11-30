@@ -14,8 +14,8 @@ const { width } = Dimensions.get('screen')
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status === 'granted') {
         // Fetch user's location
-        const location = await Location.getLastKnownPositionAsync({});
-        
+        const location = await Location.getCurrentPositionAsync({});
+        console.log(location,status,"rrrrrrrrrrr")
         // Save the location to storage
         await AsyncStorage.setItem('userLocation', JSON.stringify(location?.coords));
         // Close the modal and notify the parent component

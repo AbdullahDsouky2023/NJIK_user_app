@@ -48,7 +48,7 @@ export default function CurrentOrderCard({ item,onPress }) {
         <View style={styles.date}>
           <FontAwesome name="calendar" size={24} color="black" />
           <AppText
-            text={`${item?.attributes?.date }  - ${item?.attributes?.time}`}
+            text={`${item?.attributes?.date }`}
             centered={false}
             style={styles.title}
           />
