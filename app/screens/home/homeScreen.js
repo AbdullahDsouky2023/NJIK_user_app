@@ -30,6 +30,7 @@ import { setOrders } from "../../store/features/ordersSlice";
 import useServices from "../../../utils/services";
 import LoadingScreen from "../loading/LoadingScreen";
 import { ErrorScreen } from "../Error/ErrorScreen";
+import useNotifications from "../../../utils/notifications";
 import useOrders from "../../../utils/orders";
 import AppButton from "../../component/AppButton";
 import { generateUserToken } from "../chat/chatconfig";
@@ -43,7 +44,9 @@ const HomeScreen = ({ navigation }) => {
   const { data:services ,isLoadin:serviceLoading} = useServices()
   const { data:orders } = useOrders()
   const user = useSelector((state)=>state?.user?.userData)
+  const { sendPushNotification,token} = useNotifications()
 
+  
   const getData =async()=>{
     if (data) {
       // Dispatch the fetched categories to the Redux store
@@ -61,6 +64,10 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {    
     getData()
   }, [data]);
+  useEffect(() => {    
+    sendPushNotification(token,"FFF","fffff")
+    console.log("sennding notification")
+  }, [token]);
 
   if (isLoading || serviceLoading) return <LoadingScreen/>
   if (isError) return <ErrorScreen hanleRetry={getData}/>

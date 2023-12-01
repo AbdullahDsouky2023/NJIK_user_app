@@ -23,21 +23,28 @@ import LoadingScreen from "../loading/LoadingScreen";
 import AppModal from "../../component/AppModal";
 import { CommonActions } from "@react-navigation/native";
 import StarsComponent from "../../component/StarsComponent";
-
+import useNotifications from "../../../utils/notifications";
+import { useSelector} from 'react-redux'
 const { width } = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
   const [isLoading, setIsLoading] = useState(false);
-  const { data:orders,isLoading:loading,isError } = useOrders()
+  // const { data:orders,isLoading:loading,isError } = useOrders()
   const [orderID,setOrderID]=useState(false)
- 
+  const orders = useSelector((state) => state?.orders?.orders);
+  const user = useSelector((state) => state?.user?.userData);
 const dispatch = useDispatch()
 const [isModalVisible, setModalVisible] = useState(false);
 const [isReviewVisble, setIsReviewVisble] = useState(false);
-
+const { sendPushNotification}= useNotifications()
 const handleOrderCancle = async (id) => {
   try {
     const res = await cancleOrder(id);
+    const selectedOrder = orders?.data.filter((order) => order?.id === id);
+    const providerNotificationToken = selectedOrder[0]?.attributes?.provider?.data?.attributes?.expoPushNotificationToken;
+    if(providerNotificationToken){
+      sendPushNotification(providerNotificationToken,"تم الغاء الطلب",`تم الغاء الطلب بواسطه ${user?.attributes?.name}`)
+    }
     if (res) {
       navigation.dispatch(
         CommonActions.reset({
@@ -150,18 +157,21 @@ const handlePayOrder = async (id) => {
          
           
         </View>
-        <AppButton
-          title={"Chat"}
+        
+        {
+          item?.attributes?.status !== "pending" ?
+          <>
+          <AppButton
+          title={"دردشه"}
           style={{ backgroundColor: Colors.success }}
           onPress={() => navigation.navigate("Chat")}
         />
-        {
-          item?.attributes?.status !== "pending" ?
           <AppButton
             title={"finish work"}
             style={{backgroundColor:Colors.success}}
             onPress={() => handlePayOrder(item?.id)}
-          />:
+          />
+          </>:
         <AppButton
         title={"الغاء الطلب"}
           onPress={() => setModalVisible(true)}
