@@ -66,14 +66,16 @@ export default function useOrders() {
     }
   };
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError ,refetch} = useQuery({
     queryKey: ["order"],
     queryFn: fetchOrders,
+  
   }); // Changed the query key to 'superheroes'
 
   return {
     data,
     isLoading,
     isError,
+    refetch
   };
 }

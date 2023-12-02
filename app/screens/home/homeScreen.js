@@ -44,7 +44,7 @@ const HomeScreen = ({ navigation }) => {
   const { data:services ,isLoadin:serviceLoading} = useServices()
   const { data:orders } = useOrders()
   const user = useSelector((state)=>state?.user?.userData)
-  const { sendPushNotification,token} = useNotifications()
+  const { token} = useNotifications()
 
   
   const getData =async()=>{
@@ -54,6 +54,7 @@ const HomeScreen = ({ navigation }) => {
         dispatch(setServices(services));
        dispatch(setOrders(orders));
       const chat = generateUserToken(user)
+      
       dispatch(setUserStreamData(chat));
     } else if (isError) {
       console.log(isError)
@@ -64,10 +65,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {    
     getData()
   }, [data]);
-  useEffect(() => {    
-    sendPushNotification(token,"FFF","fffff")
-    console.log("sennding notification")
-  }, [token]);
+ 
 
   if (isLoading || serviceLoading) return <LoadingScreen/>
   if (isError) return <ErrorScreen hanleRetry={getData}/>

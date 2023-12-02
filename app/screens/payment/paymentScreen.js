@@ -6,6 +6,8 @@ import { Dialog } from "react-native-paper";
 import ArrowBack from "../../component/ArrowBack";
 import { CommonActions } from "@react-navigation/native";
 import { ORDER_SUCCESS_SCREEN } from "../../navigation/routes";
+import { useTranslation } from "react-i18next";
+import AppText from "../../component/AppText";
 
 const { width } = Dimensions.get('screen');
 
@@ -32,22 +34,23 @@ const PaymentScreen = ({ navigation }) => {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: Sizes.fixPadding * 8.0 }}
                 >
-                    {paymentMethod({
-                        icon: require('../../assets/images/payment_icon/cash_on_delivery.png'),
-                        paymentType: 'Pay on Delivery',
-                        index: 1,
-                    })}
-                    {paymentMethod({
+                 
+                    {/* {paymentMethod({
                         icon: require('../../assets/images/payment_icon/amazon_pay.png'),
                         paymentType: 'Amazon Pay',
                         index: 2,
-                    })}
-                    {paymentMethod({
-                        icon: require('../../assets/images/payment_icon/card.png'),
-                        paymentType: 'Card',
-                        index: 3,
-                    })}
-                    {paymentMethod({
+                    })} */}
+                    <PaymentMethod
+                        icon={require('../../assets/images/payment_icon/card.png')}
+                        paymentType='Card'
+                        index={1}
+                    />
+                    <PaymentMethod
+                        icon={require('../../assets/images/payment_icon/cash_on_delivery.png')}
+                        paymentType='Cash'
+                        index={2}
+                    />
+                    {/* {paymentMethod({
                         icon: require('../../assets/images/payment_icon/paypal.png'),
                         paymentType: 'PayPal',
                         index: 4,
@@ -56,7 +59,7 @@ const PaymentScreen = ({ navigation }) => {
                         icon: require('../../assets/images/payment_icon/skrill.png'),
                         paymentType: 'Skrill',
                         index: 5,
-                    })}
+                    })} */}
                 </ScrollView>
                 {payButton()}
             </View>
@@ -110,7 +113,8 @@ const PaymentScreen = ({ navigation }) => {
         )
     }
 
-    function paymentMethod({ icon, paymentType, index }) {
+    function PaymentMethod({ icon, paymentType, index }) {
+        const {t} = useTranslation()
         return (
             <TouchableOpacity
                 activeOpacity={0.6}
@@ -120,6 +124,12 @@ const PaymentScreen = ({ navigation }) => {
                     ...styles.paymentMethodWrapStyle
                 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <AppText numberOfLines={1} style={{
+                         ...Fonts.primaryColor18Medium,
+                         marginLeft: Sizes.fixPadding,
+                         width: width / 2.2,
+                     }}
+                        text={paymentType} />
                     <Image
                         source={icon}
                         style={{
@@ -128,13 +138,6 @@ const PaymentScreen = ({ navigation }) => {
                         }}
                         resizeMode="contain"
                     />
-                    <Text numberOfLines={1} style={{
-                        ...Fonts.primaryColor18Medium,
-                        marginLeft: Sizes.fixPadding,
-                        width: width / 2.2,
-                    }}>
-                        {paymentType}
-                    </Text>
                 </View>
                 <View style={{
                     borderColor: currentPaymentMethodIndex == index ? Colors.primaryColor : '#E0E0E0',

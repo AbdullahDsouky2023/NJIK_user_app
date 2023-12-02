@@ -19,11 +19,12 @@ import { setcurrentChatChannel } from "../../store/features/ordersSlice";
   const user = useSelector((state) => state?.user?.user);
   const ordersRedux = useSelector((state) => state?.orders?.orders);
   const [orders,setOrders] = useState([])
-  const {data,isLoading} = useOrders()
+  const {data,isLoading,refetch} = useOrders()
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch()
   const onRefresh = () => {
     setRefreshing(true);
+    // console.log("getting data")
     fetchData();
   };
 const [currentOrders,setCurrentData]=useState([])
@@ -32,6 +33,8 @@ const fetchData=()=>{
     (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.PaymentStatus !== "payed"
     );
     setCurrentData(currentOrders)
+    refetch()
+    console.log(currentOrders === currentOrders)
   setRefreshing(false)
 }
   useEffect(()=>{

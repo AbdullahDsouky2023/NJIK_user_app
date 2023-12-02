@@ -21,6 +21,7 @@ import {
   import AppModal from "../../component/AppModal";
   import { CommonActions } from "@react-navigation/native";
 import useRegions from "../../../utils/region";
+import useNotifications from "../../../utils/notifications";
   
   const { width } = Dimensions.get("screen");
   export default function OrderComfirmDetailsScreen({ navigation, route }) {
@@ -41,16 +42,16 @@ import useRegions from "../../../utils/region";
         if (data) {
           dispatch(clearCurrentOrder());
     
-          // if (ITEM_PRICE > 0) {
-          //   navigation.navigate("Payment");
-          // } else if (ITEM_PRICE === 0) {
+          if (ITEM_PRICE > 0) {
+            navigation.navigate("Payment");
+          } else if (ITEM_PRICE === 0) {
             navigation.dispatch(
               CommonActions.reset({
                 index: 0,
                 routes: [{ name: ORDER_SUCCESS_SCREEN }],
               })
             );
-          // }
+          }
         }
     } catch (error) {
       console.log(error, "error deleting the order");

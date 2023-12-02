@@ -5,13 +5,18 @@ import AppButton from "../component/AppButton";
 import useOrders from "../../utils/orders";
 import { useDispatch } from "react-redux";
 import { setOrders } from "../store/features/ordersSlice";
+import useNotifications from "../../utils/notifications";
 
 export default function OrderCreationSuccess({navigation}) {
   const dispatch = useDispatch()
   const { data:orders } = useOrders()
+  const {sendPushNotification,token}=useNotifications()
+
   const handleReturn = ()=> {
     dispatch(setOrders(orders))
     navigation.navigate('App')
+    sendPushNotification(token,"تم حجز الطلب بنجاح")
+
   }
   
   

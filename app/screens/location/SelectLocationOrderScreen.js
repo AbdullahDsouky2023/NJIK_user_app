@@ -91,7 +91,7 @@ const SlectLocationOrderScreen = ({ navigation, route }) => {
                   fontSize: 19,
                 }}
               />
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() =>
                   navigation.navigate(MANUAL_LOCATION_ADD, { order: true })
                 }
@@ -101,7 +101,7 @@ const SlectLocationOrderScreen = ({ navigation, route }) => {
                   size={32}
                   color={Colors.blackColor}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <SelectLocationItem
               selectedLocation={selectedLocation}

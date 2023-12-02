@@ -18,7 +18,7 @@ import { COMPLETE_ORDER_DETAILS, ORDERS_DETAILS } from "../../navigation/routes"
   const user = useSelector((state) => state?.user?.user);
   const ordersRedux = useSelector((state) => state?.orders?.orders);
   const [orders,setOrders] = useState([])
-  const {data,isLoading} = useOrders()
+  const {data,isLoading,refetch} = useOrders()
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
@@ -32,6 +32,7 @@ const fetchData=()=>{
     );
     setCurrentData(currentOrders)
   setRefreshing(false)
+  refetch()
 }
   useEffect(()=>{
     fetchData()

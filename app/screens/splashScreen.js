@@ -72,6 +72,7 @@ const SplashScreen = ({ navigation }) => {
           const gottenuser = await getUserByPhoneNumber(PhoneNumberValidated )
           dispatch(setUserData(gottenuser));
           dispatch(userRegisterSuccess(userData));
+
           navigation.push("App");
         } else {
           // navigation.push("App");

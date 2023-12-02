@@ -42,7 +42,7 @@ const handleOrderCancle = async (id) => {
     const res = await cancleOrder(id);
     const selectedOrder = orders?.data.filter((order) => order?.id === id);
     const providerNotificationToken = selectedOrder[0]?.attributes?.provider?.data?.attributes?.expoPushNotificationToken;
-    if(providerNotificationToken){
+    if(providerNotificationToken ){
       sendPushNotification(providerNotificationToken,"تم الغاء الطلب",`تم الغاء الطلب بواسطه ${user?.attributes?.name}`)
     }
     if (res) {
@@ -65,9 +65,14 @@ const handleOrderCancle = async (id) => {
 const handlePayOrder = async (id) => {
   try {
     const res = await PayOrder(id);
+    const selectedOrder = orders?.data.filter((order) => order?.id === id);
+
+    const providerNotificationToken = selectedOrder[0]?.attributes?.provider?.data?.attributes?.expoPushNotificationToken;
     if (res) {
       setIsReviewVisble(true)
-      
+
+      sendPushNotification(providerNotificationToken,`${selectedOrder[0]?.attributes?.service?.data?.attributes?.name}`,`تم انهاء الطلب بواسطه ${selectedOrder[0]?.attributes?.user?.data?.attributes?.username}`)
+
         setOrderID(id)
         // Alert.alert("تم بنجاح");
       
@@ -166,17 +171,22 @@ const handlePayOrder = async (id) => {
           style={{ backgroundColor: Colors.success }}
           onPress={() => navigation.navigate("Chat")}
         />
-          <AppButton
-            title={"finish work"}
-            style={{backgroundColor:Colors.success}}
-            onPress={() => handlePayOrder(item?.id)}
-          />
+          
           </>:
         <AppButton
         title={"الغاء الطلب"}
           onPress={() => setModalVisible(true)}
           />
         }
+        {
+          item?.attributes?.status === "finished" &&
+          <AppButton
+            title={"finish work"}
+            style={{backgroundColor:Colors.success}}
+            onPress={() => handlePayOrder(item?.id)}
+          />
+        }
+
       </ScrollView>
       <AppModal isModalVisible={isModalVisible} 
       message={"تأكيد الغاء الطلب"}
