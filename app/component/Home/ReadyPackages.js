@@ -6,16 +6,20 @@ import { ReadyPackages as data } from '../../data/home'
 import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { ITEM_DETAILS } from '../../navigation/routes'
+import useServices from '../../../utils/services'
 
 export default function ReadyPackages() {
-  const services = useSelector((state)=>state.services.services)?.data
-  const navigation = useNavigation()
+  const { data :services,isLoading} = useServices()
+ 
+  if(isLoading){
+    return <LoadingScreen/>
+  }  const navigation = useNavigation()
 
   return (
     <HeaderTextComponent name={'readyPackages'}  showAll={true}>
         <FlatList
         horizontal
-        data={services}
+        data={services?.data}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item,index)=>item.id}
 

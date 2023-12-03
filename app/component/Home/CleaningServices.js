@@ -6,15 +6,19 @@ import { LowOffersList, ReadyPackages } from '../../data/home'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { ITEM_DETAILS } from '../../navigation/routes'
+import useServices from '../../../utils/services'
 
 export default function CleaningServices() {
-  const services = useSelector((state)=>state.services.services)?.data
-  const navigation = useNavigation()
+  const { data :services,isLoading} = useServices()
+ 
+  if(isLoading){
+    return <LoadingScreen/>
+  }  const navigation = useNavigation()
   return (
     <HeaderTextComponent name={'homeCleaningServices'}  showAll={true}>
         <FlatList
         horizontal
-        data={services}
+        data={services?.data}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item,index) => item.id}
 

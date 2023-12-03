@@ -5,14 +5,14 @@ import ServiceCard from "./ServiceCard";
 import HeaderTextComponent from "./HeaderTextComponent";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { OFFERS } from "../../navigation/routes";
+import { CART, OFFERS } from "../../navigation/routes";
 const  { width } = Dimensions.get('screen')
 
 export default function ServicesList() {
   const categories = useSelector((state) => state.categories.categories);
   const navigation = useNavigation();
   const handleServiceCardPress = (item) => {
-    navigation.navigate(OFFERS, { name: item?.attributes?.name });
+    navigation.navigate(CART, { name: item?.attributes?.name });
   };
   return (
     <HeaderTextComponent name={"servicesLookingFor"} showAll={true}>

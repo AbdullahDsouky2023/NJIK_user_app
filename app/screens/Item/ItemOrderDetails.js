@@ -39,7 +39,11 @@ export default function ItemOrderDetails({ route, navigation }) {
   const dispatch = useDispatch()
   const [showSuccess, setShowSuccess] = useState(false);
 const [isLoading,setIsLoading]=useState(false)
+const totalPrice = useSelector((state)=>state.cart.totalPrice)
   const user = useSelector((state) => state?.user?.user);
+  const cartItems = useSelector((state) => state.cart.services);
+  const selectedServicesConnect =  cartItems.map(item => ({ id: item }));
+
   const userData = useSelector((state) => state?.user?.userData);
   const currentOrderData = useSelector((state) => state?.orders?.currentOrderData);
   const handleFormSubmit = async (values) => {
@@ -60,7 +64,10 @@ const [isLoading,setIsLoading]=useState(false)
       const formSubmitionData = {
         date: formattedDate?.toString(),
         description: values?.description || "",
-        service: item?.id,
+        services: {
+          connect: selectedServicesConnect
+        },
+        totalPrice:totalPrice,
         phoneNumber: user?.phoneNumber,
         user: userData?.id,
       };
@@ -177,7 +184,7 @@ const [isLoading,setIsLoading]=useState(false)
             </View>
           </ScrollView>
           <View style={styles.orderButtonContainer}>
-           <PriceTextComponent price={item?.attributes?.Price} style={{fontSize:19}}/>
+           <PriceTextComponent price={totalPrice} style={{fontSize:19}}/>
             <SubmitButton title={"Book"} style={styles.buttonSubmit} />
           </View>
         </AppForm>

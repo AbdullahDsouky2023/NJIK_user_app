@@ -21,7 +21,7 @@ export default function AppButton({
       disabled={disabled}
       style={[
         disabled ? styles.disabledStyle : styles.continueButtonStyle,
-        style,
+        {...style},
       ]}
     >
       <AppText
@@ -38,11 +38,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "auto",
     paddingVertical: Sizes.fixPadding,
+    paddingHorizontal: Sizes.fixPadding * 2.5,
     marginHorizontal: Sizes.fixPadding,
     borderRadius: Sizes.fixPadding - 5.0,
     marginTop: Sizes.fixPadding * 4.0,
-    paddingHorizontal: Sizes.fixPadding * 2.5,
     borderRadius: 40,
+    marginBottom:10,
     backgroundColor: Colors.primaryColor,
   },
   disabledStyle: {

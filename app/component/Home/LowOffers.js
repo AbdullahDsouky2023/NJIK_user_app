@@ -7,15 +7,20 @@ import { useNavigation } from '@react-navigation/native'
 import { ITEM_DETAILS } from '../../navigation/routes'
 import { useSelector } from 'react-redux'
 import useServices from '../../../utils/services'
+import LoadingScreen from '../../screens/loading/LoadingScreen'
 
 export default function LowOffers() {
   const navigation = useNavigation()
-  const services = useSelector((state)=>state.services.services)?.data
+  const { data :services,isLoading} = useServices()
+ 
+  if(isLoading){
+    return <LoadingScreen/>
+  }
   return (
     <HeaderTextComponent name={'Low Offers'}  showAll={true}  >
         <FlatList
         horizontal
-        data={services}
+        data={services?.data}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item,index)=>item.id}
         style={{

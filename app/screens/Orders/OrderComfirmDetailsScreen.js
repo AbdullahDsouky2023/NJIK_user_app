@@ -22,6 +22,7 @@ import {
   import { CommonActions } from "@react-navigation/native";
 import useRegions from "../../../utils/region";
 import useNotifications from "../../../utils/notifications";
+import { clearCart } from "../../store/features/CartSlice";
   
   const { width } = Dimensions.get("screen");
   export default function OrderComfirmDetailsScreen({ navigation, route }) {
@@ -34,17 +35,20 @@ import useNotifications from "../../../utils/notifications";
     const dispatch = useDispatch()
   const [isModalVisible, setModalVisible] = useState(false);
   const { item ,image} = route?.params
+  const totalPrice = useSelector((state)=>state.cart.totalPrice)
+  // const totalPrice = useSelector((state)=>state.cart.totalPrice)
   const handleComfirmOrder = async () => {
     try {
-        const ITEM_PRICE = Number(item?.attributes?.Price);
         const data = await postOrder(currentOrderData);
+        console.log(data)
     
         if (data) {
           dispatch(clearCurrentOrder());
+          dispatch(clearCart());
     
-          if (ITEM_PRICE > 0) {
+          if (totalPrice > 0) {
             navigation.navigate("Payment");
-          } else if (ITEM_PRICE === 0) {
+          } else if (totalPrice === 0) {
             navigation.dispatch(
               CommonActions.reset({
                 index: 0,
@@ -76,7 +80,7 @@ import useNotifications from "../../../utils/notifications";
             <AppText centered={false} text={" السعر"} style={styles.title} />
             <PriceTextComponent
             style={{color:Colors.blackColor,fontSize:14,marginTop:4}}
-            price={currentOrderData?.date}
+            price={totalPrice}
             />
           </View>
           <View style={styles.itemContainer}>

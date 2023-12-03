@@ -14,7 +14,7 @@ export default function ReserveButton({price,onPress}) {
     <View style={styles.ReserveButtonContainer}> 
 
     <PriceTextComponent price={price} style={{fontSize:19}}/>
-    <AppButton title={"reserveAppointment"} 
+    <AppButton title={"order"} 
     style={styles.buttonSubmit}
     onPress={onPress} />
     </View>

@@ -22,13 +22,6 @@ export default function CurrentOrderCard({ item,onPress }) {
       onPress={onPress}
     >
       <View style={styles.orderCardContainer}>
-        {/* name */}
-        <AppText
-          text={item?.attributes?.service?.data?.attributes?.name}
-          centered={false}
-          style={styles.name}
-        />
-        {/* category */}
         <View style={styles.date}>
           <Ionicons name="ios-location-outline" size={24} color="black" />
           <AppText
@@ -41,7 +34,7 @@ export default function CurrentOrderCard({ item,onPress }) {
         <View style={styles.date}>
           <FontAwesome5 name="money-check" size={18} color="black" />
           <PriceTextComponent
-            price={item?.attributes?.service?.data?.attributes?.Price}
+            price={item?.attributes?.totalPrice}
            />
         </View>
         {/* date */}
@@ -61,9 +54,6 @@ export default function CurrentOrderCard({ item,onPress }) {
             style={styles.title}
           />
         </View>
-        
-        {/*time */}
-        {/*time */}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -81,7 +71,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: width * 0.88,
     paddingHorizontal: 20,
-    height: 170,
+    // height: 170,
     marginTop: 12,
     flex: 1,
     gap: 5,

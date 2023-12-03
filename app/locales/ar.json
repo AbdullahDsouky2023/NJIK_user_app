@@ -47,6 +47,7 @@
   "PreviousOrders":"طلبات سابقه",
   "GeneralSettings":"الاعدادت العامة",
   "Book":"حجز",
+  "order":"طلب",
   "Wallet":"محفظة",
   "yourwalletDetails":"تفاصيل محفظتك الخاصه ",
   "Full name is required":" من فضلك ادخل الاسم بالكامل",
@@ -70,5 +71,6 @@
       "There is no locations":"لا توجد مواقع مضافه",
       "finish work":"انهاء العمل",
       "Card":"فيزا",
-      "Cash":"نقدا"
+      "Cash":"نقدا",
+      "remove":"ازاله"
 }

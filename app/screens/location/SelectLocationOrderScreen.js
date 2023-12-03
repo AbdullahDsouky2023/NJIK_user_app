@@ -133,7 +133,7 @@ const SlectLocationOrderScreen = ({ navigation, route }) => {
           </View>
         </ScrollView>
         {selectedLocation && (
-          <AppButton title={"comfirm"} onPress={handleSubmitLocation} />
+          <AppButton title={"comfirm"} onPress={handleSubmitLocation}  />
         )}
         <LoadingModal visible={isLoading} />
       </View>
