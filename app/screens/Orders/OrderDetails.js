@@ -113,10 +113,6 @@ export default function OrderDetails({ navigation, route }) {
     <ScrollView>
       <AppHeader subPage={true} />
       <ScrollView style={styles.container}>
-      {item?.attributes?.status !== "pending" &&
-      <TouchableOpacity style={styles.chatContainer}  onPress={() => navigation.navigate("Chat")}>
-      <Entypo name="chat" size={24} color="white" />
-      </TouchableOpacity >}
         <View style={styles.itemContainer}>
           <FlatList
             data={item?.attributes?.services.data}

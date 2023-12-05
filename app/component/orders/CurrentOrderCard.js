@@ -5,7 +5,10 @@ import {
   Image,
   TouchableWithoutFeedback,
   View,
+  TouchableOpacity,
 } from "react-native";
+import { Entypo } from '@expo/vector-icons'; 
+
 import React, { useEffect } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -16,8 +19,11 @@ import { ORDERS_DETAILS } from "../../navigation/routes";
 import PriceTextComponent from "../PriceTextComponent";
 const { width } = Dimensions.get("screen");
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch} from  'react-redux'
+import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 export default function CurrentOrderCard({ item, onPress }) {
   const navigation = useNavigation();
+  const dispatch = useDispatch()
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.orderCardContainer}>
@@ -62,7 +68,14 @@ export default function CurrentOrderCard({ item, onPress }) {
             style={styles.title}
           />
         </View>
-        <View style={styles.date}>
+        <View  style={{
+          display:'flex',
+          flexDirection:'row',
+          alignItems:'center',
+          justifyContent:'space-between'
+        }}>
+          <View style={styles.date}>
+
           <Ionicons name="person-outline" size={24} color="black" />
           <AppText
             text={
@@ -71,7 +84,25 @@ export default function CurrentOrderCard({ item, onPress }) {
             }
             centered={false}
             style={styles.title}
-          />
+            />
+            </View>
+          <View >
+
+          {item?.attributes?.provider?.data?.attributes?.name &&
+         
+         <TouchableOpacity style={styles.chatContainer}
+         onPress={() => {
+
+           dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id))
+           
+           navigation.navigate("Chat")}
+          }
+           >
+      <Entypo name="chat" size={24} color="white" />
+      </TouchableOpacity >
+          
+        }
+        </View>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -135,4 +166,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     flexDirection: "row",
   },
+  chatContainer:{paddingHorizontal:19,
+    backgroundColor:Colors.primaryColor,
+    width:60,
+  height:40,
+  borderRadius:20,
+  // marginHorizontal:width*0.65,
+  left:0,
+  display:"flex",
+  alignItems:'center',
+  justifyContent:'center',}
 });
