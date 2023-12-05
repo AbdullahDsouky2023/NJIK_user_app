@@ -3,6 +3,7 @@ import {
   Dimensions,
   StyleSheet,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -11,6 +12,8 @@ import AppButton from "../../component/AppButton";
 import AppText from "../../component/AppText";
 import { Colors } from "../../constant/styles";
 import AppHeader from "../../component/AppHeader";
+import { Entypo } from '@expo/vector-icons'; 
+
 import useOrders, {
   PayOrder,
   cancleOrder,
@@ -89,7 +92,7 @@ export default function OrderDetails({ navigation, route }) {
 
         sendPushNotification(
           providerNotificationToken,
-          `${selectedOrder[0]?.attributes?.service?.data?.attributes?.name}`,
+          ``,
           `تم انهاء الطلب بواسطه ${selectedOrder[0]?.attributes?.user?.data?.attributes?.username}`
         );
 
@@ -110,6 +113,10 @@ export default function OrderDetails({ navigation, route }) {
     <ScrollView>
       <AppHeader subPage={true} />
       <ScrollView style={styles.container}>
+      {item?.attributes?.status !== "pending" &&
+      <TouchableOpacity style={styles.chatContainer}  onPress={() => navigation.navigate("Chat")}>
+      <Entypo name="chat" size={24} color="white" />
+      </TouchableOpacity >}
         <View style={styles.itemContainer}>
           <FlatList
             data={item?.attributes?.services.data}
@@ -217,15 +224,7 @@ export default function OrderDetails({ navigation, route }) {
           )}
         </View>
 
-        {item?.attributes?.status !== "pending" ? (
-          <>
-            <AppButton
-              title={"دردشه"}
-              style={{ backgroundColor: Colors.success }}
-              onPress={() => navigation.navigate("Chat")}
-            />
-          </>
-        ) : (
+        {item?.attributes?.status === "pending" && (
           <AppButton
             title={"الغاء الطلب"}
             onPress={() => setModalVisible(true)}
@@ -315,4 +314,13 @@ const styles = StyleSheet.create({
     fontSize: 21,
     color: Colors.primaryColor,
   },
+  chatContainer:{paddingHorizontal:19,backgroundColor:Colors.primaryColor,
+    width:60,
+  height:40,
+  borderRadius:20,
+  marginHorizontal:width*0.75,
+  left:0,
+  display:"flex",
+  alignItems:'center',
+  justifyContent:'center',}
 });

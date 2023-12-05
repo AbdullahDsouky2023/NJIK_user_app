@@ -57,7 +57,8 @@ export const AddOrderReview = async (id,review) => {
 export default function useOrders() {
   const fetchOrders = async () => {
     try {
-      const response = await api.get(`/api/orders?populate=*`);
+      const response = await api.get(`/api/orders?populate=deep
+      `);
 
       return response.data;
     } catch (error) {
