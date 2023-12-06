@@ -1,10 +1,11 @@
 import {
     Alert,
     Dimensions,
+    FlatList,
     StyleSheet,
     View,
   } from "react-native";
-  import React, { useState } from "react";
+  import React, { useEffect, useState } from "react";
   import AppButton from "../../component/AppButton";
   import AppText from "../../component/AppText";
   import { Colors } from "../../constant/styles";
@@ -16,13 +17,14 @@ import {
   import { HOME, ORDERS, ORDER_SUCCESS_SCREEN } from "../../navigation/routes";
   import PriceTextComponent from "../../component/PriceTextComponent";
   import { Image } from "react-native";
-  import { ScrollView } from "react-native";
+  import { ScrollView } from "react-native-virtualized-view";
   import LoadingScreen from "../loading/LoadingScreen";
   import AppModal from "../../component/AppModal";
   import { CommonActions } from "@react-navigation/native";
 import useRegions from "../../../utils/region";
 import useNotifications from "../../../utils/notifications";
 import { clearCart } from "../../store/features/CartSlice";
+import useServices from "../../../utils/services";
   
   const { width } = Dimensions.get("screen");
   export default function OrderComfirmDetailsScreen({ navigation, route }) {
@@ -36,6 +38,8 @@ import { clearCart } from "../../store/features/CartSlice";
   const [isModalVisible, setModalVisible] = useState(false);
   const { item ,image} = route?.params
   const totalPrice = useSelector((state)=>state.cart.totalPrice)
+  const {data:services} = useServices()
+  const [currentSelectedServices,setCurrentSelectedServices] = useState([])
   // const totalPrice = useSelector((state)=>state.cart.totalPrice)
   const handleComfirmOrder = async () => {
     try {
@@ -63,12 +67,67 @@ import { clearCart } from "../../store/features/CartSlice";
       setModalVisible(false)
     }
   };
+  useEffect(()=>{
+    const data =currentOrderData?.services?.connect.map((item)=>{
+
+      const service = services.data.filter((service)=>service?.id ===item?.id)
+      return service[0]
+    }
+    )
+    setCurrentSelectedServices(data)
+console.log("the data ",data)
+  },[])
   
     if(isLoading) return <LoadingScreen/>
     return (
       <>
         <AppHeader subPage={true} />
        <ScrollView style={styles.container}>
+       <View style={styles.itemContainer}>
+          <FlatList
+            data={currentSelectedServices}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => item.id}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              direction: "rtl",
+              flexWrap: "wrap",
+              marginTop: 15,
+              gap: 15,
+              width: width,
+            }}
+            renderItem={({ item }) => {
+              return (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 15,
+                  }}
+                >
+                  <AppText
+                    centered={false}
+                    text={item.attributes?.name}
+                    style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
+                  />
+                  <AppText
+                    text={`${item.attributes?.Price} جنيه`}
+                    style={{
+                      backgroundColor: Colors.primaryColor,
+                      fontSize: 14,
+                      padding: 6,
+                      borderRadius: 40,
+                      color: Colors.whiteColor,
+                    }}
+                  />
+                </View>
+              );
+            }}
+          />
+        </View>
           <View>
             {/* <AppText
               centered={false}
@@ -91,14 +150,14 @@ import { clearCart } from "../../store/features/CartSlice";
               style={styles.price}
             />
           </View>
-          <View style={styles.itemContainer}>
+          {/* <View style={styles.itemContainer}>
             <AppText centered={false} text={" المنطقه"} style={styles.title} />
             <AppText
               centered={false}
               text={region}
               style={styles.price}
             />
-          </View>
+          </View> */}
           <View style={styles.itemContainer}>
             <AppText centered={false} text={" التاريخ"} style={styles.title} />
             <AppText

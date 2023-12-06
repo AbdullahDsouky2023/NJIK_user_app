@@ -30,6 +30,7 @@ import SelectLocationItem from "../../component/location/SelectLocationItem";
 import AppButton from "../../component/AppButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setCurrentOrderProperties } from "../../store/features/ordersSlice";
+import useRegions from "../../../utils/region";
 const { width } = Dimensions.get("screen");
 
 const SlectLocationOrderScreen = ({ navigation, route }) => {
@@ -39,6 +40,7 @@ const SlectLocationOrderScreen = ({ navigation, route }) => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const validPhone = auth?.currentUser?.phoneNumber?.replace("+", "");
   const userData = useSelector((state) => state.user?.userData);
+  const { data:regions} = useRegions()
   const [manualLocations, setManualLocations] = useState([]);
   useEffect(() => {
     loadManualLocations();
@@ -73,7 +75,10 @@ const SlectLocationOrderScreen = ({ navigation, route }) => {
   }, [selectedLocation]);
   const handleSubmitLocation = () => {
     dispatch(setCurrentOrderProperties({ location: selectedLocation }));
-    navigation.navigate(ORDER_SELECT_REGION, { item: route?.params?.item });
+    dispatch(setCurrentOrderProperties({ region: regions.data[0]?.id }));
+
+       navigation.navigate(ITEM_ORDER_DETAILS, { item: route?.params?.item });
+
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>

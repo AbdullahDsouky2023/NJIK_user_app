@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Nijk-نجيك",
+    "name": "Nijlak-نجيلك",
     "slug": "rn-Nijk",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -53,7 +53,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "ea07fb89-0fd4-4893-8f25-2e0affa9400f"
+        "projectId": "a5928f8a-0593-4cfd-aaa7-8c806bd8a5a5"
       }
     }
   }

@@ -47,7 +47,6 @@ const SelectRegionScreen = ({ navigation, route }) => {
       (item) => item?.attributes?.name === selectedRegion
     );
     dispatch(setCurrentOrderProperties({ region: item?.id }));
-    navigation.navigate(ITEM_ORDER_DETAILS, { item: route?.params?.item });
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>

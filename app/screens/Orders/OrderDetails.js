@@ -173,14 +173,14 @@ export default function OrderDetails({ navigation, route }) {
             style={styles.price}
           />
         </View>
-        <View style={styles.itemContainer}>
+        {/* <View style={styles.itemContainer}>
           <AppText centered={false} text={" المنطقه"} style={styles.title} />
           <AppText
             centered={false}
             text={item?.attributes?.region?.data?.attributes?.name}
             style={styles.price}
           />
-        </View>
+        </View> */}
         <View style={styles.itemContainer}>
           <AppText centered={false} text={" التاريخ"} style={styles.title} />
           <AppText
