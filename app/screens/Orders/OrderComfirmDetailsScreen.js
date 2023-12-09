@@ -41,10 +41,10 @@ import useServices from "../../../utils/services";
   const {data:services} = useServices()
   const [currentSelectedServices,setCurrentSelectedServices] = useState([])
   // const totalPrice = useSelector((state)=>state.cart.totalPrice)
+  console.log(currentOrderData)
   const handleComfirmOrder = async () => {
     try {
         const data = await postOrder(currentOrderData);
-        console.log(data)
     
         if (data) {
           dispatch(clearCurrentOrder());
@@ -75,7 +75,7 @@ import useServices from "../../../utils/services";
     }
     )
     setCurrentSelectedServices(data)
-console.log("the data ",data)
+// console.log("the data ",data)
   },[])
   
     if(isLoading) return <LoadingScreen/>
@@ -146,7 +146,7 @@ console.log("the data ",data)
             <AppText centered={false} text={" العنوان"} style={styles.title} />
             <AppText
               centered={false}
-              text={currentOrderData?.location}
+              text={currentOrderData?.googleMapLocation?.readable}
               style={styles.price}
             />
           </View>

@@ -11,6 +11,7 @@ import AppText from "../../component/AppText";
 
 import { CheckBox, Icon } from "@rneui/themed";
 import { TouchableOpacity } from "react-native";
+import { useEffect } from "react";
 
 const { width } = Dimensions.get("screen");
 
@@ -19,7 +20,7 @@ export default function SelectLocationItem({selectedLocation,item,setSelectedLoc
     if(!item) return;
   return (
     <TouchableOpacity onPress={() =>{
-        setSelectedLocation(item)
+        setSelectedLocation((item))
                 }}>
     {/* currentLocation primary */}
     <View style={[styles.currentLocation,{
@@ -50,7 +51,7 @@ export default function SelectLocationItem({selectedLocation,item,setSelectedLoc
         checked={item === selectedLocation}
       />
       <AppText
-        text={item}
+        text={item?.readable}
         centered={false}
         style={{ color:selectedLocation === item ? Colors.whiteColor: Colors.blackColor, marginBottom: 10 }}
       />

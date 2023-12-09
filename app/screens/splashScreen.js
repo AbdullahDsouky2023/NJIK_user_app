@@ -15,20 +15,21 @@ import {BASE_URL } from '@env'
 const SplashScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   let user = useSelector((state) => state.user?.user?.phoneNumber);
-  const [locationModalVisible, setLocationModalVisible] = useState(false);
-  const [locationConfirmed, setLocationConfirmed] = useState(false);
+  // const [locationModalVisible, setLocationModalVisible] = useState(false);
+  // const [locationConfirmed, setLocationConfirmed] = useState(false);
 
-  useEffect(() => {
-    // Check if the location is already confirmed
-    AsyncStorage.getItem('userLocation').then((userLocation) => {
-      if (userLocation) {
-        setLocationConfirmed(true);
-      } else {
-        // Location not confirmed, show the modal
-        setLocationModalVisible(true);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   // Check if the location is already confirmed
+  //   AsyncStorage.getItem('userLocation').then((userLocation) => {
+  //     if (userLocation) {
+  //       setLocationConfirmed(true);
+  //       console.log("the current user  location",userLocation)
+  //     } else {
+  //       // Location not confirmed, show the modal
+  //       setLocationModalVisible(true);
+  //     }
+  //   });
+  // }, []);
 
   const handleLocationConfirm = () => {
     // Location is now confirmed
@@ -109,8 +110,8 @@ const SplashScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
 
-      {
-        locationConfirmed ? (
+      {/* {
+        locationConfirmed ? ( */}
           <View style={{ flex: 1, justifyContent: 'center' }}>
             <Logo />
             <CircleFade
@@ -119,14 +120,14 @@ const SplashScreen = ({ navigation }) => {
               style={{ alignSelf: 'center' }}
             />
           </View>
-
+{/* 
         ) :
           (
             <LocationModal visible={locationModalVisible} onConfirm={handleLocationConfirm} />
 
-          )
+          ) */}
 
-      }
+      {/* } */}
     </SafeAreaView>
   )
 }

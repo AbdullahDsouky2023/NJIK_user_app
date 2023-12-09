@@ -8,13 +8,14 @@ import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { ITEM_DETAILS } from '../../navigation/routes'
 import useServices from '../../../utils/services'
+import LoadingScreen from '../../screens/loading/LoadingScreen'
 
 export default function OtherServicesList() {
   const { data :services,isLoading} = useServices()
- 
+  const navigation = useNavigation()
   if(isLoading){
     return <LoadingScreen/>
-  }  const navigation = useNavigation()
+  } 
 
   return (
     <HeaderTextComponent name={'otherServices'} >

@@ -12,9 +12,9 @@ export default function ReadyPackages() {
   const { data :services,isLoading} = useServices()
   const navigation = useNavigation()
  
-  if(isLoading){
-    return <LoadingScreen/>
-  }  
+  // if(isLoading){
+  //   return <LoadingScreen/>
+  // }  
 
   return (
     <HeaderTextComponent name={'readyPackages'}  showAll={true}>

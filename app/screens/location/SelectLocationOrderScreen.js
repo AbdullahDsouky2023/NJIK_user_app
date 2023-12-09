@@ -26,11 +26,14 @@ import {
   MANUAL_LOCATION_ADD,
   ORDER_SELECT_REGION,
 } from "../../navigation/routes";
+import * as Location from 'expo-location';
+
 import SelectLocationItem from "../../component/location/SelectLocationItem";
 import AppButton from "../../component/AppButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setCurrentOrderProperties } from "../../store/features/ordersSlice";
 import useRegions from "../../../utils/region";
+import MapScreen from "../map/MapScreen";
 const { width } = Dimensions.get("screen");
 
 const SlectLocationOrderScreen = ({ navigation, route }) => {
@@ -49,33 +52,109 @@ const SlectLocationOrderScreen = ({ navigation, route }) => {
       setManualLocations(route?.params?.updatedLocations);
     }
   }, [route?.params?.updatedLocations]);
-
   const loadManualLocations = async () => {
     try {
       const storedLocations = await AsyncStorage.getItem("manualLocations");
 
       if (storedLocations !== null) {
         setManualLocations(JSON.parse(storedLocations));
+        console.log(JSON.parse(storedLocations))
       }
     } catch (error) {
       console.error("Error loading manual locations:", error);
     }
   };
-  const getCurrentLocationFromStorage = async () => {
-    try {
-      const location = await getLocationFromStorage();
-      setCurrentLocation(location);
-      selectedLocation(location);
-    } catch (error) {}
-  };
+
   useEffect(() => {
-    setIsLoading(true)
-    getCurrentLocationFromStorage();
-      setIsLoading(false)
-  }, [selectedLocation]);
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.error('Permission to access location was denied');
+        return;
+      }
+  
+      let location = await Location.getCurrentPositionAsync({});
+      const coordinate = {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          }
+     handleSetCurrentLocation(coordinate)
+      console.log("user Current Location selec",location)
+    })();
+  }, []);
+  const getAddressFromObject = (locationObject) => {
+    const {
+      city,
+      country,
+      district,
+      isoCountryCode,
+      name,
+      postalCode,
+      region,
+      street,
+      streetNumber,
+      subregion,
+      timezone
+    } = locationObject;
+  
+    let address = '';
+    // if (street || name) {
+    //   address += street || name;
+    // }
+    if (streetNumber) {
+      address += ` ${streetNumber}`;
+    }
+    if (city || subregion) {
+      address += `, ${city || subregion}`;
+    }
+    if (region) {
+      address += `, ${region}`;
+    }
+    // if (postalCode) {
+    //   address += `, ${postalCode}`;
+    // }
+    if (country) {
+      address += `, ${country}`;
+    }
+  
+    return address;
+  }; 
+const handleSetCurrentLocation =   async (coordinate) => {
+    try {
+       const readableLocation = await  reverseGeoCode(coordinate)
+       if (readableLocation) {
+           const fromatedLocation = getAddressFromObject(readableLocation)
+           setCurrentLocation({
+            readable:fromatedLocation,
+            coordinate 
+           })
+           console.log("setting the location",{
+            readable:fromatedLocation,
+            coordinate 
+           })
+        }
+        
+    } catch (error) {
+        console.log("location",error)
+    }
+   };
+   const reverseGeoCode = async (location) => {
+    try {
+    //    const parseLocation =  JSON.parse(location)
+      const reverGeoCodeAdress = await Location.reverseGeocodeAsync({
+        longitude: location?.longitude,
+        latitude: location?.latitude,
+      });
+      return (reverGeoCodeAdress[0]);
+    } catch (error) {
+        console.log("erre",error)
+    }
+  };
+
+
   const handleSubmitLocation = () => {
-    dispatch(setCurrentOrderProperties({ location: selectedLocation }));
-    dispatch(setCurrentOrderProperties({ region: regions.data[0]?.id }));
+    dispatch(setCurrentOrderProperties({ location: selectedLocation.readable,googleMapLocation:selectedLocation }));
+    // dispatch(setCurrentOrderProperties({ region: regions.data[0]?.id }));
 
        navigation.navigate(ITEM_ORDER_DETAILS, { item: route?.params?.item });
 
@@ -96,9 +175,9 @@ const SlectLocationOrderScreen = ({ navigation, route }) => {
                   fontSize: 19,
                 }}
               />
-              {/* <TouchableOpacity
+              <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate(MANUAL_LOCATION_ADD, { order: true })
+                  navigation.navigate(MapScreen,  { item: route?.params?.item })
                 }
               >
                 <Ionicons
@@ -106,7 +185,7 @@ const SlectLocationOrderScreen = ({ navigation, route }) => {
                   size={32}
                   color={Colors.blackColor}
                 />
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
             <SelectLocationItem
               selectedLocation={selectedLocation}

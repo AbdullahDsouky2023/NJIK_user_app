@@ -7,13 +7,16 @@ import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { ITEM_DETAILS } from '../../navigation/routes'
 import useServices from '../../../utils/services'
+import LoadingScreen from '../../screens/loading/LoadingScreen'
 
 export default function CleaningServices() {
   const { data :services,isLoading} = useServices()
- 
-  if(isLoading){
-    return <LoadingScreen/>
-  }  const navigation = useNavigation()
+  const navigation = useNavigation()
+  // if(isLoading){
+  //   return <LoadingScreen/>
+  // } 
+  
+  
   return (
     <HeaderTextComponent name={'homeCleaningServices'}  showAll={true}>
         <FlatList

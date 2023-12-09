@@ -20,7 +20,10 @@ export const getLocationFromStorage = async () => {
 
         const Readable = await  reverseGeoCode(location)
         const res =  `${Readable?.city} - ${Readable?.subregion} - ${Readable?.country}`
-        if(Readable)  return res 
+        if(Readable)  return {
+          readableLocation:res ,
+          mapLocation:location
+        }
       }
 
       

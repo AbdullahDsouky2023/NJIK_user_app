@@ -9,7 +9,7 @@ import LoadingScreen from "../component/loadingScreen";
 import SplashScreen from "../screens/splashScreen";
 import AuthNavigator from "./AuthNavigator";
 import AppNavigator from "./AppNavigator";
-import { CART, ITEM_DETAILS, ITEM_ORDER_DETAILS, MANUAL_LOCATION_ADD, ORDER_COMFIRM_DETAILS, ORDER_SELECT_LOCATION, ORDER_SELECT_REGION, ORDER_SUCCESS_SCREEN } from "./routes";
+import { CART, ITEM_DETAILS, ITEM_ORDER_DETAILS, MANUAL_LOCATION_ADD, MAP, ORDER_COMFIRM_DETAILS, ORDER_SELECT_LOCATION, ORDER_SELECT_REGION, ORDER_SUCCESS_SCREEN } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
 import ItemOrderDetails from "../screens/Item/ItemOrderDetails";
@@ -21,6 +21,7 @@ import SelectRegionScreen from "../screens/RegionScreen";
 import OrderComfirmDetailsScreen from "../screens/Orders/OrderComfirmDetailsScreen";
 import ChatNavigator from "./ChatNavigator";
 import CartScreen from "../screens/CartScreen/CartScreen";
+import MapScreen from "../screens/map/MapScreen";
 
 LogBox.ignoreAllLogs();
 
@@ -50,6 +51,12 @@ const RootNavigator = () => {
         <Stack.Screen
           name={CART}
           component={CartScreen}
+          // initialParams={{ item }} // Pass the item object to ItemOrderDetails
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={MAP}
+          component={MapScreen}
           // initialParams={{ item }} // Pass the item object to ItemOrderDetails
           options={{ headerShown: false }}
         />

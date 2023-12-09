@@ -13,4 +13,5 @@ export const ORDER_SELECT_REGION= "select-region-screen"
 export const ORDER_COMFIRM_DETAILS= "comfirm-order-details-screen"
 export const MY_ORDERS = ('طلباتي')
 export const CART = "CartScreen"
+export const MAP = "MapScreen"
 export const CHAT_ROOM = "chat-room-screen"

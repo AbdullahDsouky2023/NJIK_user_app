@@ -106,7 +106,7 @@ const PaymentScreen = ({ navigation }) => {
                     style={styles.payButtonWrapStyle}
                 >
                     <Text style={{ ...Fonts.whiteColor19Medium }}>
-                        Pay
+                       ادفع الان
                     </Text>
                 </TouchableOpacity>
             </View>

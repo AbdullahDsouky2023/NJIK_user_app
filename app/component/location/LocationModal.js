@@ -6,8 +6,60 @@ import Dialog from "react-native-dialog";
 import AppText from '../AppText';
 import { Colors, Sizes ,Fonts} from '../../constant/styles';
 import AppButton from '../AppButton';
+
 const { width } = Dimensions.get('screen')
  const   LocationModal = ({ visible, onConfirm }) => {
+  const reverseGeoCode = async (location) => {
+    try {
+    //    const parseLocation =  JSON.parse(location)
+    console.log()
+      const reverGeoCodeAdress = await Location.reverseGeocodeAsync({
+        longitude: location?.longitude,
+        latitude: location?.latitude,
+      });
+      return (reverGeoCodeAdress[0]);
+    } catch (error) {
+        console.log("erre",error)
+    }
+  };
+  
+  const getAddressFromObject = (locationObject) => {
+    const {
+      city,
+      country,
+      district,
+      isoCountryCode,
+      name,
+      postalCode,
+      region,
+      street,
+      streetNumber,
+      subregion,
+      timezone
+    } = locationObject;
+  
+    let address = '';
+    // if (street || name) {
+    //   address += street || name;
+    // }
+    if (streetNumber) {
+      address += ` ${streetNumber}`;
+    }
+    if (city || subregion) {
+      address += `, ${city || subregion}`;
+    }
+    if (region) {
+      address += `, ${region}`;
+    }
+    // if (postalCode) {
+    //   address += `, ${postalCode}`;
+    // }
+    if (country) {
+      address += `, ${country}`;
+    }
+  
+    return address;
+  };
   const handleConfirm = async () => {
     try {
       // Request permission to access the user's location
@@ -16,8 +68,11 @@ const { width } = Dimensions.get('screen')
         // Fetch user's location
         const location = await Location.getCurrentPositionAsync({});
         console.log(location,status,"rrrrrrrrrrr")
-        // Save the location to storage
-        await AsyncStorage.setItem('userLocation', JSON.stringify(location?.coords));
+        // // Save the location to storage
+        // await AsyncStorage.setItem('userLocation', JSON.stringify({
+        //   readble:getAddressFromObject(reverseGeoCode(location?.coords)),
+        //   coordinate:location?.coords
+        // }));
         // Close the modal and notify the parent component
         onConfirm();
       }

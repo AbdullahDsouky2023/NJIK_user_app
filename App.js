@@ -9,35 +9,35 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { AppState } from 'react-native';
 import * as Updates from 'expo-updates';
+import { Platform } from "react-native";
 export const client = new QueryClient();
 const App = () => {
-
-  useEffect(() => {
+  
+  useEffect(()=>{
+    reload()
     I18nManager.forceRTL(true);
-  }, []);
-  useEffect(() => {
-    // Subscribe to app state change events
-    AppState.addEventListener('change', handleAppStateChange);
-    console.log("tracking")
+    I18nManager.allowRTL(true);
 
-    // Unsubscribe from app state change events when the component unmounts
-    return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
-    };
-  }, []);
+    
+  },[])
 
-  // Define a handler function for app state change events
-  const handleAppStateChange = async (nextAppState) => {
-    // If the app state changes from background to active, reload the app
-    if (AppState.currentState === 'active' && nextAppState === 'background') {
-      console.log("reloading")
-      await Updates.reloadAsync();
+  const reload = async () => {
+    try {
+      if (!I18nManager.isRTL) {
+        // Log the current RTL state
+        console.log('Current RTL state:', I18nManager.isRTL);
+        
+        // Enable RTL layout
+        I18nManager.forceRTL(true);
+        I18nManager.allowRTL(true);
+  
+        // Reload the app to apply RTL layout
+        await Updates.reloadAsync();
+      }
+    } catch (error) {
+      console.error('Failed to reload the app:', error);
     }
   };
-
-
-
-
 
 
   return (

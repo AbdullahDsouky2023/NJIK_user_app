@@ -13,9 +13,9 @@ export default function LowOffers() {
   const navigation = useNavigation()
   const { data :services,isLoading} = useServices()
  
-  if(isLoading){
-    return <LoadingScreen/>
-  }
+  // if(isLoading){
+  //   return <LoadingScreen/>
+  // }
   return (
     <HeaderTextComponent name={'Low Offers'}  showAll={true}  >
         <FlatList
