@@ -44,6 +44,7 @@ import useServices from "../../../utils/services";
   console.log(currentOrderData)
   const handleComfirmOrder = async () => {
     try {
+      setIsLoading(true)
         const data = await postOrder(currentOrderData);
     
         if (data) {
@@ -65,6 +66,8 @@ import useServices from "../../../utils/services";
       console.log(error, "error deleting the order");
     } finally {
       setModalVisible(false)
+      setIsLoading(false)
+
     }
   };
   useEffect(()=>{

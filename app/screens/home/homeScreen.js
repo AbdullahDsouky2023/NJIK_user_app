@@ -62,9 +62,11 @@ const HomeScreen = ({ navigation }) => {
     }
   }
 
-  useEffect(() => {    
+  useEffect(
+    () => {    
     getData()
-  }, [data]);
+  }
+  , [data]);
  
 
   if (isLoading || serviceLoading) return <LoadingScreen/>

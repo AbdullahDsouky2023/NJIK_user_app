@@ -49,6 +49,7 @@ export default function OrderDetails({ navigation, route }) {
   const { sendPushNotification } = useNotifications();
   const handleOrderCancle = async (id) => {
     try {
+     setIsLoading(true)
       const res = await cancleOrder(id);
       const selectedOrder = orders?.data.filter((order) => order?.id === id);
       const providerNotificationToken =
@@ -105,6 +106,8 @@ export default function OrderDetails({ navigation, route }) {
       console.log(error, "error paying the order");
     } finally {
       setModalVisible(false);
+      setIsLoading(false)
+
     }
   };
 
