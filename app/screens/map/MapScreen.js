@@ -139,6 +139,7 @@ useEffect(() => {
     style={{ flex: 1 }}
     initialRegion={region}
     onPress={handleMapPress}
+    showsUserLocation
   >
     {marker && <Marker coordinate={marker} />}
   </MapView>
