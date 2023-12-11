@@ -25,11 +25,8 @@
     "android": {
       "package": "com.render.rnhomeserviceuser",
       "googleServicesFile": "./google-services.json",
-      "googleMapsApiKey":"AIzaSyC5imbZzRsoC_w3a6EzuTvZoKwRd8Ytg0k",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyC5imbZzRsoC_w3a6EzuTvZoKwRd8Ytg0k"
-        }
+      "googleMaps": {
+        "apiKey": "AIzaSyC5imbZzRsoC_w3a6EzuTvZoKwRd8Ytg0k"
       },
       "versionCode": 1,
       "adaptiveIcon": {

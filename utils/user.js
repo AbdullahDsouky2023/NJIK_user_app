@@ -59,3 +59,14 @@ try {
     console.log('error updating the user ',error.message) 
 }
 }
+export const updateProviderData = async(id,data)=>{
+try {
+   const updatedUser =  await api.put(`/api/providers/${id}`,{
+        ...data
+    })
+    if(updateUserData) return true
+    return false
+} catch (error) {
+    console.log('error updating the provider ',error.message) 
+}
+}

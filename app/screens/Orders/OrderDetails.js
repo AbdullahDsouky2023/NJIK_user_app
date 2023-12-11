@@ -35,11 +35,12 @@ import { ScrollView } from "react-native-virtualized-view";
 
 import { FlatList } from "react-native";
 import { color } from "react-native-reanimated";
+import { updateProviderData, updateUserData } from "../../../utils/user";
 const { width } = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
   const [isLoading, setIsLoading] = useState(false);
-  // const { data:orders,isLoading:loading,isError } = useOrders()
+  const { data:UserOrders,isLoading:loading,isError } = useOrders()
   const [orderID, setOrderID] = useState(false);
   const orders = useSelector((state) => state?.orders?.orders);
   const user = useSelector((state) => state?.user?.userData);
@@ -82,15 +83,30 @@ export default function OrderDetails({ navigation, route }) {
 
   const handlePayOrder = async (id) => {
     try {
+      console.log("the button is just clikcked",id)
       const res = await PayOrder(id);
-      const selectedOrder = orders?.data.filter((order) => order?.id === id);
+      const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
 
       const providerNotificationToken =
         selectedOrder[0]?.attributes?.provider?.data?.attributes
-          ?.expoPushNotificationToken;
+          ?.expoPushNotificationToken; 
+
+      const OrderProvider = selectedOrder[0]?.attributes?.provider?.data?.id
+      const OrderUserId = selectedOrder[0]?.attributes?.user?.data?.id
+      console.log("user is is ",OrderUserId)
+      console.log("OrderProvider is is ",OrderProvider)
       if (res) {
         setIsReviewVisble(true);
-
+        await updateUserData(OrderUserId,{
+          orders:{
+            connect:[{id}]
+          }
+        })
+        await updateProviderData(OrderProvider,{
+          orders:{
+            connect:[{id}]
+          }
+        })
         sendPushNotification(
           providerNotificationToken,
           ``,
