@@ -42,7 +42,10 @@ export default function GeneralSettings() {
           data={settingsItemArray}
           style={{
             display: "flex",
-            gap: 15,
+            gap: 20,
+            flexWrap:'wrap',
+            // backgroundColor:'red',
+            flexDirection:'row'
           }}
           renderItem={({ item }) => {
             return <SettingItem item={item} />;
@@ -65,6 +68,7 @@ const styles = StyleSheet.create({
   header: {
     color: Colors.primaryColor,
     fontSize: 18,
+    marginBottom:25
   },
   textHeader: {
     color: Colors.blackColor,

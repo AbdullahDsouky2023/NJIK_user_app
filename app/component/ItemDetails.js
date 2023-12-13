@@ -29,7 +29,7 @@ export default function ItemDetails({ item }) {
 const styles = StyleSheet.create({
   container: {
     height: "auto",
-    backgroundColor: Colors.piege,
+    backgroundColor: Colors.primaryColor,
     position: "relative",
   },
   image: {

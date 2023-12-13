@@ -45,12 +45,11 @@ const BottomTabBar = () => {
                 screenOptions={{
                     headerShown: false,
                     tabBarActiveTintColor: Colors.primaryColor,
-                    tabBarInactiveTintColor: Colors.grayColor,
+                    tabBarInactiveTintColor: Colors.blackColor,
                     tabBarLabelStyle: {
-                        fontSize: 14.0,
+                        fontSize: 13.0,
                         fontFamily: 'Janna-Lt',
-                        fontWeight:700
-
+                        fontWeight:700,
                     },
                     tabBarStyle: { ...styles.tabBarStyle, },
                 }}
@@ -58,9 +57,10 @@ const BottomTabBar = () => {
                 <Tab.Screen
                     name={HOME}
                     component={HomeScreen}
+                    
                     options={{
                         tabBarIcon: ({ color }) => 
-                        <Octicons name="home" size={27} color={color}/>
+                        <Octicons name="home" size={25} color={color}/>
 
                     }}
                 />
@@ -68,14 +68,14 @@ const BottomTabBar = () => {
                     name={OFFERS}
                     component={CurrentOffersScreen}
                     options={{
-                        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="gift-open-outline" size={27} color={color} />
+                        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="gift-open-outline" size={25} color={color} />
                     }}
                 />
                 <Tab.Screen
                      name={MY_ORDERS}
                     component={OrderScreen}
                     options={{
-                        tabBarIcon: ({ color }) => <Feather name="shopping-bag" size={27} color={color} />
+                        tabBarIcon: ({ color }) => <Feather name="shopping-bag" size={25} color={color} />
                     }}
                 />
                 <Tab.Screen
@@ -83,7 +83,7 @@ const BottomTabBar = () => {
                     component={AccountNavigator}
                     options={{
                         tabBarIcon: ({ color, }) => (
-                            <AntDesign name="user" size={27} color={color} />
+                            <AntDesign name="user" size={25} color={color} />
                         ),
                     }}
                 />
@@ -121,9 +121,10 @@ const styles = StyleSheet.create({
     },
     tabBarStyle: {
         height: 70.0,
-        elevation: 3.0,
-        borderTopColor: 'gray',
-        borderTopWidth: 0.20,
+        // elevation: 3.0,
+        backgroundColor:Colors.piege,
+        // borderTopColor: 'gray',
+        // borderTopWidth: 0.20,
         borderTopLeftRadius: Sizes.fixPadding + 10.0,
         borderTopRightRadius: Sizes.fixPadding + 10.0,
         paddingTop: Sizes.fixPadding - 5.0,

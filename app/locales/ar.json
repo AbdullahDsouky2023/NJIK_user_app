@@ -16,6 +16,7 @@
   "Home": "الرئيسية",
   "Orders": "طلباتي",
   "Offers": "العروض",
+  "city":"المدينه",
   "Services": "الخدمات",
   "servicesLookingFor": "أي خدمة تبحث عنها؟",
   "showAll": "أظهار الكل",
@@ -60,10 +61,13 @@
   "phoneNumber":"رقم الهاتف", 
    "address":"العنوان",
    "signOut":"تسجيل الخروج",
+   "Packages":"الباقات",
    "current Location":"العنوان الحالي",
    "Manual Location":"العنوان اليدوي",
    "Add Address":" اضافه عنوان جديد",
    "choose region":"اختار المنطفه ",
+   "Birth Date":"تاريخ الميلاد",
+   "Change Image":"تغيير الصوره",
       "Add":"أضافه",
       "comfirm":"تأكيد",
       "Please add the location":"من فضلك ادخل العنوان",
@@ -73,5 +77,6 @@
       "finish work":"انهاء العمل",
       "Card":"فيزا",
       "Cash":"نقدا",
-      "remove":"ازاله"
+      "remove":"ازاله",
+      "Recharge Wallet":"شحن المحفظه"
 }

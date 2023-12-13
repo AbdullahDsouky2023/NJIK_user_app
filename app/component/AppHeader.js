@@ -1,18 +1,21 @@
 import React from "react";
-import { Image, TouchableWithoutFeedback, View } from "react-native";
+import { Image, TouchableWithoutFeedback, View , Dimensions} from "react-native";
 import { StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../constant/styles";
 import { MaterialIcons} from '@expo/vector-icons'
 import { useNavigation } from "@react-navigation/native";
+import AppText from "./AppText";
+import { color } from "react-native-reanimated";
+const { width } = Dimensions.get("screen")
 export default function AppHeader({ subPage = false}) {
     const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <Image source={require("../assets/images/icon.png")} style={{
-        width:40,
-        height:40
-      }} height={50} width={50} />
+        width:width*0.16,
+        height:width*0.10
+      }} />
       {subPage && (
         <TouchableWithoutFeedback onPress={()=>navigation.goBack()}>
 
@@ -21,6 +24,14 @@ export default function AppHeader({ subPage = false}) {
             size={24}
             color={Colors.grayColor}
             />
+            </TouchableWithoutFeedback>
+          ) }
+      {!subPage && (
+        <TouchableWithoutFeedback onPress={()=>navigation.goBack()}>
+
+          <View style={styles.WalletContainer}>
+            <AppText style={{fontSize:15,color:'white'}} text={"0.0 جنيه"}/>
+          </View>
             </TouchableWithoutFeedback>
           ) }
     </View>
@@ -32,7 +43,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     backgroundColor: Colors.piege,
   },
+  WalletContainer:{
+    backgroundColor:Colors.primaryColor,
+    paddingHorizontal:19,
+    paddingVertical:3,
+    borderRadius:12
+    
+  }
 });

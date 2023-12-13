@@ -15,7 +15,7 @@ export default function ServicesList() {
     navigation.navigate(CART, { name: item?.attributes?.name });
   };
   return (
-    <HeaderTextComponent name={"servicesLookingFor"} showAll={true}>
+    <HeaderTextComponent name={"Services"} showAll={true}>
       <FlatList
         data={categories.data}
         style={styles.listContainer}

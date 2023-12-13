@@ -16,7 +16,7 @@ export const settingsItemArray = [
     desc:"تفاصيل محفظتك الخاصه"
 },
     {
-    name:"شير و أكسب",
+    name:"شير التطبيق",
     icon:"share",
     desc:"شير وأكسب 50 جنيه داخل محفظتك "
 },

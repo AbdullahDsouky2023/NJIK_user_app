@@ -15,12 +15,12 @@ export default function HeaderTextComponent({ name, showAll, children }) {
     <View style={styles.Container}>
       <View style={styles.headerTextContainer}>
         <AppText text={name} style={styles.text} />
-        {showAll && (
+        {/* {showAll && (
           <TouchableWithoutFeedback onPress={()=>navigation.navigate((OFFERS),{name:"all"})}>
 
           <AppText text={"showAll"} style={{ ...Fonts.primaryColor15Light }} />
           </TouchableWithoutFeedback>
-        )}
+        )} */}
       </View>
       <View style={styles.cardContainer}>{children}</View>
     </View>
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   text: {
     color: Colors.blackColor,
     ...Fonts.blackColor14Medium,
+    fontSize:18
   },
   imageCard: {
     height: 40,

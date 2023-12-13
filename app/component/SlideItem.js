@@ -1,4 +1,4 @@
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, TouchableWithoutFeedback } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ITEM_DETAILS } from "../navigation/routes";
@@ -11,7 +11,7 @@ export default function SlideItem({ item }) {
 //  const preview = "https://firebasestorage.googleapis.com/v0/b/react-native-e.appspot.com/o/b47b03a1e22e3f1fd884b5252de1e64a06a14126.png?alt=media&token=d636c423-3d94-440f-90c1-57c4de921641";
 
   return (
-    <TouchableOpacity
+    <TouchableWithoutFeedback
       onPress={() => {
         navigation.navigate(ITEM_DETAILS, { item: item?.attributes?.service?.data });
       }}
@@ -27,6 +27,6 @@ export default function SlideItem({ item }) {
       resizeMode="cover"
       />
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 }

@@ -101,17 +101,18 @@ export default function OrderDetails({ navigation, route }) {
           orders:{
             connect:[{id}]
           }
-        })
-        await updateProviderData(OrderProvider,{
+        }).then(()=>
+         updateProviderData(OrderProvider,{
           orders:{
             connect:[{id}]
           }
-        })
+        })).then(()=>
         sendPushNotification(
           providerNotificationToken,
           ``,
           `تم انهاء الطلب بواسطه ${selectedOrder[0]?.attributes?.user?.data?.attributes?.username}`
-        );
+          )
+          )
 
         setOrderID(id);
         // Alert.alert("تم بنجاح");

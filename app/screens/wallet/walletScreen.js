@@ -18,7 +18,7 @@ export default function WalletScreen() {
         <AppText text={`${amount} جنيه`} style={styles.amount} />
       </View>
       <AppButton
-        title={"أدخل كود شحن المحفظه "}
+        title={"Recharge Wallet"}
         style={styles.button}
         textStyle={{ color: Colors.primaryColor }}
       />
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   wrapper: {
     display: "flex",
     alignItems: "center",
+    marginTop:19,
     justifyContent: "center",
   },
   button: {

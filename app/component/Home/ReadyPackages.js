@@ -17,7 +17,7 @@ export default function ReadyPackages() {
   // }  
 
   return (
-    <HeaderTextComponent name={'readyPackages'}  showAll={true}>
+    <HeaderTextComponent name={'Packages'}  showAll={true}>
         <FlatList
         horizontal
         data={services?.data}

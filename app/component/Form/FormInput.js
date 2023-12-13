@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.whiteColor,
     borderRadius: 25,
     flexDirection: "row-reverse",
-    padding: 15,
+    padding: 10,
     // marginVertical: 10,
     fontFamily: mainFont.light,
   },
