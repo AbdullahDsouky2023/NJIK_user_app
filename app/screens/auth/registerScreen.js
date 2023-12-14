@@ -40,6 +40,8 @@ const RegisterScreen = ({ navigation,route}) => {
       .required(t("Full name is required"))
       .min(3, "Full Name is too short")
       .max(50, "Full Name is too long"),
+    city: yup
+      .string(),
     emailAddress: yup
       .string()
       .email(t("Invalid email address"))
@@ -54,8 +56,9 @@ const RegisterScreen = ({ navigation,route}) => {
       const res = await createUser({
         email:values.emailAddress,
         username:values.fullName,
-        password:"hoohofyufyufdh",
-        location:userLocation,
+        password:"hoohofyu242121fyufdh",
+        city:values?.city || null,
+        // location:userLocation,
         phoneNumber:phoneNumber
       })
 
@@ -91,7 +94,7 @@ const RegisterScreen = ({ navigation,route}) => {
             <AppForm
           enableReinitialize={true}
 
-initialValues={{ fullName: "", emailAddress: "" }}
+initialValues={{ fullName: "", emailAddress: "",city:"" }}
               onSubmit={handleFormSubmit}
               validationSchema={validationSchema}
             >
@@ -110,6 +113,14 @@ initialValues={{ fullName: "", emailAddress: "" }}
                 placeholder="emailAddress"
                 textContentType="emailAddress"
               />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                // keyboardType="email-address"
+                name="city"
+                placeholder="city"
+              />
+              
 
               <SubmitButton title="Register" />
             </AppForm>

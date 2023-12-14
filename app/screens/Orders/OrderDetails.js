@@ -36,6 +36,7 @@ import { ScrollView } from "react-native-virtualized-view";
 import { FlatList } from "react-native";
 import { color } from "react-native-reanimated";
 import { updateProviderData, updateUserData } from "../../../utils/user";
+import ArrowBack from "../../component/ArrowBack";
 const { width } = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
@@ -131,7 +132,7 @@ export default function OrderDetails({ navigation, route }) {
   if (isLoading) return <LoadingScreen />;
   return (
     <ScrollView>
-      <AppHeader subPage={true} />
+      <ArrowBack subPage={true} />
       <ScrollView style={styles.container}>
         <View style={styles.itemContainer}>
           <FlatList

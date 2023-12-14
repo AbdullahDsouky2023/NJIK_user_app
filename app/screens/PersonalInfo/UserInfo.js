@@ -42,6 +42,7 @@ const UserInfo = ({ navigation }) => {
   const [ImageID,setImageId]=useState(null)
   const userData = useSelector((state)=>state?.user?.userData)
   // let user = useSelector((state) => state.user?.user?.phoneNumber);
+  console.log(userData?.birth_date,"dddd")
   const validationSchema = yup.object().shape({
     fullName: yup
       .string()
@@ -81,6 +82,8 @@ const UserInfo = ({ navigation }) => {
         dispatch(setUserData(gottenuser));
         Alert.alert("تم التعديل بنجاح");
         console.log("the image id is ",ImageID)
+        if(image) await Updates.reloadAsync();
+
 
       } else {
         Alert.alert("Something goes wrong");
@@ -99,6 +102,9 @@ const UserInfo = ({ navigation }) => {
           const formData = {
             email: values?.emailAddress || userData?.email,
             username: values?.fullName || userData?.username,
+            city: values.city || userData?.city,
+          birth_date: values.birth_date || userData?.birth_date,
+          // phoneNumber: Number(validPhone),
             image:res
             // phoneNumber: Number(validPhone),
           }
@@ -190,7 +196,7 @@ return finalPhoneNumber
 
               />
               <AppText text={"Birth Date"} centered={false} style={[styles.header,{marginBottom:10}]}/>
-              <UserDatePicker name="birth_date" placeholder={userData?.birth_date} />
+              <UserDatePicker name="birth_date" birthDate={userData?.birth_date}  />
 <AppText text={"city"} centered={false} style={[styles.header,{marginTop:10}]}/>
               <FormField
                 autoCapitalize="none"

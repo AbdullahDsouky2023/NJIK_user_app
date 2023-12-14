@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, TouchableWithoutFeedback, View , Dimensions} from "react-native";
 import { StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,8 +8,12 @@ import { useNavigation } from "@react-navigation/native";
 import AppText from "./AppText";
 import { color } from "react-native-reanimated";
 const { width } = Dimensions.get("screen")
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import UserLocation from "./Home/UserLocation";
+
 export default function AppHeader({ subPage = false}) {
     const navigation = useNavigation()
+ 
   return (
     <View style={styles.container}>
       <Image source={require("../assets/images/icon.png")} style={{
@@ -20,7 +24,7 @@ export default function AppHeader({ subPage = false}) {
         <TouchableWithoutFeedback onPress={()=>navigation.goBack()}>
 
           <MaterialIcons
-            name="arrow-back-ios"
+            name="arrow-forward-ios"
             size={24}
             color={Colors.grayColor}
             />
@@ -34,6 +38,7 @@ export default function AppHeader({ subPage = false}) {
           </View>
             </TouchableWithoutFeedback>
           ) }
+          <UserLocation/>
     </View>
   );
 }

@@ -24,7 +24,7 @@ import UsersReviews from "../../component/Home/UsersReview";
 import AppHeader from "../../component/AppHeader";
 import { useDispatch, useSelector } from "react-redux";
 import useCategories from "../../../utils/categories";
-import { setCategories } from "../../store/features/categorySlice";
+import { setBanners, setCategories } from "../../store/features/categorySlice";
 import { setServices } from "../../store/features/serviceSlice";
 import { setOrders } from "../../store/features/ordersSlice";
 import useServices from "../../../utils/services";
@@ -35,6 +35,7 @@ import useOrders from "../../../utils/orders";
 import AppButton from "../../component/AppButton";
 import { generateUserToken } from "../chat/chatconfig";
 import { setUserStreamData } from "../../store/features/userSlice";
+import useBanners from "../../../utils/banners";
 const { width } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {
@@ -43,6 +44,7 @@ const HomeScreen = ({ navigation }) => {
   const { data, isLoading, isError } = useCategories()
   const { data:services ,isLoadin:serviceLoading} = useServices()
   const { data:orders } = useOrders()
+  const { data:banners } = useBanners()
   const user = useSelector((state)=>state?.user?.userData)
   const { token} = useNotifications()
 
@@ -53,6 +55,7 @@ const HomeScreen = ({ navigation }) => {
         dispatch(setCategories(data));
         dispatch(setServices(services));
        dispatch(setOrders(orders));
+       dispatch(setBanners(banners));
       const chat = generateUserToken(user)
       
       dispatch(setUserStreamData(chat));

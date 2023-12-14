@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -30,6 +30,7 @@ import { clearCurrentOrder, setCurrentOrderProperties } from "../../store/featur
 import PriceTextComponent from "../../component/PriceTextComponent";
 import LoadingModal from "../../component/Loading";
 import { BASE_URL} from "@env"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width } = Dimensions.get("window");
 
@@ -43,7 +44,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
   const user = useSelector((state) => state?.user?.user);
   const cartItems = useSelector((state) => state.cart.services);
   const selectedServicesConnect =  cartItems.map(item => ({ id: item }));
-
+  const [currentLocation,setCurrenttLocation]=useState()
   const userData = useSelector((state) => state?.user?.userData);
   const currentOrderData = useSelector((state) => state?.orders?.currentOrderData);
   const handleFormSubmit = async (values) => {
@@ -70,6 +71,8 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
         totalPrice:totalPrice,
         phoneNumber: user?.phoneNumber,
         user: userData?.id,
+         location: currentLocation.readable,
+         googleMapLocation:currentLocation 
       };
   
       dispatch(setCurrentOrderProperties(formSubmitionData));
@@ -82,7 +85,13 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
       setIsLoading(false);
     }
   };
-  
+  useEffect(()=>{
+    (async () => {
+      const currentLocation = await AsyncStorage.getItem("userLocation")
+      setCurrenttLocation(JSON.parse(currentLocation))
+   
+    })();
+  },[])
 
   const validationSchema = yup.object().shape({
     Date: yup.date().required("من فضلك اختار يوم التنفيذ"),

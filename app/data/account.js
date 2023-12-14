@@ -1,7 +1,7 @@
 
 export const settingsItemArray = [ 
      {
-    name:"الملف الشخصي",
+    name:"Account Details",
     icon:"user",
     desc:""
 },
@@ -16,9 +16,18 @@ export const settingsItemArray = [
     desc:"تفاصيل محفظتك الخاصه"
 },
     {
-    name:"شير التطبيق",
+    name:"Share App",
     icon:"share",
     desc:"شير وأكسب 50 جنيه داخل محفظتك "
 },
+    {
+    name:"Contact Us",
+    icon:"social-instagram",
+},
+    {
+    name:"Terms and Conditions",
+    icon:"doc",
+},
    
 ]
+

@@ -50,7 +50,7 @@ const AccountScreen = ({ navigation }) => {
           style={styles.image}
           />
         </View>
-          <AppText text={userData?.username} style={{color:Colors.blackColor}}/>
+          <AppText text={userData?.username} style={{color:Colors.blackColor,marginBottom:10}}/>
         </View>
         {/* <Logo /> */}
         <GeneralSettings/>
@@ -66,14 +66,20 @@ const styles = StyleSheet.create({
   ImageContainer:{
     paddingHorizontal:width*0.4,
     // backgroundColor:'red',
-    paddingVertical:width*0.05,
-    marginTop:50
+    paddingTop:width*0.05,
+    paddingBottom:width*0.03,
+    // marginTop:50,
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center',
   },
   image :{
-    height:70,
-    width:70,
+    height:width*0.3,
+    // borderWidth:4,
+    // borderColor:Colors.blueColor,
+    width:width*0.3,
     margin:'auto',
-    borderRadius:35,
+    borderRadius:width*0.3*0.5,
   }
   
 })

@@ -13,10 +13,10 @@ import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("screen");
 
-function UserDatePicker({ name, width, ...otherProps }) {
+function UserDatePicker({ name, width, birthDate,...otherProps }) {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(birthDate ? new Date(birthDate) : new Date() );
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
@@ -24,7 +24,13 @@ function UserDatePicker({ name, width, ...otherProps }) {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === "ios"); // Hide the DateTimePicker for iOS
     setDate(currentDate);
-    setFieldValue(name, currentDate);
+  
+    // Format the date to a more readable format before setting the field value
+    const formattedDateForDB = format(currentDate, "yyyy-MM-dd", {
+      locale: arDZ, // Use the Arabic locale
+    });
+  
+    setFieldValue(name, formattedDateForDB);
   };
 
   const showMode = (currentMode) => {
@@ -47,6 +53,7 @@ function UserDatePicker({ name, width, ...otherProps }) {
           <TextInput
             onChangeText={(text) => setFieldValue(name, text)}
             value={formattedDate}
+            editable={false}
             onBlur={() => setFieldTouched(name)}
           />
           <Ionicons name="calendar" size={24} color="black" />

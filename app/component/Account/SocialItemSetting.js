@@ -2,14 +2,14 @@ import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constant/styles";
 import AppText from "../AppText";
 import { MaterialIcons } from "@expo/vector-icons";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons'; 
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {Share} from 'react-native';
+import { Share } from 'react-native';
 
 const { width ,height}  = Dimensions.get('screen')
 
-export default function SettingItem({item }) {
+export default function SocalItemSetting({item }) {
     const { icon, name, desc } = item
     const navigation = useNavigation()
 
@@ -47,23 +47,12 @@ export default function SettingItem({item }) {
     return (
       <TouchableWithoutFeedback  onPress={()=>handlePress()}>
        
-        <View  style={styles.item}>
-        {/* <View style={styles.itemHeader}> */}
-          <SimpleLineIcons name={icon} size={24} color={Colors.primaryColor} />
-          
-          <View style={{
-            display:'flex',
-            justifyContent:'center',
-          }}>
-            <AppText text={name} centered={false} style={styles.textHeader} />
-            {/* {desc && <AppText
-              text={desc}
-              centered={false}
-              style={styles.headerDescription}
-            />} */}
-          {/* </View> */}
-        </View>
-        {/* <MaterialIcons name="arrow-back-ios" size={24} color={Colors.grayColor} /> */}
+        <View  style={[styles.item,{
+          backgroundColor:item.BackgroundColor
+        }]}>
+        {/* <Entypo name={item?.icon} size={32} color="white" /> */}
+        <FontAwesome name={item?.icon} size={32} color="white" />
+
         </View>
       </TouchableWithoutFeedback>)
 }
@@ -83,15 +72,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   item: {
-    backgroundColor: Colors.piege,
-    height: "auto",
+    height:70,
     borderRadius:10,
     paddingHorizontal: 20,
     display: "flex",
     flexDirection: "column",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -10,
+      height: 10,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 1.41,
+    elevation: 4,
     alignItems: "center",
-    justifyContent: "space-between",
-    width:width*0.4,
+    justifyContent: "center",
+    width:width*0.7,
     paddingVertical:14,
     gap: 5,
   },

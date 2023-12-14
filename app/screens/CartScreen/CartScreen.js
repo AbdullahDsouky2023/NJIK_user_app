@@ -26,7 +26,7 @@ import {
   removeServiceFromCart,
 } from "../../store/features/CartSlice";
 import ReserveButton from "../../component/ReverveButton";
-import { ORDER_SELECT_LOCATION } from "../../navigation/routes";
+import { ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION } from "../../navigation/routes";
 const { width, height } = Dimensions.get("screen");
 
 export default function CartScreen({ route ,navigation}) {
@@ -143,7 +143,7 @@ export default function CartScreen({ route ,navigation}) {
         <>
           <ReserveButton
             price={totalPrice}
-            onPress={() => navigation.navigate(ORDER_SELECT_LOCATION)}
+            onPress={() => navigation.navigate(ITEM_ORDER_DETAILS,{item:""})}
           />
         </>
       )} 

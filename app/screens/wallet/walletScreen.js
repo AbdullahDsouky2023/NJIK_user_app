@@ -5,13 +5,14 @@ import { StyleSheet } from "react-native";
 import AppText from "../../component/AppText";
 import AppButton from "../../component/AppButton";
 import AppHeader from "../../component/AppHeader";
+import ArrowBack from "../../component/ArrowBack";
 const amount = "0.0";
 const { width } = Dimensions.get("screen");
 export default function WalletScreen() {
   const [operation, setOperation] = useState("سحب");
   return (
     <View style={styles.container}>
-      <AppHeader subPage={true} />
+      <ArrowBack subPage={true} />
 
       <View style={styles.wrapper}>
         <AppText text={"رصيدك الحالي"} style={styles.text} />

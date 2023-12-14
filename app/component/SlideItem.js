@@ -9,7 +9,7 @@ export default function SlideItem({ item }) {
   const navigation = useNavigation();
   const uri = item?.attributes?.image?.data?.attributes?.url 
 //  const preview = "https://firebasestorage.googleapis.com/v0/b/react-native-e.appspot.com/o/b47b03a1e22e3f1fd884b5252de1e64a06a14126.png?alt=media&token=d636c423-3d94-440f-90c1-57c4de921641";
-
+// console.log("the item slide ",item)
   return (
     <TouchableWithoutFeedback
       onPress={() => {

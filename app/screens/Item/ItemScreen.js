@@ -32,7 +32,8 @@ export default function ItemScreen({ route,navigation }) {
         item:item?.id,
         price:item?.attributes?.Price
       }))
-      navigation.navigate(ORDER_SELECT_LOCATION)
+      
+      navigation.navigate(ITEM_ORDER_DETAILS, { item: route?.params?.item })
      }}/>
     </View>
   );

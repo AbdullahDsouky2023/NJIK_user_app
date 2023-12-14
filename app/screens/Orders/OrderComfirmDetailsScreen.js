@@ -25,6 +25,7 @@ import useRegions from "../../../utils/region";
 import useNotifications from "../../../utils/notifications";
 import { clearCart } from "../../store/features/CartSlice";
 import useServices from "../../../utils/services";
+import ArrowBack from "../../component/ArrowBack";
   
   const { width } = Dimensions.get("screen");
   export default function OrderComfirmDetailsScreen({ navigation, route }) {
@@ -84,7 +85,7 @@ import useServices from "../../../utils/services";
     if(isLoading) return <LoadingScreen/>
     return (
       <>
-        <AppHeader subPage={true} />
+        <ArrowBack subPage={true} />
        <ScrollView style={styles.container}>
        <View style={styles.itemContainer}>
           <FlatList

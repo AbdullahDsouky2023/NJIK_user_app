@@ -22,6 +22,7 @@ import {
   import LoadingScreen from "../loading/LoadingScreen";
   import AppModal from "../../component/AppModal";
   import { CommonActions } from "@react-navigation/native";
+import ArrowBack from "../../component/ArrowBack";
   
   const { width } = Dimensions.get("screen");
   export default function CompleteOrderDetails({ navigation, route }) {
@@ -38,7 +39,7 @@ import {
     if(isLoading) return <LoadingScreen/>
     return (
       <ScrollView>
-        <AppHeader subPage={true} />
+        <ArrowBack subPage={true} />
         <ScrollView style={styles.container}>
           <View>
             <AppText

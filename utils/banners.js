@@ -6,7 +6,7 @@ import api from './index'
  export default function useBanners() {
   const fetchBanners = async () => {
     try {
-      const response = await api.get(`/api/banners?populate=*`);
+      const response = await api.get(`/api/banners?populate=deep`);
       
       return response.data
     } catch (error) {
