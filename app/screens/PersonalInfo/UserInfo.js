@@ -31,6 +31,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserImagePicker from "../../component/Account/UserImagePicker";
 import { uploadToStrapi } from "../../../utils/UploadToStrapi";
 import UserDatePicker from "../../component/Account/UserDatePicker";
+import NotificationComponent from "../../component/NotificationComponent";
 const { width } = Dimensions.get('screen')
 const UserInfo = ({ navigation }) => {
   const [error, setError] = useState();
@@ -159,7 +160,11 @@ return finalPhoneNumber
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
+      <View style={styles.headerContainer}>
+
+          <NotificationComponent/>
         <ArrowBack />
+      </View>
       <ScrollView style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ flex: 1, alignItems: "center" }}>
@@ -225,6 +230,12 @@ const styles = StyleSheet.create({
     color:Colors.blackColor,
     // backgroundColor:'red',
     marginBottom:width*0.001,
+  },
+  headerContainer:{
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'space-between',
+    flexDirection:'row'
   }
 });
 

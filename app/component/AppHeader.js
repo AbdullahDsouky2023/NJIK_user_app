@@ -38,7 +38,7 @@ export default function AppHeader({ subPage = false}) {
           </View>
             </TouchableWithoutFeedback>
           ) }
-          <UserLocation/>
+          {/* <UserLocation/> */}
     </View>
   );
 }

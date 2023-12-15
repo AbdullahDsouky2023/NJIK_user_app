@@ -10,6 +10,7 @@ import { useRef, useEffect, useState } from 'react';
 import { AppState } from 'react-native';
 import * as Updates from 'expo-updates';
 import { Platform } from "react-native";
+import { registerNotificationListeners } from "./utils/NotificationListner";
 export const client = new QueryClient();
 const App = () => {
   const appStateRef = useRef(AppState.currentState);
@@ -22,11 +23,14 @@ const App = () => {
   },[])
   useEffect(() => {
     AppState.addEventListener('change', handleAppStateChange);
-
     return () => {
       AppState.removeEventListener('change', handleAppStateChange);
     };
   }, []);
+  useEffect(()=>{
+    registerNotificationListeners()
+    
+  },[])
   const handleAppStateChange = async (nextAppState) => {
     try {
 
