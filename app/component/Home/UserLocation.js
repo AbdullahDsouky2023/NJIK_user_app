@@ -13,7 +13,7 @@ export default function UserLocation() {
     const userData = useSelector((state)=>state?.user?.userData)
     const { t} = useTranslation()
     const requestLocationPermission = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      let { status } = await Location.requestBackgroundPermissionsAsync();
       let { canAskAgain } = await Location.getForegroundPermissionsAsync();
       if (!canAskAgain && status !== 'granted') {
         // User has denied permission permanently
@@ -37,7 +37,7 @@ export default function UserLocation() {
           ],
           { cancelable: false }
         );
-      }else {
+      }else if(status === 'granted'){
         let location = await Location.getCurrentPositionAsync({});
       const coordinate = {
             latitude: location.coords.latitude,
@@ -141,9 +141,6 @@ export default function UserLocation() {
       }; 
 // console.log("location",currentLocation)
   return (
-    <AppText text={currentLocation?.readable } style={{fontSize:12,width:width*0.4}}/>
- 
-  
-
+    <AppText text={currentLocation?.readable || "no location" } style={{fontSize:12,width:width*0.4}}/>
   )
 }
