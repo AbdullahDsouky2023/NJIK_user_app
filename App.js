@@ -6,40 +6,36 @@ import { I18nManager, LogBox } from "react-native";
 import { Provider } from "react-redux";
 import store from "./app/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useRef, useEffect, useState } from 'react';
 import { AppState } from 'react-native';
 import * as Updates from 'expo-updates';
 import { Platform } from "react-native";
 export const client = new QueryClient();
 const App = () => {
-  
+  const appStateRef = useRef(AppState.currentState);
+  const [appState, setAppState] = useState(AppState.currentState);
+
   useEffect(()=>{
     reload()
     I18nManager.forceRTL(true);
     I18nManager.allowRTL(true);
   },[])
   useEffect(() => {
-    const handleAppStateChange = async(nextAppState) => {
-      try {
-        
-     
-      if (nextAppState === 'active') {
-        // The app has come to the foreground, refresh location here
-        console.log("reloading the because losing focus")
-        await Updates.reloadAsync()
-      }
-    } catch (error) {
-        console.log(error,"reloading the app")
-    }
-    };
-  
     AppState.addEventListener('change', handleAppStateChange);
-  
+
     return () => {
       AppState.removeEventListener('change', handleAppStateChange);
     };
   }, []);
-  
+  const handleAppStateChange = async (nextAppState) => {
+    
+    if (appStateRef.current.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground, reloading...');
+      await Updates.reloadAsync();
+    }
+    appStateRef.current = nextAppState;
+    setAppState(nextAppState);
+  };
 
   const reload = async () => {
     try {

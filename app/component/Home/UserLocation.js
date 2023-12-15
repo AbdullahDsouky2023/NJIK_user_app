@@ -1,4 +1,4 @@
-import { View, Text, Alert, Linking } from 'react-native'
+import { View, Text, Alert, Linking, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import * as Location from 'expo-location';
 import AppText from '../AppText';
@@ -6,6 +6,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { updateUserData } from '../../../utils/user';
 import { useSelector} from 'react-redux'
 import { useTranslation } from 'react-i18next';
+import LoadingScreen from '../loadingScreen';
+const { width }= Dimensions.get('screen')
 export default function UserLocation() {
     const [currentLocation,setCurrentLocation]=useState(null)
     const userData = useSelector((state)=>state?.user?.userData)
@@ -136,7 +138,11 @@ export default function UserLocation() {
       
         return address;
       }; 
+
   return (
-    null
+    <AppText text={currentLocation?.readable } style={{fontSize:12,width:width*0.4}}/>
+ 
+  
+
   )
 }
