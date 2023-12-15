@@ -16,22 +16,22 @@ export default function UserLocation() {
       if (!canAskAgain && status !== 'granted') {
         // User has denied permission permanently
         Alert.alert(
-          'Permission Required',
-          'You have denied location access permanently. Please go to Settings and enable location access for this app.',
+          t('Permission Required'),
+          t('You have denied location access permanently. Please go to Settings and enable location access for this app.'),
           [
             // { text: 'Cancel', onPress: () => console.log('Permission denied'), style: 'cancel' },
-            { text: 'Go to Settings', onPress: () => Linking.openSettings() },
+            { text: t('Go to Settings'), onPress: () => Linking.openSettings() },
           ],
           { cancelable: false }
         );
       } else if(canAskAgain && status !== 'granted') {
         // User has denied permission temporarily
         Alert.alert(
-          'Permission Required',
-          'This app requires access to your location.',
+          t('Permission Required'),
+          t('This app requires access to your location.'),
           [
             // { text: 'Deny', onPress: () => console.log('Permission denied'), style: 'cancel' },
-            { text: 'Allow', onPress: () => requestLocationPermission() },
+            { text: t('Allow'), onPress: () => requestLocationPermission() },
           ],
           { cancelable: false }
         );
@@ -58,7 +58,7 @@ export default function UserLocation() {
     };
     useEffect(() => {
       requestLocationPermission()
-      }, []);
+      }, [currentLocation]);
       const handleSetCurrentLocation =   async (coordinate) => {
         try {
            const readableLocation = await  reverseGeoCode(coordinate)

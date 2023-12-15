@@ -82,16 +82,16 @@ const UserInfo = ({ navigation }) => {
         dispatch(setUserData(gottenuser));
         Alert.alert("تم التعديل بنجاح");
         console.log("the image id is ",ImageID)
-        if(image) await Updates.reloadAsync();
-
-
+        
+        console.log("the new user is ",gottenuser)
       } else {
         Alert.alert("Something goes wrong");
       }}
-     catch (err) {
-      console.log("error creating the resi", err);
-    } finally {
-      setIsLoading(false);
+      catch (err) {
+        console.log("error creating the resi", err);
+      } finally {
+        setIsLoading(false);
+        if(image) await Updates.reloadAsync();
     }
   };
   const confirmImage = async (values) => {
@@ -164,7 +164,7 @@ return finalPhoneNumber
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
-              text={"Register Your Account"}
+              text={"Your Account Details"}
               style={{ color: Colors.primaryColor, marginBottom: 10 }}
             />
             <AppForm

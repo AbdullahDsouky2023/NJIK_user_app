@@ -17,9 +17,29 @@ const App = () => {
     reload()
     I18nManager.forceRTL(true);
     I18nManager.allowRTL(true);
-
-    
   },[])
+  useEffect(() => {
+    const handleAppStateChange = async(nextAppState) => {
+      try {
+        
+     
+      if (nextAppState === 'active') {
+        // The app has come to the foreground, refresh location here
+        console.log("reloading the because losing focus")
+        await Updates.reloadAsync()
+      }
+    } catch (error) {
+        console.log(error,"reloading the app")
+    }
+    };
+  
+    AppState.addEventListener('change', handleAppStateChange);
+  
+    return () => {
+      AppState.removeEventListener('change', handleAppStateChange);
+    };
+  }, []);
+  
 
   const reload = async () => {
     try {

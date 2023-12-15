@@ -17,13 +17,13 @@
   "Orders": "طلباتي",
   "Offers": "العروض",
   "city": "المدينه",
-  "Contact Us":"تواصل معنا",
+  "Contact Us": "تواصل معنا",
   "Services": "الخدمات",
   "servicesLookingFor": "أي خدمة تبحث عنها؟",
   "showAll": "أظهار الكل",
   "Account": "حسابي",
-  "Share App":"شير التطبيق",
-  "Terms and Conditions":"الشروط والاحكام",
+  "Share App": "شير التطبيق",
+  "Terms and Conditions": "الشروط والاحكام",
   "Save": "حفظ",
   "Home Cleaning": "نظافة منزلية",
   "Upholstery Cleaning": "نظافة مفروشات",
@@ -52,6 +52,7 @@
   "GeneralSettings": "الاعدادت العامة",
   "Book": "حجز",
   "order": "طلب",
+  "Your Account Details": "بيانات حسابك",
   "Pay": "دفع",
   "Wallet": "محفظة",
   "yourwalletDetails": "تفاصيل محفظتك الخاصه ",
@@ -82,5 +83,11 @@
   "Cash": "نقدا",
   "remove": "ازاله",
   "Recharge Wallet": "شحن المحفظه",
-  "Account Details":"بيانات الحساب"
+  "Account Details": "بيانات الحساب",
+  "Permission Required": "الوصول مطلوب",
+  "This app requires access to your location.": "يحتاج التطبيق للوصول لموقعك",
+  "Go to Settings": "الذهاب الي الاعدادات",
+  "Allow":"السماح",
+  "You have denied location access permanently. Please go to Settings and enable location access for this app.":
+  "لقد رفضت الوصول إلى الموقع بشكل دائم. يرجى الذهاب إلى الإعدادات وتمكين وصول الموقع لهذا التطبيق."
 }

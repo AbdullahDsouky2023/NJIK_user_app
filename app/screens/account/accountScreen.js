@@ -22,22 +22,31 @@ const AccountScreen = ({ navigation }) => {
   const userData = useSelector((state)=>state?.user?.userData)
   const [imageUri,setImageUrl]=useState('https://th.bing.com/th/id/R.e94860c29ac0062dfe773f10b3ce45bf?rik=SCqlsHg1S8oFDA&pid=ImgRaw&r=0')
   useEffect(()=>{
-    
+    (async()=>{
+      const userImage = await AsyncStorage.getItem('userImage');
+      const parsedUserImage = userImage ? JSON.parse(userImage) : null;
+      setImageUrl(parsedUserImage || 'https://th.bing.com/th/id/R.e94860c29ac0062dfe773f10b3ce45bf?rik=SCqlsHg1S8oFDA&pid=ImgRaw&r=0');
+  
+    })()
     getUserData()
 
   },[])
-  const getUserData = async() =>{
-    const userImage = await AsyncStorage.getItem('userImage');
+  const getUserData = async () => {
+    try {
+      const userImage = await AsyncStorage.getItem('userImage');
+      const parsedUserImage = userImage ? JSON.parse(userImage) : null;
+      setImageUrl(parsedUserImage || 'https://th.bing.com/th/id/R.e94860c29ac0062dfe773f10b3ce45bf?rik=SCqlsHg1S8oFDA&pid=ImgRaw&r=0');
   
-
-    setImageUrl(JSON.parse(userImage))
-      const data = await getUserById(userData?.id)
-      if(data.image?.url !==JSON.parse(userImage)){
-        await AsyncStorage.setItem("userImage", JSON.stringify(data?.image?.url));
-        setImageUrl(data.image?.url)
+      const data = await getUserById(userData?.id);
+      if (data?.image?.url && data.image.url !== parsedUserImage) {
+        await AsyncStorage.setItem("userImage", JSON.stringify(data.image.url));
+        setImageUrl(data.image.url);
       }
-    
-  }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
