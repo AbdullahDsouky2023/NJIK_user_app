@@ -61,6 +61,7 @@ export default function UserLocation() {
     useEffect(() => {
       requestLocationPermission()
       }, [currentLocation]);
+
       const handleSetCurrentLocation =   async (coordinate) => {
         try {
            const readableLocation = await  reverseGeoCode(coordinate)
@@ -86,7 +87,7 @@ export default function UserLocation() {
             }
             
         } catch (error) {
-            console.log("location",error)
+            Alert.alert("handleSetCurrentLocation")
         }
        };
        const reverseGeoCode = async (location) => {
@@ -98,7 +99,7 @@ export default function UserLocation() {
           });
           return (reverGeoCodeAdress[0]);
         } catch (error) {
-            console.log("erre",error)
+            Alert.alert("reverseGeoCode")
         }
       };
       const getAddressFromObject = (locationObject) => {
@@ -138,7 +139,7 @@ export default function UserLocation() {
       
         return address;
       }; 
-
+// console.log("location",currentLocation)
   return (
     <AppText text={currentLocation?.readable } style={{fontSize:12,width:width*0.4}}/>
  

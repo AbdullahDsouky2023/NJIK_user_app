@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 
 import RootNavigator from "./app/navigation";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { I18nManager, LogBox } from "react-native";
+import { Alert, I18nManager, LogBox } from "react-native";
 import { Provider } from "react-redux";
 import store from "./app/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -28,14 +28,17 @@ const App = () => {
     };
   }, []);
   const handleAppStateChange = async (nextAppState) => {
-    
-    if (appStateRef.current.match(/inactive|background/) && nextAppState === 'active') {
-      console.log('App has come to the foreground, reloading...');
+    try {
+
+      if (appStateRef.current.match(/inactive|background/) && nextAppState === 'active') {
+        console.log('App has come to the foreground, reloading...');
       await Updates.reloadAsync();
     }
     appStateRef.current = nextAppState;
     setAppState(nextAppState);
-  };
+  }catch(err){
+    Alert.alert("error reoladiong the app")
+  }}
 
   const reload = async () => {
     try {

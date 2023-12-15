@@ -46,7 +46,6 @@ const SplashScreen = ({ navigation }) => {
     useEffect(() => {
         async function checkUserAndNavigate() {
       try {
-  await getLocationFromStorage()
     const userDataString = await AsyncStorage.getItem("userData");
     if (userDataString  && auth.currentUser !== null) {
         const userData = JSON.parse(userDataString);
@@ -64,7 +63,7 @@ const SplashScreen = ({ navigation }) => {
   useEffect(() => {
     async function checkUserAndNavigate() {
       try {
-        await getLocationFromStorage()
+        // await getLocationFromStorage()
         const userDataString = await AsyncStorage.getItem("userData");
         const userData = JSON.parse(userDataString);
         const validPhone = `${userData?.phoneNumber?.replace(/\s/g, "").trim()}`;
@@ -110,8 +109,7 @@ const SplashScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
 
-      {/* {
-        locationConfirmed ? ( */}
+
           <View style={{ flex: 1, justifyContent: 'center' }}>
             <Logo />
             <CircleFade
@@ -120,14 +118,7 @@ const SplashScreen = ({ navigation }) => {
               style={{ alignSelf: 'center' }}
             />
           </View>
-{/* 
-        ) :
-          (
-            <LocationModal visible={locationModalVisible} onConfirm={handleLocationConfirm} />
 
-          ) */}
-
-      {/* } */}
     </SafeAreaView>
   )
 }
