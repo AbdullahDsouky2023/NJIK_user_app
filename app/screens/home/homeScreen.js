@@ -36,6 +36,7 @@ import AppButton from "../../component/AppButton";
 import { generateUserToken } from "../chat/chatconfig";
 import { setUserStreamData } from "../../store/features/userSlice";
 import useBanners from "../../../utils/banners";
+import { requestLocationPermission } from "../../component/Home/UserLocation";
 const { width } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {
@@ -57,7 +58,7 @@ const HomeScreen = ({ navigation }) => {
        dispatch(setOrders(orders));
        dispatch(setBanners(banners));
       const chat = generateUserToken(user)
-      
+      // requestLocationPermission()
       dispatch(setUserStreamData(chat));
     } else if (isError) {
       console.log(isError)

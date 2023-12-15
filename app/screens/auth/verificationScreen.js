@@ -51,15 +51,17 @@ const VerificationScreen = ({ navigation, route }) => {
       } else if (!user) {
         return navigation.navigate("Register", { phoneNumber });
       }
+      setisLoading(false)
     } catch (error) {
       console.log("Error from verification screen:", error?.message);
       const errorMessage =
         errorMessages[error.message] ||
         "حدث خطأ غير معروف. الرجاء المحاولة مرة أخرى";
       // Alert.alert(errorMessage);
-    } finally {
-      setOtpInput("");
       setisLoading(false)
+    } finally {
+      setisLoading(false)
+      setOtpInput("");
 
     }
   };

@@ -21,12 +21,12 @@ const App = () => {
     I18nManager.forceRTL(true);
     I18nManager.allowRTL(true);
   },[])
-  useEffect(() => {
-    AppState.addEventListener('change', handleAppStateChange);
-    return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
-    };
-  }, []);
+  // useEffect(() => {
+  //   AppState.addEventListener('change', handleAppStateChange);
+  //   return () => {
+  //     AppState.removeEventListener('change', handleAppStateChange);
+  //   };
+  // }, []);
   useEffect(()=>{
     registerNotificationListeners()
     
