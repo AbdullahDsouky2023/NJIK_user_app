@@ -28,7 +28,7 @@
       "googleMaps": {
         "apiKey": "AIzaSyC5imbZzRsoC_w3a6EzuTvZoKwRd8Ytg0k"
       },
-        "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+        "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION","FOREGROUND_SERVICE"]
       ,
       "blockedPermissions": [
         "ACCESS_BACKGROUND_LOCATION"

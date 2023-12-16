@@ -9,9 +9,8 @@
     },
     "preview2": {
       "android":{
-        "buildType":"apk",
-        "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
-       },
+       "buildType":"apk"
+      },
       "env":{
        "BASE_URL" : " http://192.168.1.3:1337",
        "CHAT_SECRET" : "bpg8c83mzyhra54kun98ptvjnfvw8az9ddhpu88zgevebthn2xawtvf8kvvve4w",
