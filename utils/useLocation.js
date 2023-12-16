@@ -13,34 +13,11 @@ export default function UseLocation() {
     Location.setGoo
     const requestLocationPermission = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      let { canAskAgain } = await Location.getForegroundPermissionsAsync();
-      if (!canAskAgain && status !== 'granted') {
-        // User has denied permission permanently
-        Alert.alert(
-          t('Permission Required'),
-          t('You have denied location access permanently. Please go to Settings and enable location access for this app.'),
-          [
-            // { text: 'Cancel', onPress: () => console.log('Permission denied'), style: 'cancel' },
-            { text: t('Go to Settings'), onPress: () => Linking.openSettings() },
-          ],
-          { cancelable: false }
-        );
+      if (status !== 'granted') {
+        console.error('Permission to access location was denied');
         return;
-      } else if(canAskAgain && status !== 'granted') {
-        // User has denied permission temporarily
-        Alert.alert(
-          t('Permission Required'),
-          t('This app requires access to your location.'),
-          [
-            // { text: 'Deny', onPress: () => console.log('Permission denied'), style: 'cancel' },
-            { text: t('Allow'), onPress: () => requestLocationPermission() },
-          ],
-          { cancelable: false }
-        );
-        return;
-
       }
-      else if(status === 'granted'){
+  
         let location = await Location.getCurrentPositionAsync({});
       const coordinate = {
             latitude: location.coords.latitude,
@@ -59,7 +36,7 @@ export default function UseLocation() {
               handleSetCurrentLocation(coordinate)
             }
    
-          }
+          
     };
     useEffect(() => {
       requestLocationPermission()
