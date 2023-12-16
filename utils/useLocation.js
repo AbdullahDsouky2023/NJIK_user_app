@@ -10,6 +10,7 @@ export default function UseLocation() {
     const [currentLocation,setCurrentLocation]=useState(null)
     const userData = useSelector((state)=>state?.user?.userData)
     const { t} = useTranslation()
+    Location.setGoo
     const requestLocationPermission = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       let { canAskAgain } = await Location.getForegroundPermissionsAsync();
