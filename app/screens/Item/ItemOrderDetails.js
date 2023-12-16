@@ -31,6 +31,7 @@ import PriceTextComponent from "../../component/PriceTextComponent";
 import LoadingModal from "../../component/Loading";
 import { BASE_URL} from "@env"
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import UseLocation from "../../../utils/useLocation";
 
 const { width } = Dimensions.get("window");
 
@@ -38,7 +39,7 @@ export default function ItemOrderDetails({ route, navigation }) {
   const { item } = route.params;
   const [error, setError] = useState();
   const dispatch = useDispatch()
-  const { location:userCurrentLocation} = useLocation()
+  const { location:userCurrentLocation} = UseLocation()
   const [showSuccess, setShowSuccess] = useState(false);
 const [isLoading,setIsLoading]=useState(false)
 const totalPrice = useSelector((state)=>state.cart.totalPrice)

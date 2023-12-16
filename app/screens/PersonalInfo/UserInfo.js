@@ -85,13 +85,9 @@ const UserInfo = ({ navigation }) => {
         
         console.log("the new user is ",gottenuser)
         await AsyncStorage.setItem("userImage", JSON.stringify(image));
-        if(image){
-           await Updates.reloadAsync();
-          console.log("relooooading")
-        }else {
 
           Alert.alert("تم التعديل بنجاح");
-        }
+        
 
       } else {
         Alert.alert("Something goes wrong");

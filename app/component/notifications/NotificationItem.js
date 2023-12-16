@@ -13,6 +13,7 @@ const { width } = Dimensions.get("screen");
 const NotificationItem = ({ text, onDeleteNotfication,time:selecttime }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [time, setTime] = useState(new Date(selecttime));
+  if(!text) return ;
   useEffect(() => {
     const timer = setInterval(() => {
       setTime(new Date(selecttime));

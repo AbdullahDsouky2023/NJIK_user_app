@@ -19,7 +19,7 @@ export default function NotificationScreen() {
         await AsyncStorage.getItem("notifications")
       );
       setNotifications(notifications);
-      // console.log(notifications[0].request.content.title)
+      console.log(notifications[0] === null,"current notificaiton")
     })();
   },[]);
   const deleteNotification = async(item) => {

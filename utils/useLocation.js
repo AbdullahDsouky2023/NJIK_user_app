@@ -24,6 +24,7 @@ export default function UseLocation() {
           ],
           { cancelable: false }
         );
+        return;
       } else if(canAskAgain && status !== 'granted') {
         // User has denied permission temporarily
         Alert.alert(
@@ -35,8 +36,10 @@ export default function UseLocation() {
           ],
           { cancelable: false }
         );
+        return;
+
       }
-      // else if(status === 'granted'){
+      else if(status === 'granted'){
         let location = await Location.getCurrentPositionAsync({});
       const coordinate = {
             latitude: location.coords.latitude,
@@ -55,7 +58,7 @@ export default function UseLocation() {
               handleSetCurrentLocation(coordinate)
             }
    
-          // }
+          }
     };
     useEffect(() => {
       requestLocationPermission()
