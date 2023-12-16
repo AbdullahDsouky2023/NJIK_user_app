@@ -27,9 +27,11 @@ const AccountScreen = ({ navigation }) => {
       const parsedUserImage = userImage ? JSON.parse(userImage) : null;
       setImageUrl(parsedUserImage || 'https://th.bing.com/th/id/R.e94860c29ac0062dfe773f10b3ce45bf?rik=SCqlsHg1S8oFDA&pid=ImgRaw&r=0');
   
+      console.log('diiii')
     })()
     getUserData()
-
+    // return () => {
+    // }
   },[])
   const getUserData = async () => {
     try {

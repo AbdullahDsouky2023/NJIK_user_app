@@ -64,7 +64,7 @@ const UserInfo = ({ navigation }) => {
       setIsLoading(true);
       let res;
       if(image){
-        console.log(image)
+        console.log(image,values)
        res= await confirmImage(values) 
 
       }else {
@@ -81,10 +81,18 @@ const UserInfo = ({ navigation }) => {
       if (res) {
         const gottenuser = await getUserByPhoneNumber(Number(validPhone))
         dispatch(setUserData(gottenuser));
-        Alert.alert("تم التعديل بنجاح");
         console.log("the image id is ",ImageID)
         
         console.log("the new user is ",gottenuser)
+        await AsyncStorage.setItem("userImage", JSON.stringify(image));
+        if(image){
+           await Updates.reloadAsync();
+          console.log("relooooading")
+        }else {
+
+          Alert.alert("تم التعديل بنجاح");
+        }
+
       } else {
         Alert.alert("Something goes wrong");
       }}
@@ -92,7 +100,6 @@ const UserInfo = ({ navigation }) => {
         console.log("error creating the resi", err);
       } finally {
         setIsLoading(false);
-        if(image) await Updates.reloadAsync();
     }
   };
   const confirmImage = async (values) => {
@@ -115,7 +122,7 @@ const UserInfo = ({ navigation }) => {
         
     }
     } catch (error) {
-      console.log("error comfirm the upload",error)
+      console.log("error comfirm the upload",error?.message)
     }
   };
   const convertNumber =(phoneNumber)=>{

@@ -8,9 +8,11 @@ import store from "./app/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRef, useEffect, useState } from 'react';
 import { AppState } from 'react-native';
+import * as Notifications from 'expo-notifications';
+
 import * as Updates from 'expo-updates';
 import { Platform } from "react-native";
-import { registerNotificationListeners } from "./utils/NotificationListner";
+import { registerNotificationListeners, storeNotification } from "./utils/NotificationListner";
 export const client = new QueryClient();
 const App = () => {
   const appStateRef = useRef(AppState.currentState);
@@ -21,6 +23,20 @@ const App = () => {
     I18nManager.forceRTL(true);
     I18nManager.allowRTL(true);
   },[])
+  useEffect(() => {
+    // Add the listener for notifications dropped in the background
+    const subscription = Notifications.addNotificationsDroppedListener(notifications => {
+      notifications.forEach(notification => {
+        storeNotification(notification);
+      });
+    });
+  
+    // Remove the listener when the component unmounts
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+  
   // useEffect(() => {
   //   AppState.addEventListener('change', handleAppStateChange);
   //   return () => {

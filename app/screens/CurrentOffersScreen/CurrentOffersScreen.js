@@ -20,6 +20,7 @@ import { ErrorScreen } from "../Error/ErrorScreen";
 import OffersServiceComponentList from "../../component/CurrentOffers/OffersListComponent";
 import AllOffersList from "../../component/CurrentOffers/AllOffersList";
 import { ScrollView } from "react-native-virtualized-view";
+import ArrowBack from "../../component/ArrowBack";
 
 const { width } = Dimensions.get("screen");
 
@@ -62,7 +63,7 @@ useEffect(() => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
-      <AppHeader />
+      {/* <ArrowBack /> */}
       <ScrollView style={styles.container}>
         <View style={styles.listContainer}>
           <View style={{ paddingHorizontal: 10 }}>

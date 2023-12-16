@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.blackColor,
-    fontSize: 14,
+    fontSize: 13,
   },
   price: {
     color: Colors.primaryColor,

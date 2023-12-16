@@ -88,6 +88,7 @@
   "This app requires access to your location.": "يحتاج التطبيق للوصول لموقعك",
   "Go to Settings": "الذهاب الي الاعدادات",
   "Allow":"السماح",
+  "There is no notifications yet":"لا يوجد اي اشعارات ",
   "You have denied location access permanently. Please go to Settings and enable location access for this app.":
   "لقد رفضت الوصول إلى الموقع بشكل دائم. يرجى الذهاب إلى الإعدادات وتمكين وصول الموقع لهذا التطبيق."
 }

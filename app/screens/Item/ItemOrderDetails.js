@@ -38,6 +38,7 @@ export default function ItemOrderDetails({ route, navigation }) {
   const { item } = route.params;
   const [error, setError] = useState();
   const dispatch = useDispatch()
+  const { location:userCurrentLocation} = useLocation()
   const [showSuccess, setShowSuccess] = useState(false);
 const [isLoading,setIsLoading]=useState(false)
 const totalPrice = useSelector((state)=>state.cart.totalPrice)
@@ -71,8 +72,8 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
         totalPrice:totalPrice,
         phoneNumber: user?.phoneNumber,
         user: userData?.id,
-         location: currentLocation.readable,
-         googleMapLocation:currentLocation 
+         location: currentLocation?.readable ?  currentLocation?.readable :userCurrentLocation?.readable,
+         googleMapLocation:currentLocation ? currentLocation : userCurrentLocation 
       };
   
       dispatch(setCurrentOrderProperties(formSubmitionData));
