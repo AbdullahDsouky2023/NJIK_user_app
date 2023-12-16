@@ -9,7 +9,8 @@
     },
     "preview2": {
       "android":{
-       "buildType":"apk"
+       "buildType":"apk",
+       "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
       },
       "env":{
        "BASE_URL" : " http://192.168.1.3:1337",
@@ -18,8 +19,15 @@
        "SECRET_PASSWORD" : "NIJK_DEVELOPMENT",
        "JWT_SECRET" : "NIJK_DEVELOPMENT_*2020411/16"
       },
-      "channel":"preview2"
-     },
+      "channel":"preview2",
+      "ios": {
+        "infoPlist": {
+          "NSLocationWhenInUseUsageDescription": "This app requires access to your location",
+          "NSLocationAlwaysUsageDescription": "This app requires access to your location",
+          "NSLocationAlwaysAndWhenInUseUsageDescription": "This app requires access to your location"
+        }
+      }
+    },
     "preview": {
       "distribution": "internal"
     },
@@ -28,4 +36,5 @@
   "submit": {
     "production": {}
   }
-}
+ }
+ 
