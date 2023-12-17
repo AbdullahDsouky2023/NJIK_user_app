@@ -24,7 +24,8 @@
     },
     "android": {
       "package": "com.render.rnhomeserviceuser",
-      "googleServicesFile": "./google-services.json",     
+      "googleServicesFile": "./google-services.json",
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "FOREGROUND_SERVICE", "ACCESS_BACKGROUND_LOCATION"]     ,
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/images/icon2.png",
@@ -42,6 +43,12 @@
           "ios": {
             "useFrameworks": "static"
           }
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow App to use your location"
         }
       ]
     ],
