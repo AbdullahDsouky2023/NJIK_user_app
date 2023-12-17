@@ -23,19 +23,7 @@ const App = () => {
     I18nManager.forceRTL(true);
     I18nManager.allowRTL(true);
   },[])
-  useEffect(() => {
-    // Add the listener for notifications dropped in the background
-    const subscription = Notifications.addNotificationsDroppedListener(notifications => {
-      notifications.forEach(notification => {
-        storeNotification(notification);
-      });
-    });
   
-    // Remove the listener when the component unmounts
-    return () => {
-      subscription.remove();
-    };
-  }, []);
   
   // useEffect(() => {
   //   AppState.addEventListener('change', handleAppStateChange);
