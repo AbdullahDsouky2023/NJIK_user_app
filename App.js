@@ -25,12 +25,12 @@ const App = () => {
   },[])
   
   
-  useEffect(() => {
-    AppState.addEventListener('change', handleAppStateChange);
-    return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
-    };
-  }, []);
+  // useEffect(() => {
+  //   AppState.addEventListener('change', handleAppStateChange);
+  //   return () => {
+  //     AppState.removeEventListener('change', handleAppStateChange);
+  //   };
+  // }, []);
   useEffect(()=>{
     registerNotificationListeners()
     
