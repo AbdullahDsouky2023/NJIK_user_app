@@ -28,7 +28,7 @@ export default function UseLocation() {
           resolve(await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest}));
         });
       }
-        let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest})
+        let location = await Location.getCurrentPositionAsync({})
       const coordinate = {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -50,7 +50,8 @@ export default function UseLocation() {
 
           }
         }catch(error){
-          Alert.alert("error requesting the location")
+          Alert.alert("error requesting the location",JSON.stringify(error.message))
+          console.error(error)
         }
    
           
@@ -85,7 +86,7 @@ export default function UseLocation() {
             }
             
         } catch (error) {
-            Alert.alert("handleSetCurrentLocation")
+            Alert.alert("handleSetCurrentLocation",JSON.stringify(error.message))
         }
        };
        const reverseGeoCode = async (location) => {
@@ -97,7 +98,7 @@ export default function UseLocation() {
           });
           return (reverGeoCodeAdress[0]);
         } catch (error) {
-            Alert.alert("reverseGeoCode")
+            Alert.alert("reverseGeoCode",JSON.stringify(error.message))
         }
       };
       const getAddressFromObject = (locationObject) => {
