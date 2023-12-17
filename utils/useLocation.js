@@ -10,15 +10,24 @@ export default function UseLocation() {
     const [currentLocation,setCurrentLocation]=useState(null)
     const userData = useSelector((state)=>state?.user?.userData)
     const { t} = useTranslation()
-    Location.setGoo
+  
     const requestLocationPermission = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
+      try {
+
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
         console.error('Permission to access location was denied');
         return;
       }
-  
-        let location = await Location.getCurrentPositionAsync({});
+      function getCurrentLocation() {
+        const timeout = 10000;
+        return new Promise(async (resolve, reject) => {
+          setTimeout(() => { reject(Alert.alert(`Error getting gps location after ${(timeout * 2) / 1000} s`)) }, timeout * 2);
+          setTimeout(async () => { resolve(await Location.getLastKnownPositionAsync()) }, timeout);
+          resolve(await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest}));
+        });
+      }
+        let location = await getCurrentLocation()
       const coordinate = {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -33,8 +42,11 @@ export default function UseLocation() {
               })
             }
           }else {               
-              handleSetCurrentLocation(coordinate)
-            }
+            handleSetCurrentLocation(coordinate)
+          }
+        }catch(error){
+          Alert.alert("error requesting the location")
+        }
    
           
     };
