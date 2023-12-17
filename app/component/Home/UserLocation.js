@@ -4,8 +4,11 @@ import AppText from '../AppText';
 import UseLocation from '../../../utils/useLocation';
 const { width }= Dimensions.get('screen')
 export default function UserLocation() {
-  const { location } = UseLocation()  
+  const { location ,coordinate } = UseLocation()  
   return (
+    <>
     <AppText text={location?.readable || "no location" } style={{fontSize:12,width:width*0.4}}/>
+    <AppText text={coordinate || "no location corrdinate" } style={{fontSize:12,width:width*0.4}}/>
+    </>
   )
 }

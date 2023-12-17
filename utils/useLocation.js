@@ -9,6 +9,7 @@ const { width }= Dimensions.get('screen')
 export default function UseLocation() {
     const [currentLocation,setCurrentLocation]=useState(null)
     const userData = useSelector((state)=>state?.user?.userData)
+    const [locationCorrdinate,setLocationCoordinate]=useState(null)
     const { t} = useTranslation()
   
     const requestLocationPermission = async () => {
@@ -27,22 +28,26 @@ export default function UseLocation() {
           resolve(await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest}));
         });
       }
-        let location = await getCurrentLocation()
+        let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest})
       const coordinate = {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
           }
+          setLocationCoordinate(JSON.stringify(coordinate))
           const localStorageLocation = await AsyncStorage.getItem('userLocation')
           if(JSON.parse(localStorageLocation)){
             // console.log("location is present in local stroage",JSON.parse(localStorageLocation))
             setCurrentLocation(JSON.parse(localStorageLocation))
             if(!userData?.location){
               await updateUserData(userData?.id,{
-                location:JSON.parse(localStorageLocation).readable
+                location:JSON.parse(localStorageLocation)?.readable
               })
             }
+            Alert.alert("Data Found",JSON.stringify(localStorageLocation))
           }else {               
             handleSetCurrentLocation(coordinate)
+            Alert.alert("Data Not  Found",JSON.stringify(localStorageLocation))
+
           }
         }catch(error){
           Alert.alert("error requesting the location")
@@ -135,7 +140,8 @@ export default function UseLocation() {
 // console.log("location",currentLocation)
   return (
     {
-        location:currentLocation
+        location:currentLocation,
+        coordinate:locationCorrdinate
     }
  )
 }
