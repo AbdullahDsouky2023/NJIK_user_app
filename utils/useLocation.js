@@ -13,12 +13,16 @@ export default function UseLocation() {
     Location.setGoo
     const requestLocationPermission = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
+      
       if (status !== 'granted') {
         console.error('Permission to access location was denied');
         return;
       }
-  
-        let location = await Location.getCurrentPositionAsync({});
+      let location ;
+       location = await Location.getLastKnownPositionAsync();
+       if (!location) {
+         location = await Location.getCurrentPositionAsync({});
+      }
       const coordinate = {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
