@@ -16,17 +16,32 @@ export default function UseLocation() {
       try {
 
         let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-        console.error('Permission to access location was denied');
+        let { canAskAgain } = await Location.getForegroundPermissionsAsync();
+      if (!canAskAgain && status !== 'granted') {
+        // User has denied permission permanently
+        Alert.alert(
+          t('Permission Required'),
+          t('You have denied location access permanently. Please go to Settings and enable location access for this app.'),
+          [
+            // { text: 'Cancel', onPress: () => console.log('Permission denied'), style: 'cancel' },
+            { text: t('Go to Settings'), onPress: () => Linking.openSettings() },
+          ],
+          { cancelable: false }
+        );
         return;
-      }
-      function getCurrentLocation() {
-        const timeout = 10000;
-        return new Promise(async (resolve, reject) => {
-          setTimeout(() => { reject(Alert.alert(`Error getting gps location after ${(timeout * 2) / 1000} s`)) }, timeout * 2);
-          setTimeout(async () => { resolve(await Location.getLastKnownPositionAsync()) }, timeout);
-          resolve(await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest}));
-        });
+      } else if(canAskAgain && status !== 'granted') {
+        // User has denied permission temporarily
+        Alert.alert(
+          t('Permission Required'),
+          t('This app requires access to your location.'),
+          [
+            // { text: 'Deny', onPress: () => console.log('Permission denied'), style: 'cancel' },
+            { text: t('Allow'), onPress: () => requestLocationPermission() },
+          ],
+          { cancelable: false }
+        );
+        return;
+
       }
         let location = await Location.getCurrentPositionAsync({})
       const coordinate = {
