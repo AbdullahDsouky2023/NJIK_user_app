@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/native";
 
 import { Colors } from "../../constant/styles";
 import ArrowBack from "../../component/ArrowBack";
@@ -47,9 +48,17 @@ const VerificationScreen = ({ navigation, route }) => {
       const user = await getUserByPhoneNumber(phoneNumber);
       if (user) {
         dispatch(setUserData(user[0]));
-        return navigation.navigate("App");
+        return CommonActions.reset({
+          index: 0,
+          routes: [{ name:"App" }],
+        })
       } else if (!user) {
-        return navigation.navigate("Register", { phoneNumber });
+        return  navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name:"Register" ,
+          params:{phoneNumber:phoneNumber}}],
+          }))
       }
       setisLoading(false)
     } catch (error) {

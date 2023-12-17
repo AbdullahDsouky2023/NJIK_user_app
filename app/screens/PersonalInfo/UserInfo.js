@@ -87,7 +87,10 @@ const UserInfo = ({ navigation }) => {
         await AsyncStorage.setItem("userImage", JSON.stringify(image));
 
           Alert.alert("تم التعديل بنجاح");
-        
+          // navigation.goBack({
+          //   newImage:image
+          // })
+          if(image) navigation.navigate("Account", { newImage:image })
 
       } else {
         Alert.alert("Something goes wrong");

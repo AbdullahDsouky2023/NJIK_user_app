@@ -58,15 +58,15 @@ export default function UseLocation() {
                 location:JSON.parse(localStorageLocation)?.readable
               })
             }
-            Alert.alert("Data Found",JSON.stringify(localStorageLocation))
+            console.log("Data Found",JSON.stringify(localStorageLocation))
           }else {               
             handleSetCurrentLocation(coordinate)
-            Alert.alert("Data Not  Found",JSON.stringify(localStorageLocation))
+            console.log("Data Not  Found",JSON.stringify(localStorageLocation))
 
           }
         }catch(error){
-          Alert.alert("error requesting the location",JSON.stringify(error.message))
-          console.error(error)
+          console.log("error requesting the location",JSON.stringify(error.message))
+          // console.error(error)
         }
    
           
@@ -101,7 +101,7 @@ export default function UseLocation() {
             }
             
         } catch (error) {
-            Alert.alert("handleSetCurrentLocation",JSON.stringify(error.message))
+           console.log("handleSetCurrentLocation",JSON.stringify(error.message))
         }
        };
        const reverseGeoCode = async (location) => {
@@ -113,7 +113,7 @@ export default function UseLocation() {
           });
           return (reverGeoCodeAdress[0]);
         } catch (error) {
-            Alert.alert("reverseGeoCode",JSON.stringify(error.message))
+            console.log("reverseGeoCode",JSON.stringify(error.message))
         }
       };
       const getAddressFromObject = (locationObject) => {

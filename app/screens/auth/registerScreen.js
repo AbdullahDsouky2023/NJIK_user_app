@@ -33,7 +33,7 @@ const RegisterScreen = ({ navigation,route}) => {
   const user = useSelector((state) => state.user.user);
   const memoizedUser = useMemo(() => user, [user]);
 
-  // const { phoneNumber } = route?.params
+  const { phoneNumber } = route?.params
   const validationSchema = yup.object().shape({
     fullName: yup
       .string()

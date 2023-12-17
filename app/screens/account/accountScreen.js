@@ -8,42 +8,66 @@ import {
   Image,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
+import { BASE_URL} from '@env'
 
 import { Colors } from "../../constant/styles";
 import GeneralSettings from "../../component/Account/GeneralSettings";
 import Logo from "../../component/Logo";
 import AppText from "../../component/AppText";
 import { useSelector } from "react-redux";
-import { getUserById } from "../../../utils/user";
+import { getUserById, updateUserData } from "../../../utils/user";
+import { uploadToStrapi } from "../../../utils/UploadToStrapi";
 
 const { width } = Dimensions.get('screen')
 
-const AccountScreen = ({ navigation }) => {
+const AccountScreen = ({ navigation,route }) => {
   const userData = useSelector((state)=>state?.user?.userData)
+  
+  const isFocused = useIsFocused();
   const [imageUri,setImageUrl]=useState('https://th.bing.com/th/id/R.e94860c29ac0062dfe773f10b3ce45bf?rik=SCqlsHg1S8oFDA&pid=ImgRaw&r=0')
   useEffect(()=>{
     (async()=>{
-      const userImage = await AsyncStorage.getItem('userImage');
-      const parsedUserImage = userImage ? JSON.parse(userImage) : null;
+      try{
+
+        const userImage = await AsyncStorage.getItem('userImage');
+        const parsedUserImage = userImage ? JSON.parse(userImage) : null;
       setImageUrl(parsedUserImage || 'https://th.bing.com/th/id/R.e94860c29ac0062dfe773f10b3ce45bf?rik=SCqlsHg1S8oFDA&pid=ImgRaw&r=0');
-  
+     await uploadToStrapi(parsedUserImage,BASE_URL).then(async(res)=>{
+        const formData = {
+          image:res
+        }
+        return await updateUserData(userData?.id,formData);
+      })
+      
       console.log('diiii')
+    }catch(error){
+      console.log('error in account screen',error)
+    }
     })()
     getUserData()
-    // return () => {
-    // }
+    
   },[])
+
+  useEffect(() => {
+    if (isFocused && route.params?.newImage) {
+      // Handle the updated image data here
+      const newImage = route.params.newImage;
+      // Update the state or perform actions with the new image data
+      setImageUrl(newImage);
+    }
+  }, [isFocused, route.params?.newImage]);
   const getUserData = async () => {
     try {
       const userImage = await AsyncStorage.getItem('userImage');
       const parsedUserImage = userImage ? JSON.parse(userImage) : null;
       setImageUrl(parsedUserImage || 'https://th.bing.com/th/id/R.e94860c29ac0062dfe773f10b3ce45bf?rik=SCqlsHg1S8oFDA&pid=ImgRaw&r=0');
   
-      const data = await getUserById(userData?.id);
-      if (data?.image?.url && data.image.url !== parsedUserImage) {
-        await AsyncStorage.setItem("userImage", JSON.stringify(data.image.url));
-        setImageUrl(data.image.url);
-      }
+      // const data = await getUserById(userData?.id);
+      // if (data?.image?.url && data.image.url !== parsedUserImage) {
+      //   await AsyncStorage.setItem("userImage", JSON.stringify(data.image.url));
+      //   setImageUrl(data.image.url);
+      // }
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
