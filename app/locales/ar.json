@@ -89,6 +89,7 @@
   "Go to Settings": "الذهاب الي الاعدادات",
   "Allow":"السماح",
   "There is no notifications yet":"لا يوجد اي اشعارات ",
+  "Sign Out":"تسجيل الخروج",
   "You have denied location access permanently. Please go to Settings and enable location access for this app.":
   "لقد رفضت الوصول إلى الموقع بشكل دائم. يرجى الذهاب إلى الإعدادات وتمكين وصول الموقع لهذا التطبيق."
 }

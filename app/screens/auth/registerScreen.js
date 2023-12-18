@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
+import { CommonActions } from "@react-navigation/native";
 
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
@@ -18,7 +19,7 @@ import ErrorMessage from "../../component/Form/ErrorMessage";
 import FormField from "../../component/Form/FormField";
 import SubmitButton from "../../component/Form/FormSubmitButton";
 import { auth } from "../../../firebaseConfig";
-import { SECRET_PASSWORD} from "@env"
+// import { SECRET_PASSWORD} from "@env"
 import LoadingModal from "../../component/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { setItem } from "../../utils/secureStore";
@@ -66,7 +67,11 @@ const RegisterScreen = ({ navigation,route}) => {
         dispatch(userRegisterSuccess(auth?.currentUser));
         setItem("userData", auth?.currentUser);
         setUserData(res)
-        navigation.navigate("App");
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name:"App" }],
+          }))
       }else {
         Alert.alert("الاسم او البريد الالكتروني مستخدم من قبل ")
       }

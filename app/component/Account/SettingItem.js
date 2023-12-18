@@ -6,6 +6,9 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {Share} from 'react-native';
+import { auth } from "../../../firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/native";
 
 const { width ,height}  = Dimensions.get('screen')
 
@@ -35,12 +38,28 @@ export default function SettingItem({item }) {
       }
     };
 
-     
+    const handleSignOut = async () => {
+      try {
+        await auth.signOut();
+        await AsyncStorage.removeItem("userData");
+  
+        // Inside your sign-out function:
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "Auth" }], // Replace 'Login' with the name of your login screen
+          })
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
      const handlePress=()=>{
       if(icon === "share"){
         onShare()
+      }else if(icon === "logout"){
+        handleSignOut()
       }else {
-
         navigation.navigate(icon)
       }
     }

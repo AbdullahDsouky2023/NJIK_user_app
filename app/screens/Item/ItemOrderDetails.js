@@ -29,7 +29,7 @@ import { ORDER_COMFIRM_DETAILS, ORDER_SUCCESS_SCREEN } from "../../navigation/ro
 import { clearCurrentOrder, setCurrentOrderProperties } from "../../store/features/ordersSlice";
 import PriceTextComponent from "../../component/PriceTextComponent";
 import LoadingModal from "../../component/Loading";
-import { BASE_URL} from "@env"
+import {  EXPO_PUBLIC_BASE_URL} from "@env"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UseLocation from "../../../utils/useLocation";
 
@@ -111,7 +111,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
       });
   
 
-    const response = await fetch(`${BASE_URL}/api/upload`, {
+    const response = await fetch(`${ EXPO_PUBLIC_BASE_URL}/api/upload`, {
       method: "POST",
       body: formData,
     });

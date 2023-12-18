@@ -11,7 +11,6 @@ import { getUserByPhoneNumber } from "../../utils/user";
 import LocationModal from "../component/location/LocationModal";
 import { getLocationFromStorage } from "../../utils/location";
 import { auth } from "../../firebaseConfig";
-import {BASE_URL } from '@env'
 const SplashScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   let user = useSelector((state) => state.user?.user?.phoneNumber);

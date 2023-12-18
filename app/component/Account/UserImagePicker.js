@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { uploadToStrapi } from '../../../utils/UploadToStrapi';
-import { BASE_URL} from '@env'
+
 import { Ionicons } from "@expo/vector-icons";
 
 import { useSelector } from 'react-redux'

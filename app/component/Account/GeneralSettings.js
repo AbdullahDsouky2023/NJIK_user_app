@@ -53,11 +53,7 @@ export default function GeneralSettings() {
           keyExtractor={(item, index) => item.name + index}
         />
       </View>
-      <AppButton
-        title={"signOut"}
-        style={{ marginVertical: 20, marginTop: 80 }}
-        onPress={handleSignOut}
-      />
+      
     </ScrollView>
   );
 }

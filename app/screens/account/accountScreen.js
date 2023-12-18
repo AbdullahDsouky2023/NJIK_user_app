@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
-import { BASE_URL} from '@env'
+import { EXPO_PUBLIC_BASE_URL} from '@env'
 
 import { Colors } from "../../constant/styles";
 import GeneralSettings from "../../component/Account/GeneralSettings";
@@ -33,7 +33,7 @@ const AccountScreen = ({ navigation,route }) => {
         const userImage = await AsyncStorage.getItem('userImage');
         const parsedUserImage = userImage ? JSON.parse(userImage) : null;
       setImageUrl(parsedUserImage || 'https://th.bing.com/th/id/R.e94860c29ac0062dfe773f10b3ce45bf?rik=SCqlsHg1S8oFDA&pid=ImgRaw&r=0');
-     await uploadToStrapi(parsedUserImage,BASE_URL).then(async(res)=>{
+     await uploadToStrapi(parsedUserImage,EXPO_PUBLIC_BASE_URL).then(async(res)=>{
         const formData = {
           image:res
         }

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
-import { BASE_URL} from '@env'
+import {  EXPO_PUBLIC_BASE_URL} from '@env'
 
 import ArrowBack from "../../component/ArrowBack";
 import { Colors } from "../../constant/styles";
@@ -105,7 +105,7 @@ const UserInfo = ({ navigation }) => {
     try {
       
       if (image) {
-        const response = await uploadToStrapi(image,BASE_URL).then(async(res)=>{
+        const response = await uploadToStrapi(image, EXPO_PUBLIC_BASE_URL).then(async(res)=>{
           const formData = {
             email: values?.emailAddress || userData?.email,
             username: values?.fullName || userData?.username,
