@@ -32,6 +32,7 @@ import LoadingModal from "../../component/Loading";
 import {  EXPO_PUBLIC_BASE_URL} from "@env"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UseLocation from "../../../utils/useLocation";
+import { clearCart } from "../../store/features/CartSlice";
 
 const { width } = Dimensions.get("window");
 
@@ -45,7 +46,9 @@ const [isLoading,setIsLoading]=useState(false)
 const totalPrice = useSelector((state)=>state.cart.totalPrice)
   const user = useSelector((state) => state?.user?.user);
   const cartItems = useSelector((state) => state.cart.services);
+  const packagesCartItems = useSelector((state) => state.cart.packages);
   const selectedServicesConnect =  cartItems.map(item => ({ id: item }));
+  const selectedPackagesConnect =  packagesCartItems.map(item => ({ id: item }));
   const [currentLocation,setCurrenttLocation]=useState()
   const userData = useSelector((state) => state?.user?.userData);
   const currentOrderData = useSelector((state) => state?.orders?.currentOrderData);
@@ -70,6 +73,9 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
         services: {
           connect: selectedServicesConnect
         },
+        packages: {
+          connect: selectedPackagesConnect
+        },
         totalPrice:totalPrice,
         phoneNumber: user?.phoneNumber,
         user: userData?.id,
@@ -93,6 +99,11 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
       setCurrenttLocation(JSON.parse(currentLocation))
    
     })();
+  },[])
+  useEffect(()=>{
+    return ()=>{
+      dispatch(clearCart())
+    }
   },[])
 
   const validationSchema = yup.object().shape({

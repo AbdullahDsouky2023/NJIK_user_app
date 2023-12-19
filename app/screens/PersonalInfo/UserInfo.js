@@ -56,6 +56,7 @@ const UserInfo = ({ navigation }) => {
       // .required("الايميل مطلوب"),
      , location:yup.string() ,
      city:yup.string(),
+     district:yup.string(),
      birth_date:yup.date(),
       // .required(t("Email is required")),
   });
@@ -72,6 +73,7 @@ const UserInfo = ({ navigation }) => {
           email: values.emailAddress || userData?.email,
           username: values.fullName || userData?.username,
           city: values.city || userData?.city,
+          district: values.district || userData?.district,
           birth_date: values.birth_date || userData?.birth_date,
           // phoneNumber: Number(validPhone),
         }
@@ -110,6 +112,7 @@ const UserInfo = ({ navigation }) => {
             email: values?.emailAddress || userData?.email,
             username: values?.fullName || userData?.username,
             city: values.city || userData?.city,
+            district: values.district || userData?.district,
           birth_date: values.birth_date || userData?.birth_date,
           // phoneNumber: Number(validPhone),
             image:res
@@ -217,6 +220,17 @@ return finalPhoneNumber
                 // placeholder="emailAddress"
                 // textContentType="emailAddress"
                 placeholder={userData?.city}
+
+              />
+<AppText text={"district"} centered={false} style={[styles.header,{marginTop:10}]}/>
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                // keyboardType="email-address"
+                name="district"
+                // placeholder="emailAddress"
+                // textContentType="emailAddress"
+                placeholder={userData?.district}
 
               />
               <SubmitButton title="Save" />

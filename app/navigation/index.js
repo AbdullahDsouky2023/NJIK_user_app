@@ -9,7 +9,7 @@ import LoadingScreen from "../component/loadingScreen";
 import SplashScreen from "../screens/splashScreen";
 import AuthNavigator from "./AuthNavigator";
 import AppNavigator from "./AppNavigator";
-import { CART, ITEM_DETAILS, ITEM_ORDER_DETAILS, MANUAL_LOCATION_ADD, MAP, ORDER_COMFIRM_DETAILS, ORDER_SELECT_LOCATION, ORDER_SELECT_REGION, ORDER_SUCCESS_SCREEN } from "./routes";
+import { CART, ITEM_DETAILS, ITEM_ORDER_DETAILS, MANUAL_LOCATION_ADD, MAP, ORDER_COMFIRM_DETAILS, ORDER_SELECT_LOCATION, ORDER_SELECT_REGION, ORDER_SUCCESS_SCREEN, PACKAGE_DETAILS, PACKAGE_SCREEN } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
 import ItemOrderDetails from "../screens/Item/ItemOrderDetails";
@@ -22,6 +22,8 @@ import OrderComfirmDetailsScreen from "../screens/Orders/OrderComfirmDetailsScre
 import ChatNavigator from "./ChatNavigator";
 import CartScreen from "../screens/CartScreen/CartScreen";
 import MapScreen from "../screens/map/MapScreen";
+import PackageScreen from "../screens/package/PackageScreen";
+import PackageDetails from "../screens/package/PackageDetails";
 
 LogBox.ignoreAllLogs();
 
@@ -49,6 +51,12 @@ const RootNavigator = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name={PACKAGE_SCREEN}
+          component={PackageScreen}
+          // initialParams={{ item }} // Pass the item object to ItemOrderDetails
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name={CART}
           component={CartScreen}
           // initialParams={{ item }} // Pass the item object to ItemOrderDetails
@@ -63,6 +71,11 @@ const RootNavigator = () => {
         <Stack.Screen
           name={ITEM_ORDER_DETAILS}
           component={ItemOrderDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={PACKAGE_DETAILS}
+          component={PackageDetails}
           options={{ headerShown: false }}
         />
         <Stack.Screen

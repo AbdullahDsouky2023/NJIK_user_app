@@ -40,7 +40,6 @@ export default   function UsersReviews() {
                 sliderWidth={width}
                 autoplay={true}
                 loop={true}
-                
                 autoplayInterval={4000}
                 itemWidth={width}
                 renderItem={({item})=><ReviewCard 

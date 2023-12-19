@@ -6,8 +6,9 @@ import ReserveButton from "../../component/ReverveButton";
 import UsersReviews from "../../component/Home/UsersReview";
 import {useDispatch} from 'react-redux'
 import { ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION } from "../../navigation/routes";
-import { addServiceToCart, clearCart } from "../../store/features/CartSlice";
-export default function ItemScreen({ route,navigation }) {
+import { addPackageToCart, addServiceToCart, clearCart } from "../../store/features/CartSlice";
+import PackageDetails from "./PackageDetails";
+export default function PackageScreen({ route,navigation }) {
 
 
   const { item } = route.params;
@@ -19,18 +20,18 @@ export default function ItemScreen({ route,navigation }) {
     return ()=>{
       dispatch(clearCart())
     }
-  },[])
+  })
   return (
     <View style={styles.container}>
       <ScrollView>
-        <ItemDetails item={item} />
+        <PackageDetails item={item} />
         <OtherServicesList />
         <UsersReviews/>
       </ScrollView>
-     <ReserveButton price={item?.attributes?.Price} onPress={()=>{
-      dispatch(addServiceToCart({
+     <ReserveButton price={item?.attributes?.price} onPress={()=>{
+      dispatch(addPackageToCart({
         item:item?.id,
-        price:item?.attributes?.Price
+        price:item?.attributes?.price
       }))
       
       navigation.navigate(ITEM_ORDER_DETAILS, { item: route?.params?.item })

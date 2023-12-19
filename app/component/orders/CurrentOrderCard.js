@@ -24,17 +24,20 @@ import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 export default function CurrentOrderCard({ item, onPress }) {
   const navigation = useNavigation();
   const dispatch = useDispatch()
+  console.log("current item ",item.attributes?.packages.data[0]?.attributes?.name)
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.orderCardContainer}>
         <View style={styles.headerContainer}>
-          {/* name */}
+          {
+                      item?.attributes?.services.data.length>0 &&
+<>
           <Image
             height={25}
             width={25}
             source={{
               uri: item?.attributes?.services?.data[0]?.attributes?.category
-                ?.data?.attributes?.image?.data[0]?.attributes?.url,
+              ?.data?.attributes?.image?.data[0]?.attributes?.url,
             }}
           />
           <AppText
@@ -44,7 +47,19 @@ export default function CurrentOrderCard({ item, onPress }) {
             }
             style={[styles.header, { color: Colors.primaryColor,fontSize:17 }]}
             centered={false}
+            />
+          </>
+          }
+        {
+          item?.attributes?.packages &&
+          <AppText
+          text={
+            item?.attributes?.packages?.data[0]?.attributes?.name
+          }
+          style={[styles.header, { color: Colors.primaryColor,fontSize:17 }]}
+          centered={false}
           />
+        }
         </View>
         <View style={styles.date}>
           <Ionicons name="ios-location-outline" size={24} color="black" />

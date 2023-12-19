@@ -26,6 +26,7 @@ import useNotifications from "../../../utils/notifications";
 import { clearCart } from "../../store/features/CartSlice";
 import useServices from "../../../utils/services";
 import ArrowBack from "../../component/ArrowBack";
+import usePackages from "../../../utils/packages";
   
   const { width } = Dimensions.get("screen");
   export default function OrderComfirmDetailsScreen({ navigation, route }) {
@@ -40,7 +41,9 @@ import ArrowBack from "../../component/ArrowBack";
   const { item ,image} = route?.params
   const totalPrice = useSelector((state)=>state.cart.totalPrice)
   const {data:services} = useServices()
+  const {data:packages} = usePackages()
   const [currentSelectedServices,setCurrentSelectedServices] = useState([])
+  const [currentSelectedPackages,setCurrentSelectedPackages] = useState([])
   // const totalPrice = useSelector((state)=>state.cart.totalPrice)
   console.log(currentOrderData)
   const handleComfirmOrder = async () => {
@@ -81,12 +84,24 @@ import ArrowBack from "../../component/ArrowBack";
     setCurrentSelectedServices(data)
 // console.log("the data ",data)
   },[])
+  useEffect(()=>{
+    const data =currentOrderData?.packages?.connect.map((item)=>{
+
+      const service = packages.data.filter((Packageitem)=>Packageitem?.id ===item?.id)
+      return service[0]
+    }
+    )
+    setCurrentSelectedPackages(data)
+// console.log("the data ",data)
+  },[])
   
     if(isLoading) return <LoadingScreen/>
     return (
       <>
         <ArrowBack subPage={true} />
        <ScrollView style={styles.container}>
+       {
+        currentSelectedServices.length>0 &&
        <View style={styles.itemContainer}>
           <FlatList
             data={currentSelectedServices}
@@ -111,6 +126,56 @@ import ArrowBack from "../../component/ArrowBack";
                     justifyContent: "center",
                     gap: 15,
                   }}
+                  >
+                  <AppText
+                    centered={false}
+                    text={item.attributes?.name}
+                    style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
+                    />
+                    {
+                      item.attributes?.Price > 0 &&
+                  <AppText
+                    text={`${item.attributes?.Price} جنيه`}
+                    style={{
+                      backgroundColor: Colors.primaryColor,
+                      fontSize: 14,
+                      padding: 6,
+                      borderRadius: 40,
+                      color: Colors.whiteColor,
+                    }}
+                  />
+                    }
+                </View>
+              );
+            }}
+            />
+        </View>
+      }
+      {currentSelectedPackages.length >0 &&
+       <View style={styles.itemContainer}>
+          <FlatList
+            data={currentSelectedPackages}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => item.id}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              direction: "rtl",
+              flexWrap: "wrap",
+              marginTop: 15,
+              gap: 15,
+              width: width,
+            }}
+            renderItem={({ item }) => {
+              return (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 15,
+                  }}
                 >
                   <AppText
                     centered={false}
@@ -118,7 +183,7 @@ import ArrowBack from "../../component/ArrowBack";
                     style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
                   />
                   <AppText
-                    text={`${item.attributes?.Price} جنيه`}
+                    text={`${item.attributes?.price} جنيه`}
                     style={{
                       backgroundColor: Colors.primaryColor,
                       fontSize: 14,
@@ -130,8 +195,9 @@ import ArrowBack from "../../component/ArrowBack";
                 </View>
               );
             }}
-          />
+            />
         </View>
+          }
           <View>
             {/* <AppText
               centered={false}
@@ -160,8 +226,8 @@ import ArrowBack from "../../component/ArrowBack";
               centered={false}
               text={region}
               style={styles.price}
-            />
-          </View> */}
+              />
+            </View> */}
           <View style={styles.itemContainer}>
             <AppText centered={false} text={" التاريخ"} style={styles.title} />
             <AppText
@@ -183,8 +249,8 @@ import ArrowBack from "../../component/ArrowBack";
             />
           </View>
           <Image 
-             source={{
-              uri:image}} style={{
+          source={{
+            uri:image}} style={{
                height:120,
                width:200,
                borderRadius:10

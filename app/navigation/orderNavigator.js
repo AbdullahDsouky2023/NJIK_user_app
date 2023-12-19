@@ -4,9 +4,11 @@ import { TransitionPresets } from "@react-navigation/stack";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 
 
-import { ITEM_DETAILS, ITEM_ORDER_DETAILS } from "./routes";
+import { ITEM_DETAILS, ITEM_ORDER_DETAILS, PACKAGE_DETAILS, PACKAGE_SCREEN } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import ItemOrderDetails from "../screens/Item/ItemOrderDetails";
+import PackageScreen from "../screens/package/PackageScreen";
+import PackageDetails from "../screens/package/PackageDetails";
 
 
 const OrderNavigator = ({route}) => {
@@ -25,6 +27,20 @@ const OrderNavigator = ({route}) => {
         <Stack.Screen
           name={ITEM_DETAILS}
           component={ItemScreen}
+          initialParams={{ item }} // Pass the item object to ItemOrderDetails
+
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={PACKAGE_SCREEN}
+          component={PackageScreen}
+          initialParams={{ item }} // Pass the item object to ItemOrderDetails
+
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={PACKAGE_DETAILS}
+          component={PackageDetails}
           initialParams={{ item }} // Pass the item object to ItemOrderDetails
 
           options={{ headerShown: false }}

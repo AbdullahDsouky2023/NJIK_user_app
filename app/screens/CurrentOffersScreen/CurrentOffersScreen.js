@@ -21,6 +21,8 @@ import OffersServiceComponentList from "../../component/CurrentOffers/OffersList
 import AllOffersList from "../../component/CurrentOffers/AllOffersList";
 import { ScrollView } from "react-native-virtualized-view";
 import ArrowBack from "../../component/ArrowBack";
+import usePackages from "../../../utils/packages";
+import { setpackages } from "../../store/features/PackagesSlice";
 
 const { width } = Dimensions.get("screen");
 
@@ -33,6 +35,7 @@ const CurrentOffersScreen = ({route, navigation }) => {
     (category) => category?.attributes?.name === selectedItem
   );
   const { data, isLoading, isError } = useServices();
+  const { data:packages} = usePackages();
   const services = data?.data?.filter(
     (item) => item?.attributes?.category?.data?.id === selectedItemsData?.id
   );
@@ -40,6 +43,8 @@ const CurrentOffersScreen = ({route, navigation }) => {
  const getServices = async () => {
     if (data) {
       dispatch(setServices(data));
+      dispatch(setpackages(packages?.data));
+      console.log("current Packages :",packages?.data[0].attributes)
     } else if (isError) {
       console.log(isError);
     }
@@ -65,7 +70,7 @@ useEffect(() => {
       <StatusBar backgroundColor={Colors.primaryColor} />
       {/* <ArrowBack /> */}
       <ScrollView style={styles.container}>
-        <View style={styles.listContainer}>
+        {/* <View style={styles.listContainer}>
           <View style={{ paddingHorizontal: 10 }}>
             <FlatList
               horizontal
@@ -102,16 +107,16 @@ useEffect(() => {
               )}
             />
           </View>
-        </View>
+        </View> */}
         <View>
-          {selectedItem === "all" ? (
+          {/* {selectedItem === "all" ? (
             <AllOffersList categories={categories} />
-          ) : (
+          ) : ( */}
             <OffersServiceComponentList
-              data={services}
+              data={packages}
               selectedItem={selectedItem}
             />
-          )}
+          {/* )} */}
         </View>
       </ScrollView>
     </SafeAreaView>

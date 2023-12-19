@@ -7,34 +7,37 @@ import ArrowBack from "../../component/ArrowBack";
 import { CommonActions } from "@react-navigation/native";
 import { ORDER_SUCCESS_SCREEN } from "../../navigation/routes";
 import { useTranslation } from "react-i18next";
+const { width , height } = Dimensions.get("screen");
+
 import AppText from "../../component/AppText";
-function PaymentMethod({ icon, paymentType, index }) {
+export default function  PaymentMethod({ icon, paymentType, index ,currentPaymentMethodIndex,updateState}) {
     const {t} = useTranslation()
     return (
         <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={() =>console.log("")}
-            style={{
+        
+            
+        onPress={() => updateState({ currentPaymentMethodIndex: index })}
+        style={{
                 borderColor: currentPaymentMethodIndex == index ? Colors.primaryColor : '#E0E0E0',
                 ...styles.paymentMethodWrapStyle
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <AppText numberOfLines={1} style={{
+            <View style={{ flexDirection: 'row', alignItems: 'center',height: height*0.03, }}>
+                {/* <AppText numberOfLines={1} style={{
                      ...Fonts.primaryColor18Medium,
                      marginLeft: Sizes.fixPadding,
                      width: width / 2.2,
                  }}
-                    text={paymentType} />
+                    text={paymentType} /> */}
                 <Image
                     source={icon}
                     style={{
-                        width: 55.0,
-                        height: 55.0,
+                        width: width*0.6,
+                        height: 50,
                     }}
                     resizeMode="contain"
                 />
             </View>
-            <View style={{
+            {/* <View style={{
                 borderColor: currentPaymentMethodIndex == index ? Colors.primaryColor : '#E0E0E0',
                 ...styles.radioButtonStyle
             }}>
@@ -48,7 +51,7 @@ function PaymentMethod({ icon, paymentType, index }) {
                         }}>
                         </View> : null
                 }
-            </View>
+            </View> */}
         </TouchableOpacity>
     )
 }

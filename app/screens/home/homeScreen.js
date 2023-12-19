@@ -85,10 +85,10 @@ const HomeScreen = ({ navigation }) => {
             <>
               <OffersBanner />
               <ServicesList />
-              <LowOffers />
-              <ReadyPackages />
-              <OtherServicesList />
-              <CleaningServices />
+              {/* <LowOffers /> */}
+              {/* <ReadyPackages /> */}
+              {/* <OtherServicesList /> */}
+              {/* <CleaningServices /> */}
               {/* <AskWorker /> */}
             </>
           }

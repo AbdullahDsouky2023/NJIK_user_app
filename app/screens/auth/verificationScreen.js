@@ -48,25 +48,26 @@ const VerificationScreen = ({ navigation, route }) => {
       const user = await getUserByPhoneNumber(phoneNumber);
       if (user) {
         dispatch(setUserData(user[0]));
-        return CommonActions.reset({
+        return navigation.dispatch(
+          CommonActions.reset({
           index: 0,
           routes: [{ name:"App" }],
-        })
+        }))
       } else if (!user) {
         return  navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [{ name:"Register" ,
-          params:{phoneNumber:phoneNumber}}],
+            params:{phoneNumber:phoneNumber}}],
           }))
-      }
-      setisLoading(false)
+        }
+        setisLoading(false)
     } catch (error) {
       console.log("Error from verification screen:", error?.message);
       const errorMessage =
         errorMessages[error.message] ||
         "حدث خطأ غير معروف. الرجاء المحاولة مرة أخرى";
-      // Alert.alert(errorMessage);
+      Alert.alert(errorMessage);
       setisLoading(false)
     } finally {
       setisLoading(false)
@@ -101,7 +102,7 @@ const VerificationScreen = ({ navigation, route }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ArrowBack />
+       
         <View>
           <View style={styles.textContainer}>
             <AppText
@@ -146,17 +147,19 @@ const VerificationScreen = ({ navigation, route }) => {
             />
             <AppButton
               title={
-                resendDisabled ? ` ارسال(${secondsRemaining}s)` : "ارسال SMS"
+                resendDisabled ? ` ارسال(${secondsRemaining} ث)` : "اعاده ارسال"
               }
+              style={{backgroundColor:Colors.success}}
               disabled={resendDisabled}
               onPress={() => {
-                setResendDisabled(true);
+              setResendDisabled(true);
                 setSecondsRemaining(30);
                 handleSendVerificationCode();
               }}
             />
           </View>
         </View>
+        <AppButton title="Change Number" style={{width:width*0.5,marginLeft:width*0.2}} onPress={()=>navigation.goBack()}  />
       </ScrollView>
       <LoadingModal visible={isLoading} />
     </SafeAreaView>

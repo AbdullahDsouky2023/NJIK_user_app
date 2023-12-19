@@ -4,14 +4,14 @@ import { Colors } from "../../constant/styles";
 import OfferCard from "../OfferCard";
 import AppText from "../AppText";
 import { useNavigation } from "@react-navigation/native";
-import { ITEM_DETAILS } from "../../navigation/routes";
+import { ITEM_DETAILS, PACKAGE_SCREEN } from "../../navigation/routes";
 const { width } = Dimensions.get("screen");
 export default function OffersServiceComponentList({ data, slectedItem }) {
   const navigation = useNavigation();
-  const name = data[0]?.attributes?.category?.data?.attributes?.name;
-
-  if (data.length === 0) return;
-
+  
+  if (data?.data?.length === 0) return;
+  // const name = data[0]?.attributes?.category?.data?.attributes?.name;
+// console.log("the data are",data?.data)
   return (
     <View
       style={{
@@ -22,22 +22,24 @@ export default function OffersServiceComponentList({ data, slectedItem }) {
       }}
     >
       <View style={{ marginBottom: 10 }}>
-        <AppText
-          text={name}
+        {/* <AppText
+          text={data[0]?.attributes?.category?.data?.attributes?.name}
           centered={false}
           style={{ fontSize: 22, color: Colors.blackColor }}
-        />
+        /> */}
       </View>
       <FlatList
-        data={data}
+        data={data?.data}
         scrollEnabled={false}
         renderItem={({ item }) => {
+          console.log("heh",item?.attributes?.image?.data[0]?.attributes?.url)
           return (
             <OfferCard
               service={item?.attributes?.name}
-              price={item?.attributes?.Price}
-              onPress={() => navigation.navigate(ITEM_DETAILS, { item })}
-              image={item?.attributes?.image?.data?.attributes?.url}
+              price={item?.attributes?.price}
+              content={item?.attributes?.content}
+              onPress={() => navigation.navigate(PACKAGE_SCREEN, { item })}
+              image={item?.attributes?.image?.data[0]?.attributes?.url}
             />
           );
         }}

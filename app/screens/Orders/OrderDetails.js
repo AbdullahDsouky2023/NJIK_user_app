@@ -134,6 +134,9 @@ export default function OrderDetails({ navigation, route }) {
     <ScrollView>
       <ArrowBack subPage={true} />
       <ScrollView style={styles.container}>
+        {
+          item?.attributes?.services.data.length > 0 ?
+      
         <View style={styles.itemContainer}>
           <FlatList
             data={item?.attributes?.services.data}
@@ -178,7 +181,52 @@ export default function OrderDetails({ navigation, route }) {
               );
             }}
           />
-        </View>
+        </View>:
+        <View style={styles.itemContainer}>
+          <FlatList
+            data={item?.attributes?.packages.data}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => item.id}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              direction: "rtl",
+              flexWrap: "wrap",
+              marginTop: 15,
+              gap: 15,
+              width: width,
+            }}
+            renderItem={({ item }) => {
+              return (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 15,
+                  }}
+                >
+                  <AppText
+                    centered={false}
+                    text={item.attributes?.name}
+                    style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
+                  />
+                  <AppText
+                    text={`${item.attributes?.price} جنيه`}
+                    style={{
+                      backgroundColor: Colors.primaryColor,
+                      fontSize: 14,
+                      padding: 6,
+                      borderRadius: 40,
+                      color: Colors.whiteColor,
+                    }}
+                  />
+                </View>
+              );
+            }}
+          />
+        </View>}
         <View style={styles.itemContainer}>
           <AppText centered={false} text={"السعر الكلي"} style={styles.title} />
           <PriceTextComponent
