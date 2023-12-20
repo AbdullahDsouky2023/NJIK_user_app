@@ -11,7 +11,7 @@ import {
 
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { signInWithPhoneNumber } from "firebase/auth";
-
+import { EXPO_PUBLIC_BASE_URL} from "@env"
 import AppText from "../../component/AppText";
 import AppButton from "../../component/AppButton";
 import PhoneNumberTextField from "../../component/PhoneInput";
@@ -77,7 +77,7 @@ const SigninScreen = ({ navigation }) => {
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
               centered={true}
-              text={"Signin with Phone Number"}
+              text={"Signin with Phone Number"+ EXPO_PUBLIC_BASE_URL}
               style={{ marginBottom: 10 }}
             />
           </View>
