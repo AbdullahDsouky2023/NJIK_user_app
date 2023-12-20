@@ -11,6 +11,7 @@ import {
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import {  EXPO_PUBLIC_BASE_URL} from '@env'
+import { CommonActions } from "@react-navigation/native";
 
 import ArrowBack from "../../component/ArrowBack";
 import { Colors } from "../../constant/styles";
@@ -34,6 +35,7 @@ import UserDatePicker from "../../component/Account/UserDatePicker";
 import NotificationComponent from "../../component/NotificationComponent";
 import { createComplain } from "../../../utils/complain";
 import { AddOrderComplain } from "../../../utils/orders";
+import { HOME } from "../../navigation/routes";
 const { width } = Dimensions.get('screen')
 const ComplainCreatingScreen = ({ navigation ,route}) => {
   const [error, setError] = useState();
@@ -80,9 +82,13 @@ const ComplainCreatingScreen = ({ navigation ,route}) => {
         // await AsyncStorage.setItem("userImage", JSON.stringify(image));
 
           Alert.alert("تم  تقديم الشكوي بنجاح");
-          // navigation.goBack({
-          //   newImage:image
-          // })
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: HOME }],
+            })
+          );
+          navigation.goBack()
           // if(image) navigation.navigate("Account", { newImage:image })
 
       } else {

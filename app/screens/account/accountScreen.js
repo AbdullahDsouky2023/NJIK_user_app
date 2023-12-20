@@ -39,7 +39,6 @@ const AccountScreen = ({ navigation,route }) => {
         }
         return await updateUserData(userData?.id,formData);
       })
-      
       console.log('diiii')
     }catch(error){
       console.log('error in account screen',error)
@@ -51,9 +50,7 @@ const AccountScreen = ({ navigation,route }) => {
 
   useEffect(() => {
     if (isFocused && route.params?.newImage) {
-      // Handle the updated image data here
       const newImage = route.params.newImage;
-      // Update the state or perform actions with the new image data
       setImageUrl(newImage);
     }
   }, [isFocused, route.params?.newImage]);
@@ -62,12 +59,6 @@ const AccountScreen = ({ navigation,route }) => {
       const userImage = await AsyncStorage.getItem('userImage');
       const parsedUserImage = userImage ? JSON.parse(userImage) : null;
       setImageUrl(parsedUserImage || 'https://th.bing.com/th/id/R.e94860c29ac0062dfe773f10b3ce45bf?rik=SCqlsHg1S8oFDA&pid=ImgRaw&r=0');
-  
-      // const data = await getUserById(userData?.id);
-      // if (data?.image?.url && data.image.url !== parsedUserImage) {
-      //   await AsyncStorage.setItem("userImage", JSON.stringify(data.image.url));
-      //   setImageUrl(data.image.url);
-      // }
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
