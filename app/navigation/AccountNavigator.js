@@ -12,6 +12,7 @@ import AddManualLocationScreen from '../screens/location/AddManualLocationScreen
 import { MANUAL_LOCATION_ADD } from './routes';
 import ConditionsScreen from '../screens/ConditionsScreen';
 import NotificationScreen from '../screens/Notifications/NotificationScreen';
+import ComplainListScreen from '../screens/complain/ComplainListScreen';
 
 export default function AccountNavigator() {
     const Stack = createStackNavigator()
@@ -30,6 +31,7 @@ export default function AccountNavigator() {
         <Stack.Screen name="user" component={UserInfo} />
         <Stack.Screen name="location-pin" component={LocationScreen} />
         <Stack.Screen name="doc" component={ConditionsScreen} />
+        <Stack.Screen name="compass" component={ComplainListScreen} />
         <Stack.Screen name="noticiation" component={NotificationScreen} />
         <Stack.Screen name={MANUAL_LOCATION_ADD} component={AddManualLocationScreen} />
     </Stack.Navigator>

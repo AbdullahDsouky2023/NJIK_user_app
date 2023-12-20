@@ -33,6 +33,7 @@ import { uploadToStrapi } from "../../../utils/UploadToStrapi";
 import UserDatePicker from "../../component/Account/UserDatePicker";
 import NotificationComponent from "../../component/NotificationComponent";
 import { createComplain } from "../../../utils/complain";
+import { AddOrderComplain } from "../../../utils/orders";
 const { width } = Dimensions.get('screen')
 const ComplainCreatingScreen = ({ navigation ,route}) => {
   const [error, setError] = useState();
@@ -57,22 +58,21 @@ const ComplainCreatingScreen = ({ navigation ,route}) => {
 
         const formData = {
           message: values.message ,
-          users:{
-            connect:[{id:route?.params?.item?.attributes?.user?.data.id}]
+          order:{
+            connect: [
+              {
+                id:route?.params?.item?.id
+              }
+            ]
           } ,
-          providers:{
-            connect:[{id:route?.params?.item?.attributes?.provider?.data.id}]
-          },
-          orders:{
-            connect:[{id:route?.params?.item?.id}]
-          },
           // phoneNumber: Number(validPhone),
         }
-
-        res = await createComplain(userData?.id,formData);
-      
-      if (res) {
-        // const gottenuser = await getUserByPhoneNumber(Number(validPhone))
+        res = await createComplain(formData);
+        
+        if (res) {
+          console.log("the resit is ",res?.data.id)
+          // const gottenuser = await getUserByPhoneNumber(Number(validPhone))
+          await AddOrderComplain(route?.params?.item?.id,res?.data.id)
         // dispatch(setUserData(gottenuser));
         // console.log("the image id is ",ImageID)
         
@@ -136,7 +136,7 @@ const ComplainCreatingScreen = ({ navigation ,route}) => {
                 autoCorrect={false}
                 mul
                 // keyboardType="email-address"
-                name="city"
+                name="message"
                 // placeholder="emailAddress"
                 // textContentType="emailAddress"
                 multiline={true}

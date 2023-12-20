@@ -54,6 +54,21 @@ export const AddOrderReview = async (id,review) => {
     console.error("Error accepting order   :", error.message); // Log the error response
   }
 };
+export const AddOrderComplain = async (id,ComplainId) => {
+  try {
+    const data = await api.put(`/api/orders/${id}`,{
+      data:{
+        complain:{
+connect:[{id:ComplainId}]
+        }
+      }
+    });
+    if ( data?.data?.data?.id) return true
+    return false;
+  } catch (error) {
+    console.error("Error accepting order   :", error.message); // Log the error response
+  }
+};
 export default function useOrders() {
   const fetchOrders = async () => {
     try {

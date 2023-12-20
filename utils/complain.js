@@ -5,13 +5,15 @@ import api from './index'
 export const createComplain = async(data)=>{
     try {
      const createdComplain = await api.post('/api/complains',{
-            ...data,
+           data:{
+            ...data
+           }
           
         })
-            return createdComplain
+            return createdComplain?.data
 
     } catch (error) {
-        console.log("Error creating the complain ",error.message)
+        console.log("Error creating the complain ",error.message,data)
     }
 }
 export const getUserByPhoneNumber = async(phone)=>{

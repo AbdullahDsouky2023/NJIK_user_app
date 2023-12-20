@@ -31,7 +31,7 @@ export default function AppHeader({ subPage = false}) {
             </TouchableWithoutFeedback>
           ) }
       {!subPage && (
-        <TouchableWithoutFeedback onPress={()=>navigation.goBack()}>
+        <TouchableWithoutFeedback >
 
           <View style={styles.WalletContainer}>
             <AppText style={{fontSize:15,color:'white'}} text={"0.0 جنيه"}/>

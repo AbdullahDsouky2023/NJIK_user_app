@@ -25,7 +25,7 @@ import {
 import ArrowBack from "../../component/ArrowBack";
   
   const { width } = Dimensions.get("screen");
-  export default function CompleteOrderDetails({ navigation, route }) {
+  export default function ComplainOrderDetails({ navigation, route }) {
     const { item } = route?.params;
     const [isLoading, setIsLoading] = useState(false);
     const { data:orders,isLoading:loading,isError } = useOrders()
@@ -48,63 +48,32 @@ import ArrowBack from "../../component/ArrowBack";
               style={styles.name}
             />
           </View>
-          <View style={styles.itemContainer}>
-            <AppText centered={false} text={" السعر"} style={styles.title} />
-            <PriceTextComponent
-            style={{color:Colors.blackColor,fontSize:17,marginTop:4}}
-            price={item?.attributes?.totalPrice}
-            />
-          </View>
-          <View style={styles.itemContainer}>
-            <AppText centered={false} text={" العنوان"} style={styles.title} />
-            <AppText
-              centered={false}
-              text={item?.attributes?.location}
-              style={styles.price}
-            />
-          </View>
+         
           
          
-          <View style={styles.itemContainer}>
-            <AppText centered={false} text={" التاريخ"} style={styles.title} />
-            <AppText
-              centered={false}
-              text={item?.attributes?.date}
-              style={styles.price}
-            />
-          </View>
+          
           <View style={styles.descriptionContainer}>
-            <AppText centered={false} text={" ملاحظات"} style={styles.title} />
+            <AppText centered={false} text={"    الشكوي "} style={styles.title} />
             <AppText
               centered={false}
               text={
-                item?.attributes?.description
-                  ? item?.attributes?.description
-                  : "لا يوجد"
+                item?.attributes?.complain.data?.attributes?.message
               }
               style={styles.price}
             />
           </View>
           <View style={styles.descriptionContainer}>
-            <AppText centered={false} text={" صور لطلبك"} style={styles.title} />
-           {
-             ( item?.attributes?.images?.data ) ? 
-             <Image 
-            //  resizeMethod="contain"
-             source={{
-              uri:item?.attributes?.images?.data[0]?.attributes?.url}} style={{
-               height:120,
-               width:200,
-               borderRadius:10
-             }}/> : 
+            <AppText centered={false} text={"   حاله الطلب "} style={styles.title} />
             <AppText
               centered={false}
-              text={ "لا يوجد"}
+              text={
+                item?.attributes?.complain?.data.attributes?.status === "pending"?
+                "قيد الانتظار":item?.attributes?.complain?.data.attributes?.status === "resolved"? "تم معالجه الطلب":item?.attributes?.complain?.data.attributes?.status === "reject"?"تم رفض الطلب":null
+               }
               style={styles.price}
             />
-           }
-            
           </View>
+         
           {
             !item?.attributes.complain.data &&
             <AppButton title={"Report Complain"} onPress={()=>navigation.navigate(COMPLAIN_CREATE_SCREEN,{item:route?.params?.item})}/>
@@ -169,12 +138,13 @@ import ArrowBack from "../../component/ArrowBack";
       elevation: 4,    gap: 10,
     },
     price: {
-      fontSize: 17,
+      fontSize: 14,
       color: Colors.blackColor,
       marginTop: 5,
+      paddingHorizontal:10
     },
     title: {
-      fontSize: 21,
+      fontSize: 19,
       color: Colors.primaryColor,
     },
   });
