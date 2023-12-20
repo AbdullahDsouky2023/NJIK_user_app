@@ -2,6 +2,7 @@ export const ITEM_DETAILS = 'item-details'
 export const PACKAGE_SCREEN = 'package-screen'
 export const PACKAGE_DETAILS = 'package-details'
 export const ITEM_ORDER_DETAILS = 'order-details'
+export const COMPLAIN_CREATE_SCREEN = 'create-complain'
 export const OFFERS = "الباقات"
 export const HOME = "ألرئيسيه"
 export const  ORDER_SUCCESS_SCREEN = "OrderSuccessScreen"

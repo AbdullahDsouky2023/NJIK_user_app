@@ -15,7 +15,7 @@ import {
   import { useDispatch } from "react-redux";
   import { setOrders } from "../../store/features/ordersSlice";
   import LoadingModal from "../../component/Loading";
-  import { HOME, ORDERS } from "../../navigation/routes";
+  import { COMPLAIN_CREATE_SCREEN, HOME, ORDERS } from "../../navigation/routes";
   import PriceTextComponent from "../../component/PriceTextComponent";
   import { Image } from "react-native";
   import { ScrollView } from "react-native";
@@ -51,8 +51,8 @@ import ArrowBack from "../../component/ArrowBack";
           <View style={styles.itemContainer}>
             <AppText centered={false} text={" السعر"} style={styles.title} />
             <PriceTextComponent
-            style={{color:Colors.blackColor,fontSize:14,marginTop:4}}
-            price={item?.attributes?.service?.data?.attributes?.name}
+            style={{color:Colors.blackColor,fontSize:17,marginTop:4}}
+            price={item?.attributes?.totalPrice}
             />
           </View>
           <View style={styles.itemContainer}>
@@ -63,22 +63,8 @@ import ArrowBack from "../../component/ArrowBack";
               style={styles.price}
             />
           </View>
-          <View style={styles.itemContainer}>
-            <AppText centered={false} text={" المنطقه"} style={styles.title} />
-            <AppText
-              centered={false}
-              text={item?.attributes?.region?.data?.attributes?.name}
-              style={styles.price}
-            />
-          </View>
-          <View style={styles.itemContainer}>
-            <AppText centered={false} text={" الوقت"} style={styles.title} />
-            <AppText
-              centered={false}
-              text={item?.attributes?.time}
-              style={styles.price}
-            />
-          </View>
+          
+         
           <View style={styles.itemContainer}>
             <AppText centered={false} text={" التاريخ"} style={styles.title} />
             <AppText
@@ -117,9 +103,9 @@ import ArrowBack from "../../component/ArrowBack";
               style={styles.price}
             />
            }
-           
             
           </View>
+           <AppButton title={"Report Complain"} onPress={()=>navigation.navigate(COMPLAIN_CREATE_SCREEN,{item:route?.params?.item})}/>
          
         </ScrollView>
        

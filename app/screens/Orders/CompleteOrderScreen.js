@@ -11,6 +11,7 @@ import LoadingScreen from "../loading/LoadingScreen";
 const { width } = Dimensions.get("screen");
 import { RefreshControl  } from 'react-native';
 import { COMPLETE_ORDER_DETAILS, ORDERS_DETAILS } from "../../navigation/routes";
+import CompleteOrderCard from "../../component/orders/CompleteOrderCard";
 
 
  function CompleteOrderScreen({navigation}) {
@@ -60,7 +61,7 @@ const fetchData=()=>{
       data={currentOrders}
       style={styles.listContainer}
       renderItem={({item})=>{
-        return <CurrentOrderCard item={item} onPress={() => navigation.navigate(COMPLETE_ORDER_DETAILS, { item })} />
+        return <CompleteOrderCard item={item} onPress={() => navigation.navigate(COMPLETE_ORDER_DETAILS, { item })} />
       }}
       keyExtractor={(item)=>item?.id}
       />

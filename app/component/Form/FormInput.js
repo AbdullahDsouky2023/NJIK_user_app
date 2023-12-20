@@ -16,6 +16,7 @@ function FormTextInput({ icon, width = "100%", ...otherProps }) {
       selectTextOnFocus
         selectionColor={Colors.primaryColor}
         textAlign="right"
+        textAlignVertical="top"
         placeholderTextColor={Colors.grayColor}
         style={[{
           borderWidth: 1,
