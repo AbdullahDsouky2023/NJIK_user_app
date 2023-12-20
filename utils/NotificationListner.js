@@ -24,18 +24,29 @@ export const registerNotificationListeners = async () => {
 };
 
 // Call this function to store the notification
+// Call this function to store the notification
 export const storeNotification = async (notification) => {
+  // Check if the notification is null
+  if (!notification) {
+    // Do nothing or log an error message
+    console.error('Received a null notification');
+    return;
+  }
   // Retrieve existing notifications
-  const existingNotifications = JSON.parse(await AsyncStorage.getItem('notifications')) || [];
-  
-  // Add the new notification to the list
-  const updatedNotifications = [...existingNotifications, notification];
-  
-  // Store the updated list back in AsyncStorage
-  await AsyncStorage.setItem('notifications', JSON.stringify(updatedNotifications));
+  try {
+    const existingNotifications = JSON.parse(await AsyncStorage.getItem('notifications')) || [];
+    // Add the new notification to the list
+    const updatedNotifications = [...existingNotifications, notification];
+    
+    // Store the updated list back in AsyncStorage
+    await AsyncStorage.setItem('notifications', JSON.stringify(updatedNotifications));
+
   console.log("the notoification",updatedNotifications)
   // Update your notification screen with the new list
   // ...
+} catch (error) {
+  // Handle the error
+  console.error(error);
+  return;
+}  
 };
-
-// Don't forget to call `registerNotificationListeners` somewhere in your app initialization code

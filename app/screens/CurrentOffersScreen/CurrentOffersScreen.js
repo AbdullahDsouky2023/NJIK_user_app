@@ -34,8 +34,8 @@ const CurrentOffersScreen = ({route, navigation }) => {
   const selectedItemsData = categories?.data?.find(
     (category) => category?.attributes?.name === selectedItem
   );
-  const { data, isLoading, isError } = useServices();
-  const { data:packages} = usePackages();
+  const { data } = useServices();
+  const { data:packages,isLoading, isError} = usePackages();
   const services = data?.data?.filter(
     (item) => item?.attributes?.category?.data?.id === selectedItemsData?.id
   );

@@ -22,7 +22,7 @@
   "servicesLookingFor": "أي خدمة تبحث عنها؟",
   "showAll": "أظهار الكل",
   "Account": "حسابي",
-  "Share App": "شير التطبيق",
+  "Share App": "شارك التطبيق",
   "Terms and Conditions": "الشروط والاحكام",
   "Save": "حفظ",
   "Home Cleaning": "نظافة منزلية",
@@ -89,6 +89,7 @@
   "Go to Settings": "الذهاب الي الاعدادات",
   "Allow":"السماح",
   "Change Number":"تغيير الرقم",
+  "district":"الحي",
   "There is no notifications yet":"لا يوجد اي اشعارات ",
   "Sign Out":"تسجيل الخروج",
   "You have denied location access permanently. Please go to Settings and enable location access for this app.":

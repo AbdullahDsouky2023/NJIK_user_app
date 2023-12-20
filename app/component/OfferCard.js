@@ -22,6 +22,7 @@ export default function OfferCard({ service, price, image,onPress,content }) {
             color: Colors.blackColor,
             fontSize: 17,
             maxWidth: width * 0.5,
+            // fontWeight:900
 
           }}
           centered={false}
@@ -32,7 +33,8 @@ export default function OfferCard({ service, price, image,onPress,content }) {
             color: Colors.grayColor,
             fontSize: 14,
             maxWidth: width * 0.5,
-            fontSize:12
+            fontSize:12,
+            marginVertical:5
           }}
           centered={false}
         />
@@ -42,7 +44,7 @@ export default function OfferCard({ service, price, image,onPress,content }) {
             color: Colors.primaryColor,
             maxWidth: width * 0.5,
             fontSize:16,
-            fontWeight:800,
+            // fontWeight:900,
             marginTop:10
           }}
           centered={false}
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height:"auto",
     alignItems:'center',
-    justifyContent:'center',
+    justifyContent:'space-between',
     paddingVertical:20,
     paddingHorizontal:20,
     borderRadius: 10,

@@ -1,26 +1,56 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import React from "react";
+import { View, Text, StyleSheet, Dimensions, useWindowDimensions } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 import AppButton from "../component/AppButton";
-import { Colors } from "../constant/styles";
+import { Colors, mainFont } from "../constant/styles";
 import AppText from "../component/AppText";
 import { useTranslation } from "react-i18next";
 import AppHeader from "../component/AppHeader";
 import { ScrollView } from "react-native";
 import ArrowBack from "../component/ArrowBack";
+import useTerms from "../../utils/terms";
 const { width ,height} = Dimensions.get("screen");
+import HTML from 'react-native-render-html';
+import LoadingScreen from "../component/loadingScreen";
+
 export default function ConditionsScreen() {
   const { t } = useTranslation();
+  const { data,isLoading } = useTerms()
+  const { width ,height} = useWindowDimensions();
+  const [CurrentTerms,setCurrentTerms]=useState(null)
+
+  useEffect(()=>{
+      console.log("the therms",data?.data[0].attributes.content)
+      if(data) setCurrentTerms(data?.data[0].attributes.content)
+  },[])
+  if(isLoading) return  <LoadingScreen/>
   return (
     <View style={styles.container}>
 
       <ArrowBack subPage={true} />
     <ScrollView style={styles.container}>
+    {/* <AppText text={CurrentTerms} centered={false} style={{
+      fontSize:12,
+      color:Colors.blackColor,
+      width:width,
+      padding:0,
+      backgroundColor:'red'
+    }}/> */}
+    <Text
+     style={{
+      fontSize:14,
+      color:Colors.blackColor,
+      width:width,
+      lineHeight:height*0.042,
+      fontFamily:mainFont.bold,
+      paddingHorizontal:15,
+    }}
+    >
+      {
+        CurrentTerms
+      }
+    </Text>
       <View style={styles.imageContainer}>
-        <AppText text={conditions} style={{
-            fontSize:12,
-            color:Colors.blackColor
-        }} />
       </View>
     </ScrollView>
             </View>
@@ -34,9 +64,11 @@ const styles = StyleSheet.create({
 imageContainer: {
     display: "flex",
     paddingVertical:20,
+    paddingHorizontal:20,
     alignItems: "center",
     justifyContent: "center",
-    height: height,
+    height: "auto",
+    width:width*1
   },
   linkWrapper: {
     height: 100,
@@ -45,47 +77,3 @@ imageContainer: {
   },
 });
 
-const conditions = `المعلومات العامة للشركة ومعلومات الاتصال
-أول ما يجب تضمينه في شروط وأحكام المتجر الإلكتروني هو معلومات الشركة أو الشخص صاحب المتجر. وجود معلومات الشركة هذه ليست إجراءً شكليًا، لذلك، لا يكفي ذكر عنوان الشركة، بل يجب إضافة أي معلومات تتعلق بالشركة، بما في ذلك معلومات الاتصال الحقيقية والمحدثة (صندوق البريد – البريد الإلكتروني – الهاتف ….).
-
-وجود هذه المعلومات ضروري للغاية كي يتمكن العميل من التواصل مع البائع إذا واجه أي مشكلة، من مصلحتك أن تتوفر هذه المعلومات، لأن ذلك يعني تقديم خدمة عملاء سريعة وفعالة.
-
-
-سياسة الاستخدام
-من حيث المبدأ، يجب أن تحتوي الشروط والأحكام في سياسة الاستخدام على:
-
-معلومات لتحديد نوع الأعمال التجارية التي يشملها المتجر.
-وصف الخدمة التي يقدمها المتجر.
-معلومات تتعلق بالمسؤولية وإخلاء المسؤولية.
-الضمانات التي يقدمها المتجر.
-شروط توصيل المنتج أو تقديم الخدمة.
-شروط الشراء (مثل العمر وما إلى ذلك).
-سياسات إرجاع أو استبدال المنتج.
-معلومات عن طرق الدفع التي يوفرها المتجر.
-معلومات عن حقوق الملكية.
-النزاعات والقوانين التي تفصل في النزاعات.
-
-سياسة الخصوصية
-هناك شيء آخر يجب أن يكون موجودًا على المتجر، ويجب أن يكون المستخدم قادرًا على الوصول إليه بسهولة، نحن نتحدث عن سياسة الخصوصية، وهي شرط ضروري من شروط النظام الأوروبي العام لحماية البيانات.
-
-الالتزام بالنظام الأوروبي العام لحماية البيانات والمعروف اختصارًا بـ GDPR ضروري حتى للمتاجر الإلكترونية، لأن هذه المتاجر تعالج البيانات الشخصية للمستخدمين.
-
-يجب أن تتضمن سياسة الخصوصية إجابات عن الأسئلة التالية:
-
-ما هي البيانات التي يتم جمعها؟
-لماذا يتم جمع البيانات؟
-ما هي الوسائل التقنية التي تتم بواسطتها جمع البيانات؟
-من الذي يملك حق الوصول إلى هذه البيانات؟
-كم من الوقت يتم حفظ هذه البيانات؟
-كيف تقوم بحماية البيانات؟
-هل يتم بيع البيانات أو مشاركتها مع أطراف أخرى؟
-بمن يجب الاتصال لطرح الأسئلة أو تقديم شكوى متعلقة بالخصوصية؟
-الخبراء القانونيون في مكتب محمد بن عفيف للمحاماة لديهم معرفة تامة بالنظام الأوروبي العام لحماية البيانات، ويمكنهم صياغة سياسة خصوصية لمتجرك متوافقة تمامًا مع هذا النظام.
-
-
-شروط وأحكام لحماية البائع
-هذه الأحكام والشروط ضرورية لحمايتك، وهي تتضمن بنودًا مثل:
-
-في حالة إرجاع السلعة التي تم شراؤها، يتعهد المشتري بإعادتها في نفس المواصفات والحالة التي استلمها فيها.
-لا يتحمل البائع أي مسؤولية قانونية في حالة حدوث ضرر بسبب عدم امتثال المشتري للشروط والأحكام المذكورة في سياسة الاستخدام.
-اعتمادك على خبراء قانونيين في صياغة شروط وأحكام متجرك الإلكتروني سيساعد في حمايتك من أي مشكلات قانونية قد تحدث بسبب وجود ثغرات أو بنود ناقصة في هذه الأحكام والشروط.`;

@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRef, useEffect, useState } from 'react';
 import { AppState } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as Updates from 'expo-updates';
 import { Platform } from "react-native";
@@ -33,7 +34,7 @@ const App = () => {
   // }, []);
   useEffect(()=>{
     registerNotificationListeners()
-    
+    //  AsyncStorage.setItem('notifications',[ JSON.stringify([])]);
   },[])
   const handleAppStateChange = async (nextAppState) => {
     try {

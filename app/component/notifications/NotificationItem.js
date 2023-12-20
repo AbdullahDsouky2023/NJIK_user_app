@@ -29,6 +29,7 @@ const NotificationItem = ({ text, onDeleteNotfication,time:selecttime }) => {
       inputRange: [0, 50, 100, 101],
       outputRange: [-20, 0, 0, 1],
     });
+    if(!text)return;
     return (
       <RectButton style={styles.leftAction} onPress={() => setIsOpen(false)}>
         <Animated.Text

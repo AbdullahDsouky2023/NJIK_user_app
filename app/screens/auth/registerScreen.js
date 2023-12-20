@@ -43,6 +43,8 @@ const RegisterScreen = ({ navigation,route}) => {
       .max(50, "Full Name is too long"),
     city: yup
       .string(),
+    district: yup
+      .string(),
     emailAddress: yup
       .string()
       .email(t("Invalid email address"))
@@ -59,6 +61,7 @@ const RegisterScreen = ({ navigation,route}) => {
         username:values.fullName,
         password:"hoohofyu242121fyufdh",
         city:values?.city || null,
+        district:values?.district || null,
         // location:userLocation,
         phoneNumber:phoneNumber
       })
@@ -99,7 +102,7 @@ const RegisterScreen = ({ navigation,route}) => {
             <AppForm
           enableReinitialize={true}
 
-initialValues={{ fullName: "", emailAddress: "",city:"" }}
+initialValues={{ fullName: "", emailAddress: "",city:"",district:"" }}
               onSubmit={handleFormSubmit}
               validationSchema={validationSchema}
             >
@@ -124,6 +127,13 @@ initialValues={{ fullName: "", emailAddress: "",city:"" }}
                 // keyboardType="email-address"
                 name="city"
                 placeholder="city"
+              />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                // keyboardType="email-address"
+                name="district"
+                placeholder="district"
               />
               
 

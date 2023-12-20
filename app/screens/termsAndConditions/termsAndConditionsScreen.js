@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView, StatusBar, View, Text, ScrollView, StyleSheet } from "react-native";
 import { Colors, Fonts, Sizes } from "../../constant/styles";
 import { MaterialIcons } from '@expo/vector-icons';
+import useTerms from "../../../utils/terms";
 
 const TermsAndConditionsScreen = ({ navigation }) => {
-
+    const { data } = useTerms()
+useEffect(()=>{
+    console.log("the therms",data)
+},[])
+console.log("the therms",data)
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
             <StatusBar backgroundColor={Colors.primaryColor} />
