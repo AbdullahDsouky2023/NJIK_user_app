@@ -22,14 +22,14 @@ import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 //   appId: "1:197872272379:web:ef909bbd7ebfe41110415e"
 // };
 // // second account chrome
-export const firebaseConfig = {
-  apiKey: "AIzaSyBmuyhQV1uVVliQwffXfsgE7L5iLOLsEzw",
-  authDomain: "homeservices3-776d1.firebaseapp.com",
-  projectId: "homeservices3-776d1",
-  storageBucket: "homeservices3-776d1.appspot.com",
-  messagingSenderId: "584760648465",
-  appId: "1:584760648465:web:2c6cc2959349ffb38ae2b0"
-};
+// export const firebaseConfig = {
+//   apiKey: "AIzaSyBmuyhQV1uVVliQwffXfsgE7L5iLOLsEzw",
+//   authDomain: "homeservices3-776d1.firebaseapp.com",
+//   projectId: "homeservices3-776d1",
+//   storageBucket: "homeservices3-776d1.appspot.com",
+//   messagingSenderId: "584760648465",
+//   appId: "1:584760648465:web:2c6cc2959349ffb38ae2b0"
+// };
 // 4
 // export const firebaseConfig = {
 //   apiKey: "AIzaSyCTsMfzJT_N9vbsCp4YceXtCm55OGrmYJU",
@@ -50,14 +50,14 @@ export const firebaseConfig = {
 // };
 
 //nab1
-// export const firebaseConfig = {
-//   apiKey: "AIzaSyDt802msFXUqxFMhpouo7Vb5Z940nZOObc",
-//   authDomain: "tasktyclone.firebaseapp.com",
-//   projectId: "tasktyclone",
-//   storageBucket: "tasktyclone.appspot.com",
-//   messagingSenderId: "485175115309",
-//   appId: "1:485175115309:web:a0c51ee9b02cbc3502c2a4"
-// };
+export const firebaseConfig = {
+  apiKey: "AIzaSyDt802msFXUqxFMhpouo7Vb5Z940nZOObc",
+  authDomain: "tasktyclone.firebaseapp.com",
+  projectId: "tasktyclone",
+  storageBucket: "tasktyclone.appspot.com",
+  messagingSenderId: "485175115309",
+  appId: "1:485175115309:web:a0c51ee9b02cbc3502c2a4"
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
