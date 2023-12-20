@@ -101,6 +101,7 @@ const VerificationScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
+      <ArrowBack/>
       <ScrollView showsVerticalScrollIndicator={false}>
        
         <View>
@@ -149,7 +150,7 @@ const VerificationScreen = ({ navigation, route }) => {
               title={
                 resendDisabled ? ` ارسال(${secondsRemaining} ث)` : "اعاده ارسال"
               }
-              style={{backgroundColor:Colors.success}}
+              // style={{backgroundColor:Colors.success}}
               disabled={resendDisabled}
               onPress={() => {
               setResendDisabled(true);
@@ -159,7 +160,7 @@ const VerificationScreen = ({ navigation, route }) => {
             />
           </View>
         </View>
-        <AppButton title="Change Number" style={{width:width*0.5,marginLeft:width*0.2}} onPress={()=>navigation.goBack()}  />
+        {/* <AppButton title="Change Number" style={{width:width*0.5,marginLeft:width*0.2}} onPress={()=>navigation.goBack()}  /> */}
       </ScrollView>
       <LoadingModal visible={isLoading} />
     </SafeAreaView>
