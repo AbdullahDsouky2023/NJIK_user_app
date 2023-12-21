@@ -52,10 +52,10 @@ const CurrentOffersScreen = ({route, navigation }) => {
 
  // Use useEffect to monitor changes in route.params.name
  useEffect(() => {
-  if (route.params?.name) {
-    setSelectedItem(route.params.name);
+  if (route?.params?.name) {
+    setSelectedItem(route?.params?.name);
   }
-}, [route.params?.name]);
+}, [route?.params?.name]);
 
 useEffect(() => {
   getServices();
@@ -70,48 +70,9 @@ useEffect(() => {
       <StatusBar backgroundColor={Colors.primaryColor} />
       {/* <ArrowBack /> */}
       <ScrollView style={styles.container}>
-        {/* <View style={styles.listContainer}>
-          <View style={{ paddingHorizontal: 10 }}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              extraData={selectedItem}
-              ListHeaderComponent={
-                <TouchableOpacity
-                  style={selectedItem == "all" ? styles.activeItem : styles.item}
-                  onPress={() => setSelectedItem("all")}
-                >
-                  <AppText text={"الكل"} style={{ color: Colors.whiteColor }} />
-                </TouchableOpacity>
-              }
-              data={categories.data}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 10,
-                flex: 1,
-              }}
-              keyExtractor={(item, index) => item.id}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={
-                    item == selectedItemsData ? styles.activeItem : styles.item
-                  }
-                  onPress={() => setSelectedItem(item?.attributes?.name)}
-                >
-                  <AppText
-                    text={item?.attributes.name}
-                    style={{ color: Colors.whiteColor }}
-                  />
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </View> */}
         <View>
-          {/* {selectedItem === "all" ? (
-            <AllOffersList categories={categories} />
-          ) : ( */}
+        <AppText text='packages' centered={false} style={styles.title}/>
+
             <OffersServiceComponentList
               data={packages}
               selectedItem={selectedItem}
@@ -147,6 +108,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     display: "flex",
     justifyContent: "center",
+  },
+  title:{
+    paddingHorizontal:20,
+    paddingVertical:10,
+    color:Colors.blackColor
   },
   activeItem: {
     height: 50,

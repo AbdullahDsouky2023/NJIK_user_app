@@ -15,16 +15,17 @@ export default function SlideItem({ item }) {
       onPress={() => {
         navigation.navigate(ITEM_DETAILS, { item: item?.attributes?.service?.data });
       }}
-      style={{ width: width, height: 180.0 }}
+      style={{ width: width, height: 180.0 ,borderRadius:10,
+        display:'flex',alignItems:'center',justifyContent:'center' }}
     >
       <View 
-        style={{ width: width, height: 180.0 }}
+        style={{ width:  width, height: 180.0 , backgroundColor:'white',marginTop:5,        display:'flex',alignItems:'center',justifyContent:'center' }}
       >
 
       <Image
-        style={{ width: width, height: 180.0 }}
+        style={{ width:  width*0.94, height: 180.0 ,borderRadius:10}}
       {...{ uri}}
-      resizeMode="cover"
+      resizeMode="contain"
       />
       </View>
     </TouchableWithoutFeedback>

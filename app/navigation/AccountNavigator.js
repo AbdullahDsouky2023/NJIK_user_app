@@ -30,7 +30,7 @@ export default function AccountNavigator() {
         <Stack.Screen name="social-instagram" component={CallUsScreen} />
         <Stack.Screen name="user" component={UserInfo} />
         <Stack.Screen name="location-pin" component={LocationScreen} />
-        <Stack.Screen name="doc" component={ConditionsScreen} />
+        {/* <Stack.Screen name="doc" component={ConditionsScreen} /> */}
         <Stack.Screen name="compass" component={ComplainListScreen} />
         <Stack.Screen name="noticiation" component={NotificationScreen} />
         <Stack.Screen name={MANUAL_LOCATION_ADD} component={AddManualLocationScreen} />

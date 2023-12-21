@@ -54,7 +54,7 @@ const fetchData=()=>{
     {currentOrders?.length === 0 ? 
       <View style={styles.noItemContainer}>
 
-      <AppText text={"لا يوجد طلبات لعرضها"} style={{marginTop:"50%"}}/> 
+      <AppText text={"لا يوجد تذاكر لعرضها"} style={{marginTop:"50%"}}/> 
       </View>
       :
       <ScrollView style={styles.container}>

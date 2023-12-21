@@ -5,86 +5,105 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {Share} from 'react-native';
+import { Share } from "react-native";
 import { auth } from "../../../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
+import { OFFERS } from "../../navigation/routes";
+const { width, height } = Dimensions.get("screen");
+import * as Linking from "expo-linking";
+import AppModal from "../AppModal";
+import ContactUsModal from "./ContactUsModal";
+import { useState } from "react";
+import LoadingModal from "../Loading";
 
-const { width ,height}  = Dimensions.get('screen')
+export default function SettingItem({ item }) {
+  const { icon, name, desc } = item;
+  const navigation = useNavigation();
+  const [visible, setVisible] = useState(false);
 
-export default function SettingItem({item }) {
-    const { icon, name, desc } = item
-    const navigation = useNavigation()
+  const hideModal = () => setVisible(false);
 
-    const onShare = async () => {
-      try {
-        const result = await Share.share({
-          message: 'Check out this awesome app!',
-          // You can also add a URL to your app here
-        });
-        console.log("the sare mod",Share); // Check if Share is defined
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: "Check out this awesome app!",
+        // You can also add a URL to your app here
+      });
+      console.log("the sare mod", Share); // Check if Share is defined
 
-        if (result.action === Share.sharedAction) {
-          if (result.activityType) {
-            // shared with activity type of result.activityType
-          } else {
-            // shared
-          }
-        } else if (result.action === Share.dismissedAction) {
-          // dismissed
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
         }
-      } catch (error) {
-        console.log(error.message);
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
       }
-    };
-
-    const handleSignOut = async () => {
-      try {
-        await auth.signOut();
-        await AsyncStorage.removeItem("userData");
-  
-        // Inside your sign-out function:
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "Auth" }], // Replace 'Login' with the name of your login screen
-          })
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
-     const handlePress=()=>{
-      if(icon === "share"){
-        onShare()
-      }else if(icon === "logout"){
-        handleSignOut()
-      }else {
-        navigation.navigate(icon)
-      }
+    } catch (error) {
+      console.log(error.message);
     }
-    return (
-      <TouchableWithoutFeedback  onPress={()=>handlePress()}>
-       
-        <View  style={styles.item}>
-        {/* <View style={styles.itemHeader}> */}
-          <SimpleLineIcons name={icon} size={24} color={Colors.primaryColor} />
-          
-          <View style={{
-            display:'flex',
-            justifyContent:'center',
-          }}>
-            <AppText text={name} centered={false} style={styles.textHeader} />
-            {/* {desc && <AppText
-              text={desc}
-              centered={false}
-              style={styles.headerDescription}
-            />} */}
-          {/* </View> */}
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await auth.signOut();
+      await AsyncStorage.removeItem("userData");
+
+      // Inside your sign-out function:
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Auth" }], // Replace 'Login' with the name of your login screen
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handlePress = () => {
+    if (icon === "share") {
+      onShare();
+    } else if (icon === "credit-card") {
+      console.log("test");
+    } else if (icon === "present") {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: OFFERS }], // Replace 'Login' with the name of your login screen
+        })
+      );
+    } 
+    else if (icon === "doc") {
+      Linking.openURL("https://expo.dev");
+    } 
+    else if (icon === "social-instagram") {
+    setVisible(true)
+    } 
+    else if (icon === "logout") {
+      handleSignOut();
+    } else {
+      navigation.navigate(icon);
+    }
+  };
+  return (
+    <TouchableWithoutFeedback onPress={() => handlePress()}>
+      <View style={styles.item}>
+        <SimpleLineIcons name={icon} size={24} color={Colors.primaryColor} />
+
+        <View
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <AppText text={name} centered={false} style={styles.textHeader} />
+<ContactUsModal hideModal={hideModal} visible={visible}/>     
         </View>
-        {/* <MaterialIcons name="arrow-back-ios" size={24} color={Colors.grayColor} /> */}
-        </View>
-      </TouchableWithoutFeedback>)
+ </View>
+    </TouchableWithoutFeedback>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -104,27 +123,27 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: Colors.piege,
     height: "auto",
-    borderRadius:10,
+    borderRadius: 10,
     paddingHorizontal: 20,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
-    width:width*0.4,
-    paddingVertical:14,
+    width: width * 0.4,
+    paddingVertical: 14,
     gap: 5,
   },
   itemHeader: {
     display: "flex",
     alignItems: "center",
     flexDirection: "column",
-    width:width*0.4,
+    width: width * 0.4,
     // height:120,
-    backgroundColor:Colors.piege,
-    padding:10,
-    borderRadius:10,
-    margin:20,
-    justifyContent:'center',
+    backgroundColor: Colors.piege,
+    padding: 10,
+    borderRadius: 10,
+    margin: 20,
+    justifyContent: "center",
     gap: 15,
   },
 });

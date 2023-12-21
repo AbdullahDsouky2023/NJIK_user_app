@@ -37,6 +37,8 @@ import { generateUserToken } from "../chat/chatconfig";
 import { setUserStreamData } from "../../store/features/userSlice";
 import useBanners from "../../../utils/banners";
 import { requestLocationPermission } from "../../component/Home/UserLocation";
+import CurrentOffersScreen from "../CurrentOffersScreen/CurrentOffersScreen";
+import AppText from "../../component/AppText";
 const { width } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {
@@ -85,6 +87,7 @@ const HomeScreen = ({ navigation }) => {
             <>
               <OffersBanner />
               <ServicesList />
+              <CurrentOffersScreen/>
               {/* <LowOffers /> */}
               {/* <ReadyPackages /> */}
               {/* <OtherServicesList /> */}
@@ -115,6 +118,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: Sizes.fixPadding,
     paddingVertical: Sizes.fixPadding + 1.0,
     marginTop: Sizes.fixPadding + 5.0,
+  },
+  title:{
+    paddingHorizontal:20,
+    color:Colors.blackColor
   },
   headerInfoWrapStyle: {
     flexDirection: "row",

@@ -18,6 +18,9 @@ import AppText from "../../component/AppText";
 import { useSelector } from "react-redux";
 import { getUserById, updateUserData } from "../../../utils/user";
 import { uploadToStrapi } from "../../../utils/UploadToStrapi";
+import { ScrollView } from "react-native-virtualized-view";
+import { SocailLinks } from "../../data/SocialLinks";
+import SocailLinksComponent from "../../component/Account/SocailLinksComponent";
 
 const { width } = Dimensions.get('screen')
 
@@ -66,10 +69,11 @@ const AccountScreen = ({ navigation,route }) => {
   
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor, }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
       <View style={{ flex: 1 }}>
-        <View>
+       
+          <ScrollView>
 
         <View style={styles.ImageContainer}>
           <Image source={{uri:imageUri}}
@@ -77,9 +81,12 @@ const AccountScreen = ({ navigation,route }) => {
           />
         </View>
           <AppText text={userData?.username} style={{color:Colors.blackColor,marginBottom:10}}/>
-        </View>
-        {/* <Logo /> */}
+
         <GeneralSettings/>
+          <AppText text={"Our Accounts On Social Media"} style={styles.title}/>
+          <SocailLinksComponent/>
+       </ScrollView>
+       
       </View>
     </SafeAreaView>
   );
@@ -106,6 +113,10 @@ const styles = StyleSheet.create({
     width:width*0.3,
     margin:'auto',
     borderRadius:width*0.3*0.5,
+  },
+  title :{
+    fontSize:14,
+    paddingVertical:10
   }
   
 })

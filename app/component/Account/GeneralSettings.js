@@ -35,7 +35,7 @@ export default function GeneralSettings() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <AppText text="GeneralSettings" centered={false} style={styles.header} />
       <View>
         <FlatList
@@ -54,7 +54,7 @@ export default function GeneralSettings() {
         />
       </View>
       
-    </ScrollView>
+    </View>
   );
 }
 const styles = StyleSheet.create({
