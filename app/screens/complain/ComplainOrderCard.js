@@ -21,10 +21,10 @@ import {
   import { Ionicons } from "@expo/vector-icons";
   import { useDispatch} from  'react-redux'
   import { setcurrentChatChannel } from "../../store/features/ordersSlice";
+import LoadingScreen from "../loading/LoadingScreen";
   export default function ComplainOrderCard({ item, onPress }) {
     const navigation = useNavigation();
     const dispatch = useDispatch()
-    console.log("current item ",item.attributes?.packages.data[0]?.attributes?.name)
     return (
       <TouchableWithoutFeedback onPress={onPress}>
         <View style={styles.orderCardContainer}>
@@ -36,14 +36,12 @@ import {
               height={25}
               width={25}
               source={{
-                uri: item?.attributes?.services?.data[0]?.attributes?.category
-                ?.data?.attributes?.image?.data[0]?.attributes?.url,
+                uri: item?.attributes?.services?.data[0]?.attributes?.category?.data?.attributes?.image?.data[0]?.attributes?.url,
               }}
             />
             <AppText
               text={
-                item?.attributes?.services?.data[0]?.attributes?.category?.data
-                  ?.attributes?.name
+                item?.attributes?.services?.data[0]?.attributes?.category?.data?.attributes?.name
               }
               style={[styles.header, { color: Colors.primaryColor,fontSize:17 }]}
               centered={false}
@@ -101,8 +99,8 @@ import {
               />
             <AppText
               text={
-               item?.attributes?.complain?.data.attributes?.status === "pending"?
-               "قيد الانتظار":item?.attributes?.complain?.data.attributes?.status === "resolved"? "تم معالجه الطلب":item?.attributes?.complain?.data.attributes?.status === "reject"?"تم رفض الطلب":null
+               item?.attributes?.complain?.data?.attributes?.status === "pending"?
+               "قيد الانتظار":item?.attributes?.complain?.data?.attributes?.status === "resolved"? "تم معالجه الطلب":item?.attributes?.complain?.data?.attributes?.status === "reject"?"تم رفض الطلب":null
               }
               centered={false}
               style={[styles.Status,{

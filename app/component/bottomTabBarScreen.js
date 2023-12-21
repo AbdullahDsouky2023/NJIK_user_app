@@ -12,7 +12,7 @@ import { AntDesign } from '@expo/vector-icons';
 import AccountNavigator from "../navigation/AccountNavigator";
 import { Octicons } from '@expo/vector-icons'; 
 import CurrentOffersScreen from "../screens/CurrentOffersScreen/CurrentOffersScreen";
-import { HOME, MY_ORDERS, OFFERS } from "../navigation/routes.js";
+import { ACCOUNT, HOME, MY_ORDERS, OFFERS } from "../navigation/routes.js";
 
 const Tab = createBottomTabNavigator();
 
@@ -79,7 +79,7 @@ const BottomTabBar = () => {
                     }}
                 />
                 <Tab.Screen
-                    name={t('Account')}
+                    name={ACCOUNT}
                     component={AccountNavigator}
                     options={{
                         tabBarIcon: ({ color, }) => (

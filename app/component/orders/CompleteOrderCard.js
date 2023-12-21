@@ -15,7 +15,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
 import { useNavigation } from "@react-navigation/native";
-import { ORDERS_DETAILS } from "../../navigation/routes";
+import { ACCOUNT, COMPLAIN_CREATE_SCREEN, ORDERS_DETAILS } from "../../navigation/routes";
 import PriceTextComponent from "../PriceTextComponent";
 const { width } = Dimensions.get("screen");
 import { Ionicons } from "@expo/vector-icons";
@@ -24,10 +24,7 @@ import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 export default function CompleteOrderCard({ item, onPress }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  console.log(
-    "current item ",
-    item.attributes?.packages.data[0]?.attributes?.name
-  );
+
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.orderCardContainer}>
@@ -60,11 +57,12 @@ export default function CompleteOrderCard({ item, onPress }) {
                 <TouchableOpacity
                   style={styles.complainContainer}
                   onPress={() => {
-                    dispatch(
-                      setcurrentChatChannel(item?.attributes?.chat_channel_id)
-                    );
-
-                    navigation.navigate("Chat");
+                    if(item?.attributes?.complain?.data){
+                      navigation.navigate(ACCOUNT)
+                      // navigation.navigate("compass")
+                    }else {
+                      navigation.navigate(COMPLAIN_CREATE_SCREEN,{item:item})
+                    }
                   }}
                 >
 <Octicons name="report" size={21} color="white" />

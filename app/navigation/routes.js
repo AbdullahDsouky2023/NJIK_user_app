@@ -5,6 +5,7 @@ export const ITEM_ORDER_DETAILS = 'order-details'
 export const COMPLAIN_CREATE_SCREEN = 'create-complain'
 export const COMPLAIN_ORDER_DETAILS= 'complain-details'
 export const OFFERS = "الباقات"
+export const ACCOUNT = "حسابي"
 export const HOME = "ألرئيسيه"
 export const  ORDER_SUCCESS_SCREEN = "OrderSuccessScreen"
 export const ORDERS = ("الحاليه")

@@ -105,12 +105,7 @@ import ArrowBack from "../../component/ArrowBack";
            }
             
           </View>
-          {
-            !item?.attributes.complain.data &&
-            <AppButton title={"Report Complain"} onPress={()=>navigation.navigate(COMPLAIN_CREATE_SCREEN,{item:route?.params?.item})}/>
-            // <AppButton title={"Track Complain"} onPress={()=>navigation.navigate(COMPLAIN_CREATE_SCREEN,{item:route?.params?.item})}/>
-          }
-         
+          
         </ScrollView>
        
       </ScrollView>

@@ -30,7 +30,7 @@ import ComplainOrderCard from "./ComplainOrderCard";
 const [currentOrders,setCurrentData]=useState([])
 const fetchData=()=>{
   const currentOrders = data?.data?.filter(
-    (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.PaymentStatus === "payed"
+    (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.PaymentStatus === "payed" && order?.attributes?.complain?.data !== null
     );
     setCurrentData(currentOrders)
   setRefreshing(false)
