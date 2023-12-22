@@ -21,7 +21,6 @@ export default function AccountNavigator() {
     <Stack.Navigator
     screenOptions={{
         headerShown: false,
-        ...TransitionPresets.SlideFromRightIOS,
       }}
     >
        <Stack.Screen name="Account" component={AccountScreen} options={{ ...TransitionPresets.DefaultTransition }} />

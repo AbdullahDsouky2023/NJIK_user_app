@@ -58,7 +58,7 @@ export default function CompleteOrderCard({ item, onPress }) {
                   style={styles.complainContainer}
                   onPress={() => {
                     if(item?.attributes?.complain?.data){
-                      navigation.navigate(ACCOUNT)
+                      navigation.navigate(ACCOUNT,{screen:"compass"})
                       // navigation.navigate("compass")
                     }else {
                       navigation.navigate(COMPLAIN_CREATE_SCREEN,{item:item})

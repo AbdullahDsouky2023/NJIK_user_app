@@ -83,6 +83,27 @@ export default function CurrentOrderCard({ item, onPress }) {
             style={styles.title}
           />
         </View>
+        {item?.attributes?.provider?.data?.attributes?.name &&
+        <View style={styles.date}>
+
+          <AppText
+            text={`الحاله`}
+            centered={false}
+            style={styles.status}
+          />
+           <AppText
+            text={
+              `${item?.attributes?.status === "assigned"?
+              "طلب جديد":item?.attributes?.status =="accepted"?
+              "تم القبول":item?.attributes?.status =="working" ?
+               "جاري العمل":item?.attributes?.status =="finished" ?
+                " تم الانتهاء":item?.attributes?.status =="payed"?
+                "تم السداد": null }`}
+            centered={false}
+            style={styles.title}
+          />
+        </View>
+        }
         <View  style={{
           display:'flex',
           flexDirection:'row',
@@ -101,6 +122,7 @@ export default function CurrentOrderCard({ item, onPress }) {
             style={styles.title}
             />
             </View>
+            
           <View >
 
           {item?.attributes?.provider?.data?.attributes?.name &&
@@ -119,6 +141,7 @@ export default function CurrentOrderCard({ item, onPress }) {
         }
         </View>
         </View>
+           
       </View>
     </TouchableWithoutFeedback>
   );
@@ -180,6 +203,10 @@ const styles = StyleSheet.create({
     gap: 10,
     justifyContent: "flex-start",
     flexDirection: "row",
+  },
+  status: {
+    color: Colors.primaryColor,
+    fontSize: 14,
   },
   chatContainer:{paddingHorizontal:19,
     backgroundColor:Colors.primaryColor,

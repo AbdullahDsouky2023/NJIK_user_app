@@ -1,4 +1,4 @@
-import { View, Dimensions, StyleSheet } from 'react-native'
+import { View, Dimensions, StyleSheet, Image } from 'react-native'
 import { useEffect, useState } from 'react';
 import React from 'react'
 
@@ -7,6 +7,8 @@ import { userReviews } from '../../data/home'
 import PaginationComponent from './Pagination';
 import ReviewCard from './ReviewCard';
 import useReviews from '../../../utils/reviews';
+import AppText from '../AppText';
+import { Colors } from '../../constant/styles';
 
 const { width } = Dimensions.get("window");
 
@@ -35,6 +37,18 @@ export default   function UsersReviews() {
     }, [data]);
     return (
         <View style={styles.container}>
+          <View style={{
+            display:'flex',
+            flexDirection:'row',
+            alignItems:'center',
+            justifyContent:'center',
+             gap:10,
+             marginBottom:10
+          }}>
+
+               <AppText text={"SercureOrder"} style={{ color: Colors.primaryColor ,marginBottom:10}} />
+               <Image source={require('../../assets/images/award.png')} style={{ height:40, width:40}}/>
+          </View>
             <Carousel
                 data={data?.data}
                 sliderWidth={width}
@@ -44,7 +58,7 @@ export default   function UsersReviews() {
                 itemWidth={width}
                 renderItem={({item})=><ReviewCard 
                  username={item?.attributes?.username} 
-                 review={item?.attributes?.content[0]?.children[0]?.text}
+                 review={item?.attributes?.content}
                   userImage={item?.attributes?.image?.data?.attributes?.url} />}
                 onSnapToItem={(index) => updateState({ activeSlide: index })}
             />

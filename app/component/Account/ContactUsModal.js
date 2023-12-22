@@ -55,16 +55,16 @@ export default function ContactUsModal({visible,hideModal}) {
          
          <AppButton title={"Whatsapp"}
          onPress={handleWhatsAppPress}
-         style={{backgroundColor:Colors.whiteColor,marginTop:1,marginBottom:0}}  textStyle={{marginTop:0,color:Colors.blueColor}}/>
+         style={{backgroundColor:Colors.whiteColor,marginTop:1,marginBottom:0}}  textStyle={{marginTop:0,color:Colors.blackColor}}/>
          <AppButton title={"Call Us"}
          onPress={handlePhoneCallPress}
 
-         style={{backgroundColor:Colors.whiteColor,marginTop:1,marginBottom:0}} textStyle={{marginTop:0,color:Colors.blueColor}} />
+         style={{backgroundColor:Colors.whiteColor,marginTop:1,marginBottom:0}} textStyle={{marginTop:0,color:Colors.blackColor}} />
          <AppButton title={"Email"}
                   onPress={handleEmailPress}
 
-         style={{backgroundColor:Colors.whiteColor,marginTop:1,marginBottom:0}} textStyle={{marginTop:0,color:Colors.blueColor}} />
-         <AppButton title={"Cancle"} style={{backgroundColor:Colors.redColor,marginTop:4,marginBottom:0}} textStyle={{marginTop:0,color:Colors.whiteColor}} onPress={hideModal} />
+         style={{backgroundColor:Colors.whiteColor,marginTop:1,marginBottom:0}} textStyle={{marginTop:0,color:Colors.blackColor}} />
+         <AppButton title={"Cancle"} style={{backgroundColor:Colors.redColor,marginTop:4,marginBottom:0,paddingHorizontal:0}} textStyle={{paddingHorizontal:0,color:Colors.whiteColor}} onPress={hideModal} />
         </View>
       </View>
     </Dialog.Container>

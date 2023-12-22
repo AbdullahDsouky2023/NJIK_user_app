@@ -100,7 +100,8 @@ import LoadingScreen from "../loading/LoadingScreen";
             <AppText
               text={
                item?.attributes?.complain?.data?.attributes?.status === "pending"?
-               "قيد الانتظار":item?.attributes?.complain?.data?.attributes?.status === "resolved"? "تم معالجه الطلب":item?.attributes?.complain?.data?.attributes?.status === "reject"?"تم رفض الطلب":null
+               "قيد الانتظار":item?.attributes?.complain?.data?.attributes?.status === "resolved"?
+                "تم معالجه الطلب":item?.attributes?.complain?.data?.attributes?.status === "rejected"?"تم رفض الطلب":null
               }
               centered={false}
               style={[styles.Status,{
