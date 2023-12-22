@@ -12,7 +12,7 @@ import AppButton from "../../component/AppButton";
 import AppText from "../../component/AppText";
 import { Colors } from "../../constant/styles";
 import AppHeader from "../../component/AppHeader";
-import { Entypo } from '@expo/vector-icons'; 
+import { Entypo } from "@expo/vector-icons";
 
 import useOrders, {
   PayOrder,
@@ -22,7 +22,7 @@ import useOrders, {
 import { useDispatch } from "react-redux";
 import { setOrders } from "../../store/features/ordersSlice";
 import LoadingModal from "../../component/Loading";
-import { HOME, ORDERS } from "../../navigation/routes";
+import { HOME, ORDERS, REVIEW_ORDER_SCREEN } from "../../navigation/routes";
 import PriceTextComponent from "../../component/PriceTextComponent";
 import { Image } from "react-native";
 import LoadingScreen from "../loading/LoadingScreen";
@@ -41,7 +41,7 @@ const { width } = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
   const [isLoading, setIsLoading] = useState(false);
-  const { data:UserOrders,isLoading:loading,isError } = useOrders()
+  const { data: UserOrders, isLoading: loading, isError } = useOrders();
   const [orderID, setOrderID] = useState(false);
   const orders = useSelector((state) => state?.orders?.orders);
   const user = useSelector((state) => state?.user?.userData);
@@ -51,7 +51,7 @@ export default function OrderDetails({ navigation, route }) {
   const { sendPushNotification } = useNotifications();
   const handleOrderCancle = async (id) => {
     try {
-     setIsLoading(true)
+      setIsLoading(true);
       const res = await cancleOrder(id);
       const selectedOrder = orders?.data.filter((order) => order?.id === id);
       const providerNotificationToken =
@@ -84,48 +84,23 @@ export default function OrderDetails({ navigation, route }) {
 
   const handlePayOrder = async (id) => {
     try {
-      console.log("the button is just clikcked",id)
+      console.log("the button is just clikcked", id);
       const res = await PayOrder(id);
-      const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
-
-      const providerNotificationToken =
-        selectedOrder[0]?.attributes?.provider?.data?.attributes
-          ?.expoPushNotificationToken; 
-
-      const OrderProvider = selectedOrder[0]?.attributes?.provider?.data?.id
-      const OrderUserId = selectedOrder[0]?.attributes?.user?.data?.id
-      console.log("user is is ",OrderUserId)
-      console.log("OrderProvider is is ",OrderProvider)
       if (res) {
-        setIsReviewVisble(true);
-        await updateUserData(OrderUserId,{
-          orders:{
-            connect:[{id}]
-          }
-        }).then(()=>
-         updateProviderData(OrderProvider,{
-          orders:{
-            connect:[{id}]
-          }
-        })).then(()=>
-        sendPushNotification(
-          providerNotificationToken,
-          ``,
-          `تم انهاء الطلب بواسطه ${selectedOrder[0]?.attributes?.user?.data?.attributes?.username}`
-          )
-          )
-
-        setOrderID(id);
-        // Alert.alert("تم بنجاح");
+        
+        Alert.alert(" تم الدفع بنجاح");
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name:HOME }],
+          }))
       } else {
         Alert.alert("حدثت مشكله حاول مرة اخري");
       }
     } catch (error) {
       console.log(error, "error paying the order");
     } finally {
-      setModalVisible(false);
-      setIsLoading(false)
-
+      setIsLoading(false);
     }
   };
 
@@ -134,99 +109,99 @@ export default function OrderDetails({ navigation, route }) {
     <ScrollView>
       <ArrowBack subPage={true} />
       <ScrollView style={styles.container}>
-        {
-          item?.attributes?.services.data.length > 0 ?
-      
-        <View style={styles.itemContainer}>
-          <FlatList
-            data={item?.attributes?.services.data}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item, index) => item.id}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              direction: "rtl",
-              flexWrap: "wrap",
-              marginTop: 15,
-              gap: 15,
-              width: width,
-            }}
-            renderItem={({ item }) => {
-              return (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 15,
-                  }}
-                >
-                  <AppText
-                    centered={false}
-                    text={item.attributes?.name}
-                    style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
-                  />
-                  <AppText
-                    text={`${item.attributes?.Price} جنيه`}
+        {item?.attributes?.services.data.length > 0 ? (
+          <View style={styles.itemContainer}>
+            <FlatList
+              data={item?.attributes?.services.data}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => item.id}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                direction: "rtl",
+                flexWrap: "wrap",
+                marginTop: 15,
+                gap: 15,
+                width: width,
+              }}
+              renderItem={({ item }) => {
+                return (
+                  <View
                     style={{
-                      backgroundColor: Colors.primaryColor,
-                      fontSize: 14,
-                      padding: 6,
-                      borderRadius: 40,
-                      color: Colors.whiteColor,
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 15,
                     }}
-                  />
-                </View>
-              );
-            }}
-          />
-        </View>:
-        <View style={styles.itemContainer}>
-          <FlatList
-            data={item?.attributes?.packages.data}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item, index) => item.id}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              direction: "rtl",
-              flexWrap: "wrap",
-              marginTop: 15,
-              gap: 15,
-              width: width,
-            }}
-            renderItem={({ item }) => {
-              return (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 15,
-                  }}
-                >
-                  <AppText
-                    centered={false}
-                    text={item.attributes?.name}
-                    style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
-                  />
-                  <AppText
-                    text={`${item.attributes?.price} جنيه`}
+                  >
+                    <AppText
+                      centered={false}
+                      text={item.attributes?.name}
+                      style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
+                    />
+                    <AppText
+                      text={`${item.attributes?.Price} جنيه`}
+                      style={{
+                        backgroundColor: Colors.primaryColor,
+                        fontSize: 14,
+                        padding: 6,
+                        borderRadius: 40,
+                        color: Colors.whiteColor,
+                      }}
+                    />
+                  </View>
+                );
+              }}
+            />
+          </View>
+        ) : (
+          <View style={styles.itemContainer}>
+            <FlatList
+              data={item?.attributes?.packages.data}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => item.id}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                direction: "rtl",
+                flexWrap: "wrap",
+                marginTop: 15,
+                gap: 15,
+                width: width,
+              }}
+              renderItem={({ item }) => {
+                return (
+                  <View
                     style={{
-                      backgroundColor: Colors.primaryColor,
-                      fontSize: 14,
-                      padding: 6,
-                      borderRadius: 40,
-                      color: Colors.whiteColor,
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 15,
                     }}
-                  />
-                </View>
-              );
-            }}
-          />
-        </View>}
+                  >
+                    <AppText
+                      centered={false}
+                      text={item.attributes?.name}
+                      style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
+                    />
+                    <AppText
+                      text={`${item.attributes?.price} جنيه`}
+                      style={{
+                        backgroundColor: Colors.primaryColor,
+                        fontSize: 14,
+                        padding: 6,
+                        borderRadius: 40,
+                        color: Colors.whiteColor,
+                      }}
+                    />
+                  </View>
+                );
+              }}
+            />
+          </View>
+        )}
         <View style={styles.itemContainer}>
           <AppText centered={false} text={"السعر الكلي"} style={styles.title} />
           <PriceTextComponent
@@ -242,14 +217,6 @@ export default function OrderDetails({ navigation, route }) {
             style={styles.price}
           />
         </View>
-        {/* <View style={styles.itemContainer}>
-          <AppText centered={false} text={" المنطقه"} style={styles.title} />
-          <AppText
-            centered={false}
-            text={item?.attributes?.region?.data?.attributes?.name}
-            style={styles.price}
-          />
-        </View> */}
         <View style={styles.itemContainer}>
           <AppText centered={false} text={" التاريخ"} style={styles.title} />
           <AppText
@@ -295,9 +262,16 @@ export default function OrderDetails({ navigation, route }) {
             onPress={() => setModalVisible(true)}
           />
         )}
-        {item?.attributes?.status === "finished" && (
+        {(item?.attributes?.status === "finished" && item?.attributes?.PaymentStatus === 'payed') && (
           <AppButton
-            title={"finish work"}
+            title={"rate and finish order"}
+            style={{ backgroundColor: Colors.success }}
+            onPress={() =>navigation.navigate( REVIEW_ORDER_SCREEN,{orderID:item.id})}
+          />
+        )}
+        {(item?.attributes?.status === "finished" && item?.attributes?.PaymentStatus === 'payment required') && (
+          <AppButton
+            title={"Pay"}
             style={{ backgroundColor: Colors.success }}
             onPress={() => handlePayOrder(item?.id)}
           />
@@ -310,11 +284,7 @@ export default function OrderDetails({ navigation, route }) {
         onPress={() => handleOrderCancle(item.id)}
       />
       <LoadingModal visible={isLoading} />
-      <StarsComponent
-        isModalVisible={isReviewVisble}
-        orderID={orderID}
-        setIsModalVisible={setIsReviewVisble}
-      />
+    
     </ScrollView>
   );
 }
@@ -379,13 +349,16 @@ const styles = StyleSheet.create({
     fontSize: 21,
     color: Colors.primaryColor,
   },
-  chatContainer:{paddingHorizontal:19,backgroundColor:Colors.primaryColor,
-    width:60,
-  height:40,
-  borderRadius:20,
-  marginHorizontal:width*0.75,
-  left:0,
-  display:"flex",
-  alignItems:'center',
-  justifyContent:'center',}
+  chatContainer: {
+    paddingHorizontal: 19,
+    backgroundColor: Colors.primaryColor,
+    width: 60,
+    height: 40,
+    borderRadius: 20,
+    marginHorizontal: width * 0.75,
+    left: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

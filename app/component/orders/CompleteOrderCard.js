@@ -29,7 +29,7 @@ export default function CompleteOrderCard({ item, onPress }) {
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.orderCardContainer}>
         <View style={styles.headerContainer}>
-          {item?.attributes?.services.data.length > 0 && (
+          {item?.attributes?.services.data.length > 0 ? (
             <View style={styles.headerText}>
               <View style={styles.date}>
                 <Image
@@ -69,8 +69,9 @@ export default function CompleteOrderCard({ item, onPress }) {
                 </TouchableOpacity>
               </View>
             </View>
-          )}
-          {item?.attributes?.packages && (
+          ):
+          item?.attributes?.packages && (
+            <View style={styles.headerText}>
             <AppText
               text={item?.attributes?.packages?.data[0]?.attributes?.name}
               style={[
@@ -78,7 +79,24 @@ export default function CompleteOrderCard({ item, onPress }) {
                 { color: Colors.primaryColor, fontSize: 17 },
               ]}
               centered={false}
-            />
+              />
+              <View>
+                <TouchableOpacity
+                  style={styles.complainContainer}
+                  onPress={() => {
+                    if(item?.attributes?.complain?.data){
+                      navigation.navigate(ACCOUNT,{screen:"compass"})
+                      // navigation.navigate("compass")
+                    }else {
+                      navigation.navigate(COMPLAIN_CREATE_SCREEN,{item:item})
+                    }
+                  }}
+                >
+<Octicons name="report" size={21} color="white" />
+                </TouchableOpacity>
+                </View>
+              
+              </View>
           )}
         </View>
         <View style={styles.date}>

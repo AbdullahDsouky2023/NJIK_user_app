@@ -77,7 +77,7 @@ const SigninScreen = ({ navigation }) => {
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
               centered={true}
-              text={"Signin with Phone Number"+ EXPO_PUBLIC_BASE_URL}
+              text={"Signin with Phone Number"}
               style={{ marginBottom: 10 }}
             />
           </View>

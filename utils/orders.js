@@ -31,7 +31,6 @@ export const PayOrder = async (id) => {
     const data = await api.put(`/api/orders/${id}`,{
       data:{
         PaymentStatus:"payed",
-        status:"finished"
       }
     });
     if ( data?.data?.data?.id) return true
@@ -45,7 +44,8 @@ export const AddOrderReview = async (id,review) => {
     const data = await api.put(`/api/orders/${id}`,{
       data:{
         userOrderRating:review.rating ,
-       userOrderReview:review.content
+       userOrderReview:review.content,
+       status:"finished"
       }
     });
     if ( data?.data?.data?.id) return true

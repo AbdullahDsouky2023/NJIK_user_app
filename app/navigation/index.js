@@ -9,7 +9,7 @@ import LoadingScreen from "../component/loadingScreen";
 import SplashScreen from "../screens/splashScreen";
 import AuthNavigator from "./AuthNavigator";
 import AppNavigator from "./AppNavigator";
-import { CART, COMPLAIN_CREATE_SCREEN, COMPLAIN_ORDER_DETAILS, ITEM_DETAILS, ITEM_ORDER_DETAILS, MANUAL_LOCATION_ADD, MAP, ORDER_COMFIRM_DETAILS, ORDER_SELECT_LOCATION, ORDER_SELECT_REGION, ORDER_SUCCESS_SCREEN, PACKAGE_DETAILS, PACKAGE_SCREEN } from "./routes";
+import { CART, COMPLAIN_CREATE_SCREEN, COMPLAIN_ORDER_DETAILS,  REVIEW_ORDER_SCREEN,ITEM_DETAILS, ITEM_ORDER_DETAILS, MANUAL_LOCATION_ADD, MAP, ORDER_COMFIRM_DETAILS, ORDER_SELECT_LOCATION, ORDER_SELECT_REGION, ORDER_SUCCESS_SCREEN, PACKAGE_DETAILS, PACKAGE_SCREEN } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
 import ItemOrderDetails from "../screens/Item/ItemOrderDetails";
@@ -26,6 +26,7 @@ import PackageScreen from "../screens/package/PackageScreen";
 import PackageDetails from "../screens/package/PackageDetails";
 import ComplainCreatingScreen from "../screens/complain/ComplainCreatingScreen";
 import ComplainOrderDetails from "../screens/complain/ComplainOrderDetails";
+import StarsComponent from "../component/StarsComponent";
 
 LogBox.ignoreAllLogs();
 
@@ -44,6 +45,7 @@ const RootNavigator = () => {
         <Stack.Screen name="App" component={AppNavigator} />
         <Stack.Screen name="Auth" component={AuthNavigator} />
         <Stack.Screen name="Chat" component={ChatNavigator} />
+
 
         <Stack.Screen
           name={ITEM_DETAILS}
@@ -87,6 +89,11 @@ const RootNavigator = () => {
         <Stack.Screen
           name={PACKAGE_DETAILS}
           component={PackageDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={ REVIEW_ORDER_SCREEN}
+          component={StarsComponent}
           options={{ headerShown: false }}
         />
         <Stack.Screen

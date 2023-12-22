@@ -93,12 +93,15 @@ export default function CurrentOrderCard({ item, onPress }) {
           />
            <AppText
             text={
-              `${item?.attributes?.status === "assigned"?
-              "طلب جديد":item?.attributes?.status =="accepted"?
-              "تم القبول":item?.attributes?.status =="working" ?
-               "جاري العمل":item?.attributes?.status =="finished" ?
-                " تم الانتهاء":item?.attributes?.status =="payed"?
-                "تم السداد": null }`}
+              `${
+                item?.attributes?.status === ("assigned")?"طلب جديد":
+                item?.attributes?.status === ( "pending")?
+
+              "طلب جديد":item?.attributes?.status ==="accepted"?
+              "تم القبول":item?.attributes?.status ==="working" ?
+               "جاري العمل":item?.attributes?.status ==="finish_work" ?
+                " تم الانتهاء":item?.attributes?.status ==="payed"?
+                "تم السداد": " تم الانتهاء" }`}
             centered={false}
             style={styles.title}
           />

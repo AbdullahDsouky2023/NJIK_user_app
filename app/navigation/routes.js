@@ -19,4 +19,5 @@ export const ORDER_COMFIRM_DETAILS= "comfirm-order-details-screen"
 export const MY_ORDERS = ('الطلبات')
 export const CART = "CartScreen"
 export const MAP = "MapScreen"
+export const REVIEW_ORDER_SCREEN = "review-order"
 export const CHAT_ROOM = "chat-room-screen"

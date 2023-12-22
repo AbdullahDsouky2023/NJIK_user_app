@@ -1,32 +1,63 @@
 import { Rating, AirbnbRating } from "react-native-ratings";
 import Modal from "react-native-modal";
-import { View, Text, TextInput, StyleSheet, Dimensions } from "react-native";
+import { View, Text, TextInput, StyleSheet, Dimensions, ScrollView } from "react-native";
 import React, { useState } from "react";
 import AppText from "./AppText";
 import AppFormField from "./Form/FormField";
 import AppForm from "./Form/Form";
 import SubmitButton from "./Form/FormSubmitButton";
-import { AddOrderReview } from "../../utils/orders";
+import useOrders, { AddOrderReview } from "../../utils/orders";
 import { Alert } from "react-native";
 import { HOME } from "../navigation/routes";
 const { width } = Dimensions.get("screen");
 import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import { Colors } from "../constant/styles";
+import ArrowBack from "./ArrowBack";
+import { updateProviderData, updateUserData } from "../../utils/user";
 export default function StarsComponent({
-  setIsModalVisible,
-  isModalVisible,
-  orderID
+  route
 }) {
+  const { data: UserOrders, isLoading: loading, isError } = useOrders();
+  console.log(route.params.orderID)
   const [rating, setRating] = useState(0);
   const navigation = useNavigation()
   const handleFormSubmit = async (values) => {
     try {
+      const orderID = route.params.orderID
       const res = await AddOrderReview(orderID,{
         rating:rating === 0 ? "5" :rating.toString() ,
         content:values.review || ""
       });
-   
+      const selectedOrder = UserOrders?.data?.filter(
+        (order) => order?.id === orderID
+      );
+
+      const providerNotificationToken =
+        selectedOrder[0]?.attributes?.provider?.data?.attributes
+          ?.expoPushNotificationToken;
+
+      const OrderProvider = selectedOrder[0]?.attributes?.provider?.data?.id;
+      const OrderUserId = selectedOrder[0]?.attributes?.user?.data?.id;
+      console.log("user is is ", OrderUserId);
+      console.log("OrderProvider is is ", OrderProvider);
+      console.log(OrderProvider,OrderUserId,{ rating:rating === 0 ? "5" :rating.toString() ,
+        content:values.review || ""})
       if (res) {
+        await updateUserData(OrderUserId, {
+          orders: {
+            connect: [{ id:orderID }],
+          },
+        });
+        await updateProviderData(OrderProvider, {
+          orders: {
+            connect: [{ id:orderID }],
+          },
+        });
+        sendPushNotification(
+          providerNotificationToken,
+          `تم انهاء الطلب بواسطه ${selectedOrder[0]?.attributes?.user?.data?.attributes?.username}`
+        );
         navigation.dispatch(
             CommonActions.reset({
               index: 0,
@@ -36,26 +67,29 @@ export default function StarsComponent({
       } else {
         Alert.alert("حدثت مشكله حاول مرة اخري");
       }
+
+      
     } catch (error) {
       console.log(error, "error paying the order");
-    } finally {
-      setIsModalVisible(false)
-    }
+    } 
   };
   return (
-    <Modal isVisible={isModalVisible}>
-      <View style={{ flex: 1, marginTop: "50%" }}>
+    <ScrollView  style={styles.container}>
+      <ArrowBack subPage={true} />
+      <View style={{ flex: 1}}>
+
         <View
           style={{
             display: "flex",
             flexDirection: "column",
-            marginBottom: 10,
+            marginTop: 10,
           }}
         >
-          <AppText text={"تقييمك للخدمه"} />
+          <AppText text={"تقييمك للخدمه"} style={styles.text} />
           <AirbnbRating
             count={5}
             size={35}
+            selectedColor={Colors.primaryColor}
             defaultRating={5}
             showRating={false}
             onFinishRating={(r) => setRating(r)}
@@ -71,17 +105,15 @@ export default function StarsComponent({
         <AppForm
           initialValues={{ rating: "", review: "" }}
           enableReinitialize={true}
+          
           onSubmit={handleFormSubmit}
         >
+                    <AppText text={"تعليقك"} style={styles.text} />
+
           <AppFormField
             autoCapitalize="none"
             autoCorrect={false}
-            style={{
-              borderWidth: 1,
-              width: width * 0.85,
-              borderColor: "white",
-              padding: 10,
-            }}
+           
             name="review"
             multiline={true}
             numberOfLines={6}
@@ -90,13 +122,22 @@ export default function StarsComponent({
           <SubmitButton title={"تأكيد"} style={styles.buttonSubmit} />
         </AppForm>
       </View>
-    </Modal>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
+  container :{
+    backgroundColor:Colors.whiteColor,
+  },
+  text:{
+    color:'black',
+    paddingHorizontal:15
+  },
   buttonSubmit: {
     width: width * 0.4,
     marginTop: 10,
-    marginLeft: width * 0.2,
+    alignSelf:'center',
+    
+    
   },
 });
