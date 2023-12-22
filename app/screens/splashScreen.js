@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { SafeAreaView, View, StatusBar, Image, StyleSheet, BackHandler } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { SafeAreaView, View, StatusBar, Image, StyleSheet, BackHandler ,Animated} from "react-native";
 import { Colors, Sizes } from "../constant/styles";
 import { CircleFade } from 'react-native-animated-spinkit';
 import { useFocusEffect } from "@react-navigation/native";
@@ -9,31 +9,15 @@ import { setUserData, userRegisterSuccess } from "../store/features/userSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUserByPhoneNumber } from "../../utils/user";
 import LocationModal from "../component/location/LocationModal";
-import { getLocationFromStorage } from "../../utils/location";
+
 import { auth } from "../../firebaseConfig";
 const SplashScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   let user = useSelector((state) => state.user?.user?.phoneNumber);
-  // const [locationModalVisible, setLocationModalVisible] = useState(false);
-  // const [locationConfirmed, setLocationConfirmed] = useState(false);
-
-  // useEffect(() => {
-  //   // Check if the location is already confirmed
-  //   AsyncStorage.getItem('userLocation').then((userLocation) => {
-  //     if (userLocation) {
-  //       setLocationConfirmed(true);
-  //       console.log("the current user  location",userLocation)
-  //     } else {
-  //       // Location not confirmed, show the modal
-  //       setLocationModalVisible(true);
-  //     }
-  //   });
-  // }, []);
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
   const handleLocationConfirm = () => {
-    // Location is now confirmed
     setLocationConfirmed(true);
-    // Close the modal
     setLocationModalVisible(false);
 
   };
@@ -41,7 +25,17 @@ const SplashScreen = ({ navigation }) => {
         BackHandler.exitApp();
         return true;
     }
-
+    useEffect(() => {
+      // Start the fade out animation after 3 seconds
+      setTimeout(() => {
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 1000,
+          useNativeDriver: true,
+        })
+      }, 3000);
+    }, [fadeAnim, navigation]);
+  
     useEffect(() => {
         async function checkUserAndNavigate() {
       try {
@@ -109,14 +103,14 @@ const SplashScreen = ({ navigation }) => {
       <StatusBar backgroundColor={Colors.primaryColor} />
 
 
-          <View style={{ flex: 1, justifyContent: 'center' }}>
+          <Animated.View style={{ flex: 1, justifyContent: 'center',opacity: fadeAnim }}>
             <Logo />
             <CircleFade
               size={45}
               color={Colors.primaryColor}
               style={{ alignSelf: 'center' }}
             />
-          </View>
+          </Animated.View>
 
     </SafeAreaView>
   )

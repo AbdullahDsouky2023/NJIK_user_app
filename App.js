@@ -26,15 +26,9 @@ const App = () => {
   },[])
   
   
-  // useEffect(() => {
-  //   AppState.addEventListener('change', handleAppStateChange);
-  //   return () => {
-  //     AppState.removeEventListener('change', handleAppStateChange);
-  //   };
-  // }, []);
+
   useEffect(()=>{
     registerNotificationListeners()
-    //  AsyncStorage.setItem('notifications',[ JSON.stringify([])]);
   },[])
   const handleAppStateChange = async (nextAppState) => {
     try {
