@@ -30,7 +30,7 @@ const [currentOrders,setCurrentData]=useState([])
 const fetchData=()=>{
   const currentOrders = data?.data?.filter(
     (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.PaymentStatus === "payed"
-    );
+     && order?.attributes?.status === "finished");
     setCurrentData(currentOrders)
   setRefreshing(false)
   refetch()

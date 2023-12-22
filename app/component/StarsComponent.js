@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../constant/styles";
 import ArrowBack from "./ArrowBack";
 import { updateProviderData, updateUserData } from "../../utils/user";
+import useNotifications from "../../utils/notifications";
 export default function StarsComponent({
   route
 }) {
@@ -22,6 +23,8 @@ export default function StarsComponent({
   console.log(route.params.orderID)
   const [rating, setRating] = useState(0);
   const navigation = useNavigation()
+  const { sendPushNotification } = useNotifications();
+
   const handleFormSubmit = async (values) => {
     try {
       const orderID = route.params.orderID
@@ -43,8 +46,15 @@ export default function StarsComponent({
       console.log("OrderProvider is is ", OrderProvider);
       console.log(OrderProvider,OrderUserId,{ rating:rating === 0 ? "5" :rating.toString() ,
         content:values.review || ""})
-      if (res) {
-        await updateUserData(OrderUserId, {
+        if (res) {
+        navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name:HOME }],
+            }))
+            navigation.goBack()
+            Alert.alert("تم بنجاح");
+            await updateUserData(OrderUserId, {
           orders: {
             connect: [{ id:orderID }],
           },
@@ -58,12 +68,6 @@ export default function StarsComponent({
           providerNotificationToken,
           `تم انهاء الطلب بواسطه ${selectedOrder[0]?.attributes?.user?.data?.attributes?.username}`
         );
-        navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name:HOME }],
-            }))
-          Alert.alert("تم بنجاح");
       } else {
         Alert.alert("حدثت مشكله حاول مرة اخري");
       }

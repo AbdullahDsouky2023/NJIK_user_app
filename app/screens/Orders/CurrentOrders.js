@@ -30,7 +30,7 @@ import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 const [currentOrders,setCurrentData]=useState([])
 const fetchData=()=>{
   const currentOrders = data?.data?.filter(
-    (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.PaymentStatus !== "payed"
+    (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished"
     );
     setCurrentData(currentOrders)
     refetch()

@@ -262,14 +262,21 @@ export default function OrderDetails({ navigation, route }) {
             onPress={() => setModalVisible(true)}
           />
         )}
-        {(item?.attributes?.status === "finished" && item?.attributes?.PaymentStatus === 'payed') && (
+        {(item?.attributes?.status === "payed" && item?.attributes?.PaymentStatus === 'payed') && (
           <AppButton
-            title={"rate and finish order"}
+            title={"finish Order"}
             style={{ backgroundColor: Colors.success }}
             onPress={() =>navigation.navigate( REVIEW_ORDER_SCREEN,{orderID:item.id})}
           />
         )}
-        {(item?.attributes?.status === "finished" && item?.attributes?.PaymentStatus === 'payment required') && (
+        {(item?.attributes?.status === "payment_required" && item?.attributes?.PaymentStatus === 'payed') && (
+          <AppButton
+            title={"finish Order"}
+            style={{ backgroundColor: Colors.success }}
+            onPress={() =>navigation.navigate( REVIEW_ORDER_SCREEN,{orderID:item.id})}
+          />
+        )}
+        {(item?.attributes?.status === "payment_required" && item?.attributes?.PaymentStatus !== 'payed') && (
           <AppButton
             title={"Pay"}
             style={{ backgroundColor: Colors.success }}

@@ -26,11 +26,26 @@ export const cancleOrder = async (id) => {
     console.error("Error deleting the item :", error.message); // Log the error response
   }
 };
+export const PayOrderForReserve = async (id) => {
+  try {
+    const data = await api.put(`/api/orders/${id}`,{
+      data:{
+        PaymentStatus:"payed",
+        
+      }
+    });
+    if ( data?.data?.data?.id) return true
+    return false;
+  } catch (error) {
+    console.error("Error accepting order   :", error.message); // Log the error response
+  }
+};
 export const PayOrder = async (id) => {
   try {
     const data = await api.put(`/api/orders/${id}`,{
       data:{
         PaymentStatus:"payed",
+        status:'payed',
       }
     });
     if ( data?.data?.data?.id) return true

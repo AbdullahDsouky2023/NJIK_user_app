@@ -8,10 +8,11 @@ import { CommonActions } from "@react-navigation/native";
 import { ORDER_SUCCESS_SCREEN } from "../../navigation/routes";
 import { useTranslation } from "react-i18next";
 import AppText from "../../component/AppText";
+import { PayOrderForReserve } from "../../../utils/orders";
 
 const { width } = Dimensions.get('screen');
 
-const PaymentScreen = ({ navigation }) => {
+const PaymentScreen = ({ navigation,route }) => {
 
     const [state, setState] = useState({
         currentPaymentMethodIndex: 2,
@@ -90,10 +91,11 @@ const PaymentScreen = ({ navigation }) => {
             <View style={styles.payButtonOuterWrapStyle}>
                 <TouchableOpacity
                     activeOpacity={0.6}
-                    onPress={() => {
+                    onPress={async() => {
                         // updateState({ showSuccessDialog: true })
                         // setTimeout(() => {
                             // updateState({ showSuccessDialog: false })
+                            await PayOrderForReserve(route?.params?.orderId)
                             navigation.dispatch(
                                 CommonActions.reset({
                                   index: 0,

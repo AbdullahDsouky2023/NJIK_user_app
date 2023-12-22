@@ -53,10 +53,11 @@ import usePackages from "../../../utils/packages";
     
         if (data) {
           dispatch(clearCurrentOrder());
+          console.log("order data after subit ",data)
           dispatch(clearCart());
     
           if (totalPrice > 0) {
-            navigation.navigate("Payment");
+            navigation.navigate("Payment",{orderId:data});
           } else if (totalPrice === 0) {
             navigation.dispatch(
               CommonActions.reset({
@@ -101,7 +102,7 @@ import usePackages from "../../../utils/packages";
         <ArrowBack subPage={true} />
        <ScrollView style={styles.container}>
        {
-        currentSelectedServices.length>0 &&
+        currentSelectedServices?.length>0 &&
        <View style={styles.itemContainer}>
           <FlatList
             data={currentSelectedServices}
