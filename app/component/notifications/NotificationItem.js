@@ -88,11 +88,7 @@ const NotificationItem = ({ text, onDeleteNotfication,time:selecttime }) => {
             centered={false}
             style={{ fontSize: 13, color: Colors.primaryColor }}
           />
-          <AppText
-            text={text}
-            centered={false}
-            style={{ fontSize: 11, color: Colors.blackColor }}
-          />
+        
           <AppText text= {time.toDateString()} style={styles.date} centered={false}/>
         </View>
         {/* <View style={styles.time}> */}
