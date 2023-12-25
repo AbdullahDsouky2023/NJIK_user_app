@@ -108,7 +108,7 @@ const SigninScreen = ({ navigation }) => {
           checked={agreedToTerms}
           style={{backgroundColor:Colors.redColor}}
           checkedColor={Colors.redColor}
-          containerStyle={{backgroundColor:Colors.whiteColor,borderWidth:0}}
+          containerStyle={{backgroundColor:Colors.white,borderWidth:0,marginTop:10}}
           onPress={toggleAgreement}
           
         />

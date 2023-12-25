@@ -1,6 +1,6 @@
 export const settingsItemArray = [
   {
-    name: "Account Details",
+    name: "Personal information",
     icon: "user",
     desc: "",
   },
@@ -21,10 +21,6 @@ export const settingsItemArray = [
   {
     name: "Tickets",
     icon: "compass",
-  },
-  {
-    name: "Payment",
-    icon: "credit-card",
   },
   {
     name: "Offers",

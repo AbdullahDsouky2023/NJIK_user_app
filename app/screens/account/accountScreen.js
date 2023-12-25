@@ -74,17 +74,18 @@ const AccountScreen = ({ navigation,route }) => {
       <View style={{ flex: 1 }}>
        
           <ScrollView>
-
-        <View style={styles.ImageContainer}>
+<Logo/>
+        {/* <View style={styles.ImageContainer}>
           <Image source={{uri:imageUri}}
           style={styles.image}
           />
-        </View>
           <AppText text={userData?.username} style={{color:Colors.blackColor,marginBottom:10}}/>
+        </View> */}
 
         <GeneralSettings/>
           <AppText text={"Our Accounts On Social Media"} style={styles.title}/>
           <SocailLinksComponent/>
+          <AppText text={"www.Njik.com"} style={styles.title}/>
        </ScrollView>
        
       </View>

@@ -29,10 +29,10 @@ const {
 
 
       <View style={styles.wrapper}>
-        <AppText text={"رصيدك الحالي في محفظتك"} style={styles.text} />
+        <AppText text={"Your Balance"} style={styles.text} />
         <AppText text={`${amount} جنيه`} style={styles.amount} />
       </View>
-        <AppText text={" يمكنك شحن المحفظه عن احدي الطرق التاليه"} style={[styles.text,{marginTop:15,marginLeft:22,fontSize:15}]} centered={false} />
+        <AppText text={"Choose method to charge your wallet"} style={[styles.text,{marginTop:15,marginLeft:22,fontSize:15}]} centered={false} />
     <View style={styles.wrapper}>
     
       <AppButton
@@ -46,7 +46,6 @@ const {
         <AppButton onPress={setOperation('ايداع')} title={'سحب'} style={ operation === 'ايداع' ? styles.button : '' } textStyle={ operation === 'ايداع' ? {color:Colors.primaryColor}: ''}/> */}
       </View>
     <View style={styles.wrapper}>
-    <AppText text={" او اختر احد طرق الشحن التاليه"} style={styles.amount} />
       <PaymentMethod icon={require('../../assets/images/payment_icon/card.png')}
                         paymentType='Card'
                         index={1}
@@ -66,7 +65,7 @@ const {
                         currentPaymentMethodIndex={currentPaymentMethodIndex}/>
       
       <AppButton
-        title={"Recharge Wallet"}
+        title={"Confirm"}
         style={styles.button}
         textStyle={{ color: Colors.whiteColor }}
         />

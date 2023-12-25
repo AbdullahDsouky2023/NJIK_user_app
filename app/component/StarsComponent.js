@@ -89,7 +89,7 @@ export default function StarsComponent({
             marginTop: 10,
           }}
         >
-          <AppText text={"تقييمك للخدمه"} style={styles.text} />
+          <AppText text={"Your Rate of the Technician"} style={styles.text} />
           <AirbnbRating
             count={5}
             size={35}
@@ -109,10 +109,10 @@ export default function StarsComponent({
         <AppForm
           initialValues={{ rating: "", review: "" }}
           enableReinitialize={true}
-          
+
           onSubmit={handleFormSubmit}
         >
-                    <AppText text={"تعليقك"} style={styles.text} />
+                    <AppText text={"Your Rate of the Technician"} style={styles.text} />
 
           <AppFormField
             autoCapitalize="none"

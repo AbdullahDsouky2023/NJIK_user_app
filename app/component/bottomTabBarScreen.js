@@ -68,7 +68,7 @@ const BottomTabBar = () => {
                     name={OFFERS}
                     component={CurrentOffersScreen}
                     options={{
-                        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="gift-open-outline" size={25} color={color} />
+                        tabBarIcon: ({ color }) => <Feather name="shopping-cart" size={25} color={color} />
                     }}
                 />
                 <Tab.Screen

@@ -7,7 +7,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import { Entypo } from '@expo/vector-icons'; 
+import { Entypo } from "@expo/vector-icons";
 
 import React, { useEffect } from "react";
 import { FontAwesome } from "@expo/vector-icons";
@@ -19,132 +19,129 @@ import { ORDERS_DETAILS } from "../../navigation/routes";
 import PriceTextComponent from "../PriceTextComponent";
 const { width } = Dimensions.get("screen");
 import { Ionicons } from "@expo/vector-icons";
-import { useDispatch} from  'react-redux'
+import { useDispatch } from "react-redux";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 export default function CurrentOrderCard({ item, onPress }) {
   const navigation = useNavigation();
-  const dispatch = useDispatch()
-  console.log("current item ",item.attributes?.packages.data[0]?.attributes?.name)
+  const dispatch = useDispatch();
+  console.log(
+    "current item ",
+    item.attributes?.packages.data[0]?.attributes?.name
+  );
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.orderCardContainer}>
+      <View style={[styles.orderCardContainer,{backgroundColor: item?.attributes?.packages?.data.length > 0 ? Colors.piege : Colors.whiteColor}]}>
         <View style={styles.headerContainer}>
-          {
-                      item?.attributes?.services.data.length>0 &&
-<>
-          <Image
-            height={25}
-            width={25}
-            source={{
-              uri: item?.attributes?.services?.data[0]?.attributes?.category
-              ?.data?.attributes?.image?.data[0]?.attributes?.url,
-            }}
-          />
-          <AppText
-            text={
-              item?.attributes?.services?.data[0]?.attributes?.category?.data
-                ?.attributes?.name
-            }
-            style={[styles.header, { color: Colors.primaryColor,fontSize:17 }]}
-            centered={false}
+          {item?.attributes?.services.data.length > 0 && (
+            <>
+              <Image
+                height={22}
+                width={22}
+                source={{
+                  uri: item?.attributes?.services?.data[0]?.attributes?.category
+                    ?.data?.attributes?.image?.data[0]?.attributes?.url,
+                }}
+              />
+              <AppText
+                text={
+                  item?.attributes?.services?.data[0]?.attributes?.category
+                    ?.data?.attributes?.name
+                }
+                style={[
+                  styles.header,
+                  { color: Colors.primaryColor, fontSize: 17 },
+                ]}
+                centered={false}
+              />
+            </>
+          )}
+          {item?.attributes?.packages && (
+            <AppText
+              text={item?.attributes?.packages?.data[0]?.attributes?.name}
+              style={[
+                styles.header,
+                { color: Colors.primaryColor, fontSize: 17 },
+              ]}
+              centered={false}
             />
-          </>
-          }
-        {
-          item?.attributes?.packages &&
-          <AppText
-          text={
-            item?.attributes?.packages?.data[0]?.attributes?.name
-          }
-          style={[styles.header, { color: Colors.primaryColor,fontSize:17 }]}
-          centered={false}
-          />
-        }
+          )}
         </View>
         <View style={styles.date}>
-          <Ionicons name="ios-location-outline" size={24} color="black" />
+          <AppText text={`Status`} centered={false} style={styles.status} />
           <AppText
-            text={item?.attributes?.location}
+            text={`${
+              item?.attributes?.status === "assigned"
+                ? "طلب جديد"
+                : item?.attributes?.status === "pending"
+                ? "طلب جديد"
+                : item?.attributes?.status === "accepted"
+                ? "تم القبول"
+                : item?.attributes?.status === "working"
+                ? "جاري العمل"
+                : item?.attributes?.status === "finish_work"
+                ? " تم الانتهاء"
+                : item?.attributes?.status === "payed"
+                ? "تم السداد"
+                : " تم الانتهاء"
+            }`}
             centered={false}
             style={styles.title}
           />
         </View>
         {/* Price */}
         <View style={styles.date}>
-          <FontAwesome5 name="money-check" size={18} color="black" />
+          <FontAwesome5 name="money-check" size={16} color="black" />
           <PriceTextComponent price={item?.attributes?.totalPrice} />
         </View>
         {/* date */}
         <View style={styles.date}>
-          <FontAwesome name="calendar" size={24} color="black" />
+          <FontAwesome name="calendar" size={21} color="black" />
           <AppText
             text={`${item?.attributes?.date}`}
             centered={false}
             style={styles.title}
           />
         </View>
-        {item?.attributes?.provider?.data?.attributes?.name &&
-        <View style={styles.date}>
+        {/* {item?.attributes?.provider?.data?.attributes?.name && */}
 
-          <AppText
-            text={`الحاله`}
-            centered={false}
-            style={styles.status}
-          />
-           <AppText
-            text={
-              `${
-                item?.attributes?.status === ("assigned")?"طلب جديد":
-                item?.attributes?.status === ( "pending")?
-
-              "طلب جديد":item?.attributes?.status ==="accepted"?
-              "تم القبول":item?.attributes?.status ==="working" ?
-               "جاري العمل":item?.attributes?.status ==="finish_work" ?
-                " تم الانتهاء":item?.attributes?.status ==="payed"?
-                "تم السداد": " تم الانتهاء" }`}
-            centered={false}
-            style={styles.title}
-          />
-        </View>
-        }
-        <View  style={{
-          display:'flex',
-          flexDirection:'row',
-          alignItems:'center',
-          justifyContent:'space-between'
-        }}>
+        {/* } */}
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <View style={styles.date}>
-
-          <Ionicons name="person-outline" size={24} color="black" />
-          <AppText
-            text={
-              item?.attributes?.provider?.data?.attributes?.name ||
-              "في انتظار العامل "
-            }
-            centered={false}
-            style={styles.title}
+            <Ionicons name="person-outline" size={21} color="black" />
+            <AppText
+              text={
+                item?.attributes?.provider?.data?.attributes?.name ||
+                "في انتظار الفني "
+              }
+              centered={false}
+              style={styles.title}
             />
-            </View>
-            
-          <View >
+          </View>
 
-          {item?.attributes?.provider?.data?.attributes?.name &&
-         
-         <TouchableOpacity style={styles.chatContainer}
-         onPress={() => {
+          <View>
+            {item?.attributes?.provider?.data?.attributes?.name && (
+              <TouchableOpacity
+                style={styles.chatContainer}
+                onPress={() => {
+                  dispatch(
+                    setcurrentChatChannel(item?.attributes?.chat_channel_id)
+                  );
 
-           dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id))
-           
-           navigation.navigate("Chat")}
-          }
-           >
-      <Entypo name="chat" size={24} color="white" />
-      </TouchableOpacity >
-          
-        }
+                  navigation.navigate("Chat");
+                }}
+              >
+                <Entypo name="chat" size={22} color="white" />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
-        </View>
-           
       </View>
     </TouchableWithoutFeedback>
   );
@@ -171,11 +168,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: width * 0.88,
     paddingHorizontal: 20,
-    // height: 170,
+    height: "auto",
     marginTop: 12,
     flex: 1,
-    gap: 5,
-    backgroundColor: Colors.whiteColor,
+    gap: 3,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -190,15 +186,15 @@ const styles = StyleSheet.create({
   },
   name: {
     color: Colors.blackColor,
-    fontSize: 15,
+    fontSize: 12,
   },
   title: {
     color: Colors.blackColor,
-    fontSize: 13,
+    fontSize: 12,
   },
   price: {
     color: Colors.primaryColor,
-    fontSize: 14,
+    fontSize: 12,
   },
   date: {
     display: "flex",
@@ -211,14 +207,16 @@ const styles = StyleSheet.create({
     color: Colors.primaryColor,
     fontSize: 14,
   },
-  chatContainer:{paddingHorizontal:19,
-    backgroundColor:Colors.primaryColor,
-    width:"auto",
-  height:40,
-  borderRadius:20,
-  // marginHorizontal:width*0.65,
-  left:0,
-  display:"flex",
-  alignItems:'center',
-  justifyContent:'center',}
+  chatContainer: {
+    paddingHorizontal: 19,
+    backgroundColor: Colors.primaryColor,
+    width: "auto",
+    height: 40,
+    borderRadius: 20,
+    // marginHorizontal:width*0.65,
+    left: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

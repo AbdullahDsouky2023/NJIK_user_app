@@ -156,9 +156,9 @@ const VerificationScreen = ({ navigation, route }) => {
             />
             <AppButton
               title={
-                resendDisabled ? ` ارسال(${secondsRemaining} ث)` : "اعاده ارسال"
+                resendDisabled ? ` 00 :${secondsRemaining} ` : "اعاده ارسال"
               }
-              // style={{backgroundColor:Colors.success}}
+              textStyle={{fontSize:14}}
               disabled={resendDisabled}
               onPress={() => {
               setResendDisabled(true);

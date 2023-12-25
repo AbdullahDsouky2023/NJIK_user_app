@@ -203,7 +203,7 @@ export default function OrderDetails({ navigation, route }) {
           </View>
         )}
         <View style={styles.itemContainer}>
-          <AppText centered={false} text={"السعر الكلي"} style={styles.title} />
+          <AppText centered={false} text={"السعر "} style={styles.title} />
           <PriceTextComponent
             style={{ color: Colors.blackColor, fontSize: 16, marginTop: 4 }}
             price={item?.attributes?.totalPrice}

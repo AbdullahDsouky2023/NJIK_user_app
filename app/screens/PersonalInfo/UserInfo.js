@@ -178,7 +178,7 @@ return finalPhoneNumber
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
-              text={"Your Account Details"}
+              text={"Personal information"}
               style={{ color: Colors.primaryColor, marginBottom: 10 }}
             />
             <AppForm
@@ -188,7 +188,7 @@ return finalPhoneNumber
               validationSchema={validationSchema}
             >
               <ErrorMessage error={error} visible={error} />
-              <UserImagePicker setImage={setImage} image={image}/>
+              {/* <UserImagePicker setImage={setImage} image={image}/> */}
               <AppText text={"FullName"} centered={false} style={styles.header}/>
               <FormField
                 autoCorrect={false}
@@ -222,17 +222,7 @@ return finalPhoneNumber
                 placeholder={userData?.city}
 
               />
-<AppText text={"district"} centered={false} style={[styles.header,{marginTop:10}]}/>
-              <FormField
-                autoCapitalize="none"
-                autoCorrect={false}
-                // keyboardType="email-address"
-                name="district"
-                // placeholder="emailAddress"
-                // textContentType="emailAddress"
-                placeholder={userData?.district}
 
-              />
               <SubmitButton title="Save" />
             </AppForm>
           </View>

@@ -36,7 +36,7 @@ export default function GeneralSettings() {
 
   return (
     <View style={styles.container}>
-      <AppText text="GeneralSettings" centered={false} style={styles.header} />
+      <AppText text="Settings" style={styles.header} />
       <View>
         <FlatList
           data={settingsItemArray}
@@ -44,6 +44,8 @@ export default function GeneralSettings() {
             display: "flex",
             gap: 20,
             flexWrap:'wrap',
+            alignItems:'center',
+            justifyContent:'center',
             // backgroundColor:'red',
             flexDirection:'row'
           }}
@@ -64,7 +66,8 @@ const styles = StyleSheet.create({
   header: {
     color: Colors.primaryColor,
     fontSize: 18,
-    marginBottom:25
+    marginBottom:25,
+    paddingHorizontal:10
   },
   textHeader: {
     color: Colors.blackColor,

@@ -51,7 +51,7 @@ export default function ContactUsModal({visible,hideModal}) {
             // marginTopTop: Sizes.fixPadding * 2.0,
           }}
         >
-         <AppText text={'كيف تحب نتواصل معك ؟'}/>
+         <AppText text={'كیف تحب تتواصل معانا'}/>
          
          <AppButton title={"Whatsapp"}
          onPress={handleWhatsAppPress}

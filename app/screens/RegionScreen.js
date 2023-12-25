@@ -82,7 +82,7 @@ const SelectRegionScreen = ({ navigation, route }) => {
           </View>
         </ScrollView>
         {selectedRegion && (
-          <AppButton title={"comfirm"} onPress={handleSubmitRegion} />
+          <AppButton title={"Confirm"} onPress={handleSubmitRegion} />
         )}
         {/* <LoadingModal visible={!currentLocation} /> */}
       </View>

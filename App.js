@@ -6,6 +6,7 @@ import { Alert, Dimensions, I18nManager, LogBox } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from 'react';
 import AnimatedSplash from 'react-native-animated-splash-screen';
+import { StatusBar } from 'react-native';
 
 import { Provider } from "react-redux";
 import RootNavigator from "./app/navigation";
@@ -59,17 +60,19 @@ const App = () => {
     <GestureHandlerRootView style={{flex:1}}>
       <Provider store={store}>
         <QueryClientProvider client={client}>
-        <AnimatedSplash
+        {/* <AnimatedSplash
  translucent={true}
  isLoaded={loading}
  logoImage={require("./app/assets/images/splash.png")}
  backgroundColor={Colors.primaryColor}
  logoHeight={height}
  logoWidth={width}
->
+  */}
+{/* > */}
  {/* Your app goes here */}
+
           <RootNavigator />
-</AnimatedSplash>
+{/* </AnimatedSplash> */}
         </QueryClientProvider>
       </Provider>
     </GestureHandlerRootView>

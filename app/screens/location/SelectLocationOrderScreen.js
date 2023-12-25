@@ -217,7 +217,7 @@ const handleSetCurrentLocation =   async (coordinate) => {
           </View>
         </ScrollView>
         {selectedLocation && (
-          <AppButton title={"comfirm"} onPress={handleSubmitLocation}  />
+          <AppButton title={"Confirm"} onPress={handleSubmitLocation}  />
         )}
         <LoadingModal visible={isLoading} />
       </View>
