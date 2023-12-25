@@ -42,12 +42,14 @@
     "expo-image-manipulator": "~11.3.0",
     "expo-image-picker": "~14.3.2",
     "expo-jwt": "^1.6.5",
+    "expo-linking": "~5.0.2",
     "expo-location": "~16.1.0",
     "expo-media-library": "~15.4.1",
     "expo-modules-autolinking": "~1.5.0",
     "expo-notifications": "~0.20.1",
     "expo-secure-store": "~12.3.1",
     "expo-sharing": "~11.5.0",
+    "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-updates": "~0.18.18",
     "firebase": "^10.5.2",
@@ -62,10 +64,12 @@
     "react-i18next": "^13.3.1",
     "react-native": "0.72.5",
     "react-native-animated-spinkit": "^1.5.2",
+    "react-native-animated-splash-screen": "^2.0.5",
     "react-native-countdown-component": "^2.7.1",
     "react-native-dashed-line": "^1.1.0",
     "react-native-dialog": "^9.3.0",
     "react-native-dotenv": "^3.4.9",
+    "react-native-elements": "^3.4.3",
     "react-native-expo-image-cache": "^4.1.0",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-intl-phone-input": "^1.2.27",
@@ -95,9 +99,7 @@
     "redux-thunk": "^2.4.2",
     "stream-chat-expo": "^5.21.0",
     "uuid": "^9.0.1",
-    "yup": "^1.3.2",
-    "expo-linking": "~5.0.2",
-    "expo-splash-screen": "~0.20.5"
+    "yup": "^1.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

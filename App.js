@@ -1,28 +1,32 @@
 import "react-native-gesture-handler";
 
-import RootNavigator from "./app/navigation";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Alert, I18nManager, LogBox } from "react-native";
-import { Provider } from "react-redux";
-import store from "./app/store";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useRef, useEffect, useState } from 'react';
-import { AppState } from 'react-native';
-import * as Notifications from 'expo-notifications';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import * as Updates from 'expo-updates';
-import { Platform } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Alert, Dimensions, I18nManager, LogBox } from "react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect, useState } from 'react';
+import AnimatedSplash from 'react-native-animated-splash-screen';
+
+import { Provider } from "react-redux";
+import RootNavigator from "./app/navigation";
+import store from "./app/store";
 import { registerNotificationListeners, storeNotification } from "./utils/NotificationListner";
+import { Colors } from "./app/constant/styles";
+
+const { width , height }= Dimensions.get('screen')
 export const client = new QueryClient();
 const App = () => {
-  const appStateRef = useRef(AppState.currentState);
-  const [appState, setAppState] = useState(AppState.currentState);
+  const [loading, setLoading] = useState(false);
 
   useEffect(()=>{
     reload()
     I18nManager.forceRTL(true);
     I18nManager.allowRTL(true);
+    setTimeout(() => {
+      setLoading(true);
+      console.log('f')
+     }, 500);
+     
   },[])
   
   
@@ -30,18 +34,7 @@ const App = () => {
   useEffect(()=>{
     registerNotificationListeners()
   },[])
-  const handleAppStateChange = async (nextAppState) => {
-    try {
-
-      if (appStateRef.current.match(/inactive|background/) && nextAppState === 'active') {
-        console.log('App has come to the foreground, reloading...');
-      await Updates.reloadAsync();
-    }
-    appStateRef.current = nextAppState;
-    setAppState(nextAppState);
-  }catch(err){
-    Alert.alert("error reoladiong the app")
-  }}
+ 
 
   const reload = async () => {
     try {
@@ -66,7 +59,17 @@ const App = () => {
     <GestureHandlerRootView style={{flex:1}}>
       <Provider store={store}>
         <QueryClientProvider client={client}>
+        <AnimatedSplash
+ translucent={true}
+ isLoaded={loading}
+ logoImage={require("./app/assets/images/splash.png")}
+ backgroundColor={Colors.primaryColor}
+ logoHeight={height}
+ logoWidth={width}
+>
+ {/* Your app goes here */}
           <RootNavigator />
+</AnimatedSplash>
         </QueryClientProvider>
       </Provider>
     </GestureHandlerRootView>

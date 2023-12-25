@@ -84,7 +84,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
       };
   
       dispatch(setCurrentOrderProperties(formSubmitionData));
-      // console.log(formSubmitionData)
+      console.log(formSubmitionData)
       navigation.navigate(ORDER_COMFIRM_DETAILS,{item,image:values.images})
     } catch (error) {
       Alert.alert("حدثت مشكله حاول مرة اخري");

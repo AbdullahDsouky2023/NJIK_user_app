@@ -6,10 +6,12 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  Dimensions,
 } from "react-native";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import { CommonActions } from "@react-navigation/native";
+import { FontAwesome } from '@expo/vector-icons'; 
 
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
@@ -26,6 +28,7 @@ import { setItem } from "../../utils/secureStore";
 import { setUserData, userRegisterSuccess } from "../../store/features/userSlice";
 import { createUser } from "../../../utils/user";
 import { getLocationFromStorage } from "../../../utils/location";
+const { width }= Dimensions.get('screen')
 const RegisterScreen = ({ navigation,route}) => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -38,9 +41,9 @@ const RegisterScreen = ({ navigation,route}) => {
   const validationSchema = yup.object().shape({
     fullName: yup
       .string()
-      .required(t("Full name is required"))
-      .min(3, "Full Name is too short")
-      .max(50, "Full Name is too long"),
+      .required(t("name is required"))
+      .min(3, "Name is too short")
+      .max(50, "Name is too long"),
     city: yup
       .string(),
     district: yup
@@ -96,7 +99,7 @@ const RegisterScreen = ({ navigation,route}) => {
           <Logo />
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
-              text={"Register Your Account"}
+              text={"Register New Account"}
               style={{ color: Colors.primaryColor, marginBottom: 10 }}
             />
             <AppForm
@@ -135,7 +138,17 @@ initialValues={{ fullName: "", emailAddress: "",city:"",district:"" }}
                 name="district"
                 placeholder="district"
               />
+              <View style={styles.termsContainer}>
+
+                <FontAwesome name="edit" size={24} color={Colors.primaryColor} />
+               <AppText
+              text={"By Creating an account you accept our Terms and Condition"}
+              style={{ color: Colors.blackColor,fontSize:11,width:width }}
+              // centered={false}
+              />
+
               
+              </View>
 
               <SubmitButton title="Register" />
             </AppForm>
@@ -148,7 +161,15 @@ initialValues={{ fullName: "", emailAddress: "",city:"",district:"" }}
 };
 
 const styles = StyleSheet.create({
-  // Your styles remain the same
+  termsContainer:{
+    display:'flex',
+    alignItems:'center',
+    flexDirection:'row',
+    padding:15,
+    gap:10,
+    width:width,
+    // flexWrap:'wrap'
+  }
 });
 
 export default RegisterScreen;

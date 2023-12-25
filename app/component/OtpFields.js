@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function OtpFields({setisLoading,otpInput,setOtpInput,confirmVerificationCode}) {
     const navigation = useNavigation()
-
+  console.log(otpInput)
     return (
       <OTPTextView
       

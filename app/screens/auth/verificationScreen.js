@@ -39,6 +39,7 @@ const VerificationScreen = ({ navigation, route }) => {
 
   const confirmVerificationCode = async () => {
     try {
+      console.log("the code want send to ",phoneNumber)
       const res = await result?.confirm(otpInput);
       setResendDisabled(true);
       setisLoading(true)
@@ -115,11 +116,18 @@ const VerificationScreen = ({ navigation, route }) => {
               }}
               centered={false}
             />
+            <View style={{display:'flex',flexDirection:'row',width:width,gap:8,paddingHorizontal:10}}>
             <AppText
-              text={"enterOTPCode"}
-              centered={false}
-              style={{ fontSize: 17 }}
+              text={`OTP Code Was Sent To`}
+              // centered={false}
+              style={{ fontSize: 15, }}
             />
+            <AppText
+              text={`+${phoneNumber}`}
+              // centered={false}
+              style={{ fontSize: 17,color:Colors.primaryColor }}
+            />
+              </View>
           </View>
           <OtpFields
             setisLoading={setisLoading}

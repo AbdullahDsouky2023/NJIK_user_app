@@ -19,22 +19,39 @@ import { Colors, Fonts, Sizes } from "../../constant/styles";
 import Logo from "../../component/Logo";
 import { auth, firebaseConfig } from "../../../firebaseConfig";
 import { errorMessages } from "../../data/signin";
+import { CheckBox } from 'react-native-elements';
+import { useTranslation } from "react-i18next";
 
 const SigninScreen = ({ navigation }) => {
   const [disabled, setDisabled] = useState(true);
   const [state, setState] = useState({ phoneNumber: null });
   const recaptchaVerifier = useRef(null);
-
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const { t} = useTranslation()
+  // Function to toggle agreement
+ 
   const updateState = (data) => {
     setState((state) => ({ ...state, ...data }));
-    if (data.phoneNumber.length === 12) setDisabled(false);
-    else setDisabled(true);
-  };
+    const { phoneNumber, agreedToTerms,length } = { ...state, ...data };
 
+    console.log(phoneNumber,agreedToTerms,length,"fff")
+  if (phoneNumber?.length === state?.length-1 && agreedToTerms === true ) {
+    setDisabled(false);
+    console.log("rr")
+  } else {
+    setDisabled(true);
+  }
+  };
+  const toggleAgreement = () => {
+    setAgreedToTerms(!agreedToTerms);
+    updateState({agreedToTerms:!agreedToTerms});
+  };
+  // console.log(state,"f"); // Access the country code here
   const handleSendVerificationCode = async () => {
     try {
       setDisabled(true);
-      const phoneNumberValidToFirebase = `+20${phoneNumber}`;
+    console.log("curreit",state)
+      const phoneNumberValidToFirebase = `${state.countryCode}${state.phoneNumber}`;
       const validPhone = `${phoneNumberValidToFirebase.replace(/\s/g, "").trim()}`;
       const PhoneNumberValidated = convertPhoneTovalid(validPhone)
 
@@ -80,11 +97,21 @@ const SigninScreen = ({ navigation }) => {
               text={"Signin with Phone Number"}
               style={{ marginBottom: 10 }}
             />
+          
           </View>
           <PhoneNumberTextField
             phoneNumber={phoneNumber}
             updateState={updateState}
           />
+ <CheckBox
+          title={t("I agree to the Terms and Conditions")}
+          checked={agreedToTerms}
+          style={{backgroundColor:Colors.redColor}}
+          checkedColor={Colors.redColor}
+          containerStyle={{backgroundColor:Colors.whiteColor,borderWidth:0}}
+          onPress={toggleAgreement}
+          
+        />
           <View style={{ backgroundColor: "red" }}>
             <FirebaseRecaptchaVerifierModal
               style={{ backgroundColor: "red" }}

@@ -7,23 +7,30 @@ import { Sizes, Fonts, Colors } from "../constant/styles";
 export default function PhoneNumberTextField({ phoneNumber, updateState }) {
   return (
     <IntlPhoneInput
-      onChangeText={({ phoneNumber }) => {
-        updateState({ phoneNumber: phoneNumber });
-      }}
-      
+    onChangeText={(e) => {
+      const countryCode = e.dialCode; 
+     const length = (e.selectedCountry.mask).length
+      updateState({ phoneNumber: e.phoneNumber, countryCode,length }); // Pass the country code to the parent component
+    }}
+    flagStyle={{display:'none'}}
       defaultCountry="EG"
       
       containerStyle={styles.phoneNumberTextFieldStyle}
       dialCodeTextStyle={{
         ...Fonts.blackColor17Medium,
-        marginLeft: Sizes.fixPadding - 5.0,
+        paddingVertical:5,
+        paddingLeft: Sizes.fixPadding - 5.0,
+        fontSize:17
       }}
+      renderFlag={() => null} // Add this line
       
+
       phoneInputStyle={{
         flex: 1,
         paddingRight: Sizes.fixPadding,
         ...Fonts.blackColor17Medium,
         flexDirection: "column",
+        fontSize:17,
         textAlign: "left",  // Set text alignment to left
         direction: "ltr",  // Set text direction to left-to-right (ltr)
       }}
