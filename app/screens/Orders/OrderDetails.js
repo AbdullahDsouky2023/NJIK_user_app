@@ -71,9 +71,9 @@ export default function OrderDetails({ navigation, route }) {
             routes: [{ name: HOME }],
           })
         );
-        Alert.alert("تم الغاء الطلب بنجاح");
+        Alert.alert("payment has been cancled successfully.");
       } else {
-        Alert.alert("حدثت مشكله حاول مرة اخري");
+        Alert.alert(t("Something Went Wrong, Please try again!"));
       }
     } catch (error) {
       console.log(error, "error deleting the order");
@@ -88,14 +88,14 @@ export default function OrderDetails({ navigation, route }) {
       const res = await PayOrder(id);
       if (res) {
         
-        Alert.alert(" تم الدفع بنجاح");
+        Alert.alert("payment has been processed successfully.");
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [{ name:HOME }],
           }))
       } else {
-        Alert.alert("حدثت مشكله حاول مرة اخري");
+        Alert.alert(t("Something Went Wrong, Please try again!"));
       }
     } catch (error) {
       console.log(error, "error paying the order");
@@ -141,7 +141,7 @@ export default function OrderDetails({ navigation, route }) {
                       style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
                     />
                     <AppText
-                      text={`${item.attributes?.Price} جنيه`}
+                      text={`${item.attributes?.Price} `+"EGP"}
                       style={{
                         backgroundColor: Colors.primaryColor,
                         fontSize: 14,
@@ -187,7 +187,7 @@ export default function OrderDetails({ navigation, route }) {
                       style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
                     />
                     <AppText
-                      text={`${item.attributes?.price} جنيه`}
+                      text={`${item.attributes?.price} `+"EGP"}
                       style={{
                         backgroundColor: Colors.primaryColor,
                         fontSize: 14,
@@ -203,14 +203,14 @@ export default function OrderDetails({ navigation, route }) {
           </View>
         )}
         <View style={styles.itemContainer}>
-          <AppText centered={false} text={"السعر "} style={styles.title} />
+          <AppText centered={false} text={"Price"} style={styles.title} />
           <PriceTextComponent
             style={{ color: Colors.blackColor, fontSize: 16, marginTop: 4 }}
             price={item?.attributes?.totalPrice}
           />
         </View>
         <View style={styles.itemContainer}>
-          <AppText centered={false} text={" العنوان"} style={styles.title} />
+          <AppText centered={false} text={"Location"} style={styles.title} />
           <AppText
             centered={false}
             text={item?.attributes?.location}
@@ -218,15 +218,17 @@ export default function OrderDetails({ navigation, route }) {
           />
         </View>
         <View style={styles.itemContainer}>
-          <AppText centered={false} text={" التاريخ"} style={styles.title} />
+          <AppText centered={false} text={"Date"} style={styles.title} />
           <AppText
             centered={false}
             text={item?.attributes?.date}
             style={styles.price}
           />
         </View>
-        <View style={styles.descriptionContainer}>
-          <AppText centered={false} text={" ملاحظات"} style={styles.title} />
+        {
+           item?.attributes?.description &&
+           <View style={styles.descriptionContainer}>
+          <AppText centered={false} text={"Notes"} style={styles.title} />
           <AppText
             centered={false}
             text={
@@ -235,11 +237,13 @@ export default function OrderDetails({ navigation, route }) {
                 : "لا يوجد"
             }
             style={styles.price}
-          />
+            />
         </View>
-        <View style={styles.descriptionContainer}>
-          <AppText centered={false} text={" صور لطلبك"} style={styles.title} />
+          }
           {item?.attributes?.images?.data ? (
+        <View style={styles.descriptionContainer}>
+            <>
+          <AppText centered={false} text={"Images"} style={styles.title} />
             <Image
               //  resizeMethod="contain"
               source={{
@@ -250,15 +254,14 @@ export default function OrderDetails({ navigation, route }) {
                 width: 200,
                 borderRadius: 10,
               }}
-            />
-          ) : (
-            <AppText centered={false} text={"لا يوجد"} style={styles.price} />
-          )}
-        </View>
+              />
+              </>
+        </View>):null
+          }
 
         {item?.attributes?.status === "pending" && (
           <AppButton
-            title={"الغاء الطلب"}
+            title={"Cancle Order"}
             onPress={() => setModalVisible(true)}
           />
         )}
@@ -286,7 +289,7 @@ export default function OrderDetails({ navigation, route }) {
       </ScrollView>
       <AppModal
         isModalVisible={isModalVisible}
-        message={"تأكيد الغاء الطلب"}
+        message={"Confirm Cancling Order?"}
         setModalVisible={setModalVisible}
         onPress={() => handleOrderCancle(item.id)}
       />

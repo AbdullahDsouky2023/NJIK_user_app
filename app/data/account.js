@@ -5,7 +5,7 @@ export const settingsItemArray = [
     desc: "",
   },
   {
-    name: "المحفظه",
+    name: "Wallet",
     icon: "wallet",
     desc: "تفاصيل محفظتك الخاصه",
   },

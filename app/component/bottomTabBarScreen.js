@@ -65,21 +65,21 @@ const BottomTabBar = () => {
                     }}
                 />
                 <Tab.Screen
-                    name={OFFERS}
+                    name={t(OFFERS)}
                     component={CurrentOffersScreen}
                     options={{
                         tabBarIcon: ({ color }) => <Feather name="shopping-cart" size={25} color={color} />
                     }}
                 />
                 <Tab.Screen
-                     name={MY_ORDERS}
+                     name={t(MY_ORDERS)}
                     component={OrderScreen}
                     options={{
                         tabBarIcon: ({ color }) => <Feather name="shopping-bag" size={25} color={color} />
                     }}
                 />
                 <Tab.Screen
-                    name={ACCOUNT}
+                    name={t(ACCOUNT)}
                     component={AccountNavigator}
                     options={{
                         tabBarIcon: ({ color, }) => (

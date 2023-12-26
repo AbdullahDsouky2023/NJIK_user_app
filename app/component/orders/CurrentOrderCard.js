@@ -71,18 +71,18 @@ export default function CurrentOrderCard({ item, onPress }) {
           <AppText
             text={`${
               item?.attributes?.status === "assigned"
-                ? "طلب جديد"
+                ? "New"
                 : item?.attributes?.status === "pending"
-                ? "طلب جديد"
+                ? "New"
                 : item?.attributes?.status === "accepted"
-                ? "تم القبول"
+                ? "Accepted"
                 : item?.attributes?.status === "working"
-                ? "جاري العمل"
+                ? "Working"
                 : item?.attributes?.status === "finish_work"
-                ? " تم الانتهاء"
+                ? "Finished"
                 : item?.attributes?.status === "payed"
-                ? "تم السداد"
-                : " تم الانتهاء"
+                ? "Payed"
+                : "Finished"
             }`}
             centered={false}
             style={styles.title}
@@ -118,7 +118,7 @@ export default function CurrentOrderCard({ item, onPress }) {
             <AppText
               text={
                 item?.attributes?.provider?.data?.attributes?.name ||
-                "في انتظار الفني "
+                "waiting for the technician"
               }
               centered={false}
               style={styles.title}

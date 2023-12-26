@@ -9,7 +9,7 @@ export default function PriceTextComponent({price,style}) {
     <View>
 
     <AppText
-          text={`${PriceNum > 0 ?`  ${PriceNum} جنيه`:"السعر بعد الزياره"}`}
+          text={`${PriceNum > 0 ?(`  ${PriceNum} `+"EGP"):"السعر بعد الزياره"}`}
           style={[styles.servicePrice,style]}
           centered={false}
           />

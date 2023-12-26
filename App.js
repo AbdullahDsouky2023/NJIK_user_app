@@ -19,16 +19,16 @@ export const client = new QueryClient();
 const App = () => {
   const [loading, setLoading] = useState(false);
 
-  useEffect(()=>{
-    reload()
-    I18nManager.forceRTL(true);
-    I18nManager.allowRTL(true);
-    setTimeout(() => {
-      setLoading(true);
-      console.log('f')
-     }, 500);
+  // useEffect(()=>{
+  //   reload()
+  //   I18nManager.forceRTL(true);
+  //   I18nManager.allowRTL(true);
+  //   setTimeout(() => {
+  //     setLoading(true);
+  //     console.log('f')
+  //    }, 500);
      
-  },[])
+  // },[])
   
   
 

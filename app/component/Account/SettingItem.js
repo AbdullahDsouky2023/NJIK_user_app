@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View,I18nManager } from "react-native";
 import { Colors } from "../../constant/styles";
 import AppText from "../AppText";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     color: Colors.blackColor,
-    fontSize: 16,
+    fontSize: I18nManager.isRTL ? 14 :11,
     // alignSelf:"left"
   },
   headerDescription: {

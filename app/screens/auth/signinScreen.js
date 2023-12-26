@@ -72,7 +72,7 @@ const SigninScreen = ({ navigation }) => {
       const errorMessage = errorMessages[error.message];
 
       console.log("the error is ", errorMessage, error.message);
-      Alert.alert(errorMessage || "حدث خطأ غير معروف. الرجاء المحاولة مرة أخرى");    
+      Alert.alert(errorMessage || t("Something Went Wrong, Please try again!"));    
     } finally {
       setDisabled(false);
     }

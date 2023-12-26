@@ -7,6 +7,7 @@ import {
   ScrollView,
   Alert,
   Dimensions,
+  I18nManager,
 } from "react-native";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     display:'flex',
     alignItems:'center',
     justifyContent:'space-between',
-    flexDirection:'row'
+    flexDirection:I18nManager.isRTL ?"row":"row-reverse"
   }
 });
 

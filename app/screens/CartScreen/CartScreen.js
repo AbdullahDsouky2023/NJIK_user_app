@@ -118,7 +118,7 @@ export default function CartScreen({ route ,navigation}) {
                   />
                   <AppText
                     centered={false}
-                    text={`${item.attributes?.Price} جنيه`}
+                    text={`${item.attributes?.Price} ` +"EGP"}
                     style={[styles.price, { fontSize: 14, paddingRight: 10 }]}
                   />
                 </View>

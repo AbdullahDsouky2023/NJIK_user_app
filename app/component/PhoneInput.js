@@ -1,6 +1,6 @@
 import React from "react";
 import IntlPhoneInput from "react-native-intl-phone-input";
-import { StyleSheet } from "react-native";
+import { StyleSheet, I18nManager } from 'react-native';
 
 import { Sizes, Fonts, Colors } from "../constant/styles";
 
@@ -20,7 +20,9 @@ export default function PhoneNumberTextField({ phoneNumber, updateState }) {
         ...Fonts.blackColor17Medium,
         paddingVertical:5,
         paddingLeft: Sizes.fixPadding - 5.0,
-        fontSize:17
+        fontSize:17,
+        textAlign: "left",  // Set text alignment to left
+        direction: "ltr",  // 
       }}
       renderFlag={() => null} // Add this line
       
@@ -48,6 +50,6 @@ const styles = StyleSheet.create({
     marginHorizontal: Sizes.fixPadding,
     direction: "rtl",  // Set direction to right-to-left (rtl)
     display: 'flex',
-    flexDirection: 'row-reverse',
+    flexDirection:  I18nManager.isRTL ? 'row-reverse' : 'row',
   },
 });

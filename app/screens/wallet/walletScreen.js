@@ -30,7 +30,7 @@ const {
 
       <View style={styles.wrapper}>
         <AppText text={"Your Balance"} style={styles.text} />
-        <AppText text={`${amount} جنيه`} style={styles.amount} />
+        <AppText text={`${amount} `+"EGP"} style={styles.amount} />
       </View>
         <AppText text={"Choose method to charge your wallet"} style={[styles.text,{marginTop:15,marginLeft:22,fontSize:15}]} centered={false} />
     

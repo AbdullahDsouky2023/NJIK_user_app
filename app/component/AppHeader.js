@@ -34,7 +34,7 @@ export default function AppHeader({ subPage = false}) {
         <TouchableWithoutFeedback >
 
           <View style={styles.WalletContainer}>
-            <AppText style={{fontSize:15,color:'white'}} text={"0.0 جنيه"}/>
+            <AppText style={{fontSize:15,color:'white'}} text={"0.0"+"EGP"}/>
           </View>
             </TouchableWithoutFeedback>
           ) }

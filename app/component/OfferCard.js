@@ -39,7 +39,7 @@ export default function OfferCard({ service, price, image,onPress,content }) {
           centered={false}
         />
       <AppText
-          text={`${price} جنيه`}
+          text={`${price} `+"EGP"}
           style={{
             color: Colors.primaryColor,
             maxWidth: width * 0.5,

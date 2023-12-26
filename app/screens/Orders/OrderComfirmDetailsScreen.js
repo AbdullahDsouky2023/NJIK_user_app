@@ -136,7 +136,7 @@ import usePackages from "../../../utils/packages";
                     {
                       item.attributes?.Price > 0 &&
                   <AppText
-                    text={`${item.attributes?.Price} جنيه`}
+                    text={`${item.attributes?.Price} `+"EGP"}
                     style={{
                       backgroundColor: Colors.primaryColor,
                       fontSize: 14,
@@ -184,7 +184,7 @@ import usePackages from "../../../utils/packages";
                     style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
                   />
                   <AppText
-                    text={`${item.attributes?.price} جنيه`}
+                    text={`${item.attributes?.price} `+"EGP"}
                     style={{
                       backgroundColor: Colors.primaryColor,
                       fontSize: 14,

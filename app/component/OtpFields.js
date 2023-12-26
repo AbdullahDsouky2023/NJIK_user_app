@@ -2,19 +2,19 @@ import OTPTextView from "react-native-otp-textinput";
 import { useNavigation } from "@react-navigation/native";
 
 import { Sizes ,Colors,Fonts,} from "../constant/styles";
-import { StyleSheet } from "react-native";
+import { StyleSheet ,I18nManager} from "react-native";
 import { useState } from "react";
 
 export default function OtpFields({setisLoading,otpInput,setOtpInput,confirmVerificationCode}) {
     const navigation = useNavigation()
-  console.log(otpInput)
+  // console.log(otpInput)
     return (
       <OTPTextView
       
         containerStyle={{
           marginTop: Sizes.fixPadding * 2.0,
           marginHorizontal: Sizes.fixPadding * 2.0,
-          flexDirection:'row-reverse',
+          flexDirection:I18nManager.isRTL ? 'row-reverse' : 'row',
         }}
         
         handleTextChange={(text) => {

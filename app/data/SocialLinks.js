@@ -4,31 +4,31 @@ export const SocailLinks = [
     {
    name:"Account Details",
    icon:"facebook",
-   BackgroundColor:Colors.blueColor,
+   BackgroundColor:Colors.primaryColor,
    iconColor:Colors.whiteColor
 },
    {
    name:"المحفظه",
    icon:"instagram",
-   BackgroundColor:Colors.orangeColor,
+   BackgroundColor:Colors.primaryColor,
    iconColor:Colors.whiteColor
 },
    {
    name:"Share App",
    icon:"twitter",
-   BackgroundColor:Colors.blueColor,
+   BackgroundColor:Colors.primaryColor,
    iconColor:Colors.whiteColor
 },
    {
    name:"Contact Us",
    icon:"whatsapp",
-   BackgroundColor:Colors.success,
+   BackgroundColor:Colors.sucprimaryColorcess,
    iconColor:Colors.whiteColor
 },
    {
    name:"Terms and Conditions",
    icon:"linkedin",
-   BackgroundColor:Colors.blueColor,
+   BackgroundColor:Colors.primaryColor,
    iconColor:Colors.whiteColor
 },
   

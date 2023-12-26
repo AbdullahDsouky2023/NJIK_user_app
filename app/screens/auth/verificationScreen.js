@@ -25,6 +25,7 @@ import {
 } from "../../store/features/userSlice";
 import { auth, db } from "../../../firebaseConfig";
 import { getUserByPhoneNumber } from "../../../utils/user";
+import { useTranslation } from "react-i18next";
 
 const { width } = Dimensions.get("screen");
 
@@ -34,7 +35,7 @@ const VerificationScreen = ({ navigation, route }) => {
   const [resendDisabled, setResendDisabled] = useState(true);
   const [secondsRemaining, setSecondsRemaining] = useState(30);
   const dispatch = useDispatch();
-
+  const { t } = useTranslation()
   const { result, handleSendVerificationCode, phoneNumber } = route.params;
 
   const confirmVerificationCode = async () => {
@@ -67,7 +68,7 @@ const VerificationScreen = ({ navigation, route }) => {
       console.log("Error from verification screen:", error?.message);
       const errorMessage =
         errorMessages[error.message] ||
-        "حدث خطأ غير معروف. الرجاء المحاولة مرة أخرى";
+        t("Something Went Wrong, Please try again!");
       Alert.alert(errorMessage);
       setisLoading(false)
     } finally {
@@ -156,7 +157,7 @@ const VerificationScreen = ({ navigation, route }) => {
             />
             <AppButton
               title={
-                resendDisabled ? ` 00 :${secondsRemaining} ` : "اعاده ارسال"
+                resendDisabled ? ` 00 :${secondsRemaining} ` : "Resend"
               }
               textStyle={{fontSize:14}}
               disabled={resendDisabled}
