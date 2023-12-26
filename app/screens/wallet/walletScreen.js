@@ -33,18 +33,8 @@ const {
         <AppText text={`${amount} جنيه`} style={styles.amount} />
       </View>
         <AppText text={"Choose method to charge your wallet"} style={[styles.text,{marginTop:15,marginLeft:22,fontSize:15}]} centered={false} />
-    <View style={styles.wrapper}>
     
-      <AppButton
-        title={"Recharge Wallet"}
-        style={styles.button}
-        textStyle={{ color: Colors.whiteColor }}
-        />
-        </View>
-      <View style={styles.buttonsContainer}>
-        {/* <AppButton onPress={setOperation('سحب')} title={'سحب'} style={ operation === 'سحب' ? styles.button : '' } textStyle={ operation === 'سحب' ? {color:Colors.primaryColor}: ''}/>
-        <AppButton onPress={setOperation('ايداع')} title={'سحب'} style={ operation === 'ايداع' ? styles.button : '' } textStyle={ operation === 'ايداع' ? {color:Colors.primaryColor}: ''}/> */}
-      </View>
+    
     <View style={styles.wrapper}>
       <PaymentMethod icon={require('../../assets/images/payment_icon/card.png')}
                         paymentType='Card'

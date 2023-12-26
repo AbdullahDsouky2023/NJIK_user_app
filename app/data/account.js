@@ -15,6 +15,10 @@ export const settingsItemArray = [
     desc: "شير وأكسب 50 جنيه داخل محفظتك ",
   },
   {
+    name: "Offers",
+    icon: "present",
+  },
+  {
     name: "Contact Us",
     icon: "social-instagram",
   },
@@ -22,10 +26,7 @@ export const settingsItemArray = [
     name: "Tickets",
     icon: "compass",
   },
-  {
-    name: "Offers",
-    icon: "present",
-  },
+ 
   {
     name: "Terms and Conditions",
     icon: "doc",
@@ -34,8 +35,5 @@ export const settingsItemArray = [
     name: "Privacy",
     icon: "question",
   },
-  {
-    name: "Sign Out",
-    icon: "logout",
-  },
+  
 ];

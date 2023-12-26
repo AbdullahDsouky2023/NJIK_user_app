@@ -141,7 +141,7 @@ const VerificationScreen = ({ navigation, route }) => {
           <AppButton
             title={"Continue"}
             path={"Register"}
-            // disabled={otpInput.length === 6 }
+            disabled={otpInput.length !== 6 }
             onPress={confirmVerificationCode}
           />
           <View style={styles.sendMessasesContainer}>

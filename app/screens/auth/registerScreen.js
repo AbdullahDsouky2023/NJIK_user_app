@@ -72,12 +72,13 @@ const RegisterScreen = ({ navigation,route}) => {
       if(res){
         dispatch(userRegisterSuccess(auth?.currentUser));
         setItem("userData", auth?.currentUser);
-        setUserData(res)
+        dispatch(setUserData(res.data));
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [{ name:"App" }],
           }))
+        console.log("the current resposnse after register is ",res.data)
       }else {
         Alert.alert("الاسم او البريد الالكتروني مستخدم من قبل ")
       }
@@ -96,7 +97,10 @@ const RegisterScreen = ({ navigation,route}) => {
       <StatusBar backgroundColor={Colors.primaryColor} />
       <View style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.logoCotnainer}>
+
           <Logo />
+          </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
               text={"Register New Account"}
@@ -169,6 +173,9 @@ const styles = StyleSheet.create({
     gap:10,
     width:width,
     // flexWrap:'wrap'
+  },
+  logoCotnainer:{
+    margin:40
   }
 });
 

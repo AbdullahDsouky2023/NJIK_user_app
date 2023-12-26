@@ -90,7 +90,10 @@ const SigninScreen = ({ navigation }) => {
       <StatusBar backgroundColor={Colors.primaryColor} />
       <View style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.LogoContainer}>
+
           <Logo />
+          </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
               centered={true}
@@ -152,6 +155,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  LogoContainer:{
+    margin:50
+  }
 });
 
 export default SigninScreen;

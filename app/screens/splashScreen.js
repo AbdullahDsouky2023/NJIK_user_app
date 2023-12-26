@@ -114,7 +114,7 @@ const SplashScreen = ({ navigation }) => {
             <CircleFade
               size={45}
               color={Colors.primaryColor}
-              style={{ alignSelf: 'center' }}
+              style={{ alignSelf: 'center' ,marginTop:100}}
             />
           </Animated.View>
 

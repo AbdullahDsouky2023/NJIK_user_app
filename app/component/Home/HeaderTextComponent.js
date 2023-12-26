@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
     color: Colors.blackColor,
     ...Fonts.blackColor14Medium,
     fontSize:18,
-    paddingHorizontal:25
+    paddingBottom:5
+    // paddingHorizontal:25
   },
   imageCard: {
     height: 40,

@@ -18,7 +18,7 @@ export default function ServiceCard({image,name,onPress}) {
 const styles = StyleSheet.create({
     card :{
         height:100,
-        width:width*0.27,
+        width:width*0.28,
         backgroundColor:'#FCF1EA',
         borderRadius:10,
         flex:1,
@@ -28,7 +28,9 @@ const styles = StyleSheet.create({
     },
     text:{
         color:Colors.blackColor,
-        ...Fonts.blackColor14Medium
+        // ...Fonts.blackColor14Medium,
+        fontSize:11,
+        textAlign:'center'
     },
     imageCard :{
         height:40,
