@@ -55,7 +55,7 @@ const BottomTabBar = () => {
                 }}
             >
                 <Tab.Screen
-                    name={HOME}
+                    name={t(HOME)}
                     component={HomeScreen}
                     
                     options={{

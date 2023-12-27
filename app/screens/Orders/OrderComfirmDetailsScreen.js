@@ -27,7 +27,8 @@ import { clearCart } from "../../store/features/CartSlice";
 import useServices from "../../../utils/services";
 import ArrowBack from "../../component/ArrowBack";
 import usePackages from "../../../utils/packages";
-  
+import * as Updates from "expo-updates";
+
   const { width } = Dimensions.get("screen");
   export default function OrderComfirmDetailsScreen({ navigation, route }) {
     // const { item } = route?.params;
@@ -49,6 +50,9 @@ import usePackages from "../../../utils/packages";
   const handleComfirmOrder = async () => {
     try {
       setIsLoading(true)
+      if(currentOrderData.packages.connect.length ===0 && currentOrderData.services.connect.length ===0 ){
+        await Updates.reloadAsync()
+      }
         const data = await postOrder(currentOrderData);
     
         if (data) {

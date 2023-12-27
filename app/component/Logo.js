@@ -15,7 +15,7 @@ export default function Logo() {
 const styles = StyleSheet.create({
     appLogoStyle: {
         width: width*1,
-        height: height * 0.1,
+        height: height * 0.13,
         alignSelf: 'center',
         padding: Sizes.fixPadding * 4,
         // marginBottom: Sizes.fixPadding * 4,

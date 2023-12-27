@@ -11,7 +11,7 @@ import {
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import { CommonActions } from "@react-navigation/native";
-import { FontAwesome } from '@expo/vector-icons'; 
+import { FontAwesome } from "@expo/vector-icons";
 
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
@@ -25,11 +25,15 @@ import { auth } from "../../../firebaseConfig";
 import LoadingModal from "../../component/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { setItem } from "../../utils/secureStore";
-import { setUserData, userRegisterSuccess } from "../../store/features/userSlice";
+import {
+  setUserData,
+  userRegisterSuccess,
+} from "../../store/features/userSlice";
 import { createUser } from "../../../utils/user";
 import { getLocationFromStorage } from "../../../utils/location";
-const { width }= Dimensions.get('screen')
-const RegisterScreen = ({ navigation,route}) => {
+import UserDatePicker from "../../component/Account/UserDatePicker";
+const { width } = Dimensions.get("screen");
+const RegisterScreen = ({ navigation, route }) => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
@@ -37,17 +41,16 @@ const RegisterScreen = ({ navigation,route}) => {
   const user = useSelector((state) => state.user.user);
   const memoizedUser = useMemo(() => user, [user]);
 
-  const { phoneNumber } = route?.params
+  const { phoneNumber } = route?.params;
   const validationSchema = yup.object().shape({
     fullName: yup
       .string()
       .required(t("name is required"))
       .min(3, "Name is too short")
       .max(50, "Name is too long"),
-    city: yup
-      .string(),
-    district: yup
-      .string(),
+    city: yup.string().required('This Field is Required!'),
+    district: yup.string().required('This Field is Required!'),
+    birth_date:yup.date().required('This Field is Required!'),
     emailAddress: yup
       .string()
       .email(t("Invalid email address"))
@@ -56,34 +59,45 @@ const RegisterScreen = ({ navigation,route}) => {
 
   const handleFormSubmit = async (values) => {
     try {
-      const userLocation = await getLocationFromStorage()
-      // const validPhone = auth?.currentUser?.phoneNumber?.replace("+", "")
+      const userLocation = await getLocationFromStorage();
+      const validPhone = auth?.currentUser?.phoneNumber?.replace("+", "")
       setIsLoading(true);
       const res = await createUser({
-        email:values.emailAddress,
-        username:values.fullName,
-        password:"hoohofyu242121fyufdh",
-        city:values?.city || null,
-        district:values?.district || null,
+        email: values.emailAddress,
+        username: values.fullName,
+        password: "hoohofyu242121fyufdh",
+        city: values?.city || null,
+        district: values?.district || null,
+        birth_date:values?.birth_date,
         // location:userLocation,
-        phoneNumber:phoneNumber
-      })
-
-      if(res){
+        phoneNumber: phoneNumber,
+      });
+      console.log(
+        {
+          email: values.emailAddress,
+          username: values.fullName,
+          password: `${values.emailAddress}${values.fullName}`,
+          city: values?.city || null,
+          district: values?.district || null,
+          birth_date:values?.birth_date,
+          // location:userLocation,
+          phoneNumber: phoneNumber,
+        }
+      )
+      if (res) {
         dispatch(userRegisterSuccess(auth?.currentUser));
         setItem("userData", auth?.currentUser);
         dispatch(setUserData(res.data));
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name:"App" }],
-          }))
-        console.log("the current resposnse after register is ",res.data)
-      }else {
-        Alert.alert("الاسم او البريد الالكتروني مستخدم من قبل ")
+            routes: [{ name: "App" }],
+          })
+        );
+        console.log("the current resposnse after register is ", res.data);
+      } else {
+        Alert.alert("الاسم او البريد الالكتروني مستخدم من قبل ");
       }
-
-    
     } catch (err) {
       console.log("error creating the resi", err.message);
     } finally {
@@ -91,15 +105,13 @@ const RegisterScreen = ({ navigation,route}) => {
     }
   };
 
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
       <View style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.logoCotnainer}>
-
-          <Logo />
+            <Logo />
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
@@ -107,51 +119,70 @@ const RegisterScreen = ({ navigation,route}) => {
               style={{ color: Colors.primaryColor, marginBottom: 10 }}
             />
             <AppForm
-          enableReinitialize={true}
-
-initialValues={{ fullName: "", emailAddress: "",city:"",district:"" }}
+              enableReinitialize={true}
+              initialValues={{
+                fullName: "",
+                emailAddress: "",
+                city: "",
+                district: "",
+              }}
               onSubmit={handleFormSubmit}
               validationSchema={validationSchema}
             >
               <ErrorMessage error={error} visible={error} />
+            <HeaderComponent header={"السيد أو السيدة"}/>
               <FormField
                 autoCorrect={false}
                 icon="account"
                 name="fullName"
                 placeholder="fullName"
               />
+                           <HeaderComponent header={"emailAddress"}/>
+
               <FormField
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="email-address"
                 name="emailAddress"
-                placeholder="emailAddress"
+                // placeholder="emailAddress"
                 textContentType="emailAddress"
               />
+              <HeaderComponent header={"city"}/>
               <FormField
                 autoCapitalize="none"
                 autoCorrect={false}
                 // keyboardType="email-address"
                 name="city"
-                placeholder="city"
+                // placeholder="city"
               />
+                          <HeaderComponent header={"district"}/>
+
               <FormField
                 autoCapitalize="none"
                 autoCorrect={false}
                 // keyboardType="email-address"
                 name="district"
-                placeholder="district"
+                // placeholder="district"
               />
+                          <HeaderComponent header={"Birth Date"}/>
+               <UserDatePicker name="birth_date" birthDate={Date.now()}  />
               <View style={styles.termsContainer}>
-
-                <FontAwesome name="edit" size={24} color={Colors.primaryColor} />
-               <AppText
-              text={"By Creating an account you accept our Terms and Condition"}
-              style={{ color: Colors.blackColor,fontSize:11,width:width }}
-              // centered={false}
-              />
-
-              
+                <FontAwesome
+                  name="edit"
+                  size={24}
+                  color={Colors.primaryColor}
+                />
+                <AppText
+                  text={
+                    "By Creating an account you accept our Terms and Condition"
+                  }
+                  style={{
+                    color: Colors.blackColor,
+                    fontSize: 11,
+                    width: width,
+                  }}
+                  // centered={false}
+                />
               </View>
 
               <SubmitButton title="Register" />
@@ -165,18 +196,54 @@ initialValues={{ fullName: "", emailAddress: "",city:"",district:"" }}
 };
 
 const styles = StyleSheet.create({
-  termsContainer:{
-    display:'flex',
-    alignItems:'center',
-    flexDirection:'row',
-    padding:15,
-    gap:10,
-    width:width,
+  termsContainer: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    padding: 15,
+    gap: 10,
+    width: width,
     // flexWrap:'wrap'
   },
-  logoCotnainer:{
-    margin:40
+  logoCotnainer: {
+    margin: 40,
+  },
+  headerContainer:{
+display:'flex',
+flexDirection:'row',
+width:width,
+alignItems:'flex-start',
+justifyContent:'flex-start',
+paddingHorizontal:16,
+paddingVertical:0,
+margin:0,
+gap:4
+  },
+  header: {
+    fontSize: 14,
+    color: Colors.blackColor,
+  },
+  Star :{
+    color: Colors.primaryColor,
+
   }
 });
 
 export default RegisterScreen;
+
+
+const HeaderComponent = ({header}) =>(
+  <View style={styles.headerContainer}>
+
+  <AppText
+  text={"*"}
+  centered={false}
+  style={styles.Star}
+  />
+  <AppText
+  text={header}
+  centered={false}
+  style={styles.header}
+  />
+  </View>
+)

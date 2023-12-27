@@ -57,8 +57,8 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
       setIsLoading(true);
   
       // Wait for the image upload to complete
-      await uploadImage(values.image);
-  
+      await uploadImage(values.images);
+  console.log(values.images)
       // Create valid Date objects
       const date = new Date(values?.Date);
   
@@ -85,7 +85,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
   
       dispatch(setCurrentOrderProperties(formSubmitionData));
       console.log(formSubmitionData)
-      navigation.navigate(ORDER_COMFIRM_DETAILS,{item,image:values.images})
+      navigation.navigate(ORDER_COMFIRM_DETAILS,{item,image:"ff"})
     } catch (error) {
       Alert.alert("حدثت مشكله حاول مرة اخري");
       console.error("Error parsing date or time:", error);
@@ -112,38 +112,41 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
   });
   const uploadImage = async (image, values) => {
     try {
+      const imageIds = [];
+      console.log("the images array ",image)
+    for (const imageUri of image) {
       const formData = new FormData();
-      const uri = image; // from any library, you just need the file path
-  
       formData.append("files", {
         name: `Nijk_IMAGE_ORDER`,
         type: "image/jpeg",
-        uri: Platform.OS === "ios" ? uri.replace("file://", "") : uri,
+        uri: Platform.OS === "ios" ? imageUri.replace("file://", "") : imageUri,
       });
-  
 
-    const response = await fetch(`${ EXPO_PUBLIC_BASE_URL}/api/upload`, {
-      method: "POST",
-      body: formData,
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Image upload failed with status: ${response.status}`);
-    }
-  
-  
-      const responseData = await response.json();
-      const imageId = responseData[0]?.id;
-  
-      if (!imageId) {
-        throw new Error("Image upload response did not contain an ID");
+      try {
+        const response = await fetch(`${EXPO_PUBLIC_BASE_URL}/api/upload`, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Image upload failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        const imageId = responseData[0]?.id;
+        imageIds.push(imageId);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        // Handle error gracefully
       }
-  
-      dispatch(setCurrentOrderProperties({ images: imageId  }));
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      // Handle the error, you might want to show a user-friendly message
     }
+    console.log("the image ids are ",imageIds)
+    dispatch(setCurrentOrderProperties({ images: imageIds }));
+
+    // ... continue with form submission ...
+  } catch (error) {
+    // ... error handling ...
+  }
   };
   
   return (
@@ -160,7 +163,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
         <ArrowBack />
         <AppForm
           enableReinitialize={true}
-          initialValues={{ Date: "", description: "", image: null }}
+          initialValues={{ Date: "", description: "", images: [] }}
           onSubmit={handleFormSubmit}
           validationSchema={validationSchema}
         >
@@ -202,7 +205,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
                 centered={false}
                 style={styles.label}
               />
-              <FormImagePicker name="image" width={width} />
+              <FormImagePicker name="images" width={width} />
             </View>
           </ScrollView>
           <View style={styles.orderButtonContainer}>

@@ -15,7 +15,7 @@ i18n.use(initReactI18next).init({
   resources: {
     ar: { translation: ar },
   },
-  lng: 'en', // Set the default language to Arabic
+  lng: 'ar', // Set the default language to Arabic
   fallbackLng: 'en', // Fallback language if a translation is missing
   interpolation: {
     escapeValue: false,

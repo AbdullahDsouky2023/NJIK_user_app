@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   overlay: {
     height: 150,
     width: width,
-    backgroundColor: Colors.overlayColor,
+    // backgroundColor: Colors.redColor,
     position: "absolute",
     display: "flex",
     justifyContent: "center",
