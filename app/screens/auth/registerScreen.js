@@ -32,12 +32,15 @@ import {
 import { createUser } from "../../../utils/user";
 import { getLocationFromStorage } from "../../../utils/location";
 import UserDatePicker from "../../component/Account/UserDatePicker";
+import GenderSelect from "../../component/GenderSelect";
 const { width } = Dimensions.get("screen");
 const RegisterScreen = ({ navigation, route }) => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [gender, setGender] = useState(""); // Add state for gender
+
   const user = useSelector((state) => state.user.user);
   const memoizedUser = useMemo(() => user, [user]);
 
@@ -46,21 +49,23 @@ const RegisterScreen = ({ navigation, route }) => {
     fullName: yup
       .string()
       .required(t("name is required"))
-      .min(3, "Name is too short")
-      .max(50, "Name is too long"),
-    city: yup.string().required('This Field is Required!'),
-    district: yup.string().required('This Field is Required!'),
-    birth_date:yup.date().required('This Field is Required!'),
+      .min(3, t("Name is too short"))
+      .max(50, t("Name is too long")),
+    city: yup.string().required("This Field is Required!"),
+    district: yup.string().required("This Field is Required!"),
+    birth_date: yup.date().required("This Field is Required!"),
+    gender: yup.string().required("This Field is Required!"),
     emailAddress: yup
       .string()
       .email(t("Invalid email address"))
       .required(t("Email is required")),
+      
   });
 
   const handleFormSubmit = async (values) => {
     try {
       const userLocation = await getLocationFromStorage();
-      const validPhone = auth?.currentUser?.phoneNumber?.replace("+", "")
+      const validPhone = auth?.currentUser?.phoneNumber?.replace("+", "");
       setIsLoading(true);
       const res = await createUser({
         email: values.emailAddress,
@@ -68,22 +73,21 @@ const RegisterScreen = ({ navigation, route }) => {
         password: "hoohofyu242121fyufdh",
         city: values?.city || null,
         district: values?.district || null,
-        birth_date:values?.birth_date,
+        birth_date: values?.birth_date,
+        gender:values.gender,
+        phoneNumber: phoneNumber,
+      });
+      console.log({
+        email: values.emailAddress,
+        username: values.fullName,
+        password: `${values.emailAddress}${values.fullName}`,
+        city: values?.city || null,
+        district: values?.district || null,
+        birth_date: values?.birth_date,
+        gender:values.gender,
         // location:userLocation,
         phoneNumber: phoneNumber,
       });
-      console.log(
-        {
-          email: values.emailAddress,
-          username: values.fullName,
-          password: `${values.emailAddress}${values.fullName}`,
-          city: values?.city || null,
-          district: values?.district || null,
-          birth_date:values?.birth_date,
-          // location:userLocation,
-          phoneNumber: phoneNumber,
-        }
-      )
       if (res) {
         dispatch(userRegisterSuccess(auth?.currentUser));
         setItem("userData", auth?.currentUser);
@@ -125,19 +129,21 @@ const RegisterScreen = ({ navigation, route }) => {
                 emailAddress: "",
                 city: "",
                 district: "",
+                birth_date: "",
+                gender:''
               }}
               onSubmit={handleFormSubmit}
               validationSchema={validationSchema}
             >
               <ErrorMessage error={error} visible={error} />
-            <HeaderComponent header={"السيد أو السيدة"}/>
+              <HeaderComponent header={"fullName"} />
               <FormField
                 autoCorrect={false}
                 icon="account"
                 name="fullName"
                 placeholder="fullName"
               />
-                           <HeaderComponent header={"emailAddress"}/>
+              <HeaderComponent header={"emailAddress"} />
 
               <FormField
                 autoCapitalize="none"
@@ -147,7 +153,7 @@ const RegisterScreen = ({ navigation, route }) => {
                 // placeholder="emailAddress"
                 textContentType="emailAddress"
               />
-              <HeaderComponent header={"city"}/>
+              <HeaderComponent header={"city"} />
               <FormField
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -155,7 +161,7 @@ const RegisterScreen = ({ navigation, route }) => {
                 name="city"
                 // placeholder="city"
               />
-                          <HeaderComponent header={"district"}/>
+              <HeaderComponent header={"district"} />
 
               <FormField
                 autoCapitalize="none"
@@ -164,8 +170,11 @@ const RegisterScreen = ({ navigation, route }) => {
                 name="district"
                 // placeholder="district"
               />
-                          <HeaderComponent header={"Birth Date"}/>
-               <UserDatePicker name="birth_date" birthDate={Date.now()}  />
+              <HeaderComponent header={"Birth Date"} />
+              <UserDatePicker name="birth_date" birthDate={Date.now()} />
+              {/* <HeaderComponent  /> */}
+              <GenderSelect value={gender} onChange={setGender} name={"gender"} />
+              <SubmitButton title="Register" />
               <View style={styles.termsContainer}>
                 <FontAwesome
                   name="edit"
@@ -184,8 +193,6 @@ const RegisterScreen = ({ navigation, route }) => {
                   // centered={false}
                 />
               </View>
-
-              <SubmitButton title="Register" />
             </AppForm>
           </View>
         </ScrollView>
@@ -208,42 +215,31 @@ const styles = StyleSheet.create({
   logoCotnainer: {
     margin: 40,
   },
-  headerContainer:{
-display:'flex',
-flexDirection:'row',
-width:width,
-alignItems:'flex-start',
-justifyContent:'flex-start',
-paddingHorizontal:16,
-paddingVertical:0,
-margin:0,
-gap:4
+  headerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    width: width,
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    paddingHorizontal: 16,
+    paddingVertical: 0,
+    margin: 0,
+    gap: 4,
   },
   header: {
     fontSize: 14,
     color: Colors.blackColor,
   },
-  Star :{
+  Star: {
     color: Colors.primaryColor,
-
-  }
+  },
 });
 
 export default RegisterScreen;
 
-
-const HeaderComponent = ({header}) =>(
+const HeaderComponent = ({ header }) => (
   <View style={styles.headerContainer}>
-
-  <AppText
-  text={"*"}
-  centered={false}
-  style={styles.Star}
-  />
-  <AppText
-  text={header}
-  centered={false}
-  style={styles.header}
-  />
+    <AppText text={"*"} centered={false} style={styles.Star} />
+    <AppText text={header} centered={false} style={styles.header} />
   </View>
-)
+);

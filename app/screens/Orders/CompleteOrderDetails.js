@@ -7,6 +7,8 @@ import {
     View,
   } from "react-native";
   import React, { useState } from "react";
+  import Carousel from 'react-native-snap-carousel-v4';
+
   import AppButton from "../../component/AppButton";
   import AppText from "../../component/AppText";
   import { Colors } from "../../constant/styles";
@@ -89,14 +91,36 @@ import ArrowBack from "../../component/ArrowBack";
             <AppText centered={false} text={" صور لطلبك"} style={styles.title} />
            {
              ( item?.attributes?.images?.data ) ? 
-             <Image 
-            //  resizeMethod="contain"
-             source={{
-              uri:item?.attributes?.images?.data[0]?.attributes?.url}} style={{
-               height:120,
-               width:200,
-               borderRadius:10
-             }}/> : 
+             <Carousel
+             data={item?.attributes?.images?.data}
+             sliderWidth={width}
+             slideStyle={{backgroundColor:'transparent',
+           flex:1,alignItems:'center',justifyContent:'center'
+           }}
+           
+             autoplay={true}
+             loop={true}
+             autoplayInterval={10000}
+             itemWidth={width}
+             renderItem={({item})=> {
+               console.log(item?.attributes?.url)
+               return  (
+                 <Image
+               //  resizeMethod="contain"
+               source={{
+                 uri: item?.attributes?.url,
+               }}
+               style={{
+                 height: height*0.2,
+                 width: width*0.6,
+                 objectFit:'contain',
+                 borderRadius: 10,
+               }}
+               />
+               )
+             }}
+             // onSnapToItem={(index) => updateState({ activeSlide: index })}
+         /> : 
             <AppText
               centered={false}
               text={ "لا يوجد"}

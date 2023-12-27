@@ -10,6 +10,14 @@ export const settingsItemArray = [
     desc: "تفاصيل محفظتك الخاصه",
   },
   {
+    name: "Tickets",
+    icon: "compass",
+  },
+  {
+    name: "Contact Us",
+    icon: "social-instagram",
+  },
+  {
     name: "Share App",
     icon: "share",
     desc: "شير وأكسب 50 جنيه داخل محفظتك ",
@@ -18,15 +26,7 @@ export const settingsItemArray = [
     name: "Offers",
     icon: "present",
   },
-  {
-    name: "Contact Us",
-    icon: "social-instagram",
-  },
-  {
-    name: "Tickets",
-    icon: "compass",
-  },
- 
+
   {
     name: "Terms and Conditions",
     icon: "doc",

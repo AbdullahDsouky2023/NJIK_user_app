@@ -2,17 +2,14 @@ import {
   Alert,
   Dimensions,
   StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import React, { useState } from "react";
 import AppButton from "../../component/AppButton";
 import AppText from "../../component/AppText";
 import { Colors } from "../../constant/styles";
-import AppHeader from "../../component/AppHeader";
-import { Entypo } from "@expo/vector-icons";
+
+import Carousel from 'react-native-snap-carousel-v4';
 
 import useOrders, {
   PayOrder,
@@ -37,7 +34,7 @@ import { FlatList } from "react-native";
 import { color } from "react-native-reanimated";
 import { updateProviderData, updateUserData } from "../../../utils/user";
 import ArrowBack from "../../component/ArrowBack";
-const { width } = Dimensions.get("screen");
+const { width ,height} = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
   const [isLoading, setIsLoading] = useState(false);
@@ -103,7 +100,7 @@ export default function OrderDetails({ navigation, route }) {
       setIsLoading(false);
     }
   };
-
+// console.log(item?.attributes?.images?.data[0].attributes.url)
   if (isLoading) return <LoadingScreen />;
   return (
     <ScrollView>
@@ -244,17 +241,37 @@ export default function OrderDetails({ navigation, route }) {
         <View style={styles.descriptionContainer}>
             <>
           <AppText centered={false} text={"Images"} style={styles.title} />
-            <Image
-              //  resizeMethod="contain"
-              source={{
-                uri: item?.attributes?.images?.data[0]?.attributes?.url,
+          <Carousel
+                data={item?.attributes?.images?.data}
+                sliderWidth={width}
+                slideStyle={{backgroundColor:'transparent',
+              flex:1,alignItems:'center',justifyContent:'center'
               }}
-              style={{
-                height: 120,
-                width: 200,
-                borderRadius: 10,
-              }}
-              />
+              
+                autoplay={true}
+                loop={true}
+                autoplayInterval={10000}
+                itemWidth={width}
+                renderItem={({item})=> {
+                  console.log(item?.attributes?.url)
+                  return  (
+                    <Image
+                  //  resizeMethod="contain"
+                  source={{
+                    uri: item?.attributes?.url,
+                  }}
+                  style={{
+                    height: height*0.2,
+                    width: width*0.6,
+                    objectFit:'contain',
+                    borderRadius: 10,
+                  }}
+                  />
+                  )
+                }}
+                // onSnapToItem={(index) => updateState({ activeSlide: index })}
+            />
+           
               </>
         </View>):null
           }

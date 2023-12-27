@@ -5,13 +5,16 @@ import { StyleSheet, I18nManager } from 'react-native';
 import { Sizes, Fonts, Colors } from "../constant/styles";
 
 export default function PhoneNumberTextField({ phoneNumber, updateState }) {
+  
   return (
     <IntlPhoneInput
     onChangeText={(e) => {
       const countryCode = e.dialCode; 
      const length = (e.selectedCountry.mask).length
+     console.log(e)
       updateState({ phoneNumber: e.phoneNumber, countryCode,length }); // Pass the country code to the parent component
     }}
+    
     flagStyle={{display:'none'}}
       defaultCountry="EG"
       
@@ -24,8 +27,9 @@ export default function PhoneNumberTextField({ phoneNumber, updateState }) {
         textAlign: "left",  // Set text alignment to left
         direction: "ltr",  // 
       }}
-      renderFlag={() => null} // Add this line
+      renderFlag={() => console.log("fffjjj   ",this)} // Add this line
       
+      placeholder={"1xxx xxx xxx"} // Add the placeholder here
 
       phoneInputStyle={{
         flex: 1,
