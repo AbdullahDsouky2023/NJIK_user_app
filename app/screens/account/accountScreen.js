@@ -108,10 +108,10 @@ const AccountScreen = ({ navigation, route }) => {
             onPress={() => Linking.openURL("https://Njik.com")}
           >
             <View>
-              <AppText text={"www.Njik.com"} style={styles.website} />
+              <AppText text={"Njik_app"} style={styles.website} />
             </View>
           </TouchableWithoutFeedback>
-          <AppButton title={'Sign Out'} onPress={handleSignOut}/>
+          {/* <AppButton title={'Sign Out'} onPress={handleSignOut}/> */}
         </ScrollView>
       </View>
     </SafeAreaView>

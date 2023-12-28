@@ -13,6 +13,7 @@ import { RefreshControl  } from 'react-native';
 import { COMPLAIN_ORDER_DETAILS, COMPLETE_ORDER_DETAILS, ORDERS_DETAILS } from "../../navigation/routes";
 import CompleteOrderCard from "../../component/orders/CompleteOrderCard";
 import ComplainOrderCard from "./ComplainOrderCard";
+import ArrowBack from "../../component/ArrowBack";
 
 
  function ComplainListScreen({navigation}) {
@@ -51,6 +52,7 @@ const fetchData=()=>{
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
   }>
+    <ArrowBack />
     {currentOrders?.length === 0 ? 
       <View style={styles.noItemContainer}>
 

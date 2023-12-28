@@ -21,10 +21,11 @@ const { width } = Dimensions.get("screen");
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
+import { useTranslation } from "react-i18next";
 export default function CompleteOrderCard({ item, onPress }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
+  const { t } = useTranslation()
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.orderCardContainer}>
@@ -58,7 +59,7 @@ export default function CompleteOrderCard({ item, onPress }) {
                   style={styles.complainContainer}
                   onPress={() => {
                     if(item?.attributes?.complain?.data){
-                      navigation.navigate(ACCOUNT,{screen:"compass"})
+                      navigation.navigate(t(ACCOUNT),{screen:"compass"})
                       // navigation.navigate("compass")
                     }else {
                       navigation.navigate(COMPLAIN_CREATE_SCREEN,{item:item})
@@ -100,7 +101,7 @@ export default function CompleteOrderCard({ item, onPress }) {
           )}
         </View>
         <View style={styles.date}>
-          <Ionicons name="ios-location-outline" size={24} color="black" />
+          <Ionicons name="ios-location-outline" size={22} color="black" />
           <AppText
             text={item?.attributes?.location}
             centered={false}
@@ -114,7 +115,7 @@ export default function CompleteOrderCard({ item, onPress }) {
         </View>
         {/* date */}
         <View style={styles.date}>
-          <FontAwesome name="calendar" size={24} color="black" />
+          <FontAwesome name="calendar" size={22} color="black" />
           <AppText
             text={`${item?.attributes?.date}`}
             centered={false}
@@ -130,7 +131,7 @@ export default function CompleteOrderCard({ item, onPress }) {
           }}
         >
           <View style={styles.date}>
-            <Ionicons name="person-outline" size={24} color="black" />
+            <Ionicons name="person-outline" size={22} color="black" />
             <AppText
               text={
                 item?.attributes?.provider?.data?.attributes?.name ||
@@ -152,7 +153,7 @@ export default function CompleteOrderCard({ item, onPress }) {
                   navigation.navigate("Chat");
                 }}
               >
-                <Entypo name="chat" size={24} color="white" />
+                <Entypo name="chat" size={22} color="white" />
               </TouchableOpacity>
             )}
           </View>
@@ -165,7 +166,7 @@ export default function CompleteOrderCard({ item, onPress }) {
 const styles = StyleSheet.create({
   container: {
     height: "100%",
-    backgroundColor: Colors.whiteColor,
+    backgroundColor: Colors.redColor,
     width: width,
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     // backgroundColor:'red',
     // paddingHorizontal: 11,
-    paddingVertical: 4,
+    // paddingVertical: 4,
     gap: 10,
   },
   orderCardContainer: {
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
   },
   name: {
     color: Colors.blackColor,
-    fontSize: 15,
+    fontSize: 12,
   },
   headerText: {
     display: "flex",
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
   },
   price: {
     color: Colors.primaryColor,
-    fontSize: 14,
+    fontSize: 12,
   },
   date: {
     display: "flex",

@@ -35,5 +35,9 @@ export const settingsItemArray = [
     name: "Privacy",
     icon: "question",
   },
+  {
+    name: "Sign Out",
+    icon: "logout",
+  },
   
 ];

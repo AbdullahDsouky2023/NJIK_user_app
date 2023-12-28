@@ -10,6 +10,7 @@ import { color } from "react-native-reanimated";
 const { width } = Dimensions.get("screen")
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserLocation from "./Home/UserLocation";
+import { CURRENCY } from "../navigation/routes";
 
 export default function AppHeader({ subPage = false}) {
     const navigation = useNavigation()
@@ -34,7 +35,7 @@ export default function AppHeader({ subPage = false}) {
         <TouchableWithoutFeedback >
 
           <View style={styles.WalletContainer}>
-            <AppText style={{fontSize:15,color:'white'}} text={"0.0"+"EGP"}/>
+            <AppText style={{fontSize:15,color:'white'}} text={"0.0"+CURRENCY}/>
           </View>
             </TouchableWithoutFeedback>
           ) }

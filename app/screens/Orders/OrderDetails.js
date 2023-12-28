@@ -19,7 +19,7 @@ import useOrders, {
 import { useDispatch } from "react-redux";
 import { setOrders } from "../../store/features/ordersSlice";
 import LoadingModal from "../../component/Loading";
-import { HOME, ORDERS, REVIEW_ORDER_SCREEN } from "../../navigation/routes";
+import { CURRENCY, HOME, ORDERS, REVIEW_ORDER_SCREEN } from "../../navigation/routes";
 import PriceTextComponent from "../../component/PriceTextComponent";
 import { Image } from "react-native";
 import LoadingScreen from "../loading/LoadingScreen";
@@ -34,6 +34,7 @@ import { FlatList } from "react-native";
 import { color } from "react-native-reanimated";
 import { updateProviderData, updateUserData } from "../../../utils/user";
 import ArrowBack from "../../component/ArrowBack";
+import { useTranslation } from "react-i18next";
 const { width ,height} = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
@@ -46,6 +47,7 @@ export default function OrderDetails({ navigation, route }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isReviewVisble, setIsReviewVisble] = useState(false);
   const { sendPushNotification } = useNotifications();
+  const { t } = useTranslation()
   const handleOrderCancle = async (id) => {
     try {
       setIsLoading(true);
@@ -62,13 +64,14 @@ export default function OrderDetails({ navigation, route }) {
         );
       }
       if (res) {
+        
+        Alert.alert(t("payment has been cancled successfully."));
+        navigation.goBack()
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: HOME }],
-          })
-        );
-        Alert.alert("payment has been cancled successfully.");
+            routes: [{ name:(t(HOME)) }],
+          }))
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
       }
@@ -76,6 +79,7 @@ export default function OrderDetails({ navigation, route }) {
       console.log(error, "error deleting the order");
     } finally {
       setModalVisible(false);
+      setIsLoading(false)
     }
   };
 
@@ -89,7 +93,7 @@ export default function OrderDetails({ navigation, route }) {
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name:HOME }],
+            routes: [{ name:t(HOME) }],
           }))
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
@@ -138,7 +142,7 @@ export default function OrderDetails({ navigation, route }) {
                       style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
                     />
                     <AppText
-                      text={`${item.attributes?.Price} `+"EGP"}
+                      text={`${item.attributes?.Price} `+CURRENCY}
                       style={{
                         backgroundColor: Colors.primaryColor,
                         fontSize: 14,
@@ -184,7 +188,7 @@ export default function OrderDetails({ navigation, route }) {
                       style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
                     />
                     <AppText
-                      text={`${item.attributes?.price} `+"EGP"}
+                      text={`${item.attributes?.price} `+CURRENCY}
                       style={{
                         backgroundColor: Colors.primaryColor,
                         fontSize: 14,
@@ -286,14 +290,14 @@ export default function OrderDetails({ navigation, route }) {
           <AppButton
             title={"finish Order"}
             style={{ backgroundColor: Colors.success }}
-            onPress={() =>navigation.navigate( REVIEW_ORDER_SCREEN,{orderID:item.id})}
+            onPress={() =>navigation.navigate( REVIEW_ORDER_SCREEN,{orderID:item?.id,item:item})}
           />
         )}
         {(item?.attributes?.status === "payment_required" && item?.attributes?.PaymentStatus === 'payed') && (
           <AppButton
             title={"finish Order"}
             style={{ backgroundColor: Colors.success }}
-            onPress={() =>navigation.navigate( REVIEW_ORDER_SCREEN,{orderID:item.id})}
+            onPress={() =>navigation.navigate( REVIEW_ORDER_SCREEN,{orderID:item?.id,item:item})}
           />
         )}
         {(item?.attributes?.status === "payment_required" && item?.attributes?.PaymentStatus !== 'payed') && (

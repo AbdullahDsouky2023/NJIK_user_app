@@ -21,7 +21,7 @@ export default function  PaymentMethod({ icon, paymentType, index ,currentPaymen
                 borderColor: currentPaymentMethodIndex == index ? Colors.primaryColor : '#E0E0E0',
                 ...styles.paymentMethodWrapStyle
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center',height: height*0.03, }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent:'center',height: height*0.03,width:width*0.7 }}>
                 {/* <AppText numberOfLines={1} style={{
                      ...Fonts.primaryColor18Medium,
                      marginLeft: Sizes.fixPadding,

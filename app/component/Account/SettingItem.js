@@ -89,7 +89,7 @@ export default function SettingItem({ item }) {
   };
   return (
     <TouchableWithoutFeedback onPress={() => handlePress()}>
-      <View style={styles.item}>
+      <View style={[styles.item]}>
         <SimpleLineIcons name={icon} size={24} color={Colors.primaryColor} />
 
         <View
@@ -98,7 +98,7 @@ export default function SettingItem({ item }) {
             justifyContent: "center",
           }}
         >
-          <AppText text={name} centered={false} style={styles.textHeader} />
+          <AppText text={name} centered={false} style={[styles.textHeader]} />
 <ContactUsModal hideModal={hideModal} visible={visible}/>     
         </View>
  </View>

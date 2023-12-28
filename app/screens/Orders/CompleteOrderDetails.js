@@ -26,7 +26,7 @@ import {
   import { CommonActions } from "@react-navigation/native";
 import ArrowBack from "../../component/ArrowBack";
   
-  const { width } = Dimensions.get("screen");
+  const { width,height } = Dimensions.get("screen");
   export default function CompleteOrderDetails({ navigation, route }) {
     const { item } = route?.params;
     const [isLoading, setIsLoading] = useState(false);

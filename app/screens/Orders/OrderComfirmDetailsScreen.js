@@ -14,7 +14,7 @@ import {
   import { useDispatch, useSelector } from "react-redux";
   import { clearCurrentOrder, setOrders } from "../../store/features/ordersSlice";
   import LoadingModal from "../../component/Loading";
-  import { HOME, ORDERS, ORDER_SUCCESS_SCREEN } from "../../navigation/routes";
+  import { CURRENCY, HOME, ORDERS, ORDER_SUCCESS_SCREEN } from "../../navigation/routes";
   import PriceTextComponent from "../../component/PriceTextComponent";
   import { Image } from "react-native";
   import { ScrollView } from "react-native-virtualized-view";
@@ -140,7 +140,7 @@ import * as Updates from "expo-updates";
                     {
                       item.attributes?.Price > 0 &&
                   <AppText
-                    text={`${item.attributes?.Price} `+"EGP"}
+                    text={`${item.attributes?.Price} `+CURRENCY}
                     style={{
                       backgroundColor: Colors.primaryColor,
                       fontSize: 14,
@@ -188,7 +188,7 @@ import * as Updates from "expo-updates";
                     style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
                   />
                   <AppText
-                    text={`${item.attributes?.price} `+"EGP"}
+                    text={`${item.attributes?.price} `+CURRENCY}
                     style={{
                       backgroundColor: Colors.primaryColor,
                       fontSize: 14,

@@ -85,7 +85,7 @@ const ComplainCreatingScreen = ({ navigation ,route}) => {
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
-              routes: [{ name: HOME }],
+              routes: [{ name: t(HOME) }],
             })
           );
           navigation.goBack()

@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, ScrollView } from "react-native";
+import { View, Text, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native";
 import React, { useState } from "react";
 import { Colors } from "../../constant/styles";
 import { StyleSheet } from "react-native";
@@ -7,6 +7,10 @@ import AppButton from "../../component/AppButton";
 import AppHeader from "../../component/AppHeader";
 import ArrowBack from "../../component/ArrowBack";
 import PaymentMethod from "../../component/Payment/PaymentMethod";
+import { CURRENCY } from "../../navigation/routes";
+import { ColorSpace } from "react-native-reanimated";
+import { FontAwesome5 } from "@expo/vector-icons";
+
 const amount = "0.0";
 const { width } = Dimensions.get("screen");
 export default function WalletScreen() {
@@ -14,9 +18,12 @@ export default function WalletScreen() {
     currentPaymentMethodIndex: 2,
     showSuccessDialog: false,
 })
-
+const [amount,setAmmount]=useState(null)
 const updateState = (data) => setState((state) => ({ ...state, ...data }))
-
+const handleAmountChange = (text)=>{
+  setAmmount(text)
+  updateState({currentPaymentMethodIndex:4})
+}
 const {
     currentPaymentMethodIndex,
     showSuccessDialog,
@@ -30,12 +37,18 @@ const {
 
       <View style={styles.wrapper}>
         <AppText text={"Your Balance"} style={styles.text} />
-        <AppText text={`${amount} `+"EGP"} style={styles.amount} />
+        <AppText text={`${amount} `+CURRENCY} style={styles.amount} />
       </View>
-        <AppText text={"Choose method to charge your wallet"} style={[styles.text,{marginTop:15,marginLeft:22,fontSize:15}]} centered={false} />
     
     
     <View style={styles.wrapper}>
+      <View style={styles.HeaderContainer}>
+        <FontAwesome5 name="money-check" size={16} color="black" />
+        <AppText text={"Choose method to charge your wallet"}
+         style={[styles.text]}
+          centered={false} />
+
+      </View>
       <PaymentMethod icon={require('../../assets/images/payment_icon/card.png')}
                         paymentType='Card'
                         index={1}
@@ -53,6 +66,17 @@ const {
                         updateState={updateState}
 
                         currentPaymentMethodIndex={currentPaymentMethodIndex}/>
+          <TouchableWithoutFeedback     index={4}  onPress={() => updateState({ currentPaymentMethodIndex: 4 })}
+                      >
+<View  style={styles.amountContainer}>
+
+                        <AppText  text={"Enter Amount"}  centered={false} style={styles.amountText}/>
+                        <TextInput  keyboardType="numeric"  selectionColor={Colors.primaryColor} value={amount} onChangeText={(text)=>handleAmountChange(text)} style={styles.input}/>
+                        <AppText  text={CURRENCY}  centered={false} style={{paddingHorizontal:5,color:Colors.blackColor}}/>
+</View>
+
+          </TouchableWithoutFeedback>
+                        
       
       <AppButton
         title={"Confirm"}
@@ -71,6 +95,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.blackColor,
+    fontSize:15
   },
   amount: {
     color: Colors.primaryColor,
@@ -106,4 +131,40 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
   },
+  amountText:{
+    paddingHorizontal:10,
+    color:Colors.blackColor
+    // paddingTop:10
+    
+  },
+  input:{
+    color:'red',
+    borderBottomWidth:1,
+    paddingHorizontal:35,
+    marginTop:-10,
+    fontSize:18,
+    borderColor:Colors.primaryColor,
+  },
+  amountContainer:{
+    paddingTop: 18,
+    display:'flex',
+    alignItems:'center',
+    // justifyContent:'center',
+    flexDirection:'row',
+    gap:10,
+  
+    
+  },
+  HeaderContainer :{
+    display:'flex',
+    flexDirection:'row',
+    padding:0,
+    alignItems:'center',
+    // justifyContent:'center',
+    gap:10,
+    // backgroundColor:'red',
+    paddingVertical:10,
+    width:width*0.8
+  }
+
 });

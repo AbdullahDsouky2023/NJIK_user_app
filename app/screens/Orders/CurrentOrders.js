@@ -55,7 +55,7 @@ const fetchData=()=>{
     {currentOrders?.length === 0 ? 
       <View style={styles.noItemContainer}>
 
-      <AppText text={"There are no Complete orders."} style={{marginTop:"50%"}}/> 
+      <AppText text={"There are no orders."} style={{marginTop:"50%"}}/> 
       </View>
       :
       <ScrollView style={styles.container}>

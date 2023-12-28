@@ -8,6 +8,7 @@ import PriceTextComponent from "./PriceTextComponent";
 import Markdown from 'react-native-markdown-display';
 const { width, height } = Dimensions.get("screen");
 import { RenderHTML } from 'react-native-render-html';
+import { CURRENCY } from "../navigation/routes";
 
 export default function OfferCard({ service, price, image,onPress,content }) {
   // console.log(content[0].children[0].text,"ceontnt")
@@ -39,7 +40,7 @@ export default function OfferCard({ service, price, image,onPress,content }) {
           centered={false}
         />
       <AppText
-          text={`${price} `+"EGP"}
+          text={`${price} `+CURRENCY}
           style={{
             color: Colors.primaryColor,
             maxWidth: width * 0.5,

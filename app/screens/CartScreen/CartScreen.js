@@ -26,7 +26,7 @@ import {
   removeServiceFromCart,
 } from "../../store/features/CartSlice";
 import ReserveButton from "../../component/ReverveButton";
-import { ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION } from "../../navigation/routes";
+import { CURRENCY, ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION } from "../../navigation/routes";
 const { width, height } = Dimensions.get("screen");
 
 export default function CartScreen({ route ,navigation}) {
@@ -118,7 +118,7 @@ export default function CartScreen({ route ,navigation}) {
                   />
                   <AppText
                     centered={false}
-                    text={`${item.attributes?.Price} ` +"EGP"}
+                    text={`${item.attributes?.Price} ` +CURRENCY}
                     style={[styles.price, { fontSize: 14, paddingRight: 10 }]}
                   />
                 </View>
