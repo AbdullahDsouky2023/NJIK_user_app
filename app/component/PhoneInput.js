@@ -24,6 +24,7 @@ export default function PhoneNumberTextField({ phoneNumber, updateState }) {
         textAlign: "left", // Set text alignment to left
         direction: "ltr", //
       }}
+      selectionColor={"red"}
       renderFlag={() => console.log("fffjjj   ", this)} // Add this line
       placeholder={"1xxx xxx xxx"} // Add the placeholder here
       phoneInputStyle={{
@@ -50,5 +51,6 @@ const styles = StyleSheet.create({
     direction: "rtl", // Set direction to right-to-left (rtl)
     display: "flex",
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+
   },
 });

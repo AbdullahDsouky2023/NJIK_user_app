@@ -65,13 +65,13 @@ export default function OrderDetails({ navigation, route }) {
       }
       if (res) {
         
-        Alert.alert(t("payment has been cancled successfully."));
         navigation.goBack()
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [{ name:(t(HOME)) }],
           }))
+          Alert.alert(t("payment has been cancled successfully."));
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
       }

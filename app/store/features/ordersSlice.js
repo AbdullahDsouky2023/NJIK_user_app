@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const orderSlice = createSlice({
   name: "orders",
-  initialState: { orders: [] , completedOrders:0 ,currentChatChannel:""},
+  initialState: { orders: [] , completedOrders:0 ,currentChatChannel:"",currentOrderData:{}},
   reducers: {
     setOrders: (state, action) => {
       state.orders = action.payload;

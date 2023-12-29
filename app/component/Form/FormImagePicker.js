@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     // backgroundColor:'red',
     flexWrap: "wrap",
     width: width * 1,
+    marginTop:10,
   },
   imagePicker: {
     // borderWidth: 1,

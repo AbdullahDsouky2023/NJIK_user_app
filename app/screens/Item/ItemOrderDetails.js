@@ -33,6 +33,7 @@ import {  EXPO_PUBLIC_BASE_URL} from "@env"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UseLocation from "../../../utils/useLocation";
 import { clearCart } from "../../store/features/CartSlice";
+import OrderCoupon from "../../component/Coupons/OrderCoupon";
 
 const { width } = Dimensions.get("window");
 
@@ -52,6 +53,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
   const [currentLocation,setCurrenttLocation]=useState()
   const userData = useSelector((state) => state?.user?.userData);
   const currentOrderData = useSelector((state) => state?.orders?.currentOrderData);
+  
   const handleFormSubmit = async (values) => {
     try {
       setIsLoading(true);
@@ -206,6 +208,8 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
                 style={styles.label}
               />
               <FormImagePicker name="images" width={width} />
+             <OrderCoupon/>
+
             </View>
           </ScrollView>
           <View style={styles.orderButtonContainer}>

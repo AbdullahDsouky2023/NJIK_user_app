@@ -28,6 +28,7 @@ import useServices from "../../../utils/services";
 import ArrowBack from "../../component/ArrowBack";
 import usePackages from "../../../utils/packages";
 import * as Updates from "expo-updates";
+import { updateUserData } from "../../../utils/user";
 
   const { width } = Dimensions.get("screen");
   export default function OrderComfirmDetailsScreen({ navigation, route }) {
@@ -45,8 +46,8 @@ import * as Updates from "expo-updates";
   const {data:packages} = usePackages()
   const [currentSelectedServices,setCurrentSelectedServices] = useState([])
   const [currentSelectedPackages,setCurrentSelectedPackages] = useState([])
-  // const totalPrice = useSelector((state)=>state.cart.totalPrice)
-  console.log(currentOrderData)
+  const userData = useSelector((state) => state?.user?.userData);
+  // console.log(currentOrderData)
   const handleComfirmOrder = async () => {
     try {
       setIsLoading(true)
@@ -54,10 +55,18 @@ import * as Updates from "expo-updates";
         await Updates.reloadAsync()
       }
         const data = await postOrder(currentOrderData);
-    
+        if(currentOrderData?.coupons?.connect[0]?.id){
+
+          await updateUserData(userData?.id,{
+            coupons:{
+              connect: [{ id: currentOrderData?.coupons?.connect[0]?.id }],
+            },
+          });
+        }
+      // console.log("updaing user coupons ",userData?.id,...currentOrderData.coupons )
         if (data) {
           dispatch(clearCurrentOrder());
-          console.log("order data after subit ",data)
+          // console.log("order data after subit ",data)
           dispatch(clearCart());
     
           if (totalPrice > 0) {
