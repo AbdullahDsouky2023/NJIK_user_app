@@ -19,6 +19,8 @@ export default function PackageScreen({ route,navigation }) {
   useEffect(()=>{
     return ()=>{
       dispatch(clearCart())
+      console.log("clearing packag dea")
+
     }
   })
   return (

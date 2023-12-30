@@ -105,6 +105,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
   useEffect(()=>{
     return ()=>{
       dispatch(clearCart())
+      console.log("clearing order dea")
     }
   },[])
 
