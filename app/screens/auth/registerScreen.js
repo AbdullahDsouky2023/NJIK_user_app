@@ -141,7 +141,7 @@ const RegisterScreen = ({ navigation, route }) => {
                 autoCorrect={false}
                 icon="account"
                 name="fullName"
-                placeholder="fullName"
+                // placeholdesr="fullName"
               />
               <HeaderComponent header={"emailAddress"} />
 

@@ -4,6 +4,8 @@ import * as Location from 'expo-location';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { updateUserData } from './user';
 import { useSelector} from 'react-redux'
+import * as Updates from "expo-updates";
+
 import { useTranslation } from 'react-i18next';
 const { width }= Dimensions.get('screen')
 export default function UseLocation() {
@@ -73,6 +75,9 @@ export default function UseLocation() {
     };
     useEffect(() => {
       requestLocationPermission()
+      if(currentLocation === null){
+         Updates.reloadAsync();
+      }
       console.log("the user current location",currentLocation)
       }, []);
 

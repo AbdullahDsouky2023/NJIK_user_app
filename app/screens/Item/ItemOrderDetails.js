@@ -53,7 +53,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
   const [currentLocation,setCurrenttLocation]=useState()
   const userData = useSelector((state) => state?.user?.userData);
   const currentOrderData = useSelector((state) => state?.orders?.currentOrderData);
-  
+  console.log("ititit",totalPrice)
   const handleFormSubmit = async (values) => {
     try {
       setIsLoading(true);
@@ -208,7 +208,10 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
                 style={styles.label}
               />
               <FormImagePicker name="images" width={width} />
+              {
+               Number(totalPrice) >0 &&
              <OrderCoupon/>
+              }
 
             </View>
           </ScrollView>

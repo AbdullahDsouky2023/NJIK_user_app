@@ -8,14 +8,13 @@ import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
 import useOrders from "../../../utils/orders";
 import LoadingScreen from "../loading/LoadingScreen";
-const { width } = Dimensions.get("screen");
 import { RefreshControl  } from 'react-native';
 import { COMPLAIN_ORDER_DETAILS, COMPLETE_ORDER_DETAILS, ORDERS_DETAILS } from "../../navigation/routes";
 import CompleteOrderCard from "../../component/orders/CompleteOrderCard";
 import ComplainOrderCard from "./ComplainOrderCard";
 import ArrowBack from "../../component/ArrowBack";
 
-
+const { height , width } = Dimensions.get('screen')
  function ComplainListScreen({navigation}) {
   
   const user = useSelector((state) => state?.user?.user);
@@ -23,12 +22,12 @@ import ArrowBack from "../../component/ArrowBack";
   const [orders,setOrders] = useState([])
   const {data,isLoading,refetch} = useOrders()
   const [refreshing, setRefreshing] = useState(false);
-
+  const [currentOrders,setCurrentData]=useState([])
+console.log("currentOrders",currentOrders?.length)
   const onRefresh = () => {
     setRefreshing(true);
     fetchData();
   };
-const [currentOrders,setCurrentData]=useState([])
 const fetchData=()=>{
   const currentOrders = data?.data?.filter(
     (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.PaymentStatus === "payed" && order?.attributes?.complain?.data !== null
@@ -53,12 +52,14 @@ const fetchData=()=>{
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
   }>
     <ArrowBack />
-    {currentOrders?.length === 0 ? 
+    {
+      currentOrders?.length === 0  &&
       <View style={styles.noItemContainer}>
+        <AppText text={"There is no complains yet!"} /> 
 
-      <AppText text={"لا يوجد تذاكر لعرضها"} style={{marginTop:"50%"}}/> 
       </View>
-      :
+    }
+    { currentOrders?.length > 0 &&
       <ScrollView style={styles.container}>
       <FlatList
       data={currentOrders}
@@ -94,7 +95,8 @@ const styles = StyleSheet.create({
   display:'flex',
   alignItems:'center',
   justifyContent:'center',
-  height:"100%",
+  height:height*0.7
+  ,
   // marginVertical:50,
   width:width,
   backgroundColor:Colors.whiteColor

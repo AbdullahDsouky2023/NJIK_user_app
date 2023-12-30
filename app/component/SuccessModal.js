@@ -8,7 +8,7 @@ import LottieView from "lottie-react-native";
 import AppButton from "./AppButton";
 const { width } = Dimensions.get("screen");
 
-export default function SuccessModel({ visible,onPress }) {
+export default function SuccessModel({ visible,onPress ,sub }) {
   return (
     <Dialog.Container
       visible={visible}

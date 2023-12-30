@@ -21,10 +21,10 @@ export default function OtpFields({setisLoading,otpInput,setOtpInput,confirmVeri
           setOtpInput(text)
           if (otpInput.length == 6) {
             setisLoading(true);
-            // setTimeout(() => {
-            //   setisLoading(false);
+            setTimeout(() => {
+              setisLoading(false);
               confirmVerificationCode(otpInput)
-            // }, 2000);
+            }, 100);
           }
         }}
         

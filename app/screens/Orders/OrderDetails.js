@@ -1,15 +1,10 @@
-import {
-  Alert,
-  Dimensions,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Alert, Dimensions, StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import AppButton from "../../component/AppButton";
 import AppText from "../../component/AppText";
 import { Colors } from "../../constant/styles";
 
-import Carousel from 'react-native-snap-carousel-v4';
+import Carousel from "react-native-snap-carousel-v4";
 
 import useOrders, {
   PayOrder,
@@ -19,7 +14,12 @@ import useOrders, {
 import { useDispatch } from "react-redux";
 import { setOrders } from "../../store/features/ordersSlice";
 import LoadingModal from "../../component/Loading";
-import { CURRENCY, HOME, ORDERS, REVIEW_ORDER_SCREEN } from "../../navigation/routes";
+import {
+  CURRENCY,
+  HOME,
+  ORDERS,
+  REVIEW_ORDER_SCREEN,
+} from "../../navigation/routes";
 import PriceTextComponent from "../../component/PriceTextComponent";
 import { Image } from "react-native";
 import LoadingScreen from "../loading/LoadingScreen";
@@ -35,7 +35,7 @@ import { color } from "react-native-reanimated";
 import { updateProviderData, updateUserData } from "../../../utils/user";
 import ArrowBack from "../../component/ArrowBack";
 import { useTranslation } from "react-i18next";
-const { width ,height} = Dimensions.get("screen");
+const { width, height } = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
   const [isLoading, setIsLoading] = useState(false);
@@ -47,12 +47,12 @@ export default function OrderDetails({ navigation, route }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isReviewVisble, setIsReviewVisble] = useState(false);
   const { sendPushNotification } = useNotifications();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const handleOrderCancle = async (id) => {
     try {
       setIsLoading(true);
       const res = await cancleOrder(id);
-      const selectedOrder = orders?.data.filter((order) => order?.id === id);
+      const selectedOrder = orders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken =
         selectedOrder[0]?.attributes?.provider?.data?.attributes
           ?.expoPushNotificationToken;
@@ -64,14 +64,22 @@ export default function OrderDetails({ navigation, route }) {
         );
       }
       if (res) {
-        
-        navigation.goBack()
+        console.log(
+          {
+            id:id,
+            selectedOrder:selectedOrder,
+            providerNotificationToken:providerNotificationToken,
+            res:res
+          }
+        )
+        navigation.goBack();
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name:(t(HOME)) }],
-          }))
-          Alert.alert(t("payment has been cancled successfully."));
+            routes: [{ name: t(HOME) }],
+          })
+        );
+        Alert.alert(t("payment has been cancled successfully."));
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
       }
@@ -79,7 +87,7 @@ export default function OrderDetails({ navigation, route }) {
       console.log(error, "error deleting the order");
     } finally {
       setModalVisible(false);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -88,13 +96,13 @@ export default function OrderDetails({ navigation, route }) {
       console.log("the button is just clikcked", id);
       const res = await PayOrder(id);
       if (res) {
-        
         Alert.alert("payment has been processed successfully.");
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name:t(HOME) }],
-          }))
+            routes: [{ name: t(HOME) }],
+          })
+        );
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
       }
@@ -104,7 +112,7 @@ export default function OrderDetails({ navigation, route }) {
       setIsLoading(false);
     }
   };
-// console.log(item?.attributes?.images?.data[0].attributes.url)
+  // console.log(item?.attributes?.images?.data[0].attributes.url)
   if (isLoading) return <LoadingScreen />;
   return (
     <ScrollView>
@@ -142,7 +150,7 @@ export default function OrderDetails({ navigation, route }) {
                       style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
                     />
                     <AppText
-                      text={`${item.attributes?.Price} `+CURRENCY}
+                      text={`${item.attributes?.Price} ` + CURRENCY}
                       style={{
                         backgroundColor: Colors.primaryColor,
                         fontSize: 14,
@@ -188,7 +196,7 @@ export default function OrderDetails({ navigation, route }) {
                       style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
                     />
                     <AppText
-                      text={`${item.attributes?.price} `+CURRENCY}
+                      text={`${item.attributes?.price} ` + CURRENCY}
                       style={{
                         backgroundColor: Colors.primaryColor,
                         fontSize: 14,
@@ -226,59 +234,59 @@ export default function OrderDetails({ navigation, route }) {
             style={styles.price}
           />
         </View>
-        {
-           item?.attributes?.description &&
-           <View style={styles.descriptionContainer}>
-          <AppText centered={false} text={"Notes"} style={styles.title} />
-          <AppText
-            centered={false}
-            text={
-              item?.attributes?.description
-                ? item?.attributes?.description
-                : "لا يوجد"
-            }
-            style={styles.price}
+        {item?.attributes?.description && (
+          <View style={styles.descriptionContainer}>
+            <AppText centered={false} text={"Notes"} style={styles.title} />
+            <AppText
+              centered={false}
+              text={
+                item?.attributes?.description
+                  ? item?.attributes?.description
+                  : "لا يوجد"
+              }
+              style={styles.price}
             />
-        </View>
-          }
-          {item?.attributes?.images?.data ? (
-        <View style={styles.descriptionContainer}>
+          </View>
+        )}
+        {item?.attributes?.images?.data ? (
+          <View style={styles.descriptionContainer}>
             <>
-          <AppText centered={false} text={"Images"} style={styles.title} />
-          <Carousel
+              <AppText centered={false} text={"Images"} style={styles.title} />
+              <Carousel
                 data={item?.attributes?.images?.data}
                 sliderWidth={width}
-                slideStyle={{backgroundColor:'transparent',
-              flex:1,alignItems:'center',justifyContent:'center'
-              }}
-              
+                slideStyle={{
+                  backgroundColor: "transparent",
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
                 autoplay={true}
                 loop={true}
                 autoplayInterval={10000}
                 itemWidth={width}
-                renderItem={({item})=> {
-                  console.log(item?.attributes?.url)
-                  return  (
+                renderItem={({ item }) => {
+                  console.log(item?.attributes?.url);
+                  return (
                     <Image
-                  //  resizeMethod="contain"
-                  source={{
-                    uri: item?.attributes?.url,
-                  }}
-                  style={{
-                    height: height*0.2,
-                    width: width*0.6,
-                    objectFit:'contain',
-                    borderRadius: 10,
-                  }}
-                  />
-                  )
+                      //  resizeMethod="contain"
+                      source={{
+                        uri: item?.attributes?.url,
+                      }}
+                      style={{
+                        height: height * 0.2,
+                        width: width * 0.6,
+                        objectFit: "contain",
+                        borderRadius: 10,
+                      }}
+                    />
+                  );
                 }}
                 // onSnapToItem={(index) => updateState({ activeSlide: index })}
-            />
-           
-              </>
-        </View>):null
-          }
+              />
+            </>
+          </View>
+        ) : null}
 
         {item?.attributes?.status === "pending" && (
           <AppButton
@@ -286,27 +294,40 @@ export default function OrderDetails({ navigation, route }) {
             onPress={() => setModalVisible(true)}
           />
         )}
-        {(item?.attributes?.status === "payed" && item?.attributes?.PaymentStatus === 'payed') && (
-          <AppButton
-            title={"finish Order"}
-            style={{ backgroundColor: Colors.success }}
-            onPress={() =>navigation.navigate( REVIEW_ORDER_SCREEN,{orderID:item?.id,item:item})}
-          />
-        )}
-        {(item?.attributes?.status === "payment_required" && item?.attributes?.PaymentStatus === 'payed') && (
-          <AppButton
-            title={"finish Order"}
-            style={{ backgroundColor: Colors.success }}
-            onPress={() =>navigation.navigate( REVIEW_ORDER_SCREEN,{orderID:item?.id,item:item})}
-          />
-        )}
-        {(item?.attributes?.status === "payment_required" && item?.attributes?.PaymentStatus !== 'payed') && (
-          <AppButton
-            title={"Pay"}
-            style={{ backgroundColor: Colors.success }}
-            onPress={() => handlePayOrder(item?.id)}
-          />
-        )}
+        {item?.attributes?.status === "payed" &&
+          item?.attributes?.PaymentStatus === "payed" && (
+            <AppButton
+              title={"finish Order"}
+              style={{ backgroundColor: Colors.success }}
+              onPress={() =>
+                navigation.navigate(REVIEW_ORDER_SCREEN, {
+                  orderID: item?.id,
+                  item: item,
+                })
+              }
+            />
+          )}
+        {item?.attributes?.status === "payment_required" &&
+          item?.attributes?.PaymentStatus === "payed" && (
+            <AppButton
+              title={"finish Order"}
+              style={{ backgroundColor: Colors.success }}
+              onPress={() =>
+                navigation.navigate(REVIEW_ORDER_SCREEN, {
+                  orderID: item?.id,
+                  item: item,
+                })
+              }
+            />
+          )}
+        {item?.attributes?.status === "payment_required" &&
+          item?.attributes?.PaymentStatus !== "payed" && (
+            <AppButton
+              title={"Pay"}
+              style={{ backgroundColor: Colors.success }}
+              onPress={() => handlePayOrder(item?.id)}
+            />
+          )}
       </ScrollView>
       <AppModal
         isModalVisible={isModalVisible}
@@ -315,7 +336,6 @@ export default function OrderDetails({ navigation, route }) {
         onPress={() => handleOrderCancle(item.id)}
       />
       <LoadingModal visible={isLoading} />
-    
     </ScrollView>
   );
 }
