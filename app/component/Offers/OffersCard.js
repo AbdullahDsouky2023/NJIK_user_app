@@ -5,7 +5,7 @@ import { Colors,Fonts } from '../../constant/styles'
 import { Image } from 'react-native'
 import AppText from '../AppText'
 const  { width } = Dimensions.get('screen')
-export default function ServiceCard({image,name,onPress}) {
+export default function OffersCard({image,name,onPress}) {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
     <View style={styles.card}>

@@ -67,15 +67,14 @@ export default function SettingItem({ item }) {
       onShare();
     } else if (icon === "credit-card") {
       console.log("test");
-    } else if (icon === "present") {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: OFFERS }], // Replace 'Login' with the name of your login screen
-        })
-      );
     } 
     else if (icon === "doc") {
+      Linking.openURL("https://expo.dev");
+    } 
+    else if (icon === "question") {
+      Linking.openURL("https://expo.dev");
+    } 
+    else if (icon === "present") {
       Linking.openURL("https://expo.dev");
     } 
     else if (icon === "social-instagram") {
