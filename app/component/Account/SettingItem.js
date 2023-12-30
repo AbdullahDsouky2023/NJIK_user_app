@@ -9,7 +9,7 @@ import { Share } from "react-native";
 import { auth } from "../../../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
-import { OFFERS } from "../../navigation/routes";
+import { CART, OFFERS } from "../../navigation/routes";
 const { width, height } = Dimensions.get("screen");
 import * as Linking from "expo-linking";
 import AppModal from "../AppModal";
@@ -75,7 +75,8 @@ export default function SettingItem({ item }) {
       Linking.openURL("https://expo.dev");
     } 
     else if (icon === "present") {
-      Linking.openURL("https://expo.dev");
+        navigation.navigate(CART, { name:"العروض" });
+   
     } 
     else if (icon === "social-instagram") {
     setVisible(true)
