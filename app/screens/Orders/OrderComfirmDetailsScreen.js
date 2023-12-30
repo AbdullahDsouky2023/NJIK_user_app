@@ -70,7 +70,12 @@ import { updateUserData } from "../../../utils/user";
           dispatch(clearCart());
     
           if (totalPrice > 0) {
-            navigation.navigate("Payment",{orderId:data});
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "Payment" ,params:{orderId:data}}],
+              })
+            );
           } else if (totalPrice === 0) {
             navigation.dispatch(
               CommonActions.reset({
@@ -230,7 +235,7 @@ import { updateUserData } from "../../../utils/user";
             <AppText centered={false} text={" العنوان"} style={styles.title} />
             <AppText
               centered={false}
-              text={currentOrderData?.googleMapLocation?.readable}
+              text={currentOrderData?.googleMapLocation?.readable || "not provided"}
               style={styles.price}
             />
           </View>

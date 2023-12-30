@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
+import * as Linking from 'expo-linking'
 import { MaterialCommunityIcons} from '@expo/vector-icons'
 import React, { useRef, useState } from "react";
 import AppText from "./AppText";
@@ -121,8 +122,25 @@ export default function StarsComponent({ route }) {
           providerNotificationToken,
           `تم انهاء الطلب بواسطه ${selectedOrder[0]?.attributes?.user?.data?.attributes?.username}`
           );
-          Alert.alert("تم بنجاح");
-      } else {
+          Alert.alert(
+            "تم بنجاح",
+            "هل ترغب في تقييمنا على متجر Google Play؟",
+            [
+              {
+                text: "قيم الآن",
+                onPress: () => {
+                  // Replace with your app's Google Play URL
+                  Linking.openURL("https://play.google.com/store/apps/details?id=your.app.id");
+                },
+              },
+              {
+                text: "ليس الآن",
+                onPress: () => console.log("Not now pressed"),
+              },
+            ],
+            { cancelable: false } // Prevent closing by tapping outside
+          );
+                } else {
         Alert.alert("حدثت مشكله حاول مرة اخري");
       }
     } catch (error) {

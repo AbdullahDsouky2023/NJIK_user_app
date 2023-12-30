@@ -149,8 +149,10 @@ export default function OrderDetails({ navigation, route }) {
                       text={item.attributes?.name}
                       style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
                     />
+                    {
+                      item.attributes?.Price > 0 &&
                     <AppText
-                      text={`${item.attributes?.Price} ` + CURRENCY}
+                    text={`${item.attributes?.Price} ` + CURRENCY}
                       style={{
                         backgroundColor: Colors.primaryColor,
                         fontSize: 14,
@@ -159,6 +161,7 @@ export default function OrderDetails({ navigation, route }) {
                         color: Colors.whiteColor,
                       }}
                     />
+                  }
                   </View>
                 );
               }}

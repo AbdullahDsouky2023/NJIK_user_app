@@ -76,7 +76,8 @@ export default function UseLocation() {
     useEffect(() => {
       requestLocationPermission()
       if(currentLocation === null){
-         Updates.reloadAsync();
+        requestLocationPermission()
+        //  Updates.reloadAsync();
       }
       console.log("the user current location",currentLocation)
       }, []);
