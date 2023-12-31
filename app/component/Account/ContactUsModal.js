@@ -10,7 +10,7 @@ const { width } = Dimensions.get("screen");
 
 export default function ContactUsModal({visible,hideModal}) {
     const handleWhatsAppPress = () => {
-        let phoneNumber = "+201144254129"; // Replace with your phone number
+        let phoneNumber = "+201164258122"; // Replace with your phone number
         let message = "Hello, World!"; // Replace with your message
         let encodedMessage = encodeURIComponent(message);
         let url = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;

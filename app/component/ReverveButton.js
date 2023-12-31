@@ -7,10 +7,10 @@ import { TouchableOpacity } from 'react-native'
 import PriceTextComponent from './PriceTextComponent'
 const { width } = Dimensions.get("screen");
 
-export default function ReserveButton({price,onPress,text,title}) {
+export default function ReserveButton({price,onPress,text,title,disabled}) {
   return (
 
-    <TouchableOpacity onPress={onPress} >
+    <TouchableOpacity  >
     <View style={styles.ReserveButtonContainer}> 
 {
   price && 
@@ -23,7 +23,7 @@ export default function ReserveButton({price,onPress,text,title}) {
     
     <AppButton title={title || "order"} 
     style={styles.buttonSubmit}
-    onPress={onPress} />
+    onPress={onPress} disabled={disabled}/>
     </View>
   </TouchableOpacity>
   )

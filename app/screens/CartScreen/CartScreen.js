@@ -26,7 +26,7 @@ import {
   removeServiceFromCart,
 } from "../../store/features/CartSlice";
 import ReserveButton from "../../component/ReverveButton";
-import { CURRENCY, ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION } from "../../navigation/routes";
+import { CURRENCY, ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION, Offer_route_name } from "../../navigation/routes";
 const { width, height } = Dimensions.get("screen");
 
 export default function CartScreen({ route ,navigation}) {
@@ -79,7 +79,7 @@ export default function CartScreen({ route ,navigation}) {
       >
         <View style={styles.header}>
           <AppText
-            text={` خدمات ${slectedCategory?.attributes?.name} `}
+            text={category === Offer_route_name ? `${Offer_route_name}`:` خدمات ${slectedCategory?.attributes?.name} `}
             centered={true}
             style={{
               backgroundColor: "white",
@@ -92,8 +92,10 @@ export default function CartScreen({ route ,navigation}) {
             }}
           />
         </View>
+        {
+          services?.length > 0 ?
         <FlatList
-          data={services}
+        data={services}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item, index) => item.id +index}
           style={{
@@ -107,7 +109,7 @@ export default function CartScreen({ route ,navigation}) {
           }}
           renderItem={({ item }) => {
             //   console.log(item?.attributes?.name)
-
+            
             return (
               <View style={styles.itemContainer}>
                 <View style={styles.itemContainer2}>
@@ -129,13 +131,18 @@ export default function CartScreen({ route ,navigation}) {
                     }
                     textStyle={{ fontSize: 15 }}
                     onPress={() => handlePressAddButton(item?.id)}
-                  />
+                    />
                 </View>
               </View>
             );
           }}
-        />
+        />:
+        <View style={styles.noItemContainer}>
+
+        <AppText text={"Soon"}/>
+        </View>
       
+      }
       
       </ScrollView>
       
@@ -246,4 +253,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: Colors.whiteColor,
   },
+  noItemContainer:{
+    height:height*1,
+    marginTop:10,
+    paddingBottom:height*0.3,
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:Colors.whiteColor
+  }
 });

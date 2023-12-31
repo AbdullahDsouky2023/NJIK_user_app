@@ -51,6 +51,7 @@ export default function OrderDetails({ navigation, route }) {
   const handleOrderCancle = async (id) => {
     try {
       setIsLoading(true);
+      console.log("ccalcning....")
       const res = await cancleOrder(id);
       const selectedOrder = orders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken =
