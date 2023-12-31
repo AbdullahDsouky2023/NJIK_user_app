@@ -69,10 +69,10 @@ export default function SettingItem({ item }) {
       console.log("test");
     } 
     else if (icon === "doc") {
-      Linking.openURL("https://expo.dev");
+      Linking.openURL("https://njik.sa/");
     } 
     else if (icon === "question") {
-      Linking.openURL("https://expo.dev");
+      Linking.openURL("https://njik.sa/");
     } 
     else if (icon === "present") {
         navigation.navigate(CART, { name:"العروض" });

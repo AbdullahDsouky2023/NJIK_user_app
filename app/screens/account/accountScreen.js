@@ -105,7 +105,7 @@ const AccountScreen = ({ navigation, route }) => {
           <AppText text={"Our Accounts On Social Media"} style={styles.title} />
           <SocailLinksComponent />
           <TouchableWithoutFeedback
-            onPress={() => Linking.openURL("https://Njik.com")}
+            onPress={() => Linking.openURL("https://njik.sa/")}
           >
             <View>
               <AppText text={"Njik_app"} style={styles.website} />
