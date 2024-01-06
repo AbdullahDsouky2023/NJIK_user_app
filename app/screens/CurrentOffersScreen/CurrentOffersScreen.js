@@ -44,7 +44,7 @@ const CurrentOffersScreen = ({route, navigation }) => {
     if (data) {
       dispatch(setServices(data));
       dispatch(setpackages(packages?.data));
-      console.log("current Packages :",packages?.data[0].attributes)
+      // console.log("current Packages :",packages?.data[0].attributes)
     } else if (isError) {
       console.log(isError);
     }
@@ -88,6 +88,8 @@ const styles = StyleSheet.create({
   container: {
     // paddingBottom:1000,
     height: "100%",
+    // backgroundColor:'red',
+    paddingVertical:4
   },
   listContainer: {
     display: "flex",
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
   },
   title:{
     paddingHorizontal:20,
-    paddingVertical:10,
+    paddingVertical:1,
     color:Colors.blackColor
   },
   activeItem: {

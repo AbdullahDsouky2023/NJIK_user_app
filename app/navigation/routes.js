@@ -12,6 +12,7 @@ export const COMPLETE_ORDER_DETAILS = ("طلبات تم تنفيذها")
 export const ORDERS_DETAILS = ("Current")
 export const PREVIOUS_ORDERS = ("Previous")
 export const ORDERS = ("Current")
+export const OFFERS_SCREEN = ("OFFERS_SCREEN}")
 export const MANUAL_LOCATION_ADD = "manual-location-screen"
 export const ORDER_SELECT_LOCATION = "select-location-screen"
 export const ORDER_SELECT_REGION= "select-region-screen"

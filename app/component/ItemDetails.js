@@ -3,7 +3,7 @@ import React from "react";
 import AppText from "./AppText";
 import { StyleSheet } from "react-native";
 import { Colors } from "../constant/styles";
-import AppHeader from "./AppHeader";
+import {RFPercentage} from "react-native-responsive-fontsize";
 import ArrowBack from "./ArrowBack";
 const { width, height } = Dimensions.get("screen");
 export default function ItemDetails({ item }) {
@@ -12,6 +12,15 @@ export default function ItemDetails({ item }) {
       <ArrowBack subPage={true} />
       <ScrollView>
         <Image source={{ uri: item?.attributes?.image?.data?.attributes?.url }} style={styles.image} />
+        <AppText
+            text={"Service Details :"}
+            centered={false}
+            style={{
+                fontSize:RFPercentage(2.4),
+                padding:15,
+                color:Colors.primaryColor
+            }}
+          />
         <View style={styles.overlay}>
           <AppText text={item?.attributes?.name} style={{ color: Colors.whiteColor,fontSize:17 }} />
         </View>
@@ -57,7 +66,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     color: Colors.blackColor,
-    fontSize: 15,
+    fontSize: RFPercentage(1.9),
     width: width,
     padding:10,
     paddingHorizontal:20,

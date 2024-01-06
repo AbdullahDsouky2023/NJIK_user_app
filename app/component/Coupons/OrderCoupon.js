@@ -153,7 +153,7 @@ export default function OrderCoupon() {
         {Validing ? (
           <LoadingScreen />
         ) : (
-          <View>
+          <View style={styles.inputcontainer}>
             <AppText
               text={"Enter Coupon"}
               style={{ color: Colors.blackColor }}
@@ -202,12 +202,14 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "white",
     color: "red",
-    // width:width*0.8,
+    width:width*0.5,
+    margin:'auto',
     marginHorizontal: 30,
     paddingHorizontal: 0,
     borderBottomColor: "red",
     borderBottomWidth: 2,
     paddingTop: 10,
+    textAlign:'center'
   },
   couponAdded:{
     padding:6,
@@ -226,4 +228,9 @@ const styles = StyleSheet.create({
     top: -10,
     right: -7,
   },
+  inputcontainer:{
+    display:'flex',
+    alignItems:'center',
+
+  }
 });

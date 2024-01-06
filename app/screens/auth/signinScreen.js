@@ -147,7 +147,7 @@ const SigninScreen = ({ navigation }) => {
             <TouchableOpacity onPress={()=>Linking.openURL('https://facebook.com')}>
 
             <AppText
-              text={"Terms and Conditions"}
+              text={"Privacy"}
               style={{
                 fontSize:15,
                color:Colors.primaryColor

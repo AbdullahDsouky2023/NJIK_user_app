@@ -16,7 +16,7 @@ import { MaterialCommunityIcons} from '@expo/vector-icons'
 import React, { useRef, useState } from "react";
 import AppText from "./AppText";
 import AppFormField from "./Form/FormField";
-import AppForm from "./Form/Form";
+import {RFPercentage} from 'react-native-responsive-fontsize'
 import SubmitButton from "./Form/FormSubmitButton";
 import useOrders, { AddOrderReview } from "../../utils/orders";
 import { Alert } from "react-native";
@@ -24,7 +24,7 @@ import { HOME } from "../navigation/routes";
 const { width } = Dimensions.get("screen");
 import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { Colors } from "../constant/styles";
+import { Colors, mainFont } from "../constant/styles";
 import ArrowBack from "./ArrowBack";
 import { Animated, Easing } from "react-native";
 
@@ -43,6 +43,7 @@ export default function StarsComponent({ route }) {
   const navigation = useNavigation();
   const [isLoading,setIsLoading]=useState(false)
   const [focus, setFocus] = useState(null);
+  const [description,setDescription]=useState(null)
   const TemporaryImage =
     "https://cdn-icons-png.flaticon.com/128/6998/6998122.png";
   const { sendPushNotification } = useNotifications();
@@ -82,7 +83,7 @@ export default function StarsComponent({ route }) {
       const SelectedRate = RatingEmojs.filter((item)=>item?.explain === focus)[0]
       const res = await AddOrderReview(orderID, {
         rating:SelectedRate.rate.toString(),
-        content:SelectedRate.explain,
+        content:description,
       });
       const selectedOrder = UserOrders?.data?.filter(
         (order) => order?.id === orderID
@@ -164,6 +165,7 @@ export default function StarsComponent({ route }) {
             display: "flex",
             flexDirection: "column",
             marginTop: 10,
+            gap:5
           }}
         >
           <Image
@@ -215,14 +217,34 @@ export default function StarsComponent({ route }) {
             })}
           </View>
         </View>
-       
+        <View style={styles.inputContainer}>
+        {/* <AppText text={"Your Rate of the Technician"} style={styles.review} centered={false}/> */}
+
+        <TextInput
+      showSoftInputOnFocus
+      selectTextOnFocus
+        selectionColor={Colors.primaryColor}
+        textAlign="right"
+        textAlignVertical="top"
+        placeholder="أكتب تقييمك للفني"
+        placeholderTextColor={Colors.grayColor}
+        style={styles.input}
+        autoCapitalize="none"
+        autoCorrect={false}
+        multiline={true}
+        numberOfLines={4}
+        onChangeText={(t)=>setDescription(t)}
+        
+        
+        />
+        </View>
       <AppButton onPress={handleFormSubmit} title={"تقييم"} disabled={!focus} style={styles.buttonSubmit}/>
         {/* <AppForm
-          initialValues={{ rating: "", review: "" }}
+          initialValues={{  review: "" }}
           enableReinitialize={true}
           onSubmit={handleFormSubmit}
         >
-          {/* <AppFormField
+           <AppFormField
             autoCapitalize="none"
             autoCorrect={false}
            
@@ -230,9 +252,9 @@ export default function StarsComponent({ route }) {
             multiline={true}
             numberOfLines={6}
             textAlignVertical="top" 
-          /> */}
-          {/* <SubmitButton title={"تقييم"} dis  style={styles.buttonSubmit} /> */}
-        {/* </AppForm> */} 
+          />
+          <SubmitButton title={"تقييم"}   style={styles.buttonSubmit} />
+        </AppForm>  */}
       </View>
     </ScrollView>
   );
@@ -244,7 +266,13 @@ const styles = StyleSheet.create({
   text: {
     color: "black",
     paddingHorizontal: 15,
-    marginVertical: 20,
+    marginVertical: 5,
+  },
+  review: {
+    color: "black",
+    paddingHorizontal: 20,
+    marginVertical: 5,
+    fontSize:RFPercentage(2)
   },
   buttonSubmit: {
     width: width * 0.4,
@@ -267,6 +295,7 @@ const styles = StyleSheet.create({
   emoji: {
     display: "flex",
     flexDirection: "column",
+    // justifyContent:'center'
     // gap:10
   },
   emojiImage: {
@@ -274,7 +303,7 @@ const styles = StyleSheet.create({
     color: Colors.grayColor,
   },
   emojiExplain: {
-    fontSize: 15,
+    fontSize: RFPercentage(1.8),
     textAlign:'center'
   },
   Selectedemoji: {
@@ -295,4 +324,20 @@ const styles = StyleSheet.create({
     color:Colors.blackColor,
 
   },
+  input :{
+    borderWidth: 1,
+    width:width*0.9,
+    marginTop:15,
+    padding:10,
+    borderRadius: 10,
+    fontFamily: mainFont.light,
+    borderColor: Colors.blackColor,
+    writingDirection: "rtl",
+    fontSize: 15,
+  },
+  inputContainer:{
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center'
+  }
 });

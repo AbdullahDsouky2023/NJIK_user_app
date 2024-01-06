@@ -194,7 +194,7 @@ const UserInfo = ({ navigation }) => {
               <FormField
                 autoCorrect={false}
                 name="fullName"
-                // placeholder="fullName"
+                value={userData?.username}
                 icon={"user"}
                 placeholder={userData?.username}
               />
@@ -212,6 +212,7 @@ const UserInfo = ({ navigation }) => {
                 // placeholder="emailAddress"
                 textContentType="emailAddress"
                 placeholder={userData?.email}
+                value={userData?.email}
               />
               <AppText
                 text={"Birth Date"}
@@ -235,9 +236,10 @@ const UserInfo = ({ navigation }) => {
                 // placeholder="emailAddress"
                 // textContentType="emailAddress"
                 placeholder={userData?.city}
+                value={userData?.city}
               />
               <View style={styles.switchContainer}>
-                <AppText text={"Allow Offers"} />
+                <AppText text={"Allow Offers"} style={styles.allow_offers} />
                 <Switch
                   value={isSwitchedOn}
                   
@@ -277,7 +279,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: width * 0.95,
-  },
+  },allow_offers:{
+    color:Colors.primaryColor
+  }
 });
 
 export default UserInfo;

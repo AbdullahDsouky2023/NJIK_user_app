@@ -88,22 +88,14 @@ const HomeScreen = ({ navigation }) => {
               <OffersBanner />
               <ServicesList />
               <CurrentOffersScreen/>
-              {/* <LowOffers /> */}
-              {/* <ReadyPackages /> */}
-              {/* <OtherServicesList /> */}
-              {/* <CleaningServices /> */}
-              {/* <AskWorker /> */}
             </>
           }
           data={topCategoriesList}
           numColumns={2}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => `${item.id}`}
-          // renderItem={renderItem}
           ListFooterComponent={<UsersReviews />}
         />
-               {/* <AppButton onPress={()=>navigation.navigate("Chat")} /> */}
-
       </View>
     </SafeAreaView>
   );

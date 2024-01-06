@@ -9,7 +9,7 @@ import { Share } from "react-native";
 import { auth } from "../../../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
-import { CART, OFFERS } from "../../navigation/routes";
+import { CART, OFFERS, OFFERS_SCREEN } from "../../navigation/routes";
 const { width, height } = Dimensions.get("screen");
 import * as Linking from "expo-linking";
 import AppModal from "../AppModal";
@@ -75,7 +75,7 @@ export default function SettingItem({ item }) {
       Linking.openURL("https://njik.sa/");
     } 
     else if (icon === "present") {
-        navigation.navigate(CART, { name:"العروض" });
+        navigation.navigate(OFFERS_SCREEN, { name:"العروض" });
    
     } 
     else if (icon === "social-instagram") {

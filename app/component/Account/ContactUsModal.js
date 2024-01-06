@@ -56,10 +56,7 @@ export default function ContactUsModal({visible,hideModal}) {
          <AppButton title={"Whatsapp"}
          onPress={handleWhatsAppPress}
          style={{backgroundColor:Colors.whiteColor,marginTop:1,marginBottom:0}}  textStyle={{marginTop:0,color:Colors.blackColor}}/>
-         <AppButton title={"Call"}
-         onPress={handlePhoneCallPress}
-
-         style={{backgroundColor:Colors.whiteColor,marginTop:1,marginBottom:0}} textStyle={{marginTop:0,color:Colors.blackColor}} />
+        
          <AppButton title={"Email"}
                   onPress={handleEmailPress}
 

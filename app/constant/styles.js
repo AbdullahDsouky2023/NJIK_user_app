@@ -1,3 +1,4 @@
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
 export const Colors = {
     whiteColor: "#FFF",
@@ -30,145 +31,145 @@ export const Fonts = {
 
     blackColor14Medium: {
         color: Colors.blackColor,
-        fontSize: 14.0,
+        fontSize:RFPercentage(1.4),
         fontFamily: mainFont.medium,
     },
 
     blackColor16Medium: {
         color: Colors.blackColor,
-        fontSize: 16.0,
+        fontSize:RFPercentage(1.6),
         fontFamily:mainFont.medium,
     },
 
     blackColor17Medium: {
         color: Colors.blackColor,
-        fontSize: 17.0,
+        fontSize:RFPercentage(1.7),
         fontFamily: mainFont.medium,
     },
 
     blackColor18Medium: {
         color: Colors.blackColor,
-        fontSize: 18.0,
+        fontSize:RFPercentage(1.8),
         fontFamily: mainFont.medium,
     },
 
     blackColor19Medium: {
         color: Colors.blackColor,
-        fontSize: 19.0,
+        fontSize:RFPercentage(1.9),
         fontFamily: mainFont.medium,
     },
 
     blackColor20Medium: {
         color: Colors.blackColor,
-        fontSize: 20.0,
+        fontSize:RFPercentage(2),
         fontFamily: mainFont.medium,
     },
 
     whiteColor15Light: {
         color: Colors.whiteColor,
-        fontSize: 15.0,
+        fontSize:RFPercentage(1.5),
         fontFamily: mainFont.light,
     },
 
     whiteColor15Regular: {
         color: Colors.whiteColor,
-        fontSize: 15.0,
+        fontSize:RFPercentage(1.5),
         fontFamily: mainFont.regular,
     },
 
     whiteColor16Regular: {
         color: Colors.whiteColor,
-        fontSize: 16.0,
+        fontSize:RFPercentage(1.6),
         fontFamily: mainFont.regular,
     },
 
     whiteColor18Regular: {
         color: Colors.whiteColor,
-        fontSize: 18.0,
+        fontSize:RFPercentage(1.8),
         fontFamily:  mainFont.regular,
     },
 
     whiteColor16Medium: {
         color: Colors.whiteColor,
-        fontSize: 16.0,
+        fontSize:RFPercentage(1.4),
         fontFamily: mainFont.medium,
     },
 
     whiteColor18Medium: {
         color: Colors.whiteColor,
-        fontSize: 18.0,
+        fontSize:RFPercentage(1.4),
         fontFamily:mainFont.medium,
     },
 
     whiteColor19Medium: {
         color: Colors.whiteColor,
-        fontSize: 19.0,
+        fontSize:RFPercentage(2.4),
         fontFamily: mainFont.medium,
     },
 
     whiteColor20Medium: {
         color: Colors.whiteColor,
-        fontSize: 20.0,
+        fontSize:RFPercentage(2),
         fontFamily: mainFont.medium,
     },
 
     primaryColor15Light: {
         color: Colors.primaryColor,
-        fontSize: 15.0,
+        fontSize:RFPercentage(1.6),
         fontFamily: mainFont.light,
     },
 
     primaryColor16Light: {
         color: Colors.primaryColor,
-        fontSize: 16.0,
+        fontSize:RFPercentage(1.6),
         fontFamily:mainFont.light,
     },
 
     primaryColor17Light: {
         color: Colors.primaryColor,
-        fontSize: 17.0,
+        fontSize:RFPercentage(1.7),
         fontFamily: mainFont.light,
     },
 
     primaryColor18Light: {
         color: Colors.primaryColor,
-        fontSize: 18.0,
+        fontSize:RFPercentage(1.8),
         fontFamily: mainFont.light,
     },
 
     primaryColor18Regular: {
         color: Colors.primaryColor,
-        fontSize: 18.0,
+        fontSize:RFPercentage(1.8),
         fontFamily: mainFont.regular,
     },
 
     primaryColor15Regular: {
         color: Colors.primaryColor,
-        fontSize: 15.0,
+        fontSize:RFPercentage(1.5),
         fontFamily: mainFont.regular,
     },
 
     primaryColor16Regular: {
         color: Colors.primaryColor,
-        fontSize: 16.0,
+        fontSize:RFPercentage(1.6),
         fontFamily: mainFont.regular,
     },
 
     primaryColor17Regular: {
         color: Colors.primaryColor,
-        fontSize: 17.0,
+        fontSize:RFPercentage(1.7),
         fontFamily: mainFont.regular,
     },
 
     primaryColor15Medium: {
         color: Colors.primaryColor,
-        fontSize: 15.0,
+        fontSize:RFPercentage(1.5),
         fontFamily: mainFont.medium,
     },
 
     primaryColor16Medium: {
         color: Colors.primaryColor,
-        fontSize: 16.0,
+        fontSize:RFPercentage(1.4),
         fontFamily: mainFont.medium,
     },
 

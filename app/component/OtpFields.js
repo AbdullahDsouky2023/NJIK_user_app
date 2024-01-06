@@ -14,6 +14,9 @@ export default function OtpFields({setisLoading,otpInput,setOtpInput,confirmVeri
         containerStyle={{
           marginTop: Sizes.fixPadding * 2.0,
           marginHorizontal: Sizes.fixPadding * 2.0,
+          display:'flex',
+          alignItems:'center',
+          justifyContent:'center',
           flexDirection:I18nManager.isRTL ? 'row-reverse' : 'row',
         }}
         

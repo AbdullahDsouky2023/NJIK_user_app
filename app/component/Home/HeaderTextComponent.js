@@ -28,8 +28,9 @@ export default function HeaderTextComponent({ name, showAll, children }) {
 }
 const styles = StyleSheet.create({
   Container: {
-    margin: Sizes.fixPadding * 1.0,
+    marginHorizontal: Sizes.fixPadding * 1.0,
     padding: Sizes.fixPadding * 1.0,
+    // backgroundColor:'red'
   },
   headerTextContainer: {
     display: "flex",
@@ -51,7 +52,8 @@ const styles = StyleSheet.create({
     color: Colors.blackColor,
     ...Fonts.blackColor14Medium,
     fontSize:18,
-    paddingBottom:5
+    paddingVertical:5
+    // paddingBottom:5
     // paddingHorizontal:25
   },
   imageCard: {

@@ -16,12 +16,12 @@ export default function OffersServiceComponentList({ data, slectedItem }) {
     <View
       style={{
         paddingHorizontal: 16,
-        paddingTop: 10,
-        marginBottom: 10,
+        // paddingTop: 10,
+        // marginBottom: 100,
         width: width,
       }}
     >
-      <View style={{ marginBottom: 10 }}>
+      <View style={{ marginBottom: 5 }}>
         {/* <AppText
           text={data[0]?.attributes?.category?.data?.attributes?.name}
           centered={false}

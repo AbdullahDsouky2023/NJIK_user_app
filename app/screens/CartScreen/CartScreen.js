@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import useServices from "../../../utils/services";
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import useCategories from "../../../utils/categories";
 import { ScrollView } from "react-native-virtualized-view";
 import LoadingScreen from "../loading/LoadingScreen";
@@ -28,6 +28,7 @@ import {
 import ReserveButton from "../../component/ReverveButton";
 import { CURRENCY, ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION, Offer_route_name } from "../../navigation/routes";
 const { width, height } = Dimensions.get("screen");
+const fontSize = RFPercentage(1.7); // Base font size
 
 export default function CartScreen({ route ,navigation}) {
   const category = route.params?.name;
@@ -102,8 +103,9 @@ export default function CartScreen({ route ,navigation}) {
             display: "flex",
             flexDirection: "row",
             direction: "rtl",
+            justifyContent:'center',
             flexWrap: "wrap",
-            marginTop: 15,
+            marginVertical: 15,
             gap: 15,
             width: width,
           }}
@@ -116,12 +118,12 @@ export default function CartScreen({ route ,navigation}) {
                   <AppText
                     centered={false}
                     text={item.attributes?.name}
-                    style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
+                    style={[styles.name, { fontSize: RFPercentage(2), paddingRight: 10 }]}
                   />
                   <AppText
                     centered={false}
                     text={`${item.attributes?.Price} ` +CURRENCY}
-                    style={[styles.price, { fontSize: 14, paddingRight: 10 }]}
+                    style={[styles.price, { fontSize: RFPercentage(2), paddingRight: 10 }]}
                   />
                 </View>
                 <View style={styles.buttonsContainer}>
@@ -129,7 +131,7 @@ export default function CartScreen({ route ,navigation}) {
                     title={
                       cartItems?.indexOf(item?.id) !== -1 ? "remove" : "Add"
                     }
-                    textStyle={{ fontSize: 15 }}
+                    textStyle={{ fontSize:fontSize }}
                     onPress={() => handlePressAddButton(item?.id)}
                     />
                 </View>
@@ -169,7 +171,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   name: {
-    fontSize: 17,
+    fontSize: RFPercentage(1.7),
     color: Colors.blackColor,
   },
   itemContainer: {
@@ -215,13 +217,13 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   price: {
-    fontSize: 17,
+    fontSize: RFPercentage(2),
     color: Colors.primaryColor,
     marginTop: 5,
     fontWeight: 700,
   },
   title: {
-    fontSize: 21,
+    fontSize: RFPercentage(2.2),
     color: Colors.primaryColor,
   },
   itemContainer2: {
