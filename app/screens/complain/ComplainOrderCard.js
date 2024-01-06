@@ -28,7 +28,7 @@ import LoadingScreen from "../loading/LoadingScreen";
     return (
       <TouchableWithoutFeedback onPress={onPress}>
         <View style={styles.orderCardContainer}>
-          <View style={styles.headerContainer}>
+          {/* <View style={styles.headerContainer}>
             {
                         item?.attributes?.services.data.length>0 &&
   <>
@@ -58,27 +58,38 @@ import LoadingScreen from "../loading/LoadingScreen";
             centered={false}
             />
           }
-          </View>
+          </View> */}
           <View style={styles.date}>
-            <Ionicons name="ios-location-outline" size={24} color="black" />
-            <AppText
-              text={item?.attributes?.location}
+          <AppText
+              text={
+                "Complain Id: "
+              }
               centered={false}
-              style={styles.title}
+              style={styles.Status}
+              />
+            <AppText
+              text={item?.id}
+              centered={false}
+              style={[styles.Status,{
+                color:Colors.primaryColor
+              }]}
             />
           </View>
-          {/* Price */}
           <View style={styles.date}>
-            <FontAwesome5 name="money-check" size={18} color="black" />
-            <PriceTextComponent price={item?.attributes?.totalPrice} />
-          </View>
-          {/* date */}
-          <View style={styles.date}>
-            <FontAwesome name="calendar" size={24} color="black" />
-            <AppText
-              text={`${item?.attributes?.date}`}
+          <AppText
+              text={
+                "Complain : "
+              }
               centered={false}
-              style={styles.title}
+              style={styles.Status}
+              />
+            <AppText
+              text={item?.attributes?.complain?.data?.attributes?.message}
+              centered={false}
+              style={[styles.Status,{
+                color:Colors.primaryColor,
+                maxWidth:width*0.6
+              }]}
             />
           </View>
           <View  style={{
@@ -100,8 +111,9 @@ import LoadingScreen from "../loading/LoadingScreen";
             <AppText
               text={
                item?.attributes?.complain?.data?.attributes?.status === "pending"?
-               "قيد الانتظار":item?.attributes?.complain?.data?.attributes?.status === "resolved"?
-                "تم معالجه الطلب":item?.attributes?.complain?.data?.attributes?.status === "rejected"?"تم رفض الطلب":null
+               "قيد المراجعه":item?.attributes?.complain?.data?.attributes?.status === "replied"?
+               "تم الرد" :item?.attributes?.complain?.data?.attributes?.status === "resolved"?
+                "تم معالجه الطلب بنجاح":item?.attributes?.complain?.data?.attributes?.status === "rejected"?"تم رفض الطلب":null
               }
               centered={false}
               style={[styles.Status,{

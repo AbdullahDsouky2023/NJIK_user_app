@@ -208,7 +208,7 @@ const ComplainCreatingScreen = ({ navigation, route }) => {
 
               <FormImagePicker name="images" width={width} />
 
-              <SubmitButton title="Send" />
+              <SubmitButton title="Confirm" />
             </AppForm>
           </View>
         </ScrollView>
