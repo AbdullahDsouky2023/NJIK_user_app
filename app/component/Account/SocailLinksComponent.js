@@ -1,29 +1,59 @@
-import { View, Text, TouchableWithoutFeedback } from 'react-native'
-import React from 'react'
-import { FontAwesome,Entypo,AntDesign,Feather } from '@expo/vector-icons'; 
-import { StyleSheet } from 'react-native';
-import { Colors } from '../../constant/styles';
-import * as Linking from 'expo-linking'
-import AppText from '../AppText';
+import { View } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
+import { Colors } from "../../constant/styles";
+import * as Linking from "expo-linking";
+import { FontAwesome5, FontAwesome6,FontAwesome } from "@expo/vector-icons";
 export default function SocailLinksComponent() {
   return (
     <View style={styles.container}>
-     <FontAwesome name="facebook-square" size={32} color={Colors.primaryColor} onPress={()=>Linking.openURL('https://facebook.com')} />
-     <Entypo name="instagram" size={30} color={Colors.primaryColor}   onPress={()=>Linking.openURL('https://instagram.com')}/>
-     <AntDesign name="linkedin-square"  size={32}  color={Colors.primaryColor}   onPress={()=>Linking.openURL('https://linkedin.com')}/>
-     <AntDesign name="twitter" size={32} color={Colors.primaryColor}  onPress={()=>Linking.openURL('https://x.com')}/>
-
-
+       <FontAwesome5
+        name="facebook-f"
+        size={26}
+        color={Colors.primaryColor}
+        onPress={() => Linking.openURL("https://facebook.com")}
+      />
+      <FontAwesome5
+        name="instagram"
+        size={26}
+        color={Colors.primaryColor}
+        onPress={() => Linking.openURL("https://instagram.com")}
+      />
+      <FontAwesome
+        name="fa-x-twitter"
+        size={26}
+        color={Colors.primaryColor}
+        onPress={() => Linking.openURL("https://x.com")}
+      />
+      <FontAwesome5
+        name="linkedin-in"
+        size={26}
+        color={Colors.primaryColor}
+        onPress={() => Linking.openURL("https://linkedin.com")}
+      />
+      <FontAwesome5
+        name="tiktok"
+        size={26}
+        color={Colors.primaryColor}
+        onPress={() => Linking.openURL("https://tiktok.com")}
+      />
+      <FontAwesome5
+        name="snapchat"
+        size={26}
+        color={Colors.primaryColor}
+        onPress={() => Linking.openURL("https://snapchat.com")}
+      />
+     
     </View>
-  )
+  );
 }
 const styles = StyleSheet.create({
-    container:{
-        display:'flex',
-         alignItems:'center',
-         justifyContent:'center',
-         padding:10,
-         gap:18,
-         flexDirection:'row'
-    }
-})
+  container: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
+    gap: 18,
+    flexDirection: "row-reverse",
+  },
+});
