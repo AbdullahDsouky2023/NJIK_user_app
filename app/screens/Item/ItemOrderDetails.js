@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import * as yup from "yup";
 import { format } from "date-fns";
-import { arDZ } from "date-fns/locale";
+import { ar } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
 
 import ArrowBack from "../../component/ArrowBack";
@@ -66,7 +66,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
   
       // Format the date and time
       const formattedDate = format(date, "dd MMMM yyyy", {
-        locale: arDZ,
+        locale: ar,
       });
   
       const formSubmitionData = {

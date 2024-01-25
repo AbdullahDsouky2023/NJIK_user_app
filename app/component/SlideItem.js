@@ -24,7 +24,7 @@ export default function SlideItem({ item }) {
 
       <Image
       // height={150}
-        style={{ width:  width*0.95, minHeight: height*0.175,borderRadius:10,backgroundColor:'red'}}
+        style={{ width:  width*0.95, minHeight: height*0.175,borderRadius:10,backgroundColor:'white'}}
       {...{ uri}}
       resizeMode="cover"
       />

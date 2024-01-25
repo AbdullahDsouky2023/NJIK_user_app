@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Colors } from "../../constant/styles";
@@ -11,11 +11,12 @@ export default function SocailLinksComponent() {
   const Icon = createIconSetFromIcoMoon(
     require("../../assets/images/x.json"),
     "IcoMoon",
-    "icomoon.ttf"
+    "icomoon.ttf" 
   );
   const [fontsLoaded] = useFonts({
     IcoMoon: require("../../assets/images/icomoon.ttf"),
   });
+  if(!fontsLoaded) return <ActivityIndicator/>
   return (
     <View style={styles.container}>
        <FontAwesome5

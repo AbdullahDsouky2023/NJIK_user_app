@@ -171,8 +171,7 @@ export default function StarsComponent({ route }) {
           <Image
             source={{
               uri:
-                route?.params?.item?.attributes?.provider?.data?.attributes
-                  ?.image?.url || TemporaryImage,
+                route?.params?.item?.attributes?.provider?.data?.attributes?.Personal_image?.data[0]?.attributes?.url || TemporaryImage
             }}
             style={styles.Image}
           />
@@ -280,8 +279,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   Image: {
-    height: 100,
-    width: 100,
+    height: 120,
+    width: 120,
+    borderRadius:120/2,
     alignSelf: "center",
     // marginBottom: 10,
   },
