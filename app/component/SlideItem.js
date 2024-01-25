@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ITEM_DETAILS } from "../navigation/routes";
 import { TouchableOpacity } from "react-native";
 import { Image } from "react-native-expo-image-cache";
-const { width } = Dimensions.get("screen");
+const { width , height } = Dimensions.get("screen");
 export default function SlideItem({ item }) {
   const navigation = useNavigation();
   const uri = item?.attributes?.image?.data?.attributes?.url 
@@ -19,13 +19,14 @@ export default function SlideItem({ item }) {
         display:'flex',alignItems:'center',justifyContent:'center' }}
     >
       <View 
-        style={{ width:  width, height: 180.0 , backgroundColor:'white',marginTop:5,        display:'flex',alignItems:'center',justifyContent:'center' }}
+        style={{ width:  width*1, height:  height*0.2, backgroundColor:'white',marginTop:5,        display:'flex',alignItems:'center',justifyContent:'center' }}
       >
 
       <Image
-        style={{ width:  width*0.94, height: 180.0 ,borderRadius:10}}
+      // height={150}
+        style={{ width:  width*0.95, minHeight: height*0.175,borderRadius:10,backgroundColor:'red'}}
       {...{ uri}}
-      resizeMode="contain"
+      resizeMode="cover"
       />
       </View>
     </TouchableWithoutFeedback>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormikContext } from "formik";
 import { format } from "date-fns";
-import { arSA } from "date-fns/locale"; // Import the Saudi Arabian locale
+import { ar } from "date-fns/locale"; // Import the Arabic locale
 
 import FormTextInput from "./FormInput";
 import ErrorMessage from "./ErrorMessage";
@@ -20,8 +20,11 @@ function FormDatePicker({ name, width, ...otherProps }) {
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
+  const formattedDate = format(date, "dd MMMM yyyy", {
+    locale: ar, // Use the Arabic locale
+  });
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || formattedDate;
     setShow(Platform.OS === "ios"); // Hide the DateTimePicker for iOS
     setDate(currentDate);
     setFieldValue(name, currentDate);
@@ -36,9 +39,6 @@ function FormDatePicker({ name, width, ...otherProps }) {
     showMode("date");
   };
 
-  const formattedDate = format(date, "dd MMMM yyyy", {
-    locale: arSA, // Use the Arabic locale
-  });
 
   return (
     <>

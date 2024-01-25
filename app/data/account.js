@@ -26,11 +26,6 @@ export const settingsItemArray = [
     name: "Offers",
     icon: "present",
   },
-
-  {
-    name: "Terms and Conditions",
-    icon: "doc",
-  },
   {
     name: "Privacy",
     icon: "question",
