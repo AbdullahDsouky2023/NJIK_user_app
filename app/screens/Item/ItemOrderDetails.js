@@ -182,13 +182,13 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
               />
               <ErrorMessage error={error} visible={error} />
               <AppText
-                text={"يوم التنفيذ"}
+                text={"أختر التاريخ"}
                 centered={false}
-                style={styles.label}
+                style={styles.label2}
               />
               <FormDatePicker name="Date" placeholder="Date" />
               <AppText
-                text={"معلومات  اخري"}
+                text={"معلومات  اخرى"}
                 centered={false}
                 style={styles.label}
               />
@@ -232,7 +232,16 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
 const styles = StyleSheet.create({
   label: {
     paddingHorizontal: 15,
+    // paddingVertical: 4,
+    marginTop:10,
+    marginBottom:-4,
+    color: Colors.blackColor,
+  },
+  label2: {
+    paddingHorizontal: 15,
     paddingVertical: 4,
+    // marginTop:10,
+    // marginBottom:-4,
     color: Colors.blackColor,
   },
   orderButtonContainer: {

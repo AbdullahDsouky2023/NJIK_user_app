@@ -295,6 +295,8 @@ const styles = StyleSheet.create({
   emoji: {
     display: "flex",
     flexDirection: "column",
+    alignItems:'center',
+    justifyContent:'center'
     // justifyContent:'center'
     // gap:10
   },
@@ -311,7 +313,8 @@ const styles = StyleSheet.create({
     color:Colors.primaryColor,
     flexDirection: "column",
     transform: [{ scale: 1.2 ,}],
-    
+    alignItems:'center',
+    justifyContent:'center'
     // gap:10
   },
   SelectEmojiImage: {

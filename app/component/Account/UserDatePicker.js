@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormikContext } from "formik";
 import { format } from "date-fns";
-import { arDZ } from "date-fns/locale"; // Import the Arabic locale
+import { arSA } from "date-fns/locale"; // Import the Saudi Arabian locale
 
 // import FormTextInput from "./FormInput";
 import ErrorMessage from "../Form/ErrorMessage";
@@ -43,7 +43,7 @@ function UserDatePicker({ name, width, birthDate,...otherProps }) {
   };
 
   const formattedDate = format(date, "dd MMMM yyyy", {
-    locale: arDZ, // Use the Arabic locale
+    locale: arSA,
   });
 
   return (

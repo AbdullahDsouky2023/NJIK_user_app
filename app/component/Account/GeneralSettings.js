@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { CommonActions } from "@react-navigation/native";
 import { ScrollView } from "react-native-virtualized-view";
+import { Ionicons } from '@expo/vector-icons';
 
 import AppText from "../AppText";
 import AppButton from "../AppButton";
@@ -36,7 +37,13 @@ export default function GeneralSettings() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.headerContainer}>
+
+
+      <Ionicons name="settings-outline" size={24} color={Colors.primaryColor} />
+
       <AppText text="Settings" style={styles.header} />
+      </View>
       <View>
         <FlatList
           data={settingsItemArray}
@@ -63,11 +70,19 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
   },
+  headerContainer:{
+display:"flex",
+alignItems:'center',
+flexDirection:'row',
+justifyContent:'center',
+marginBottom:25,
+paddingHorizontal:10,
+gap:10
+  },
   header: {
     color: Colors.primaryColor,
     fontSize: 18,
-    marginBottom:25,
-    paddingHorizontal:10
+
   },
   textHeader: {
     color: Colors.blackColor,

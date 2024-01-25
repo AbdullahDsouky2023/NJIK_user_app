@@ -93,7 +93,7 @@ const AccountScreen = ({ navigation, route }) => {
       <View style={{ flex: 1 }}>
         <ScrollView>
           <View style={styles.LogoStyles}>
-            <Logo />
+            {/* <Logo /> */}
           </View>
           {/* <View style={styles.ImageContainer}>
           <Image source={{uri:imageUri}}
@@ -150,5 +150,6 @@ const styles = StyleSheet.create({
   },
   LogoStyles: {
     padding: 17,
+    marginTop:20
   },
 });
