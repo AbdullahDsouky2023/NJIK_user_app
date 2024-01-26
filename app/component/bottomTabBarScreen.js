@@ -1,16 +1,15 @@
 import React, { useState, useCallback } from "react";
 import { BackHandler, View, Text, StyleSheet } from 'react-native'
-import { Colors, Sizes, Fonts } from "../constant/styles";
-import HomeScreen from "../screens/home/homeScreen";
-import OrderScreen from "../screens/Orders/OrderScreen.js";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useFocusEffect } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
-import AccountNavigator from "../navigation/AccountNavigator";
 import { Octicons } from '@expo/vector-icons'; 
+import HomeScreen from "../screens/home/homeScreen";
+import { Colors, Sizes, Fonts } from "../constant/styles";
+import AccountNavigator from "../navigation/AccountNavigator";
+import OrderScreen from "../screens/Orders/OrderScreen.js";
 import CurrentOffersScreen from "../screens/CurrentOffersScreen/CurrentOffersScreen";
 import { ACCOUNT, HOME, MY_ORDERS, OFFERS } from "../navigation/routes.js";
 
@@ -121,10 +120,7 @@ const styles = StyleSheet.create({
     },
     tabBarStyle: {
         height: 70.0,
-        // elevation: 3.0,
         backgroundColor:Colors.piege,
-        // borderTopColor: 'gray',
-        // borderTopWidth: 0.20,
         borderTopLeftRadius: Sizes.fixPadding + 10.0,
         borderTopRightRadius: Sizes.fixPadding + 10.0,
         paddingTop: Sizes.fixPadding - 5.0,

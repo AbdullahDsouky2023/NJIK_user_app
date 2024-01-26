@@ -12,7 +12,8 @@ import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import { CommonActions } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
-
+import { useDispatch, useSelector } from "react-redux";
+import {RFPercentage} from 'react-native-responsive-fontsize'
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
 import Logo from "../../component/Logo";
@@ -21,9 +22,7 @@ import ErrorMessage from "../../component/Form/ErrorMessage";
 import FormField from "../../component/Form/FormField";
 import SubmitButton from "../../component/Form/FormSubmitButton";
 import { auth } from "../../../firebaseConfig";
-// import { SECRET_PASSWORD} from "@env"
 import LoadingModal from "../../component/Loading";
-import { useDispatch, useSelector } from "react-redux";
 import { setItem } from "../../utils/secureStore";
 import {
   setUserData,
@@ -85,7 +84,6 @@ const RegisterScreen = ({ navigation, route }) => {
         district: values?.district || null,
         birth_date: values?.birth_date,
         gender:values.gender,
-        // location:userLocation,
         phoneNumber: phoneNumber,
       });
       if (res) {
@@ -141,7 +139,6 @@ const RegisterScreen = ({ navigation, route }) => {
                 autoCorrect={false}
                 icon="account"
                 name="fullName"
-                // placeholdesr="fullName"
               />
               <HeaderComponent header={"emailAddress"} />
 
@@ -150,31 +147,24 @@ const RegisterScreen = ({ navigation, route }) => {
                 autoCorrect={false}
                 keyboardType="email-address"
                 name="emailAddress"
-                // placeholder="emailAddress"
                 textContentType="emailAddress"
               />
               <HeaderComponent header={"city"} />
               <FormField
                 autoCapitalize="none"
                 autoCorrect={false}
-                // keyboardType="email-address"
                 name="city"
-                // placeholder="city"
               />
               <HeaderComponent header={"district"} />
 
               <FormField
                 autoCapitalize="none"
                 autoCorrect={false}
-                // keyboardType="email-address"
                 name="district"
-                // placeholder="district"
               />
               <HeaderComponent header={"Birth Date"} />
               <UserDatePicker name="birth_date" birthDate={Date.now()} />
-              {/* <HeaderComponent  /> */}
               <GenderSelect value={gender} onChange={setGender} name={"gender"} />
-              <SubmitButton title="Register" />
               <View style={styles.termsContainer}>
                 <FontAwesome
                   name="edit"
@@ -187,12 +177,15 @@ const RegisterScreen = ({ navigation, route }) => {
                   }
                   style={{
                     color: Colors.blackColor,
-                    fontSize: 11,
-                    width: width,
+                    fontSize: RFPercentage(1.55),
+                    minWidth: width*0.85,
+                    maxWidth: width*0.87,
+                    // textAlign:'center',
+                    // backgroundColor:'red'
                   }}
-                  // centered={false}
                 />
               </View>
+                  <SubmitButton title="Register" />
             </AppForm>
           </View>
         </ScrollView>
@@ -209,11 +202,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 15,
     gap: 10,
+    // backgroundColor:'white',
     width: width,
-    // flexWrap:'wrap'
   },
   logoCotnainer: {
-    margin: 40,
+    marginTop: 10,
   },
   headerContainer: {
     display: "flex",

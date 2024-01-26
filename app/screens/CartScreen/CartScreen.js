@@ -74,6 +74,7 @@ export default function CartScreen({ route ,navigation}) {
   return (
     <>
       <ScrollView
+       showsVerticalScrollIndicator={false}
         style={{
           height: height * 0.78,
         }}

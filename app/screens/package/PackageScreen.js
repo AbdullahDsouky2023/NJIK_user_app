@@ -44,7 +44,7 @@ export default function PackageScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <PackageDetails item={item} />
         <OtherServicesList />
         <UsersReviews />

@@ -9,7 +9,7 @@ import {
   import AppButton from "../../component/AppButton";
   import AppText from "../../component/AppText";
   import { Colors } from "../../constant/styles";
-  import AppHeader from "../../component/AppHeader";
+import {RFPercentage } from 'react-native-responsive-fontsize'
   import useOrders, { cancleOrder, postOrder } from "../../../utils/orders";
   import { useDispatch, useSelector } from "react-redux";
   import { clearCurrentOrder, setOrders } from "../../store/features/ordersSlice";
@@ -149,7 +149,7 @@ import { updateUserData } from "../../../utils/user";
                   <AppText
                     centered={false}
                     text={item.attributes?.name}
-                    style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
+                    style={[styles.name, { fontSize: RFPercentage(1.9), paddingRight: 10 }]}
                     />
                     {
                       item.attributes?.Price > 0 &&
@@ -157,7 +157,7 @@ import { updateUserData } from "../../../utils/user";
                     text={`${item.attributes?.Price} `+CURRENCY}
                     style={{
                       backgroundColor: Colors.primaryColor,
-                      fontSize: 14,
+                      fontSize: RFPercentage(1.9),
                       padding: 6,
                       borderRadius: 40,
                       color: Colors.whiteColor,
@@ -199,13 +199,13 @@ import { updateUserData } from "../../../utils/user";
                   <AppText
                     centered={false}
                     text={item.attributes?.name}
-                    style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
+                    style={[styles.name, { fontSize: RFPercentage(1.9), paddingRight: 10 }]}
                   />
                   <AppText
                     text={`${item.attributes?.price} `+CURRENCY}
                     style={{
                       backgroundColor: Colors.primaryColor,
-                      fontSize: 14,
+                      fontSize: RFPercentage(1.9),
                       padding: 6,
                       borderRadius: 40,
                       color: Colors.whiteColor,
@@ -227,7 +227,7 @@ import { updateUserData } from "../../../utils/user";
           <View style={styles.itemContainer}>
             <AppText centered={false} text={" السعر"} style={styles.title} />
             <PriceTextComponent
-            style={{color:Colors.blackColor,fontSize:14,marginTop:4}}
+            style={{color:Colors.blackColor,fontSize:RFPercentage(1.9),marginTop:4}}
             price={totalPrice}
             />
           </View>
@@ -294,12 +294,12 @@ import { updateUserData } from "../../../utils/user";
   const styles = StyleSheet.create({
     container: {
       paddingVertical: 10,
-      paddingHorizontal: 18,
+      paddingHorizontal: 10,
       backgroundColor: Colors.whiteColor,
   
     },
     name: {
-      fontSize: 17,
+      fontSize: RFPercentage(1.8),
       color: Colors.blackColor,
     },
     itemContainer: {
@@ -309,6 +309,7 @@ import { updateUserData } from "../../../utils/user";
       height: "auto",
       width: width * 0.9,
       padding: 10,
+      marginHorizontal:4,
       // borderWidth: 0.7,
       borderRadius: 10,
       marginVertical: 10,
@@ -333,6 +334,7 @@ import { updateUserData } from "../../../utils/user";
       // borderWidth: 0.7,
       borderRadius: 10,
       marginVertical: 10,
+      marginHorizontal:4,
       backgroundColor: Colors.whiteColor,
       shadowColor: '#000',
       shadowOffset: {
@@ -344,12 +346,12 @@ import { updateUserData } from "../../../utils/user";
       elevation: 4,    gap: 10,
     },
     price: {
-      fontSize: 17,
+      fontSize: RFPercentage(1.8),
       color: Colors.blackColor,
       marginTop: 5,
     },
     title: {
-      fontSize: 21,
+      fontSize: RFPercentage(2.1),
       color: Colors.primaryColor,
     },
     ButtonContainer :{

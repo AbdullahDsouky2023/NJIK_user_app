@@ -18,6 +18,7 @@ import {
   CURRENCY,
   HOME,
   ORDERS,
+  ORDER_SUCCESS_SCREEN,
   REVIEW_ORDER_SCREEN,
 } from "../../navigation/routes";
 import PriceTextComponent from "../../component/PriceTextComponent";
@@ -97,11 +98,11 @@ export default function OrderDetails({ navigation, route }) {
       console.log("the button is just clikcked", id);
       const res = await PayOrder(id);
       if (res) {
-        Alert.alert("payment has been processed successfully.");
+        // Alert.alert(t("payment has been processed successfully."));
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: t(HOME) }],
+            routes: [{ name: t(ORDER_SUCCESS_SCREEN) }],
           })
         );
       } else {
@@ -113,12 +114,11 @@ export default function OrderDetails({ navigation, route }) {
       setIsLoading(false);
     }
   };
-  // console.log(item?.attributes?.images?.data[0].attributes.url)
   if (isLoading) return <LoadingScreen />;
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor:'white'}} showsVerticalScrollIndicator={false}>
       <ArrowBack subPage={true} />
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container}  showsVerticalScrollIndicator={false}>
         {item?.attributes?.services.data.length > 0 ? (
           <View style={styles.itemContainer}>
             <FlatList
@@ -286,7 +286,6 @@ export default function OrderDetails({ navigation, route }) {
                     />
                   );
                 }}
-                // onSnapToItem={(index) => updateState({ activeSlide: index })}
               />
             </>
           </View>
@@ -358,6 +357,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: "auto",
+
     width: width * 0.9,
     padding: 10,
     // borderWidth: 0.7,

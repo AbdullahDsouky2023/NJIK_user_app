@@ -33,7 +33,7 @@ export default function ItemScreen({ route,navigation }) {
   );
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}> 
         <ItemDetails item={item} />
         <OtherServicesList />
         <UsersReviews/>

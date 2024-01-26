@@ -1,54 +1,43 @@
-import { Rating, AirbnbRating } from "react-native-ratings";
-import Modal from "react-native-modal";
 import {
   View,
-  Text,
   TextInput,
   StyleSheet,
   Dimensions,
   ScrollView,
   Image,
-  TouchableOpacity,
-  Pressable,
 } from "react-native";
-import * as Linking from 'expo-linking'
-import { MaterialCommunityIcons} from '@expo/vector-icons'
+import { useTranslation } from "react-i18next";
+import { Hoverable } from "react-native-web-hover";
+import * as Linking from "expo-linking";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useRef, useState } from "react";
 import AppText from "./AppText";
-import AppFormField from "./Form/FormField";
-import {RFPercentage} from 'react-native-responsive-fontsize'
-import SubmitButton from "./Form/FormSubmitButton";
-import useOrders, { AddOrderReview } from "../../utils/orders";
+import { RFPercentage } from "react-native-responsive-fontsize";
 import { Alert } from "react-native";
-import { HOME } from "../navigation/routes";
-const { width } = Dimensions.get("screen");
 import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { Colors, mainFont } from "../constant/styles";
-import ArrowBack from "./ArrowBack";
-import { Animated, Easing } from "react-native";
 
 import { updateProviderData, updateUserData } from "../../utils/user";
 import useNotifications from "../../utils/notifications";
-import { useTranslation } from "react-i18next";
-import { useHover } from "react-native-web-hooks";
-import { Hoverable } from "react-native-web-hover";
 import AppButton from "./AppButton";
-import LoadingModal from "./Loading";
 import LoadingScreen from "../screens/loading/LoadingScreen";
+import { Colors, mainFont } from "../constant/styles";
+import useOrders, { AddOrderReview } from "../../utils/orders";
+import { HOME } from "../navigation/routes";
+import ArrowBack from "./ArrowBack";
+const { width } = Dimensions.get("screen");
+
 export default function StarsComponent({ route }) {
   const { data: UserOrders, isError } = useOrders();
-  console.log(route.params.orderID);
   const [rating, setRating] = useState(0);
   const navigation = useNavigation();
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [focus, setFocus] = useState(null);
-  const [description,setDescription]=useState(null)
+  const [description, setDescription] = useState(null);
   const TemporaryImage =
     "https://cdn-icons-png.flaticon.com/128/6998/6998122.png";
   const { sendPushNotification } = useNotifications();
   const { t } = useTranslation();
-  console.log(focus, "this if foucsed");
   const RatingEmojs = [
     {
       emoji: "emoticon-outline",
@@ -76,14 +65,17 @@ export default function StarsComponent({ route }) {
       rate: 1,
     },
   ];
+  
   const handleFormSubmit = async (values) => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const { orderID, item } = route?.params;
-      const SelectedRate = RatingEmojs.filter((item)=>item?.explain === focus)[0]
+      const SelectedRate = RatingEmojs.filter(
+        (item) => item?.explain === focus
+      )[0];
       const res = await AddOrderReview(orderID, {
-        rating:SelectedRate.rate.toString(),
-        content:description,
+        rating: SelectedRate.rate.toString(),
+        content: description,
       });
       const selectedOrder = UserOrders?.data?.filter(
         (order) => order?.id === orderID
@@ -95,12 +87,6 @@ export default function StarsComponent({ route }) {
 
       const OrderProvider = selectedOrder[0]?.attributes?.provider?.data?.id;
       const OrderUserId = selectedOrder[0]?.attributes?.user?.data?.id;
-      console.log("user is is ", OrderUserId);
-      console.log("OrderProvider is is ", OrderProvider);
-      console.log(OrderProvider, OrderUserId, {
-        rating:SelectedRate.rate,
-        content:SelectedRate.explain,
-      });
       if (res) {
         navigation.goBack();
         navigation.dispatch(
@@ -122,37 +108,38 @@ export default function StarsComponent({ route }) {
         sendPushNotification(
           providerNotificationToken,
           `تم انهاء الطلب بواسطه ${selectedOrder[0]?.attributes?.user?.data?.attributes?.username}`
-          );
-          Alert.alert(
-            "تم بنجاح",
-            "هل ترغب في تقييمنا على متجر Google Play؟",
-            [
-              {
-                text: "قيم الآن",
-                onPress: () => {
-                  // Replace with your app's Google Play URL
-                  Linking.openURL("https://play.google.com/store/apps/details?id=your.app.id");
-                },
+        );
+        Alert.alert(
+          "تم بنجاح",
+          "هل ترغب في تقييمنا على متجر Google Play؟",
+          [
+            {
+              text: "قيم الآن",
+              onPress: () => {
+                Linking.openURL(
+                  "https://play.google.com/store/apps/details?id=your.app.id"
+                );
               },
-              {
-                text: "ليس الآن",
-                onPress: () => console.log("Not now pressed"),
-              },
-            ],
-            { cancelable: false } // Prevent closing by tapping outside
-          );
-                } else {
+            },
+            {
+              text: "ليس الآن",
+              onPress: () => console.log("Not now pressed"),
+            },
+          ],
+          { cancelable: false } // Prevent closing by tapping outside
+        );
+      } else {
         Alert.alert("حدثت مشكله حاول مرة اخري");
       }
     } catch (error) {
       console.log(error, "error paying the order");
-    }finally {
-      setIsLoading(false)
-
+    } finally {
+      setIsLoading(false);
     }
   };
-  if(isLoading ){
-    return <LoadingScreen/>
+
+  if (isLoading) {
+    return <LoadingScreen />;
   }
   return (
     <ScrollView style={styles.container}>
@@ -165,13 +152,14 @@ export default function StarsComponent({ route }) {
             display: "flex",
             flexDirection: "column",
             marginTop: 10,
-            gap:5
+            gap: 5,
           }}
         >
           <Image
             source={{
               uri:
-                route?.params?.item?.attributes?.provider?.data?.attributes?.Personal_image?.data[0]?.attributes?.url || TemporaryImage
+                route?.params?.item?.attributes?.provider?.data?.attributes
+                  ?.Personal_image?.data[0]?.attributes?.url || TemporaryImage,
             }}
             style={styles.Image}
           />
@@ -182,10 +170,10 @@ export default function StarsComponent({ route }) {
             style={styles.text}
           />
           <View style={styles.emojiContainer}>
-            {RatingEmojs.map((item,index) => {
+            {RatingEmojs.map((item, index) => {
               return (
                 <Hoverable
-                key={index}
+                  key={index}
                   onTouchStart={() => setFocus(item?.explain)}
                   onHoverOut={() => console.log(item?.explain)}
                   style={[
@@ -217,43 +205,28 @@ export default function StarsComponent({ route }) {
           </View>
         </View>
         <View style={styles.inputContainer}>
-        {/* <AppText text={"Your Rate of the Technician"} style={styles.review} centered={false}/> */}
-
-        <TextInput
-      showSoftInputOnFocus
-      selectTextOnFocus
-        selectionColor={Colors.primaryColor}
-        textAlign="right"
-        textAlignVertical="top"
-        placeholder="أكتب تقييمك للفني"
-        placeholderTextColor={Colors.grayColor}
-        style={styles.input}
-        autoCapitalize="none"
-        autoCorrect={false}
-        multiline={true}
-        numberOfLines={4}
-        onChangeText={(t)=>setDescription(t)}
-        
-        
-        />
-        </View>
-      <AppButton onPress={handleFormSubmit} title={"تقييم"} disabled={!focus} style={styles.buttonSubmit}/>
-        {/* <AppForm
-          initialValues={{  review: "" }}
-          enableReinitialize={true}
-          onSubmit={handleFormSubmit}
-        >
-           <AppFormField
+          <TextInput
+            showSoftInputOnFocus
+            selectTextOnFocus
+            selectionColor={Colors.primaryColor}
+            textAlign="right"
+            textAlignVertical="top"
+            placeholder="أكتب تقييمك للفني"
+            placeholderTextColor={Colors.grayColor}
+            style={styles.input}
             autoCapitalize="none"
             autoCorrect={false}
-           
-            name="review"
             multiline={true}
-            numberOfLines={6}
-            textAlignVertical="top" 
+            numberOfLines={4}
+            onChangeText={(t) => setDescription(t)}
           />
-          <SubmitButton title={"تقييم"}   style={styles.buttonSubmit} />
-        </AppForm>  */}
+        </View>
+        <AppButton
+          onPress={handleFormSubmit}
+          title={"تقييم"}
+          disabled={!focus}
+          style={styles.buttonSubmit}
+        />
       </View>
     </ScrollView>
   );
@@ -266,12 +239,13 @@ const styles = StyleSheet.create({
     color: "black",
     paddingHorizontal: 15,
     marginVertical: 5,
+    fontSize:RFPercentage(1.9)
   },
   review: {
     color: "black",
     paddingHorizontal: 20,
     marginVertical: 5,
-    fontSize:RFPercentage(2)
+    fontSize: RFPercentage(2),
   },
   buttonSubmit: {
     width: width * 0.4,
@@ -281,9 +255,8 @@ const styles = StyleSheet.create({
   Image: {
     height: 120,
     width: 120,
-    borderRadius:120/2,
+    borderRadius: 120 / 2,
     alignSelf: "center",
-    // marginBottom: 10,
   },
   emojiContainer: {
     display: "flex",
@@ -295,10 +268,8 @@ const styles = StyleSheet.create({
   emoji: {
     display: "flex",
     flexDirection: "column",
-    alignItems:'center',
-    justifyContent:'center'
-    // justifyContent:'center'
-    // gap:10
+    alignItems: "center",
+    justifyContent: "center",
   },
   emojiImage: {
     fontSize: 35,
@@ -306,41 +277,40 @@ const styles = StyleSheet.create({
   },
   emojiExplain: {
     fontSize: RFPercentage(1.8),
-    textAlign:'center'
+    textAlign: "center",
   },
   Selectedemoji: {
     display: "flex",
-    color:Colors.primaryColor,
+    color: Colors.primaryColor,
     flexDirection: "column",
-    transform: [{ scale: 1.2 ,}],
-    alignItems:'center',
-    justifyContent:'center'
+    transform: [{ scale: 1.2 }],
+    alignItems: "center",
+    justifyContent: "center",
     // gap:10
   },
   SelectEmojiImage: {
     fontSize: 55,
-    color:Colors.primaryColor,
+    color: Colors.primaryColor,
     height: "auto",
   },
   SelectedEmojiExplain: {
-    fontSize: 15,
-    color:Colors.blackColor,
-
+    fontSize: RFPercentage(1.8),
+    color: Colors.blackColor,
   },
-  input :{
+  input: {
     borderWidth: 1,
-    width:width*0.9,
-    marginTop:15,
-    padding:10,
+    width: width * 0.9,
+    marginTop: 15,
+    padding: 10,
     borderRadius: 10,
     fontFamily: mainFont.light,
     borderColor: Colors.blackColor,
     writingDirection: "rtl",
     fontSize: 15,
   },
-  inputContainer:{
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'center'
-  }
+  inputContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

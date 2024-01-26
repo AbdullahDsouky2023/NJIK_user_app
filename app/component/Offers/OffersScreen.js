@@ -66,7 +66,7 @@ export default function OffersScreen({ route, navigation, Offers }) {
         </View>
         <FlatList
           data={Banners?.data}
-          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => item.id + index}
           style={{
             display: "flex",
@@ -194,9 +194,10 @@ const styles = StyleSheet.create({
     color: Colors.whiteColor,
   },
   image: {
-    height: height * 0.155,
+    // minHeight: "100%",
+    height:height*0.133,
     width: width * 0.9,
-    borderRadius: 10,
+    borderRadius: 15,
     objectFit: "contain",
   },
 });

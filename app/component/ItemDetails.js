@@ -22,7 +22,7 @@ export default function ItemDetails({ item }) {
             }}
           />
         <View style={styles.overlay}>
-          <AppText text={item?.attributes?.name} style={{ color: Colors.whiteColor,fontSize:17 }} />
+          <AppText text={item?.attributes?.name} style={{ color: Colors.whiteColor,fontSize:RFPercentage(1.9) }} />
         </View>
         <View style={styles.descriptionContainer}>
           <AppText
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     color: Colors.blackColor,
-    fontSize: RFPercentage(1.9),
+    fontSize: RFPercentage(1.8),
     width: width,
     padding:10,
     paddingHorizontal:20,

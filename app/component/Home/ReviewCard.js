@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Dimensions, Image ,StyleSheet} from "react-native";
-
+import {RFPercentage} from 'react-native-responsive-fontsize'
 import { Colors } from "../../constant/styles";
 import AppText from "../AppText";
-const { width } = Dimensions.get("screen");
+const { width ,height} = Dimensions.get("screen");
 
 export default function ReviewCard({ username, review, userImage }) {
   return (
@@ -38,14 +38,18 @@ export default function ReviewCard({ username, review, userImage }) {
 }
 const styles = StyleSheet.create({
   cardContainer: {
-    height: 250,
+    height: height*0.27,
     width: width * 0.91,
     padding: 20,
+    marginTop:5,
     marginBottom: 10,
+    borderTopWidth:0,
     backgroundColor: Colors.whiteColor,
     elevation: 2,
-    borderColor: Colors.grayColor,
+    borderTopColor: Colors.whiteColor,
+    // borderColor: Colors.grayColor,
     borderTopWidth: 1,
+    marginHorizontal:4,
     borderRadius: 10,
   },
   text: {},
@@ -76,15 +80,17 @@ const styles = StyleSheet.create({
   },
   name :{
      color: Colors.grayColor, 
-     fontSize: 12 
+     fontSize: RFPercentage(1.8) 
   },
   review :{
     
-      fontSize: 12,
+      fontSize: RFPercentage(1.55),
       color: Colors.blackColor,
+
       flexWrap: 'wrap',
       maxWidth:width,
-      width: width * 0.848,
+      textAlign:'center',
+      width: width * 0.81,
     
   }
 });
