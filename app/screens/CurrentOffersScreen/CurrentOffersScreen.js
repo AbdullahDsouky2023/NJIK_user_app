@@ -3,30 +3,24 @@ import {
   SafeAreaView,
   StatusBar,
   View,
-  Text,
   StyleSheet,
-  FlatList,
   Dimensions,
-  TouchableOpacity,
 } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
+import { useDispatch, useSelector } from "react-redux";
 import { Colors, Sizes } from "../../constant/styles";
 import AppText from "../../component/AppText";
-import AppHeader from "../../component/AppHeader";
-import { useDispatch, useSelector } from "react-redux";
 import useServices from "../../../utils/services";
 import { setServices } from "../../store/features/serviceSlice";
 import LoadingScreen from "../loading/LoadingScreen";
 import { ErrorScreen } from "../Error/ErrorScreen";
 import OffersServiceComponentList from "../../component/CurrentOffers/OffersListComponent";
-import AllOffersList from "../../component/CurrentOffers/AllOffersList";
-import { ScrollView } from "react-native-virtualized-view";
-import ArrowBack from "../../component/ArrowBack";
 import usePackages from "../../../utils/packages";
 import { setpackages } from "../../store/features/PackagesSlice";
 
 const { width } = Dimensions.get("screen");
 
-const CurrentOffersScreen = ({route, navigation }) => {
+const CurrentOffersScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories.categories);
   const [selectedItem, setSelectedItem] = useState("all");
@@ -35,49 +29,42 @@ const CurrentOffersScreen = ({route, navigation }) => {
     (category) => category?.attributes?.name === selectedItem
   );
   const { data } = useServices();
-  const { data:packages,isLoading, isError} = usePackages();
+  const { data: packages, isLoading, isError } = usePackages();
   const services = data?.data?.filter(
     (item) => item?.attributes?.category?.data?.id === selectedItemsData?.id
   );
 
- const getServices = async () => {
+  const getServices = async () => {
     if (data) {
       dispatch(setServices(data));
       dispatch(setpackages(packages?.data));
-      // console.log("current Packages :",packages?.data[0].attributes)
     } else if (isError) {
       console.log(isError);
     }
   };
 
- // Use useEffect to monitor changes in route.params.name
- useEffect(() => {
-  if (route?.params?.name) {
-    setSelectedItem(route?.params?.name);
-  }
-}, [route?.params?.name]);
+  useEffect(() => {
+    if (route?.params?.name) {
+      setSelectedItem(route?.params?.name);
+    }
+  }, [route?.params?.name]);
 
-useEffect(() => {
-  getServices();
-}, [dispatch, data]);
-
- 
+  useEffect(() => {
+    getServices();
+  }, [dispatch, data]);
 
   if (isLoading) return <LoadingScreen />;
   if (isError) return <ErrorScreen />;
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
-      {/* <ArrowBack /> */}
       <ScrollView style={styles.container}>
         <View>
-        <AppText text='packages' centered={false} style={styles.title}/>
-
-            <OffersServiceComponentList
-              data={packages}
-              selectedItem={selectedItem}
-            />
-          {/* )} */}
+          <AppText text="packages" centered={false} style={styles.title} />
+          <OffersServiceComponentList
+            data={packages}
+            selectedItem={selectedItem}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -86,10 +73,8 @@ useEffect(() => {
 
 const styles = StyleSheet.create({
   container: {
-    // paddingBottom:1000,
     height: "100%",
-    // backgroundColor:'red',
-    paddingVertical:4
+    paddingVertical: 4,
   },
   listContainer: {
     display: "flex",
@@ -111,10 +96,10 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
   },
-  title:{
-    paddingHorizontal:20,
-    paddingVertical:1,
-    color:Colors.blackColor
+  title: {
+    paddingHorizontal: 20,
+    paddingTop: 15,
+    color: Colors.blackColor,
   },
   activeItem: {
     height: 50,

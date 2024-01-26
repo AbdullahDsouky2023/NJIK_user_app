@@ -1,41 +1,34 @@
 import { Alert, Dimensions, StyleSheet, View } from "react-native";
 import React, { useState } from "react";
-import AppButton from "../../component/AppButton";
-import AppText from "../../component/AppText";
-import { Colors } from "../../constant/styles";
-
 import Carousel from "react-native-snap-carousel-v4";
-
-import useOrders, {
-  PayOrder,
-  cancleOrder,
-  requestPayment,
-} from "../../../utils/orders";
 import { useDispatch } from "react-redux";
-import { setOrders } from "../../store/features/ordersSlice";
-import LoadingModal from "../../component/Loading";
 import {
   CURRENCY,
   HOME,
-  ORDERS,
   ORDER_SUCCESS_SCREEN,
   REVIEW_ORDER_SCREEN,
 } from "../../navigation/routes";
-import PriceTextComponent from "../../component/PriceTextComponent";
+import { FlatList } from "react-native";
+import {RFPercentage} from 'react-native-responsive-fontsize'
+import { useTranslation } from "react-i18next";
 import { Image } from "react-native";
-import LoadingScreen from "../loading/LoadingScreen";
-import AppModal from "../../component/AppModal";
 import { CommonActions } from "@react-navigation/native";
-import StarsComponent from "../../component/StarsComponent";
-import useNotifications from "../../../utils/notifications";
 import { useSelector } from "react-redux";
 import { ScrollView } from "react-native-virtualized-view";
+import useOrders, {
+    PayOrder,
+    cancleOrder,
+  } from "../../../utils/orders";
 
-import { FlatList } from "react-native";
-import { color } from "react-native-reanimated";
-import { updateProviderData, updateUserData } from "../../../utils/user";
 import ArrowBack from "../../component/ArrowBack";
-import { useTranslation } from "react-i18next";
+import LoadingScreen from "../loading/LoadingScreen";
+import AppText from "../../component/AppText";
+import PriceTextComponent from "../../component/PriceTextComponent";
+import AppButton from "../../component/AppButton";
+import LoadingModal from "../../component/Loading";
+import AppModal from "../../component/AppModal";
+import useNotifications from "../../../utils/notifications";
+import { Colors } from "../../constant/styles";
 const { width, height } = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
@@ -148,7 +141,7 @@ export default function OrderDetails({ navigation, route }) {
                     <AppText
                       centered={false}
                       text={item.attributes?.name}
-                      style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
+                      style={[styles.name, { fontSize: RFPercentage(1.8), paddingRight: 10 }]}
                     />
                     {
                       item.attributes?.Price > 0 &&
@@ -156,7 +149,7 @@ export default function OrderDetails({ navigation, route }) {
                     text={`${item.attributes?.Price} ` + CURRENCY}
                       style={{
                         backgroundColor: Colors.primaryColor,
-                        fontSize: 14,
+                        fontSize: RFPercentage(1.65),
                         padding: 6,
                         borderRadius: 40,
                         color: Colors.whiteColor,
@@ -197,13 +190,13 @@ export default function OrderDetails({ navigation, route }) {
                     <AppText
                       centered={false}
                       text={item.attributes?.name}
-                      style={[styles.name, { fontSize: 14, paddingRight: 10 }]}
+                      style={[styles.name, { fontSize:RFPercentage(1.65), paddingRight: 10 }]}
                     />
                     <AppText
                       text={`${item.attributes?.price} ` + CURRENCY}
                       style={{
                         backgroundColor: Colors.primaryColor,
-                        fontSize: 14,
+                        fontSize: RFPercentage(1.7),
                         padding: 6,
                         borderRadius: 40,
                         color: Colors.whiteColor,
@@ -218,7 +211,7 @@ export default function OrderDetails({ navigation, route }) {
         <View style={styles.itemContainer}>
           <AppText centered={false} text={"Price"} style={styles.title} />
           <PriceTextComponent
-            style={{ color: Colors.blackColor, fontSize: 16, marginTop: 4 }}
+            style={{ color: Colors.blackColor, fontSize: RFPercentage(1.85), marginTop: 4 }}
             price={item?.attributes?.totalPrice}
           />
         </View>
@@ -349,7 +342,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.whiteColor,
   },
   name: {
-    fontSize: 17,
+    fontSize: RFPercentage(1.95),
     color: Colors.blackColor,
   },
   itemContainer: {
@@ -396,12 +389,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   price: {
-    fontSize: 17,
+    fontSize: RFPercentage(1.8),
     color: Colors.blackColor,
     marginTop: 5,
   },
   title: {
-    fontSize: 21,
+    fontSize: RFPercentage(2.3),
     color: Colors.primaryColor,
   },
   chatContainer: {
