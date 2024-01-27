@@ -13,7 +13,7 @@ import * as Linking from 'expo-linking'
 
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { signInWithPhoneNumber } from "firebase/auth";
-import { EXPO_PUBLIC_BASE_URL } from "@env";
+import i18n from "i18next";
 import AppText from "../../component/AppText";
 import AppButton from "../../component/AppButton";
 import PhoneNumberTextField from "../../component/PhoneInput";
@@ -23,6 +23,7 @@ import { auth, firebaseConfig } from "../../../firebaseConfig";
 import { errorMessages } from "../../data/signin";
 import { CheckBox } from "react-native-elements";
 import { useTranslation } from "react-i18next";
+import { changeLanguage } from "../../../App";
 
 const SigninScreen = ({ navigation }) => {
   const [disabled, setDisabled] = useState(true);
@@ -76,7 +77,7 @@ const SigninScreen = ({ navigation }) => {
       const errorMessage = errorMessages[error.message];
 
       console.log("the error is ", errorMessage, error.message);
-      Alert.alert(errorMessage || t("Something Went Wrong, Please try again!"));
+      Alert.alert(t(errorMessage) || t("Something Went Wrong, Please try again!"));
     } finally {
       setDisabled(false);
     }
@@ -95,7 +96,17 @@ const SigninScreen = ({ navigation }) => {
       <View style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.LogoContainer}>
-            <Logo />
+            <Logo />      
+              {/* <AppButton
+            onPress={() => {
+              // Toggle the language between Arabic and English
+              i18n.language === "ar"
+                ? changeLanguage("en")
+                : changeLanguage("ar");
+            }}
+          
+            title={i18n.language === "ar" ? "English" : "العربية"}
+          /> */}
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
@@ -117,6 +128,7 @@ const SigninScreen = ({ navigation }) => {
               backgroundColor: Colors.white,
               borderWidth: 0,
               marginTop: 10,
+              // flexDirection:"row"
             }}
             onPress={toggleAgreement}
           />

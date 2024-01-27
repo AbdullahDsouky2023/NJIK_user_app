@@ -7,6 +7,7 @@ import ar from "../locales/ar.json";
 import { Text } from "react-native";
 import { Fonts, mainFont } from "../constant/styles";
 import { I18nManager } from "react-native";
+import en from "../locales/en.json";
 
 import 'intl-pluralrules';
 I18nManager.forceRTL(false);
