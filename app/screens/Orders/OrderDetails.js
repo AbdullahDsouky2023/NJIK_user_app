@@ -230,7 +230,7 @@ export default function OrderDetails({ navigation, route }) {
             style={styles.price}
           />
         </View>
-        {item?.attributes?.description && (
+      
           <View style={styles.descriptionContainer}>
             <AppText centered={false} text={"Notes"} style={styles.title} />
             <AppText
@@ -243,7 +243,7 @@ export default function OrderDetails({ navigation, route }) {
               style={styles.price}
             />
           </View>
-        )}
+     
         {item?.attributes?.images?.data ? (
           <View style={styles.descriptionContainer}>
             <>
@@ -251,6 +251,9 @@ export default function OrderDetails({ navigation, route }) {
               <Carousel
                 data={item?.attributes?.images?.data}
                 sliderWidth={width}
+                inactiveSlideOpacity={1}
+                inactiveSlideScale={1}
+
                 slideStyle={{
                   backgroundColor: "transparent",
                   flex: 1,

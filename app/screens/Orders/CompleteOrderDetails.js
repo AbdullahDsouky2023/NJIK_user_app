@@ -79,6 +79,10 @@ export default function CompleteOrderDetails({ navigation, route }) {
             <Carousel
               data={item?.attributes?.images?.data}
               sliderWidth={width}
+              inactiveSlideOpacity={1}
+              inactiveSlideScale={1}
+              loop={true}
+              autoplayInterval={10000}
               slideStyle={{
                 backgroundColor: "transparent",
                 flex: 1,
@@ -86,8 +90,6 @@ export default function CompleteOrderDetails({ navigation, route }) {
                 justifyContent: "center",
               }}
               autoplay={true}
-              loop={true}
-              autoplayInterval={10000}
               itemWidth={width}
               renderItem={({ item }) => {
                 console.log(item?.attributes?.url);
