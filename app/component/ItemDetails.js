@@ -6,9 +6,6 @@ import { Colors } from "../constant/styles";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ArrowBack from "./ArrowBack";
 
-import {
-  BlocksRenderer,
-} from "@strapi/blocks-react-renderer";
 const content = [
   {
     type: 'paragraph',
@@ -42,7 +39,6 @@ export default function ItemDetails({ item }) {
           />
         </View>
         <View style={styles.descriptionContainer}>
-          {/* <BlocksRenderer content={item?.attributes?.content || content } /> */}
           <AppText
             text={item?.attributes?.description}
             centered={false}
