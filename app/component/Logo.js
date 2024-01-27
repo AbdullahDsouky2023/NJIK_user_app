@@ -18,7 +18,5 @@ const styles = StyleSheet.create({
         height: height * 0.13,
         alignSelf: 'center',
         padding: Sizes.fixPadding * 4,
-        // marginBottom: Sizes.fixPadding * 4,
-        // marginTop: Sizes.fixPadding * 8
     },
 })
