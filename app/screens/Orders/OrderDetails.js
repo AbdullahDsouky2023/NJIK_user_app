@@ -152,7 +152,7 @@ export default function OrderDetails({ navigation, route }) {
                   borderRadius: 40,
                   color: Colors.whiteColor,
                 }}
-                price={item?.attributes?.totalPrice}
+                price={item?.attributes?.Price}
               />
                   </View>
                 );
@@ -175,6 +175,7 @@ export default function OrderDetails({ navigation, route }) {
                 width: width,
               }}
               renderItem={({ item }) => {
+                console.log('item')
                 return (
                   <View
                     style={{
@@ -190,16 +191,16 @@ export default function OrderDetails({ navigation, route }) {
                       text={item.attributes?.name}
                       style={[styles.name, { fontSize:RFPercentage(1.65), paddingRight: 10 }]}
                     />
-                    <AppText
-                      text={`${item.attributes?.price} ` + CURRENCY}
-                      style={{
-                        backgroundColor: Colors.primaryColor,
-                        fontSize: RFPercentage(1.7),
-                        padding: 6,
-                        borderRadius: 40,
-                        color: Colors.whiteColor,
-                      }}
-                    />
+                     <PriceTextComponent
+                style={{
+                  backgroundColor: Colors.primaryColor,
+                  fontSize: RFPercentage(1.5),
+                  padding: 6,
+                  borderRadius: 40,
+                  color: Colors.whiteColor,
+                }}
+                price={item?.attributes?.price}
+              />
                   </View>
                 );
               }}

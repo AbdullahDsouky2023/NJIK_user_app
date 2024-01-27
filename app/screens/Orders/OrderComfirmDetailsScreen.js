@@ -151,18 +151,16 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                         { fontSize: RFPercentage(1.9), paddingRight: 10 },
                       ]}
                     />
-                    {item.attributes?.Price > 0 && (
-                      <AppText
-                        text={`${item.attributes?.Price} ` + CURRENCY}
-                        style={{
-                          backgroundColor: Colors.primaryColor,
-                          fontSize: RFPercentage(1.9),
-                          padding: 6,
-                          borderRadius: 40,
-                          color: Colors.whiteColor,
-                        }}
-                      />
-                    )}
+                      <PriceTextComponent
+                style={{
+                  backgroundColor: Colors.primaryColor,
+                  fontSize: RFPercentage(1.5),
+                  padding: 6,
+                  borderRadius: 40,
+                  color: Colors.whiteColor,
+                }}
+                price={item?.attributes?.Price}
+              />
                   </View>
                 );
               }}
@@ -203,9 +201,15 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                         { fontSize: RFPercentage(1.9), paddingRight: 10 },
                       ]}
                     />
-                    <PriceTextComponent
-                style={{ color: Colors.blackColor, fontSize: 16, marginTop: 4 }}
-                price={item?.attributes?.totalPrice}
+                     <PriceTextComponent
+                style={{
+                  backgroundColor: Colors.primaryColor,
+                  fontSize: RFPercentage(1.5),
+                  padding: 6,
+                  borderRadius: 40,
+                  color: Colors.whiteColor,
+                }}
+                price={item?.attributes?.price}
               />
                   </View>
                 );
