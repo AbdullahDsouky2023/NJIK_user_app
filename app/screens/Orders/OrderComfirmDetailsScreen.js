@@ -113,7 +113,8 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
 
   if (isLoading) return <LoadingScreen />;
   return (
-    <View style={{ backgroundColor: Colors.whiteColor }}>
+    <View style={{ backgroundColor: Colors.whiteColor ,    height:height*1,
+    }}>
       <ArrowBack subPage={true} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {currentSelectedServices?.length > 0 && (
@@ -229,7 +230,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
             price={totalPrice}
           />
         </View>
-        <View style={styles.itemContainer}>
+        <View style={styles.descriptionContainer}>
           <AppText centered={false} text={" العنوان"} style={styles.title} />
           <AppText
             centered={false}
@@ -274,7 +275,8 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
         <AppButton
           title={"تأكيد الطلب"}
           style={{
-            marginBottom: 19,
+            marginTop:-height*0.1
+            ,
             paddingVertical: 15,
             paddingHorizontal: 50,
           }}
@@ -357,6 +359,7 @@ const styles = StyleSheet.create({
   ButtonContainer: {
     display: "flex",
     alignItems: "center",
+    // padding:-1000,
     backgroundColor: Colors.whiteColor,
   },
 });

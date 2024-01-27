@@ -46,6 +46,8 @@ export const PayOrder = async (id) => {
       data:{
         PaymentStatus:"payed",
         status:'payed',
+        provider_payment_status:"payed"
+
       }
     });
     if ( data?.data?.data?.id) return true

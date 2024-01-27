@@ -143,19 +143,17 @@ export default function OrderDetails({ navigation, route }) {
                       text={item.attributes?.name}
                       style={[styles.name, { fontSize: RFPercentage(1.8), paddingRight: 10 }]}
                     />
-                    {
-                      item.attributes?.Price > 0 &&
-                    <AppText
-                    text={`${item.attributes?.Price} ` + CURRENCY}
-                      style={{
-                        backgroundColor: Colors.primaryColor,
-                        fontSize: RFPercentage(1.65),
-                        padding: 6,
-                        borderRadius: 40,
-                        color: Colors.whiteColor,
-                      }}
-                    />
-                  }
+                     
+                     <PriceTextComponent
+                style={{
+                  backgroundColor: Colors.primaryColor,
+                  fontSize: RFPercentage(1.5),
+                  padding: 6,
+                  borderRadius: 40,
+                  color: Colors.whiteColor,
+                }}
+                price={item?.attributes?.totalPrice}
+              />
                   </View>
                 );
               }}
@@ -215,7 +213,7 @@ export default function OrderDetails({ navigation, route }) {
             price={item?.attributes?.totalPrice}
           />
         </View>
-        <View style={styles.itemContainer}>
+        <View style={styles.descriptionContainer}>
           <AppText centered={false} text={"Location"} style={styles.title} />
           <AppText
             centered={false}
