@@ -203,16 +203,10 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                         { fontSize: RFPercentage(1.9), paddingRight: 10 },
                       ]}
                     />
-                    <AppText
-                      text={`${item.attributes?.price} ` + CURRENCY}
-                      style={{
-                        backgroundColor: Colors.primaryColor,
-                        fontSize: RFPercentage(1.9),
-                        padding: 6,
-                        borderRadius: 40,
-                        color: Colors.whiteColor,
-                      }}
-                    />
+                    <PriceTextComponent
+                style={{ color: Colors.blackColor, fontSize: 16, marginTop: 4 }}
+                price={item?.attributes?.totalPrice}
+              />
                   </View>
                 );
               }}
