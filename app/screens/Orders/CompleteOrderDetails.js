@@ -44,7 +44,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
             price={item?.attributes?.totalPrice}
           />
         </View>
-        <View style={styles.itemContainer}>
+        <View style={styles.descriptionContainer}>
           <AppText centered={false} text={" العنوان"} style={styles.title} />
           <AppText
             centered={false}

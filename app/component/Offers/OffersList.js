@@ -31,7 +31,7 @@ export default function OffersList() {
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
     <View style={{ flex: 1 }}>
     <ArrowBack/>
-    <HeaderTextComponent name={"Offers"} showAll={true}>
+    <HeaderTextComponent name={"Offers"} showAll={false}>
       <FlatList
         data={OffersData?.data[0]?.attributes?.services?.data}
         style={styles.listContainer}

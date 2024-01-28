@@ -10,7 +10,7 @@ export default function AllOffersList() {
    
   return (
     <View >
-   <View>
+   <View >
    {
    categories?.data?.map((category)=>{
           const services = data?.data?.filter(
