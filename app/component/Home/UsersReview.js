@@ -10,7 +10,7 @@ import useReviews from '../../../utils/reviews';
 import AppText from '../AppText';
 import { Colors } from '../../constant/styles';
 
-const { width } = Dimensions.get("window");
+const { width ,height} = Dimensions.get("window");
 
 export default   function UsersReviews() {
     const { data } = useReviews();
@@ -42,6 +42,8 @@ export default   function UsersReviews() {
             flexDirection:'row',
             alignItems:'center',
             justifyContent:'center',
+            alignSelf:'center',
+            backgroundColor:Colors.whiteColor,
              gap:10,
              marginBottom:10
           }}>
@@ -49,6 +51,8 @@ export default   function UsersReviews() {
                <AppText text={"SercureOrder"} style={{ color: Colors.primaryColor ,marginBottom:10}} />
                <Image source={require('../../assets/images/award.png')} style={{ height:40, width:40}}/>
           </View>
+          <View >
+
             <Carousel
                 data={data?.data}
                 sliderWidth={width}
@@ -65,12 +69,17 @@ export default   function UsersReviews() {
                 onSnapToItem={(index) => updateState({ activeSlide: index })}
             />
            <PaginationComponent activeSlide={activeSlide} length={reviews.length}/>
+                </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container :{
-        padding:20
+        paddingHorizontal:height*0.017,
+        paddingVertical:20,
+        display:'flex',
+        flexDirection:'column',
+        
     }
 })
