@@ -26,7 +26,7 @@ export default function PhoneNumberTextField({ phoneNumber, updateState }) {
       }}
       selectionColor={"red"}
       renderFlag={() => console.log("fffjjj   ", this)} // Add this line
-      placeholder={"1xxx xxx xxx"} // Add the placeholder here
+      placeholder={"5xx xxx xxx"} // Add the placeholder here
       phoneInputStyle={{
         flex: 1,
         paddingRight: Sizes.fixPadding,

@@ -40,6 +40,20 @@ export const PayOrderForReserve = async (id) => {
     console.error("Error accepting order   :", error.message); // Log the error response
   }
 };
+export const updateOrderData = async (id,orderData) => {
+  try {
+    const data = await api.put(`/api/orders/${id}`,{
+      data:{
+       ...orderData
+        
+      }
+    });
+    if ( data?.data?.data?.id) return true
+    return false;
+  } catch (error) {
+    console.error("Error updatingorder order   :", error.message); // Log the error response
+  }
+};
 export const PayOrder = async (id) => {
   try {
     const data = await api.put(`/api/orders/${id}`,{

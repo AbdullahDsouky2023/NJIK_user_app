@@ -25,6 +25,7 @@ import {
   PACKAGE_DETAILS,
   PACKAGE_SCREEN,
   OFFERS_SCREEN,
+  CHANGE_ORDER_DATE,
 } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
@@ -44,6 +45,7 @@ import ComplainCreatingScreen from "../screens/complain/ComplainCreatingScreen";
 import ComplainOrderDetails from "../screens/complain/ComplainOrderDetails";
 import StarsComponent from "../component/StarsComponent";
 import OffersScreen from "../component/Offers/OffersScreen";
+import ChangeDateOrderScreen from "../screens/Orders/ChangeDateOrderScreen";
 
 LogBox.ignoreAllLogs();
 
@@ -110,6 +112,11 @@ const RootNavigator = () => {
         <Stack.Screen
           name={PACKAGE_DETAILS}
           component={PackageDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={CHANGE_ORDER_DATE}
+          component={ChangeDateOrderScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

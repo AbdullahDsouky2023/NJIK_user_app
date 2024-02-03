@@ -160,6 +160,7 @@
   "payment has been processed successfully.":"تم الدفع بنجاح",
   "payment has been cancled successfully.":"تم إلغاء الطلب بنجاح",
   "Payed":"تم السداد",
+  "Delay Order":"إعادة جدولة الطلب",
   "Something Went Wrong, Please try again!":"حدث خطأ غير معروف. الرجاء المحاولة مرة أخرى",
   "I agree to the Terms and Conditions":"  أوافق على الشروط والأحكام و سياسة الخصوصية",
   "You have denied location access permanently. Please go to Settings and enable location access for this app.":

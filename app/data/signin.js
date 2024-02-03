@@ -8,5 +8,5 @@ export const errorMessages = {
     "Firebase: Error (auth/code-expired).":"أنتهت صلاحيه الرمر الخاص بك",
     "session-expired": "انتهت صلاحية الجلسة. الرجاء المحاولة مرة أخرى.",
     "unauthorized-domain": "نطاق غير مصرح به. الرجاء التحقق من النطاق المستخدم.",
-    "unknown-error": "حدث خطأ غير معروف. الرجاء المحاولة مرة أخرى.",
+    "unknown-error": "حدث خطأ الرجاء المحاولة مرة أخرى.",
   };

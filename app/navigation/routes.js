@@ -22,5 +22,6 @@ export const CART = "CartScreen"
 export const MAP = "MapScreen"
 export const REVIEW_ORDER_SCREEN = "review-order"
 export const CHAT_ROOM = "chat-room-screen"
-export const CURRENCY = " ج.م"
+export const CURRENCY = " ر.س"
 export const Offer_route_name="العروض"
+export const CHANGE_ORDER_DATE = 'ChangeDateOrderScreen'

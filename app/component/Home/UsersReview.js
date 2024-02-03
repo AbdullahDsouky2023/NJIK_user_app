@@ -51,7 +51,7 @@ export default   function UsersReviews() {
                <AppText text={"SercureOrder"} style={{ color: Colors.primaryColor ,marginBottom:10}} />
                <Image source={require('../../assets/images/award.png')} style={{ height:40, width:40}}/>
           </View>
-          <View >
+          <View style={{backgroundColor:Colors.whiteColor,width:width*1,display:'flex',alignItems:'center',justifyContent:'center'}}>
 
             <Carousel
                 data={data?.data}

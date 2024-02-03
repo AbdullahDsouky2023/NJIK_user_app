@@ -45,6 +45,26 @@ export default function ItemDetails({ item }) {
             style={styles.descriptionText}
           />
         </View>
+        {
+          item?.attributes?.Price == 0 && 
+
+          <View style={styles.descriptionContainer}>
+            
+          <AppText
+            text={"السعر بعد الزيارة "}
+            centered={false}
+            style={{
+              fontSize: RFPercentage(2.4),
+              paddingVertical: 15,
+              color: Colors.whiteColor,
+              paddingHorizontal:40,
+              marginHorizontal:20,
+              backgroundColor:Colors.primaryColor,
+              borderRadius:20
+            }}
+            />
+        </View>
+          }
       </ScrollView>
     </View>
   );

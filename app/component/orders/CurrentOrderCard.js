@@ -17,10 +17,11 @@ import AppText from "../../component/AppText";
 import { useNavigation } from "@react-navigation/native";
 import { ORDERS_DETAILS } from "../../navigation/routes";
 import PriceTextComponent from "../PriceTextComponent";
-const { width } = Dimensions.get("screen");
+const { width ,height} = Dimensions.get("screen");
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
+import Pdf from "../../screens/Invoice/pdf";
 export default function CurrentOrderCard({ item, onPress }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -165,10 +166,15 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   orderCardContainer: {
+    backgroundColor:'red',
     paddingVertical: 10,
     width: width * 0.88,
     paddingHorizontal: 20,
+
+    // height: height*0.3,
+    // maxHeight: height * 0.2,
     height: "auto",
+    // minHeight: height * 0.2,
     marginTop: 12,
     flex: 1,
     gap: 3,

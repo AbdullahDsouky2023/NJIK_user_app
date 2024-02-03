@@ -17,7 +17,7 @@ import {
   import { useNavigation } from "@react-navigation/native";
   import { ORDERS_DETAILS } from "../../navigation/routes";
   import PriceTextComponent from "../../component/PriceTextComponent";
-  const { width } = Dimensions.get("screen");
+  const { width, height } = Dimensions.get("screen");
   import { Ionicons } from "@expo/vector-icons";
   import { useDispatch} from  'react-redux'
   import { setcurrentChatChannel } from "../../store/features/ordersSlice";
@@ -28,38 +28,7 @@ import LoadingScreen from "../loading/LoadingScreen";
     return (
       <TouchableWithoutFeedback onPress={onPress}>
         <View style={styles.orderCardContainer}>
-          {/* <View style={styles.headerContainer}>
-            {
-                        item?.attributes?.services.data.length>0 &&
-  <>
-            <Image
-              height={25}
-              width={25}
-              source={{
-                uri: item?.attributes?.services?.data[0]?.attributes?.category?.data?.attributes?.image?.data[0]?.attributes?.url,
-              }}
-            />
-            <AppText
-              text={
-                item?.attributes?.services?.data[0]?.attributes?.category?.data?.attributes?.name
-              }
-              style={[styles.header, { color: Colors.primaryColor,fontSize:17 }]}
-              centered={false}
-              />
-            </>
-            }
-          {
-            item?.attributes?.packages &&
-            <AppText
-            text={
-              item?.attributes?.packages?.data[0]?.attributes?.name
-            }
-            style={[styles.header, { color: Colors.primaryColor,fontSize:17 }]}
-            centered={false}
-            />
-          }
-          </View> */}
-          <View style={styles.date}>
+               <View style={styles.date}>
           <AppText
               text={
                 "Complain Id: "
@@ -132,7 +101,7 @@ import LoadingScreen from "../loading/LoadingScreen";
   
   const styles = StyleSheet.create({
     container: {
-      height: "100%",
+      height: "auto",
       backgroundColor: Colors.whiteColor,
       width: width,
       paddingHorizontal: 20,
@@ -151,7 +120,10 @@ import LoadingScreen from "../loading/LoadingScreen";
       paddingVertical: 10,
       width: width * 0.88,
       paddingHorizontal: 20,
-      // height: 170,
+      // height: height*0.16,
+      // maxHeight: height * 0.16,
+      height: "auto",
+      // minHeight: height * 0.14,
       marginTop: 12,
       flex: 1,
       gap: 5,

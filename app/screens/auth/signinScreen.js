@@ -67,7 +67,7 @@ const SigninScreen = ({ navigation }) => {
       if (result.verificationId) {
         navigation.navigate("Verification", {
           result,
-          // handleSendVerificationCode,
+          handleSendVerificationCode,
           phoneNumber: PhoneNumberValidated,
         });
         setDisabled(false);
@@ -136,7 +136,7 @@ const SigninScreen = ({ navigation }) => {
             path={"Verification"}
             title={"Continue"}
             disabled={disabled}
-            style={{ paddingHorizontal: width * 0.4,paddingVertical:width*0.035, alignSelf: 'center' }}
+            style={{ paddingHorizontal: width * 0.3, alignSelf: 'center' }}
             textStyle={{ fontSize: RFPercentage(2.3) }}
             onPress={() => handleSendVerificationCode()}
           />

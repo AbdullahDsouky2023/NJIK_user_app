@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Carousel from "react-native-snap-carousel-v4";
 import { useDispatch } from "react-redux";
 import {
+  CHANGE_ORDER_DATE,
   CURRENCY,
   HOME,
   ORDER_SUCCESS_SCREEN,
@@ -290,6 +291,13 @@ export default function OrderDetails({ navigation, route }) {
           <AppButton
             title={"Cancle Order"}
             onPress={() => setModalVisible(true)}
+          />
+        )}
+        {(item?.attributes?.status === "pending" ||item?.attributes?.status === "assigned")&& (
+          <AppButton
+            title={"Delay Order"}
+            style={{marginTop:10}}
+            onPress={() =>navigation.navigate(CHANGE_ORDER_DATE,{orderId:item?.id ,item:item})}
           />
         )}
         {item?.attributes?.status === "payed" &&

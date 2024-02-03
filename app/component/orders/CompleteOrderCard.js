@@ -7,7 +7,8 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import { Entypo ,Octicons} from "@expo/vector-icons";
+import { Entypo, Octicons } from "@expo/vector-icons";
+import { RFPercentage } from 'react-native-responsive-fontsize'
 
 import React, { useEffect } from "react";
 import { FontAwesome } from "@expo/vector-icons";
@@ -22,6 +23,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 import { useTranslation } from "react-i18next";
+import Pdf from "../../screens/Invoice/pdf";
 export default function CompleteOrderCard({ item, onPress }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -49,7 +51,7 @@ export default function CompleteOrderCard({ item, onPress }) {
                   }
                   style={[
                     styles.header,
-                    { color: Colors.primaryColor, fontSize: 17 },
+                    { color: Colors.primaryColor, fontSize: RFPercentage(1.9) },
                   ]}
                   centered={false}
                 />
@@ -58,47 +60,47 @@ export default function CompleteOrderCard({ item, onPress }) {
                 <TouchableOpacity
                   style={styles.complainContainer}
                   onPress={() => {
-                    if(item?.attributes?.complain?.data){
-                      navigation.navigate(t(ACCOUNT),{screen:"compass"})
+                    if (item?.attributes?.complain?.data) {
+                      navigation.navigate(t(ACCOUNT), { screen: "compass" })
                       // navigation.navigate("compass")
-                    }else {
-                      navigation.navigate(COMPLAIN_CREATE_SCREEN,{item:item})
+                    } else {
+                      navigation.navigate(COMPLAIN_CREATE_SCREEN, { item: item })
                     }
                   }}
                 >
-<Octicons name="report" size={21} color="white" />
+                  <Octicons name="report" size={21} color="white" />
                 </TouchableOpacity>
               </View>
             </View>
-          ):
-          item?.attributes?.packages && (
-            <View style={styles.headerText}>
-            <AppText
-              text={item?.attributes?.packages?.data[0]?.attributes?.name}
-              style={[
-                styles.header,
-                { color: Colors.primaryColor, fontSize: 17 },
-              ]}
-              centered={false}
-              />
-              <View>
-                <TouchableOpacity
-                  style={styles.complainContainer}
-                  onPress={() => {
-                    if(item?.attributes?.complain?.data){
-                      navigation.navigate(ACCOUNT,{screen:"compass"})
-                      // navigation.navigate("compass")
-                    }else {
-                      navigation.navigate(COMPLAIN_CREATE_SCREEN,{item:item})
-                    }
-                  }}
-                >
-<Octicons name="report" size={21} color="white" />
-                </TouchableOpacity>
+          ) :
+            item?.attributes?.packages && (
+              <View style={styles.headerText}>
+                <AppText
+                  text={item?.attributes?.packages?.data[0]?.attributes?.name}
+                  style={[
+                    styles.header,
+                    { color: Colors.primaryColor, fontSize: 17 },
+                  ]}
+                  centered={false}
+                />
+                <View>
+                  <TouchableOpacity
+                    style={styles.complainContainer}
+                    onPress={() => {
+                      if (item?.attributes?.complain?.data) {
+                        navigation.navigate(ACCOUNT, { screen: "compass" })
+                        // navigation.navigate("compass")
+                      } else {
+                        navigation.navigate(COMPLAIN_CREATE_SCREEN, { item: item })
+                      }
+                    }}
+                  >
+                    <Octicons name="report" size={21} color="white" />
+                  </TouchableOpacity>
                 </View>
-              
+
               </View>
-          )}
+            )}
         </View>
         <View style={styles.date}>
           <Ionicons name="ios-location-outline" size={22} color="black" />
@@ -141,23 +143,10 @@ export default function CompleteOrderCard({ item, onPress }) {
               style={styles.title}
             />
           </View>
-          <View>
-            {item?.attributes?.provider?.data?.attributes?.name && (
-              <TouchableOpacity
-                style={styles.chatContainer}
-                onPress={() => {
-                  dispatch(
-                    setcurrentChatChannel(item?.attributes?.chat_channel_id)
-                  );
 
-                  navigation.navigate("Chat");
-                }}
-              >
-                <Entypo name="chat" size={22} color="white" />
-              </TouchableOpacity>
-            )}
-          </View>
+          <Pdf item={item} />
         </View>
+
       </View>
     </TouchableWithoutFeedback>
   );
@@ -203,7 +192,7 @@ const styles = StyleSheet.create({
   },
   name: {
     color: Colors.blackColor,
-    fontSize: 12,
+    fontSize: RFPercentage(1.3),
   },
   headerText: {
     display: "flex",
@@ -214,11 +203,11 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.blackColor,
-    fontSize: 13,
+    fontSize: RFPercentage(1.5),
   },
   price: {
     color: Colors.primaryColor,
-    fontSize: 12,
+    fontSize: RFPercentage(1.9),
   },
   date: {
     display: "flex",
