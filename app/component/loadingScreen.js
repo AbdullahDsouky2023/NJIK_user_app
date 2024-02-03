@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { View } from "react-native";
 import * as Font from "expo-font";
 import { Colors, Fonts } from "../constant/styles";
+import { CommonActions } from "@react-navigation/native";
 
 const LoadingScreen = ({ navigation }) => {
   useEffect(() => {
@@ -16,8 +17,12 @@ const LoadingScreen = ({ navigation }) => {
         "Janna-Lt": require("../assets/fonts/Janna-LT-Bold.ttf"),
 
       });
-      navigation.navigate('Splash');
-    }
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name:"Splash" ,
+       }],
+        }))    }
     loadFont();
   }, []); 
   return (

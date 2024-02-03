@@ -19,7 +19,11 @@ import { Colors } from "./app/constant/styles";
 
 const { width, height } = Dimensions.get("screen");
 export const client = new QueryClient();
+// import { LogBox } from 'react-native';
 
+// LogBox.ignoreLogs([
+//   'Non-serializable values were found in the navigation state',
+// ]);
 const App = () => {
   const [loading, setLoading] = useState(false);
 

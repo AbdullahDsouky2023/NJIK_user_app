@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Colors, Sizes } from "../constant/styles";
 import { CircleFade } from "react-native-animated-spinkit";
-import { useFocusEffect } from "@react-navigation/native";
+import { CommonActions, useFocusEffect } from "@react-navigation/native";
 import Logo from "../component/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData, userRegisterSuccess } from "../store/features/userSlice";
@@ -52,9 +52,19 @@ const SplashScreen = ({ navigation }) => {
           const gottenuser = await getUserByPhoneNumber(user);
           dispatch(setUserData(gottenuser));
           dispatch(userRegisterSuccess(userData));
-          navigation.push("App");
+          return navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name:"App" ,
+           }],
+            }))
         } else {
-          navigation.push("Auth");
+          return navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name:"Auth" ,
+           }],
+            }))
         }
       } catch (error) {}
     }
@@ -75,13 +85,29 @@ const SplashScreen = ({ navigation }) => {
           if (gottenuser) {
             dispatch(setUserData(gottenuser));
             dispatch(userRegisterSuccess(userData));
-            navigation.push("App");
+            
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name:"App" ,
+             }],
+              }))
           } else {
-            navigation.push("Auth");
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name:"Auth" ,
+             }],
+              }))
           }
         } else {
           // navigation.push("App");
-          navigation.push("Auth");
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name:"Auth" ,
+           }],
+            }))
         }
       } catch (error) {
         console.log(error);

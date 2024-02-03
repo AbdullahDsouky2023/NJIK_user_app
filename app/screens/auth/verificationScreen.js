@@ -11,7 +11,11 @@ import {
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
-
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import DropdownAlert, {
+  DropdownAlertData,
+  DropdownAlertType,
+} from 'react-native-dropdownalert';
 import { Colors } from "../../constant/styles";
 import ArrowBack from "../../component/ArrowBack";
 import AppButton from "../../component/AppButton";
@@ -27,7 +31,7 @@ import { auth, db } from "../../../firebaseConfig";
 import { getUserByPhoneNumber } from "../../../utils/user";
 import { useTranslation } from "react-i18next";
 
-const { width } = Dimensions.get("screen");
+const { width ,height} = Dimensions.get("screen");
 
 const VerificationScreen = ({ navigation, route }) => {
   const [isLoading, setisLoading] = useState(false);
@@ -37,6 +41,7 @@ const VerificationScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation()
   const { result, handleSendVerificationCode, phoneNumber } = route.params;
+  let alert = (_data) => new Promise(res => res);
 
   const confirmVerificationCode = async () => {
     try {
@@ -69,8 +74,16 @@ const VerificationScreen = ({ navigation, route }) => {
       const errorMessage =
         errorMessages[error.message] ||
         t("Something Went Wrong, Please try again!");
-      Alert.alert(errorMessage);
-      setisLoading(false)
+      // Alert.alert(errorMessage);
+      setOtpInput("");
+
+      const alertData = await alert({
+        type: DropdownAlertType.Error,
+        title: t('Error'),
+        Colors:Colors.primaryColor,
+                message: errorMessage
+      });
+      // setisLoading(false)
     } finally {
       setisLoading(false)
       setOtpInput("");
@@ -111,7 +124,7 @@ const VerificationScreen = ({ navigation, route }) => {
             <AppText
               text={"verification"}
               style={{
-                fontSize: 28,
+                fontSize: RFPercentage(3.8),
                 color: Colors.primaryColor,
                 marginBottom: 10,
               }}
@@ -121,12 +134,12 @@ const VerificationScreen = ({ navigation, route }) => {
             <AppText
               text={`OTP Code Was Sent To`}
               // centered={false}
-              style={{ fontSize: 15, }}
+              style={{ fontSize: RFPercentage(2.3) }}
             />
             <AppText
               text={`+${phoneNumber}`}
               // centered={false}
-              style={{ fontSize: 17,color:Colors.primaryColor }}
+              style={{ fontSize: RFPercentage(2.3),color:Colors.primaryColor }}
             />
               </View>
           </View>
@@ -143,13 +156,15 @@ const VerificationScreen = ({ navigation, route }) => {
             title={"Continue"}
             path={"Register"}
             disabled={otpInput.length !== 6 }
+            style={{ paddingHorizontal: width * 0.35,paddingVertical:height*0.012, alignSelf: 'center' }}
+            textStyle={{ fontSize: RFPercentage(2.5) }}
             onPress={confirmVerificationCode}
           />
           <View style={styles.sendMessasesContainer}>
             <AppText
               text={"didntReceiveOTP"}
               style={{
-                fontSize: 18,
+                fontSize: RFPercentage(2.4),
                 paddingTop: 44,
                 paddingRight: 20,
               }}
@@ -159,7 +174,7 @@ const VerificationScreen = ({ navigation, route }) => {
               title={
                 resendDisabled ? ` 00 :${secondsRemaining} ` : "Resend"
               }
-              textStyle={{fontSize:14}}
+              textStyle={{fontSize:RFPercentage(1.9)}}
               disabled={resendDisabled}
               onPress={() => {
               setResendDisabled(true);
@@ -172,6 +187,8 @@ const VerificationScreen = ({ navigation, route }) => {
         {/* <AppButton title="Change Number" style={{width:width*0.5,marginLeft:width*0.2}} onPress={()=>navigation.goBack()}  /> */}
       </ScrollView>
       <LoadingModal visible={isLoading} />
+      <DropdownAlert alert={func => (alert = func)} />
+
     </SafeAreaView>
   );
 };
