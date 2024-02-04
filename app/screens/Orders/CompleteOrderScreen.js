@@ -77,17 +77,12 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     backgroundColor: Colors.whiteColor,
-    width: width,
-    paddingHorizontal: 20,
-    // paddingTop:10,
-    // paddingBottom:10,
-    paddingVertical: -10,
     display:'flex',
+    flexDirection:'column',
     alignItems:'center',
-    justifyContent:'center',
   },
  listContainer:{
-  display:"flex",
+  // display:"flex",
   gap:1,
   marginVertical:10 
  },

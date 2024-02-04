@@ -8,7 +8,7 @@ import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
 import useOrders from "../../../utils/orders";
 import LoadingScreen from "../loading/LoadingScreen";
-const { width } = Dimensions.get("screen");
+const { width ,height} = Dimensions.get("screen");
 import { RefreshControl  } from 'react-native';
 import { ORDERS_DETAILS } from "../../navigation/routes";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
@@ -84,17 +84,18 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     backgroundColor: Colors.whiteColor,
-    width: width,
-    paddingHorizontal: 20,
+    display:'flex',
+    flexDirection:'column',
+    alignItems:'center',
+    // width: width,
+    // paddingHorizontal: 20,
     // paddingTop:10,
     // paddingBottom:10,
-    paddingVertical: -10,
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'center',
+    // paddingVertical: -10,
+    // justifyContent:'center',
   },
  listContainer:{
-  display:"flex",
+  // display:"flex",
   gap:1,
   marginVertical:10  
  },

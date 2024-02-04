@@ -5,6 +5,7 @@ import { Colors,Fonts } from '../../constant/styles'
 import { Image } from 'react-native'
 import AppText from '../AppText'
 const  { width,height } = Dimensions.get('screen')
+import { RFPercentage } from 'react-native-responsive-fontsize'
 export default function ServiceCard({image,name,onPress}) {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     text:{
         color:Colors.blackColor,
         // ...Fonts.blackColor14Medium,
-        fontSize:12,
+        fontSize:RFPercentage(1.67),
         textAlign:'center'
     },
     imageCard :{

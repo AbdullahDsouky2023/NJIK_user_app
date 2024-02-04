@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { CART, OFFERS } from "../../navigation/routes";
 const  { width } = Dimensions.get('screen')
-
+import { RFPercentage } from "react-native-responsive-fontsize";
 export default function ServicesList() {
   const categories = useSelector((state) => state.categories.categories);
   const navigation = useNavigation();

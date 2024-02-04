@@ -14,8 +14,7 @@ import * as Linking from "expo-linking";
 import AppModal from "../AppModal";
 import ContactUsModal from "./ContactUsModal";
 import { useState } from "react";
-import LoadingModal from "../Loading";
-
+import { RFPercentage } from "react-native-responsive-fontsize";
 const { width, height } = Dimensions.get("screen");
 export default function SettingItem({ item }) {
   const { icon, name, desc } = item;
@@ -109,16 +108,16 @@ export default function SettingItem({ item }) {
 const styles = StyleSheet.create({
   header: {
     color: Colors.primaryColor,
-    fontSize: 18,
+    fontSize: RFPercentage(1.44),
   },
   textHeader: {
     color: Colors.blackColor,
-    fontSize: I18nManager.isRTL ? 14 :11,
+    fontSize: I18nManager.isRTL ?  RFPercentage(1.7) : RFPercentage(1.5),
     // alignSelf:"left"
   },
   headerDescription: {
     color: Colors.grayColor,
-    fontSize: 16,
+    fontSize:  RFPercentage(1.4),
   },
   item: {
     backgroundColor: Colors.piege,
