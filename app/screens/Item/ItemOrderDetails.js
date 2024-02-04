@@ -199,6 +199,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
                 // placeholder="description"
                 multiline={true}
                 numberOfLines={4}
+                width={width*0.97}
                 textAlignVertical="top" // Add this line
 
                 // ... other props

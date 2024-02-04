@@ -17,8 +17,10 @@ import { setUserData, userRegisterSuccess } from "../store/features/userSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUserByPhoneNumber } from "../../utils/user";
 import LocationModal from "../component/location/LocationModal";
+import NetInfo from '@react-native-community/netinfo';
 
 import { auth } from "../../firebaseConfig";
+import { NO_CONNECTION_SCREEN } from "../navigation/routes";
 const SplashScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   let user = useSelector((state) => state.user?.user?.phoneNumber);
@@ -32,6 +34,24 @@ const SplashScreen = ({ navigation }) => {
     BackHandler.exitApp();
     return true;
   };
+  //noconnctionListner
+//   useEffect(() => {
+    
+//     const unsubscribe = NetInfo.addEventListener(state => {
+//       if (state.isConnected || state.isInternetReachable) {
+//         navigation.dispatch(
+//           CommonActions.reset({
+//             index: 0,
+//             routes: [{ name:NO_CONNECTION_SCREEN ,
+//          }],
+//           }))
+//       }
+//     });
+
+//     return () => {
+//       unsubscribe();
+//     };
+//  }, [navigation]);
   useEffect(() => {
     // Start the fade out animation after 3 seconds
     setTimeout(() => {
@@ -59,12 +79,23 @@ const SplashScreen = ({ navigation }) => {
            }],
             }))
         } else {
-          return navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name:"Auth" ,
-           }],
-            }))
+          // Check for internet connectivity
+        NetInfo.fetch().then(state => {
+          if (state.isConnected || state.isInternetReachable) {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: NO_CONNECTION_SCREEN }],
+              }))
+          } else {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name:"Auth" ,
+             }],
+              }))
+          }
+        });
         }
       } catch (error) {}
     }
@@ -101,13 +132,22 @@ const SplashScreen = ({ navigation }) => {
               }))
           }
         } else {
-          // navigation.push("App");
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name:"Auth" ,
-           }],
-            }))
+          NetInfo.fetch().then(state => {
+            if (!state.isConnected || !state.isInternetReachable) {
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: NO_CONNECTION_SCREEN }],
+                }))
+            } else {
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name:"Auth" ,
+               }],
+                }))
+            }
+          });
         }
       } catch (error) {
         console.log(error);

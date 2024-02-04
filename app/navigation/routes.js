@@ -25,3 +25,4 @@ export const CHAT_ROOM = "chat-room-screen"
 export const CURRENCY = " ر.س"
 export const Offer_route_name="العروض"
 export const CHANGE_ORDER_DATE = 'ChangeDateOrderScreen'
+export const NO_CONNECTION_SCREEN="noconnection"

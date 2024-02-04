@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: Colors.grayColor,
     gap: 20,
+    // elevation:1,
     overflow: "hidden",
     // backgroundColor:Colors.piege,
   },

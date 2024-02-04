@@ -26,6 +26,7 @@ import {
   PACKAGE_SCREEN,
   OFFERS_SCREEN,
   CHANGE_ORDER_DATE,
+  NO_CONNECTION_SCREEN,
 } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
@@ -46,6 +47,7 @@ import ComplainOrderDetails from "../screens/complain/ComplainOrderDetails";
 import StarsComponent from "../component/StarsComponent";
 import OffersScreen from "../component/Offers/OffersScreen";
 import ChangeDateOrderScreen from "../screens/Orders/ChangeDateOrderScreen";
+import NoConnectionScreen from "../screens/NoConnectionScreen";
 
 LogBox.ignoreAllLogs();
 
@@ -147,6 +149,10 @@ const RootNavigator = () => {
         <Stack.Screen
           name={MANUAL_LOCATION_ADD}
           component={AddManualLocationScreen}
+        />
+        <Stack.Screen
+          name={NO_CONNECTION_SCREEN}
+          component={NoConnectionScreen}
         />
         <Stack.Screen name={"Payment"} component={PaymentScreen} />
       </Stack.Navigator>

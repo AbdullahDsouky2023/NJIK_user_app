@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: width * 0.4,
-    paddingVertical: 14,
+    paddingVertical: height*0.0185,
     gap: 5,
   },
   itemHeader: {
