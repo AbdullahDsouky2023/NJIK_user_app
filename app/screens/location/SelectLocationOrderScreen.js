@@ -203,6 +203,8 @@ const handleSetCurrentLocation =   async (coordinate) => {
                 manualLocations?.length ===0 ? (<AppText text={"There is no locations"}/>):
                 <FlatList
                 data={manualLocations}
+                showsVerticalScrollIndicator={false}
+
                 renderItem={({ item }) => (
                   <SelectLocationItem
                   selectedLocation={selectedLocation}

@@ -69,6 +69,8 @@ const SelectRegionScreen = ({ navigation, route }) => {
               {/* region primary */}
               <FlatList
                 data={regions?.data}
+                showsVerticalScrollIndicator={false}
+
                 renderItem={({ item }) => (
                   <SelectLocationItem
                     selectedLocation={selectedRegion}

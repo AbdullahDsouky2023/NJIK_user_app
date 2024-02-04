@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: Colors.piege,
-    height: height*0.11,
+    height: height*0.105,
     borderRadius: 10,
     paddingHorizontal: 20,
     display: "flex",

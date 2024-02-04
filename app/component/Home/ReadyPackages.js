@@ -23,6 +23,7 @@ export default function ReadyPackages() {
         data={services?.data}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item,index)=>item.id}
+        showsVerticalScrollIndicator={false}
 
         style={{
             display:'flex',

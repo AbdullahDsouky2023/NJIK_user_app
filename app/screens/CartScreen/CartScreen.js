@@ -99,6 +99,8 @@ export default function CartScreen({ route ,navigation}) {
         <FlatList
         data={services}
           showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+
           keyExtractor={(item, index) => item.id +index}
           style={{
             display: "flex",

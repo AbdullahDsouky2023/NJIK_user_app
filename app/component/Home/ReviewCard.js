@@ -39,7 +39,7 @@ export default function ReviewCard({ username, review, userImage }) {
 const styles = StyleSheet.create({
   cardContainer: {
     height: height*0.27,
-    width: width * 0.91,
+    width: width * 0.92,
     padding: 20,
     marginTop:5,
     marginBottom: 10,

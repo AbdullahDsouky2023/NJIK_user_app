@@ -111,6 +111,8 @@ const LocationScreen = ({ navigation, route }) => {
                   //   Render your manual location item here
                   <LocationAddressItem location={item} />
                 )}
+                showsVerticalScrollIndicator={false}
+
                 keyExtractor={(item, index) => index.toString()}
               />
             </View>

@@ -62,6 +62,8 @@ const fetchData=()=>{
       <FlatList
       data={currentOrders}
       style={styles.listContainer}
+      showsVerticalScrollIndicator={false}
+
       renderItem={({item})=>{
         
         return <CurrentOrderCard item={item} onPress={() => {
@@ -86,11 +88,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     // paddingTop:10,
     // paddingBottom:10,
-    // paddingVertical: -10,
+    paddingVertical: -10,
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center',
   },
  listContainer:{
   display:"flex",
-  gap:10
+  gap:1,
+  marginVertical:10  
  },
  noItemContainer:{
   display:'flex',

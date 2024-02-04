@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
     width: width * 0.88,
     paddingHorizontal: 20,
     // height: 170,
-    marginTop: 12,
     flex: 1,
     gap: 5,
     height:"auto",

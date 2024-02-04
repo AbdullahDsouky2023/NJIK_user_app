@@ -47,6 +47,8 @@ export default function GeneralSettings() {
       <View>
         <FlatList
           data={settingsItemArray}
+          showsVerticalScrollIndicator={false}
+
           style={{
             display: "flex",
             gap: 20,

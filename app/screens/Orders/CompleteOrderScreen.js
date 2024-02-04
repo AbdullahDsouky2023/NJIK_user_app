@@ -58,8 +58,10 @@ const fetchData=()=>{
       :
       <ScrollView style={styles.container}>
       <FlatList
+      
       data={currentOrders}
       style={styles.listContainer}
+      showsVerticalScrollIndicator={false}
       renderItem={({item})=>{
         return <CompleteOrderCard item={item} onPress={() => navigation.navigate(COMPLETE_ORDER_DETAILS, { item })} />
       }}
@@ -80,10 +82,14 @@ const styles = StyleSheet.create({
     // paddingTop:10,
     // paddingBottom:10,
     paddingVertical: -10,
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center',
   },
  listContainer:{
   display:"flex",
-  gap:10
+  gap:1,
+  marginVertical:10 
  },
  noItemContainer:{
   display:'flex',

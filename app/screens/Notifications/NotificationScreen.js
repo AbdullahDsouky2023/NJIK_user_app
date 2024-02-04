@@ -43,6 +43,8 @@ export default function NotificationScreen() {
         {
           notifications?.length > 0 ?
           <FlatList
+          showsVerticalScrollIndicator={false}
+
           data={notifications}
           style={{
             display: "flex",

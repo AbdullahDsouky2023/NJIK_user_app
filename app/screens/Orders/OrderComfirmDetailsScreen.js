@@ -122,6 +122,8 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
             <FlatList
               data={currentSelectedServices}
               showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+
               keyExtractor={(item, index) => item.id}
               style={{
                 display: "flex",
@@ -172,6 +174,8 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
             <FlatList
               data={currentSelectedPackages}
               showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+
               keyExtractor={(item, index) => item.id}
               style={{
                 display: "flex",

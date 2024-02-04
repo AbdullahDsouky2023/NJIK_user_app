@@ -711,6 +711,8 @@ const CartScreen = ({ navigation }) => {
                     data={handPickedItemsList}
                     keyExtractor={(item) => `${item.id}`}
                     renderItem={renderItem}
+                    showsVerticalScrollIndicator={false}
+
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{
                         paddingLeft: Sizes.fixPadding * 2.0,

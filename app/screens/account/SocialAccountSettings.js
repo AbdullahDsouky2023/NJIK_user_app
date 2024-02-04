@@ -41,6 +41,8 @@ export default function SocialAccountSettings() {
       >
         <FlatList
           data={SocailLinks}
+          showsVerticalScrollIndicator={false}
+
           style={{
             display: "flex",
             gap: 20,

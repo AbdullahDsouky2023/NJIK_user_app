@@ -63,6 +63,8 @@ const fetchData=()=>{
       <ScrollView style={styles.container}>
       <FlatList
       data={currentOrders}
+      showsVerticalScrollIndicator={false}
+
       style={styles.listContainer}
       renderItem={({item})=>{
         return <ComplainOrderCard item={item} 
@@ -86,10 +88,19 @@ const styles = StyleSheet.create({
     // paddingTop:10,
     // paddingBottom:10,
     paddingVertical: -10,
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center',
   },
  listContainer:{
   display:"flex",
-  gap:10
+  gap:10,
+  // marginBottom:10,
+  // marginHorizontal:width*0.01,
+  // alignSelf:'center'
+  // flexDirection:'column',
+  // alignItems:'center',
+  // justifyContent:'center',
  },
  noItemContainer:{
   display:'flex',

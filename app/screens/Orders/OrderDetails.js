@@ -118,6 +118,8 @@ export default function OrderDetails({ navigation, route }) {
             <FlatList
               data={item?.attributes?.services.data}
               showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+
               keyExtractor={(item, index) => item.id}
               style={{
                 display: "flex",
@@ -165,6 +167,8 @@ export default function OrderDetails({ navigation, route }) {
             <FlatList
               data={item?.attributes?.packages.data}
               showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+
               keyExtractor={(item, index) => item.id}
               style={{
                 display: "flex",

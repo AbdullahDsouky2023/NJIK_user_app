@@ -19,6 +19,8 @@ export default function ServicesList() {
       <FlatList
         data={categories.data}
         style={styles.listContainer}
+        showsVerticalScrollIndicator={false}
+
         renderItem={({ item }) => {
           return (
             <ServiceCard

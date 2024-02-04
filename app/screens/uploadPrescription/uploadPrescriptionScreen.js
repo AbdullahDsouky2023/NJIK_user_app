@@ -173,6 +173,8 @@ const UploadPrescriptionScreen = ({ navigation }) => {
                 keyExtractor={(item) => `${item.id}`}
                 contentContainerStyle={{ paddingLeft: Sizes.fixPadding * 2.0, }}
                 showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+
                 renderItem={({ item }) => (
                     <View style={{ width: 80, height: 105, marginRight: Sizes.fixPadding * 2.0, }}>
                         <Image

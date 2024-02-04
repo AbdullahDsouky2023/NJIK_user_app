@@ -124,7 +124,7 @@ import LoadingScreen from "../loading/LoadingScreen";
       // maxHeight: height * 0.16,
       height: "auto",
       // minHeight: height * 0.14,
-      marginTop: 12,
+      marginTop: 5,
       flex: 1,
       gap: 5,
       backgroundColor: Colors.whiteColor,

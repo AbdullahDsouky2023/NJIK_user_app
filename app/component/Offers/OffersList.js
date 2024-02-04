@@ -35,6 +35,8 @@ export default function OffersList() {
       <FlatList
         data={OffersData?.data[0]?.attributes?.services?.data}
         style={styles.listContainer}
+        showsVerticalScrollIndicator={false}
+
         renderItem={({ item }) => {
           console.log(item?.attributes.name)
           return (

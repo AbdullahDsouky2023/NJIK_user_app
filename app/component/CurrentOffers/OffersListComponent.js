@@ -31,6 +31,8 @@ export default function OffersServiceComponentList({ data, slectedItem }) {
       <FlatList
         data={data?.data}
         scrollEnabled={false}
+        showsVerticalScrollIndicator={false}
+
         renderItem={({ item }) => {
           console.log("heh",item?.attributes?.image?.data[0]?.attributes?.url)
           return (

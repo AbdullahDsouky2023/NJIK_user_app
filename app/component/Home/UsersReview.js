@@ -51,7 +51,7 @@ export default   function UsersReviews() {
                <AppText text={"SercureOrder"} style={{ color: Colors.primaryColor ,marginBottom:10}} />
                <Image source={require('../../assets/images/award.png')} style={{ height:40, width:40}}/>
           </View>
-          <View style={{backgroundColor:Colors.whiteColor,width:width*1,display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <View style={styles.container2}>
 
             <Carousel
                 data={data?.data}
@@ -81,5 +81,17 @@ const styles = StyleSheet.create({
         display:'flex',
         flexDirection:'column',
         
+        
+    },container2:{
+      height: "100%",
+      backgroundColor: Colors.whiteColor,
+      width: width,
+      paddingHorizontal: 20,
+      // paddingTop:10,
+      // paddingBottom:10,
+      paddingVertical: -10,
+      display:'flex',
+      alignItems:'center',
+      justifyContent:'center',
     }
 })
