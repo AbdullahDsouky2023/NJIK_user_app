@@ -53,7 +53,7 @@ const NoConnectionScreen = () => {
       />
       <AppText text={hasInternet ? 'Internet connection is available.' : 'No internet connection.'} style={{color:Colors.black,letterSpacing:2,marginVertical:10}}/>
       <AppText text={"فشل الاتصال بطلبات. يرجى التحقق من اتصال الشبكة بجهازك."} style={{textAlign:'center',marginVertical:10}}/>
-      {hasInternet && <AppButton title="Retry" onPress={handleRetry} />}
+       <AppButton title="Retry" onPress={handleRetry} />
     </View>
   );
 };
