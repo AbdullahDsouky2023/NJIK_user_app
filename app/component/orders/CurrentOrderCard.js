@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
     width: width,
     paddingHorizontal: 20,
     paddingVertical: 10,
+    // backgroundColor:'red',
   },
   headerContainer: {
     display: "flex",
@@ -166,10 +167,10 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   orderCardContainer: {
-    backgroundColor:'red',
     paddingVertical: 10,
     width: width * 0.88,
     paddingHorizontal: 20,
+    marginBottom: 20,
 
     // height: height*0.3,
     // maxHeight: height * 0.2,
@@ -178,16 +179,16 @@ const styles = StyleSheet.create({
     marginTop: 12,
     flex: 1,
     gap: 3,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 100.41,
     elevation: 2,
-    borderColor: Colors.blackColor,
-    borderWidth: 0.4,
+    borderColor: Colors.grayColor,
+    borderWidth: 0.5,
     borderRadius: 8,
   },
   name: {

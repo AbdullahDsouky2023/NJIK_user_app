@@ -10,13 +10,13 @@ import { auth } from "../../../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import { CART, OFFERS, OFFERS_SCREEN } from "../../navigation/routes";
-const { width, height } = Dimensions.get("screen");
 import * as Linking from "expo-linking";
 import AppModal from "../AppModal";
 import ContactUsModal from "./ContactUsModal";
 import { useState } from "react";
 import LoadingModal from "../Loading";
 
+const { width, height } = Dimensions.get("screen");
 export default function SettingItem({ item }) {
   const { icon, name, desc } = item;
   const navigation = useNavigation();
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: Colors.piege,
-    height: "auto",
+    height: height*0.11,
     borderRadius: 10,
     paddingHorizontal: 20,
     display: "flex",

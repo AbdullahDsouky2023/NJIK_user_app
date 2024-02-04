@@ -10,6 +10,7 @@ import { Button, Dimensions, StyleSheet, Text, TextInput } from "react-native";
 import { View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const { width } = Dimensions.get("screen");
 
@@ -80,11 +81,12 @@ export default UserDatePicker;
 const styles = StyleSheet.create({
   date: {
     borderWidth: 1,
-    width: width * 0.93,
+    width: width * 0.95,
     padding: 10,
     borderRadius: 10,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor:Colors.white
   },
 });

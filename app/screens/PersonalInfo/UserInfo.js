@@ -221,6 +221,7 @@ const UserInfo = ({ navigation }) => {
               />
               <UserDatePicker
                 name="birth_date"
+                
                 birthDate={userData?.birth_date}
               />
               <AppText
