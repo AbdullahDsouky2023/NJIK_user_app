@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { CART, OFFERS } from "../../navigation/routes";
 const  { width } = Dimensions.get('screen')
 import { RFPercentage } from "react-native-responsive-fontsize";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 export default function ServicesList() {
   const categories = useSelector((state) => state.categories.categories);
   const navigation = useNavigation();
@@ -15,7 +16,7 @@ export default function ServicesList() {
     navigation.navigate(CART, { name: item?.attributes?.name });
   };
   return (
-    <HeaderTextComponent name={"Services"} showAll={true}>
+    <HeaderTextComponent style={styles.container} name={"Services"} showAll={true}>
       <FlatList
         data={categories.data}
         style={styles.listContainer}
@@ -37,13 +38,21 @@ export default function ServicesList() {
 }
 const styles = StyleSheet.create({
   listContainer: {
-    flex: 1,
+    display: 'flex',
     flexDirection: "row",
     flexWrap: "wrap",
+    backgroundColor:Colors.white,
     // alignItems:'center',
-    // justifyContent:'center',
+    justifyContent:'center',
     gap: 10,
-    // padding: 16,
+    // paddingHorizontal: 4,
     width:width
   },
+  container:{
+    backgroundColor:Colors.white,
+    display: 'flex',
+    marginTop:10
+    //  alignItems:'center',
+    // justifyContent:'center',
+  }
 });

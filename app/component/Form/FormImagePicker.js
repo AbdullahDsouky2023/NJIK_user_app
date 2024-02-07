@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   imagePicker: {
     // borderWidth: 1,
     width: width * 0.17,
-    borderRadius: width * 0.1 * 0.5,
+    borderRadius: width * 0.17 * 0.5,
     height: width * 0.17,
     backgroundColor: Colors.primaryColor,
     justifyContent: "center",

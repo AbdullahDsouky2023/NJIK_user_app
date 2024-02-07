@@ -43,7 +43,7 @@ export default   function UsersReviews() {
             alignItems:'center',
             justifyContent:'center',
             alignSelf:'center',
-            backgroundColor:Colors.whiteColor,
+            backgroundColor:Colors.whiteredColor,
              gap:10,
              marginBottom:10
           }}>
@@ -58,6 +58,7 @@ export default   function UsersReviews() {
                 sliderWidth={width}
                 autoplay={true}
                 loop={true}
+                slideStyle={styles.container2}
                 inactiveSlideOpacity={1}
                 inactiveSlideScale={1}
                 autoplayInterval={4000}
@@ -76,20 +77,20 @@ export default   function UsersReviews() {
 
 const styles = StyleSheet.create({
     container :{
-        paddingHorizontal:height*0.017,
+        // paddingHorizontal:height*0.017,
         paddingVertical:20,
         display:'flex',
         flexDirection:'column',
         
         
     },container2:{
-      height: "100%",
-      backgroundColor: Colors.whiteColor,
-      width: width,
-      paddingHorizontal: 20,
+      // height: "100%",
+      // backgroundColor: Colors.redColor,
+      width: width*1,
+      // paddingHorizontal: 20,
       // paddingTop:10,
       // paddingBottom:10,
-      paddingVertical: -10,
+      // paddingVertical: -10,
       display:'flex',
       alignItems:'center',
       justifyContent:'center',

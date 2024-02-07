@@ -81,15 +81,15 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1}}>
         <AppHeader />
         <FlatList
           ListHeaderComponent={
-            <>
+            <View >
               <OffersBanner />
               <ServicesList />
               <CurrentOffersScreen/>
-            </>
+            </View>
           }
           data={topCategoriesList}
           numColumns={2}

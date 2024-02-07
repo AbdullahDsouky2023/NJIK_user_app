@@ -144,7 +144,7 @@ export default function CompleteOrderCard({ item, onPress }) {
             />
           </View>
 
-          <Pdf item={item} />
+          {/* <Pdf item={item} /> */}
         </View>
 
       </View>
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginBottom:10,
     borderColor: Colors.grayColor,
-    borderWidth: 0.5,
+    // borderWidth: 0.5,
     borderRadius: 8,
   },
   name: {

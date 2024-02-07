@@ -30,6 +30,7 @@ import LoadingModal from "../../component/Loading";
 import AppModal from "../../component/AppModal";
 import useNotifications from "../../../utils/notifications";
 import { Colors } from "../../constant/styles";
+import DelayOrderCard from "../../component/orders/DelayOrderCard ";
 const { width, height } = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
@@ -43,6 +44,7 @@ export default function OrderDetails({ navigation, route }) {
   const [isReviewVisble, setIsReviewVisble] = useState(false);
   const { sendPushNotification } = useNotifications();
   const { t } = useTranslation();
+  console.log("results ",item?.attributes?.delay_request?.data)
   const handleOrderCancle = async (id) => {
     try {
       setIsLoading(true);
@@ -248,6 +250,7 @@ export default function OrderDetails({ navigation, route }) {
               style={styles.price}
             />
           </View>
+          
      
         {item?.attributes?.images?.data ? (
           <View style={styles.descriptionContainer}>
@@ -290,7 +293,10 @@ export default function OrderDetails({ navigation, route }) {
             </>
           </View>
         ) : null}
-
+        {
+           item?.attributes?.delay_request?.data?.attributes?.accepted === 'pending ' &&
+  <DelayOrderCard item={item}/>
+        }
         {item?.attributes?.status === "pending" && (
           <AppButton
             title={"Cancle Order"}
@@ -423,4 +429,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  delayHeader:{
+    fontSize:RFPercentage(2.2),
+    backgroundColor: Colors.primaryColor,
+    padding:10,
+    borderRadius:10,
+    color:Colors.whiteColor
+  }
 });

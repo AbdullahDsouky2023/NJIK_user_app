@@ -142,6 +142,7 @@ export default function CurrentOrderCard({ item, onPress }) {
               </TouchableOpacity>
             )}
           </View>
+          <Pdf/>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
     // shadowRadius: 100.41,
     elevation: 2,
     borderColor: Colors.grayColor,
-    borderWidth: 0.5,
+    // borderWidth: 0.5,
     borderRadius: 8,
   },
   name: {

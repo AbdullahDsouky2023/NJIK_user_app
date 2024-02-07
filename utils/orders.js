@@ -54,6 +54,20 @@ export const updateOrderData = async (id,orderData) => {
     console.error("Error updatingorder order   :", error.message); // Log the error response
   }
 };
+export const handleDelayOrder = async (id,values) => {
+  try {
+    const data = await api.put(`/api/delay-requests/${id}`, {
+      data: {
+        ...values,
+      },
+    });
+    console.log("res delay data",data?.data?.data?.id)
+    return data?.data?.data || null
+  } catch (error) {
+    console.error("Error 22:", error.message); // Log the error response
+  }
+};
+
 export const PayOrder = async (id) => {
   try {
     const data = await api.put(`/api/orders/${id}`,{

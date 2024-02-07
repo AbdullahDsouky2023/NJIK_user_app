@@ -110,7 +110,6 @@
   "Register New Account":"تسجيل حساب جديد",
   "Personal information":"البیانات الشخصیة",
   "Packages": "الباقات",
-  "Account":"حسابي",
   "current Location": "العنوان الحالي",
  "Current": "الحالية",
  "Previous":"السابقة",
@@ -168,6 +167,10 @@
   "By Creating an account you accept our Terms and Condition":"تسجيلك يؤكد موافقتك على سياسة الخصوصية وعلى الشروط والاحكام الخاصة بتطبيق نجيك",
   "Internet connection is available.":"تم استعادة الأتصال بالأنترنت",
     "No internet connection.":"لا يوجد أتصال بالأنترنت",
-    "Retry":"إعادة المحاولة"
+    "Retry":"إعادة المحاولة",
+    "Accept":"قبول",
+    "Reject":"رفض",
+    "Reason":"سبب التأجيل",
+    "Delay Request":"طلب تأجيل "
    
 }
