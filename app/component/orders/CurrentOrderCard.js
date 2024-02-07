@@ -142,7 +142,7 @@ export default function CurrentOrderCard({ item, onPress }) {
               </TouchableOpacity>
             )}
           </View>
-          <Pdf/>
+          {/* <Pdf/> */}
         </View>
       </View>
     </TouchableWithoutFeedback>

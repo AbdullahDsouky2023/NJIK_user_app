@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
     paddingHorizontal: 18,
-    backgroundColor: Colors.whiteColor,
+    backgroundColor: Colors.redColor,
   },
   header: {
     textAlign: "center",
