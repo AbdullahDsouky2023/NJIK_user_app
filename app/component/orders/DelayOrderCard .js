@@ -41,7 +41,7 @@ export default function DelayOrderCard ({item}) {
             sendPushNotification(
               providerNotificationToken,
               "تم قبول تأجيل  الطلب",
-              `تم قبول تأجيل  الطلب" بواسطه ${user?.username}`
+              `تم قبول تأجيل  الطلب بواسطه ${user?.username}`
             );
           }
           if (res) {

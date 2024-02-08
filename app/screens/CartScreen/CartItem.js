@@ -67,10 +67,18 @@ export default function CartItem({ item }) {
             <View style={styles.buttonsContainer}>
                 {
                     (IsSelected[0]?.qty > 0)? 
-                    <View style={styles.buttonsContainer}>
-                    <AppButton title={'+'} style={styles.button1} onPress={()=>handlePressAddButton(item?.id)}/> 
-                    <AppText text={IsSelected[0]?.qty} style={{marginTop:height*0.03,color:Colors.blackColor,fontSize:RFPercentage(2.4)}}/> 
-                    <AppButton title={'-'}  style={styles.button1} onPress={()=>handlePressUpdateQuantityButton(item?.id,IsSelected[0]?.qty-1)}/> 
+                    <View style={styles.buttonsContainer2} >
+                        <TouchableOpacity style={styles.button1} onPress={()=>handlePressAddButton(item?.id)}>
+                            <AppText text={"+"} style={{    color:Colors.whiteColor,fontSize:RFPercentage(3.1)}}/>
+                        </TouchableOpacity>
+                  
+                    <AppText text={IsSelected[0]?.qty} style={{color:Colors.whiteColor,fontSize:RFPercentage(2.4)}}/> 
+                  
+                    <TouchableOpacity style={styles.button1}      
+                                   onPress={()=>handlePressUpdateQuantityButton(item?.id,IsSelected[0]?.qty-1)}
+>
+                            <AppText text={"-"} style={{    color:Colors.whiteColor,fontSize:RFPercentage(3.1)}}/>
+                        </TouchableOpacity>
                     </View>  :     
                 <AppButton title={"Add"} 
                 textStyle={styles.buttonText} 
@@ -92,11 +100,12 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.whiteColor,
     },
     button1:{
-    paddingVertical:height*0.004,
-    height:width*0.098,
+    // paddingVertical:height*0.004,
+    // height:width*0.098,
     width:width*0.098,
-    paddingHorizontal:width*0.035,
-    borderRadius:width*0.098*0.5
+    // paddingHorizontal:width*0.035,
+    borderRadius:width*0.098*0.5,
+    backgroundColor:Colors.primaryColor,
     },
     header: {
         textAlign: "center",
@@ -170,6 +179,22 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
+        
+        // backgroundColor:'red'
+    },
+    buttonsContainer2: {
+        flex: 1,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor:Colors.primaryColor,
+        // height:height*0.07,
+        height:height*0.05,
+        gap:7,
+        width:width*0.3,
+        // paddingHorizontal:height*0.1,
+        borderRadius:width*0.9,
         // backgroundColor:'red'
     },
     increaseButtonContainer: {

@@ -137,6 +137,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
     });
     setCurrentSelectedPackages(data);
   }, []);
+  console.log("current page",currentSelectedPackages)
   useEffect(() => {
     handleCreatingServiceCartIds()
   }, []);
@@ -150,7 +151,6 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
       };
       const id = await CreateCartService({ ...itemSent });
       if (id) {
-        console.log("the id of the service created if ", id);
         return { id }; // Return the object directly
       }
     });
@@ -166,7 +166,6 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
   };
   
   
-  console.log("the array of the created ids ",cartServiceIds   )
   if (isLoading) return <LoadingScreen />;
   return (
     <View style={{ backgroundColor: Colors.whiteColor ,    height:height*1,
@@ -200,6 +199,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                       flexDirection: "row",
                       alignItems: "center",
                       justifyContent: "center",
+                      flexWrap: "wrap",
                       gap: 15,
                     }}
                   >
@@ -221,6 +221,61 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                   color: Colors.whiteColor,
                 }}
                 price={item?.attributes?.Price}
+              />
+              
+                  </View>
+                );
+              }}
+            />
+          </View>
+        )}
+        {currentSelectedPackages?.length > 0 && (
+          <View style={styles.itemContainer}>
+            <FlatList
+              data={currentSelectedPackages}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+
+              keyExtractor={(item, index) => item.id}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                direction: "rtl",
+                flexWrap: "wrap",
+                marginTop: 15,
+                gap: 15,
+                width: width,
+              }}
+              renderItem={({ item }) => {
+                return (
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexWrap: "wrap",
+                      gap: 15,
+                    }}
+                  >
+                    <AppText
+                      centered={false}
+                      text={item.attributes?.name}
+                      style={[
+                        styles.name,
+                        { fontSize: RFPercentage(1.9), paddingRight: 10 },
+                      ]}
+                    />
+                    
+                      <PriceTextComponent
+                style={{
+                  backgroundColor: Colors.primaryColor,
+                  fontSize: RFPercentage(1.5),
+                  padding: 6,
+                  borderRadius: 40,
+                  color: Colors.whiteColor,
+                }}
+                price={item?.attributes?.price}
               />
               
                   </View>
@@ -406,7 +461,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: "auto",
-    width: width * 0.9,
+    width: width * 0.92,
+    // maxWidth: width * 0.9,
     padding: 10,
     marginHorizontal: 4,
     // borderWidth: 0.7,
@@ -439,7 +495,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     height: "auto",
-    width: width * 0.9,
+    width: width * 0.92,
     padding: 10,
     // borderWidth: 0.7,
     borderRadius: 10,
