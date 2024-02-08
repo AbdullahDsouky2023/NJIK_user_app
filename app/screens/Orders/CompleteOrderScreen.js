@@ -6,7 +6,7 @@ import CurrentOrderCard from "../../component/orders/CurrentOrderCard";
 import { FlatList } from "react-native";
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
-import useOrders from "../../../utils/orders";
+import useOrders, { useAllOrders } from "../../../utils/orders";
 import LoadingScreen from "../loading/LoadingScreen";
 const { width } = Dimensions.get("screen");
 import { RefreshControl  } from 'react-native';
@@ -19,7 +19,7 @@ import CompleteOrderCard from "../../component/orders/CompleteOrderCard";
   const user = useSelector((state) => state?.user?.user);
   const ordersRedux = useSelector((state) => state?.orders?.orders);
   const [orders,setOrders] = useState([])
-  const {data,isLoading,refetch} = useOrders()
+  const {data,isLoading,refetch} = useAllOrders()
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {

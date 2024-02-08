@@ -15,7 +15,7 @@ import {
 import PriceTextComponent from "../../component/PriceTextComponent";
 import { ScrollView } from "react-native-virtualized-view";
 import AppButton from "../../component/AppButton";
-import useOrders, { cancleOrder, postOrder } from "../../../utils/orders";
+import useOrders, { CreateCartService, cancleOrder, postOrder, updateOrderData } from "../../../utils/orders";
 import AppText from "../../component/AppText";
 import { Colors } from "../../constant/styles";
 import LoadingScreen from "../loading/LoadingScreen";
@@ -43,17 +43,20 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const { item, image } = route?.params;
   const totalPrice = useSelector((state) => state.cart.totalPrice);
+  const totalPriceServices = useSelector((state) => state.cartService.totalPrice);
+  const CartServicesItems = useSelector((state) => state.cartService.services);
   const { data: services } = useServices();
   const { data: packages } = usePackages();
   const [currentSelectedServices, setCurrentSelectedServices] = useState([]);
   const [currentSelectedPackages, setCurrentSelectedPackages] = useState([]);
   const userData = useSelector((state) => state?.user?.userData);
+  const [cartServiceIds,setCartServiceIds] = useState([])
   const handleComfirmOrder = async () => {
     try {
       setIsLoading(true);
       if (
-        currentOrderData.packages.connect.length === 0 &&
-        currentOrderData.services.connect.length === 0
+        currentOrderData?.packages?.connect?.length === 0 &&
+        currentOrderData?.services?.connect?.length === 0  && CartServicesItems?.length === 0
       ) {
         await Updates.reloadAsync();
       }
@@ -63,20 +66,43 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
           coupons: {
             connect: [{ id: currentOrderData?.coupons?.connect[0]?.id }],
           },
+          
         });
       }
       if (data) {
         dispatch(clearCurrentOrder());
         dispatch(clearCart());
-
-        if (totalPrice > 0) {
+        setCartServiceIds([])
+        
+        if (CartServicesItems?.length > 0) {
+          if(cartServiceIds?.length === 0 ){
+          const idData = await   handleCreatingServiceCartIds()
+          if(idData){
+            console.log("the data returned",idData)
+            await updateOrderData(data, {
+              service_carts: cartServiceIds,
+              totalPrice:totalPriceServices
+            });
+            console.log("update the order",data,"with the data",cartServiceIds)
+          }
+          }else {
+            console.log("update the order",data,"with the data",cartServiceIds)
+            await updateOrderData(data, {
+              service_carts: cartServiceIds,
+              totalPrice:totalPriceServices
+            });
+             
+        }
+        }
+        console.log("the data before navigation ",CartServicesItems?.length)
+        if ((totalPrice || totalPriceServices) > 0) {
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
               routes: [{ name: "Payment", params: { orderId: data } }],
             })
           );
-        } else if (totalPrice === 0) {
+        } else if ((totalPrice || totalPriceServices) === 0) {
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
@@ -101,6 +127,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
     });
     setCurrentSelectedServices(data);
   }, []);
+
   useEffect(() => {
     const data = currentOrderData?.packages?.connect.map((item) => {
       const service = packages.data.filter(
@@ -110,13 +137,44 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
     });
     setCurrentSelectedPackages(data);
   }, []);
-
+  useEffect(() => {
+    handleCreatingServiceCartIds()
+  }, []);
+  const handleCreatingServiceCartIds = async () => {
+    const promises = CartServicesItems.map(async (item) => {
+      const itemSent = {
+        qty: item.qty,
+        service: {
+          connect: [{ id: item.id }],
+        },
+      };
+      const id = await CreateCartService({ ...itemSent });
+      if (id) {
+        console.log("the id of the service created if ", id);
+        return { id }; // Return the object directly
+      }
+    });
+  
+    // Wait for all promises to resolve
+    const resolvedIds = await Promise.all(promises);
+  
+    // Filter out undefined values (in case any promise didn't resolve correctly)
+    const filteredIds = resolvedIds.filter((idObj) => idObj !== undefined);
+  
+    // Update the state with the resolved IDs
+    setCartServiceIds(filteredIds);
+  };
+  
+  
+  console.log("the array of the created ids ",cartServiceIds   )
   if (isLoading) return <LoadingScreen />;
   return (
     <View style={{ backgroundColor: Colors.whiteColor ,    height:height*1,
     }}>
       <ArrowBack subPage={true} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+       
         {currentSelectedServices?.length > 0 && (
           <View style={styles.itemContainer}>
             <FlatList
@@ -153,6 +211,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                         { fontSize: RFPercentage(1.9), paddingRight: 10 },
                       ]}
                     />
+                    
                       <PriceTextComponent
                 style={{
                   backgroundColor: Colors.primaryColor,
@@ -163,23 +222,24 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                 }}
                 price={item?.attributes?.Price}
               />
+              
                   </View>
                 );
               }}
             />
           </View>
         )}
-        {currentSelectedPackages.length > 0 && (
+        {CartServicesItems?.length > 0 && (
           <View style={styles.itemContainer}>
             <FlatList
-              data={currentSelectedPackages}
+              data={CartServicesItems}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
 
               keyExtractor={(item, index) => item.id}
               style={{
                 display: "flex",
-                flexDirection: "column",
+                flexDirection: "row",
                 direction: "rtl",
                 flexWrap: "wrap",
                 marginTop: 15,
@@ -193,19 +253,23 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                       display: "flex",
                       flexDirection: "row",
                       alignItems: "center",
-                      justifyContent: "center",
+                      // justifyContent: "center",
+                      flexWrap:"wrap",
+                      // backgroundColor:"red",
                       gap: 15,
                     }}
                   >
                     <AppText
                       centered={false}
-                      text={item.attributes?.name}
+                      text={item?.name}
                       style={[
                         styles.name,
-                        { fontSize: RFPercentage(1.9), paddingRight: 10 },
+                        { fontSize: RFPercentage(1.8), paddingRight: 10 ,paddingTop:10},
                       ]}
                     />
-                     <PriceTextComponent
+                    <View style={styles.CartServiceStylesContainer}>
+
+                      <PriceTextComponent
                 style={{
                   backgroundColor: Colors.primaryColor,
                   fontSize: RFPercentage(1.5),
@@ -213,14 +277,40 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                   borderRadius: 40,
                   color: Colors.whiteColor,
                 }}
-                price={item?.attributes?.price}
+                price={item?.price}
               />
+               <AppText
+              style={{
+                backgroundColor: Colors.whiteColor,
+                fontSize: RFPercentage(1.8),
+                padding: 6,
+                borderRadius: 40,
+                paddingHorizontal:15,
+                color: Colors.primaryColor,
+              }}
+              text={"x"}
+            />
+               <AppText
+              style={{
+                backgroundColor: Colors.primaryColor,
+                fontSize: RFPercentage(1.8),
+                padding: 6,
+                borderRadius: 40,
+                paddingHorizontal:15,
+                color: Colors.whiteColor,
+              }}
+              text={item?.qty}
+            />
+            </View>
                   </View>
                 );
               }}
             />
           </View>
         )}
+        
+        
+
         <View style={styles.itemContainer}>
           <AppText centered={false} text={" السعر"} style={styles.title} />
           <PriceTextComponent
@@ -229,7 +319,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
               fontSize: RFPercentage(1.9),
               marginTop: 4,
             }}
-            price={totalPrice}
+            price={(totalPrice || totalPriceServices)}
           />
         </View>
         <View style={styles.descriptionContainer}>
@@ -272,13 +362,16 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
             borderRadius: 10,
           }}
         />
+        </ScrollView>
       </ScrollView>
       <View style={styles.ButtonContainer}>
         <AppButton
           title={"تأكيد الطلب"}
           style={{
-            marginTop:-height*0.1
-            ,
+            // marginTop:-height*0.1
+            // ,
+            // height:100,
+            marginTop:15,
             paddingVertical: 15,
             paddingHorizontal: 50,
           }}
@@ -300,6 +393,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     backgroundColor: Colors.whiteColor,
+    position:'relative',
+    marginBottom: height*0.1
+
   },
   name: {
     fontSize: RFPercentage(1.8),
@@ -327,6 +423,17 @@ const styles = StyleSheet.create({
     elevation: 4,
     gap: 10,
   },
+  CartServiceStylesContainer:{
+    display:'flex',
+  flexDirection:'row',
+  borderWidth:0.5,
+  padding:5,
+  borderRadius:10,
+  // height:100,
+  // width:100,
+  gap:4,
+  backgroundColor:Colors.piege,
+  borderColor:Colors.grayColor},
   descriptionContainer: {
     display: "flex",
     flexDirection: "column",
@@ -362,6 +469,13 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     // padding:-1000,
-    backgroundColor: Colors.whiteColor,
+    height:height*0.2,
+    width:width*1,
+    // paddingBottom:20,
+    backgroundColor: Colors.piege,
+    position:'absolute',
+    bottom:0,
+    margin:'auto',
+    alignSelf:'center'
   },
 });

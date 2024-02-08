@@ -73,7 +73,7 @@ export default function CompleteOrderCard({ item, onPress }) {
               </View>
             </View>
           ) :
-            item?.attributes?.packages && (
+            item?.attributes?.packages?.data?.length > 0  ? (
               <View style={styles.headerText}>
                 <AppText
                   text={item?.attributes?.packages?.data[0]?.attributes?.name}
@@ -100,7 +100,35 @@ export default function CompleteOrderCard({ item, onPress }) {
                 </View>
 
               </View>
-            )}
+            ):
+            item?.attributes?.service_carts?.data?.length >  0 && 
+              <View style={styles.headerText}>
+                <AppText
+                  text={item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name }
+                  style={[
+                    styles.header,
+                    { color: Colors.primaryColor, fontSize:  17 },
+                  ]}
+                  centered={false}
+                  />
+                   <View>
+                  <TouchableOpacity
+                    style={styles.complainContainer}
+                    onPress={() => {
+                      if (item?.attributes?.complain?.data) {
+                        navigation.navigate(ACCOUNT, { screen: "compass" })
+                        // navigation.navigate("compass")
+                      } else {
+                        navigation.navigate(COMPLAIN_CREATE_SCREEN, { item: item })
+                      }
+                    }}
+                  >
+                    <Octicons name="report" size={21} color="white" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+                
+            }
         </View>
         <View style={styles.date}>
           <Ionicons name="ios-location-outline" size={22} color="black" />

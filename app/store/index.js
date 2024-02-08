@@ -5,6 +5,7 @@ import  servicesReducer from './features/serviceSlice'
 import  packagesReducer from './features/PackagesSlice'
 import  ordersRedcuer from './features/ordersSlice'
 import  cartReducer from './features/CartSlice'
+import  CartServiceReducer from './features/CartServiceSlice'
 const store = configureStore({
     reducer:{
         user:userReducer,
@@ -12,7 +13,8 @@ const store = configureStore({
         services:servicesReducer,
         packages:packagesReducer,
         orders:ordersRedcuer,
-        cart:cartReducer
+        cart:cartReducer,
+        cartService:CartServiceReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false

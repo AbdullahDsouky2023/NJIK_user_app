@@ -21,6 +21,7 @@ import LoadingScreen from "../../screens/loading/LoadingScreen";
 import useCoupons, { useUserCoupons } from "../../../utils/coupons";
 import { useDispatch, useSelector } from "react-redux";
 import { AddDiscount, RemoveDiscount } from "../../store/features/CartSlice";
+import { AddDiscount as AddCartServicesDiscount , RemoveDiscount as RemoveCartServiceDiscount } from "../../store/features/CartServiceSlice";
 import {
   clearCurrentOrder,
   setCurrentOrderProperties,
@@ -35,7 +36,8 @@ export default function OrderCoupon() {
   const { data: currentCoupons } = useCoupons();
   const { data: userCoupons } = useUserCoupons();
   const [AddedCoupon,setAddedCoupon]=useState(null)
-  const cartItems = useSelector((state) => state.cart.totalPrice);
+  const cartItems = useSelector((state) => state?.cart?.totalPrice);
+  const cartServicesPrice = useSelector((state) => state?.cartService?.totalPrice);
   const [discount,setDiscount]=useState(null)
   const [PriceBefore,setPriceBefore]=useState(null)
   const currentOrderData = useSelector(
@@ -45,6 +47,7 @@ export default function OrderCoupon() {
   const handleDeleteCoupon = ()=>{
     setAddedCoupon(null)
     dispatch(RemoveDiscount(PriceBefore))
+    dispatch(RemoveCartServiceDiscount(PriceBefore))
     dispatch(setCurrentOrderProperties(
         {
             coupons: {
@@ -74,12 +77,16 @@ export default function OrderCoupon() {
 
             console.log("aplly now ");
             const discountPercentage = Number(isValideCoupon[0]?.attributes?.value)/100
-            const currentOrderPrice = Number(cartItems)
+            const currentOrderPrice = Number(cartItems || cartServicesPrice)
             const CurrentPrice  =(currentOrderPrice -  (discountPercentage * currentOrderPrice)).toFixed(2)
             refRBSheet.current.close()
             setAddedCoupon(isValideCoupon)
             console.log("adding the coupon to the user ",isValideCoupon[0].id)
             dispatch(AddDiscount(CurrentPrice.toString()))
+            if(Number( cartServicesPrice > 0)){
+              dispatch(AddCartServicesDiscount(CurrentPrice.toString()))
+
+            }
             setPriceBefore( currentOrderPrice.toString())
             dispatch(setCurrentOrderProperties(
                 {

@@ -6,7 +6,7 @@ import CurrentOrderCard from "../../component/orders/CurrentOrderCard";
 import { FlatList } from "react-native";
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
-import useOrders from "../../../utils/orders";
+import useOrders, { useAllOrders } from "../../../utils/orders";
 import LoadingScreen from "../loading/LoadingScreen";
 const { width ,height} = Dimensions.get("screen");
 import { RefreshControl  } from 'react-native';
@@ -32,9 +32,10 @@ const fetchData=()=>{
   const currentOrders = data?.data?.filter(
     (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished"
     );
+  
     setCurrentData(currentOrders)
     refetch()
-    console.log(currentOrders === currentOrders)
+    console.log(ordersRedux?.data?.length)
   setRefreshing(false)
 }
   useEffect(()=>{

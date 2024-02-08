@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
-import React, { useEffect } from "react";
+import React, { useEffect ,useState} from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Colors } from "../../constant/styles";
@@ -21,19 +21,18 @@ const { width ,height} = Dimensions.get("screen");
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
-import Pdf from "../../screens/Invoice/pdf";
+
 export default function CurrentOrderCard({ item, onPress }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  console.log(
-    "current item ",
-    item.attributes?.packages.data[0]?.attributes?.name
-  );
+
+console.log("imagse",item?.attributes?.services?.data[0]?.attributes?.category)
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.orderCardContainer,{backgroundColor: item?.attributes?.packages?.data.length > 0 ? Colors.piege : Colors.whiteColor}]}>
-        <View style={styles.headerContainer}>
-          {item?.attributes?.services.data.length > 0 && (
+       
+         <View style={styles.headerContainer}>
+          {item?.attributes?.services?.data?.length > 0 && (
             <>
               <Image
                 height={22}
@@ -56,7 +55,21 @@ export default function CurrentOrderCard({ item, onPress }) {
               />
             </>
           )}
-          {item?.attributes?.packages && (
+          {item?.attributes?.service_carts?.data?.length >  0 && 
+  <>
+    <AppText
+      text={item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name }
+      style={[
+        styles.header,
+        { color: Colors.primaryColor, fontSize:  17 },
+      ]}
+      centered={false}
+      />
+  </>
+    }
+
+
+          {item?.attributes?.packages?.data?.length > 0 && (
             <AppText
               text={item?.attributes?.packages?.data[0]?.attributes?.name}
               style={[

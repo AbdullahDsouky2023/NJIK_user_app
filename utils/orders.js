@@ -84,6 +84,20 @@ export const PayOrder = async (id) => {
     console.error("Error accepting order   :", error.message); // Log the error response
   }
 };
+export const CreateCartService = async (cartItem) => {
+  try {
+    const data = await api.post(`api/service-carts`,{
+      data:{
+      ...cartItem
+
+      }
+    });
+    if ( data?.data?.data?.id) return data?.data?.data?.id
+    return false;
+  } catch (error) {
+    console.error("Error creating the service item   :", error.message); // Log the error response
+  }
+};
 export const AddOrderReview = async (id,review) => {
   try {
     const data = await api.put(`/api/orders/${id}`,{
@@ -117,7 +131,33 @@ connect:[{id:ComplainId}]
 export default function useOrders() {
   const fetchOrders = async () => {
     try {
-      const response = await api.get(`/api/orders?populate=deep
+      const response = await api.get(`/api/orders?populate=deep,4
+      `);
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching order:", error);
+      throw error;
+    }
+  };
+
+  const { data, isLoading, isError ,refetch} = useQuery({
+    queryKey: ["order"],
+    queryFn: fetchOrders,
+  
+  }); // Changed the query key to 'superheroes'
+
+  return {
+    data,
+    isLoading,
+    isError,
+    refetch
+  };
+}
+export  function useAllOrders() {
+  const fetchOrders = async () => {
+    try {
+      const response = await api.get(`/api/orders?populate=deep,4
       `);
 
       return response.data;

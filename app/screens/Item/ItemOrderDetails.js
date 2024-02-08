@@ -33,6 +33,7 @@ import {  EXPO_PUBLIC_BASE_URL} from "@env"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UseLocation from "../../../utils/useLocation";
 import { clearCart } from "../../store/features/CartSlice";
+import {  clearCart as clearServiceCart } from "../../store/features/CartServiceSlice";
 import OrderCoupon from "../../component/Coupons/OrderCoupon";
 
 const { width } = Dimensions.get("window");
@@ -45,6 +46,7 @@ export default function ItemOrderDetails({ route, navigation }) {
   const [showSuccess, setShowSuccess] = useState(false);
 const [isLoading,setIsLoading]=useState(false)
 const totalPrice = useSelector((state)=>state.cart.totalPrice)
+const totalPriceServices = useSelector((state)=>state.cartService.totalPrice)
   const user = useSelector((state) => state?.user?.user);
   const cartItems = useSelector((state) => state.cart.services);
   const packagesCartItems = useSelector((state) => state.cart.packages);
@@ -105,6 +107,7 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
   useEffect(()=>{
     return ()=>{
       dispatch(clearCart())
+      dispatch(clearServiceCart())
       console.log("clearing order dea")
     }
   },[])
@@ -211,14 +214,14 @@ const totalPrice = useSelector((state)=>state.cart.totalPrice)
               />
               <FormImagePicker name="images" width={width} />
               {
-               Number(totalPrice) >0 &&
+               Number(totalPrice || totalPriceServices) >0 &&
              <OrderCoupon/>
               }
 
             </View>
           </ScrollView>
           <View style={styles.orderButtonContainer}>
-           <PriceTextComponent price={totalPrice} style={{fontSize:19}}/>
+           <PriceTextComponent price={totalPrice || totalPriceServices} style={{fontSize:19}}/>
             <SubmitButton title={"Book"} style={styles.buttonSubmit} />
           </View>
         </AppForm>

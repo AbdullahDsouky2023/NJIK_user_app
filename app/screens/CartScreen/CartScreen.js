@@ -25,8 +25,12 @@ import {
   removeFromtotalBalance,
   removeServiceFromCart,
 } from "../../store/features/CartSlice";
+import {
+  clearCart as clearCartService,
+} from "../../store/features/CartServiceSlice";
 import ReserveButton from "../../component/ReverveButton";
 import { CURRENCY, ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION, Offer_route_name } from "../../navigation/routes";
+import CartItem from "./CartItem";
 const { width, height } = Dimensions.get("screen");
 const fontSize = RFPercentage(1.7); // Base font size
 
@@ -36,8 +40,8 @@ export default function CartScreen({ route ,navigation}) {
   const [services, setServices] = useState([]);
   const dispatch = useDispatch();
   const [slectedCategory, setCategory] = useState([]);
-  const cartItems = useSelector((state) => state.cart.services);
-  const totalPrice = useSelector((state) => state.cart.totalPrice);
+  const cartItems = useSelector((state) => state?.cartService?.services);
+  const totalPrice = useSelector((state) => state?.cartService?.totalPrice);
   useEffect(() => {
     const SelectedCategory = data?.data.filter(
       (item) => item?.attributes?.name === category
@@ -52,20 +56,29 @@ export default function CartScreen({ route ,navigation}) {
 
     return ()=>{
         dispatch(clearCart())
+        dispatch(clearCartService())
     }
   }, []);
   const handlePressAddButton = (id) => {
     const foundIndex = cartItems.indexOf(id);
     if (foundIndex !== -1) {
       const price = services?.filter((item) => item?.id === id)[0]?.attributes?.Price;
-      dispatch(removeServiceFromCart({ item:id,
-        price:price}));
-      console.log("the price remove is from screen",id, price);
+      console.log("the price removed is from scree ",cartItems);
+      // dispatch(addServiceToCart({
+      //   "cart-service":{
+      //     qty:1,
+      //     item:id,
+      //   },
+      //   price:price
+      // }));
     } else {
       const price = services?.filter((item) => item?.id === id)[0]?.attributes?.Price;
       console.log("the price added is from scree ", id,price);
       dispatch(addServiceToCart({
-        item:id,
+        cart_service:{
+          qty:1,
+          item:id,
+        },
         price:price
       }));
     }
@@ -116,29 +129,7 @@ export default function CartScreen({ route ,navigation}) {
             //   console.log(item?.attributes?.name)
             
             return (
-              <View style={styles.itemContainer}>
-                <View style={styles.itemContainer2}>
-                  <AppText
-                    centered={false}
-                    text={item.attributes?.name}
-                    style={[styles.name, { fontSize: RFPercentage(2), paddingRight: 10 }]}
-                  />
-                  <AppText
-                    centered={false}
-                    text={`${item.attributes?.Price} ` +CURRENCY}
-                    style={[styles.price, { fontSize: RFPercentage(2), paddingRight: 10 }]}
-                  />
-                </View>
-                <View style={styles.buttonsContainer}>
-                  <AppButton
-                    title={
-                      cartItems?.indexOf(item?.id) !== -1 ? "remove" : "Add"
-                    }
-                    textStyle={{ fontSize:fontSize }}
-                    onPress={() => handlePressAddButton(item?.id)}
-                    />
-                </View>
-              </View>
+              <CartItem item={item}/>
             );
           }}
         />:
@@ -151,7 +142,7 @@ export default function CartScreen({ route ,navigation}) {
       
       </ScrollView>
       
-            {cartItems.length > 0 && (
+            {cartItems?.length > 0 && (
         <>
           <ReserveButton
             price={totalPrice}
@@ -168,7 +159,7 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
     paddingHorizontal: 18,
-    backgroundColor: Colors.redColor,
+    backgroundColor: Colors.whiteColor,
   },
   header: {
     textAlign: "center",
