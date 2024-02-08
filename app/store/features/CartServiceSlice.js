@@ -24,42 +24,48 @@ const CartServiceSlice = createSlice({
         state.totalPrice = state.services.reduce((sum, service) => sum + service.qty * service.price,  0);
       },
       removeServiceFromCart: (state, action) => {
-        // Find the index of the service to remove
-        const index = state.services.findIndex(
+        const serviceToRemove = state.services.find(
           (service) => service.id === action.payload.id
         );
-  
-        if (index !== -1) {
+      
+        if (serviceToRemove) {
           // If the service exists, remove it from the cart
-          const removedService = state.services.splice(index,   1)[0];
+          state.services = state.services.filter(
+            (service) => service.id !== action.payload.id
+          );
+      
           // Subtract the price of the removed service from the total price
-          state.totalPrice -= removedService.qty * removedService.price;
+          state.totalPrice -= serviceToRemove.price * serviceToRemove.qty;
         }
       },
+      
       updateServiceQuantity: (state, action) => {
         // Find the service and update its quantity
         const serviceIndex = state.services.findIndex(
           (service) => service.id === action.payload.id
         );
-  
+      
         if (serviceIndex !== -1) {
           const service = state.services[serviceIndex];
           const oldQty = service.qty;
-          service.qty = action.payload.quantity;
-  
+          const newQty = action.payload.quantity;
+      
           // Calculate the difference in price due to the change in quantity
-          const priceDifference = (service.qty - oldQty) * service.price;
+          const priceDifference = (newQty - oldQty) * service.price;
+      
           // Update the total price
           state.totalPrice += priceDifference;
-  
-          // If the updated quantity is   0, remove the service from the cart
-          if (service.qty ===   0) {
-            state.services.splice(serviceIndex,   1);
-            // Also subtract the full price of the removed service from the total price
-            state.totalPrice -= oldQty * service.price;
+      
+          // If the updated quantity is  0, remove the service from the cart
+          if (newQty ===  0) {
+            state.services.splice(serviceIndex,  1);
+          } else {
+            // Otherwise, update the quantity in the cart
+            service.qty = newQty;
           }
         }
       },
+      
       clearCart: (state) => {
         // Clear the entire cart
         state.services = [];
@@ -74,7 +80,6 @@ const CartServiceSlice = createSlice({
       },
     },
   });
-  
   export const {
     addServiceToCart,
     removeServiceFromCart,
