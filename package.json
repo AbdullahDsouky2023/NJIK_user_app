@@ -92,6 +92,7 @@
     "react-native-pager-view": "6.2.0",
     "react-native-paper": "^5.11.4",
     "react-native-pdf": "^6.7.4",
+    "react-native-qrcode-svg": "^6.3.0",
     "react-native-ratings": "^8.1.0",
     "react-native-raw-bottom-sheet": "^2.2.0",
     "react-native-reanimated": "~3.3.0",

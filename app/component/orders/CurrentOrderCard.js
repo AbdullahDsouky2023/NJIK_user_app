@@ -156,7 +156,7 @@ console.log("imagse",item?.attributes?.services?.data[0]?.attributes?.category)
               </TouchableOpacity>
             )}
           </View>
-          {/* <Pdf/> */}
+          <Pdf item={item}/>
         </View>
       </View>
     </TouchableWithoutFeedback>
