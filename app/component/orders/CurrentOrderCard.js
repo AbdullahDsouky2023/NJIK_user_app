@@ -27,7 +27,6 @@ export default function CurrentOrderCard({ item, onPress }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-console.log("imagse",item?.attributes?.services?.data[0]?.attributes?.category)
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.orderCardContainer,{backgroundColor: item?.attributes?.packages?.data.length > 0 ? Colors.piege : Colors.whiteColor}]}>
@@ -156,7 +155,7 @@ console.log("imagse",item?.attributes?.services?.data[0]?.attributes?.category)
               </TouchableOpacity>
             )}
           </View>
-          <Pdf item={item}/>
+          {/* <Pdf item={item}/> */}
         </View>
       </View>
     </TouchableWithoutFeedback>

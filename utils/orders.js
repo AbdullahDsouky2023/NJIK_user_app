@@ -74,7 +74,9 @@ export const PayOrder = async (id) => {
       data:{
         PaymentStatus:"payed",
         status:'payed',
-        provider_payment_status:"payed"
+        provider_payment_status:"payed",
+        addtional_prices_state:"accepted"
+
 
       }
     });

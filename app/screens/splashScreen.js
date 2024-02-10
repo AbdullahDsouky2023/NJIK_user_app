@@ -34,24 +34,7 @@ const SplashScreen = ({ navigation }) => {
     BackHandler.exitApp();
     return true;
   };
-  //noconnctionListner
-//   useEffect(() => {
-    
-//     const unsubscribe = NetInfo.addEventListener(state => {
-//       if (state.isConnected || state.isInternetReachable) {
-//         navigation.dispatch(
-//           CommonActions.reset({
-//             index: 0,
-//             routes: [{ name:NO_CONNECTION_SCREEN ,
-//          }],
-//           }))
-//       }
-//     });
 
-//     return () => {
-//       unsubscribe();
-//     };
-//  }, [navigation]);
   useEffect(() => {
     // Start the fade out animation after 3 seconds
     setTimeout(() => {
@@ -63,43 +46,7 @@ const SplashScreen = ({ navigation }) => {
     }, 3000);
   }, [fadeAnim, navigation]);
 
-  useEffect(() => {
-    async function checkUserAndNavigate() {
-      try {
-        const userDataString = await AsyncStorage.getItem("userData");
-        if (userDataString && auth.currentUser !== null) {
-          const userData = JSON.parse(userDataString);
-          const gottenuser = await getUserByPhoneNumber(user);
-          dispatch(setUserData(gottenuser));
-          dispatch(userRegisterSuccess(userData));
-          return navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name:"App" ,
-           }],
-            }))
-        } else {
-          // Check for internet connectivity
-        NetInfo.fetch().then(state => {
-          if (state.isConnected || state.isInternetReachable) {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name: NO_CONNECTION_SCREEN }],
-              }))
-          } else {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name:"Auth" ,
-             }],
-              }))
-          }
-        });
-        }
-      } catch (error) {}
-    }
-  });
+
 
   useEffect(() => {
     async function checkUserAndNavigate() {

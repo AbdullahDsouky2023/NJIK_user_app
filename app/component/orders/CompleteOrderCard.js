@@ -172,7 +172,7 @@ export default function CompleteOrderCard({ item, onPress }) {
             />
           </View>
 
-          {/* <Pdf item={item} /> */}
+          <Pdf item={item} />
         </View>
 
       </View>

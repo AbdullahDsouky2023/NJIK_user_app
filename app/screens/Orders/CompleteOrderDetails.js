@@ -5,9 +5,9 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import Carousel from "react-native-snap-carousel-v4";
-import { ScrollView } from "react-native";
+// import { ScrollView } from "react-native";
 import {RFPercentage } from 'react-native-responsive-fontsize'
-import { Image } from "react-native";
+import { Image ,FlatList} from "react-native";
 
 import AppText from "../../component/AppText";
 import { Colors } from "../../constant/styles";
@@ -15,7 +15,8 @@ import useOrders from "../../../utils/orders";
 import PriceTextComponent from "../../component/PriceTextComponent";
 import LoadingScreen from "../loading/LoadingScreen";
 import ArrowBack from "../../component/ArrowBack";
-import { FlatList } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
+import { CURRENCY } from "../../navigation/routes";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -285,7 +286,47 @@ export default function CompleteOrderDetails({ navigation, route }) {
           ) : (
             <AppText centered={false} text={"لا يوجد"} style={styles.price} />
           )}
+          
         </View>
+        {
+            item?.attributes?.provider_fee > 0 &&
+          <View style={styles.itemContainer}>
+            <AppText centered={false} text={"أجرة الفني"} style={styles.title} />
+            <AppText
+              centered={false}
+              text={
+               `${item?.attributes?.provider_fee} ${CURRENCY}`
+              }
+              style={styles.price}
+              />
+          </View>
+            }
+          {item?.attributes?.additional_prices?.data?.length > 0 &&
+          <>
+          <AppText centered={false} text={"اسعار اضافية"} style={[styles.title,{paddingHorizontal:10}]} />
+          <FlatList
+      data={item?.attributes?.additional_prices?.data}
+      showsVerticalScrollIndicator={false}
+
+      renderItem={({item})=>{
+        
+        return  (<View style={styles.itemContainer}>
+          <AppText centered={false} text={item?.attributes?.details} style={[styles.title,{maxWidth:width*0.68}]} />
+          <AppText
+            centered={false}
+            text={
+              `${item?.attributes?.Price} ${CURRENCY}`
+               
+            }
+            style={styles.price}
+          />
+        </View>)
+      }}
+      keyExtractor={(item)=>item?.id}
+      />
+      
+            </>
+          }
       </ScrollView>
     </ScrollView>
   );

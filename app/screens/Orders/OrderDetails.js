@@ -1,5 +1,5 @@
 import { Alert, Dimensions, StyleSheet, View } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Carousel from "react-native-snap-carousel-v4";
 import { useDispatch } from "react-redux";
 import {
@@ -10,16 +10,17 @@ import {
   REVIEW_ORDER_SCREEN,
 } from "../../navigation/routes";
 import { FlatList } from "react-native";
-import {RFPercentage} from 'react-native-responsive-fontsize'
+import { RFPercentage } from 'react-native-responsive-fontsize'
 import { useTranslation } from "react-i18next";
 import { Image } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { ScrollView } from "react-native-virtualized-view";
 import useOrders, {
-    PayOrder,
-    cancleOrder,
-  } from "../../../utils/orders";
+  PayOrder,
+  cancleOrder,
+  updateOrderData,
+} from "../../../utils/orders";
 
 import ArrowBack from "../../component/ArrowBack";
 import LoadingScreen from "../loading/LoadingScreen";
@@ -43,7 +44,7 @@ export default function OrderDetails({ navigation, route }) {
   const dispatch = useDispatch();
   const [isModalVisible, setModalVisible] = useState(false);
   const [isReviewVisble, setIsReviewVisble] = useState(false);
-  const [cartServicesSelected,setCartServicesSelected]=useState([])
+  const [cartServicesSelected, setCartServicesSelected] = useState([])
   const { sendPushNotification } = useNotifications();
   const { t } = useTranslation();
   // console.log("results ",item?.attributes?.service_carts)
@@ -66,10 +67,10 @@ export default function OrderDetails({ navigation, route }) {
       if (res) {
         console.log(
           {
-            id:id,
-            selectedOrder:selectedOrder,
-            providerNotificationToken:providerNotificationToken,
-            res:res
+            id: id,
+            selectedOrder: selectedOrder,
+            providerNotificationToken: providerNotificationToken,
+            res: res
           }
         )
         navigation.goBack();
@@ -95,6 +96,17 @@ export default function OrderDetails({ navigation, route }) {
     try {
       console.log("the button is just clikcked", id);
       const res = await PayOrder(id);
+      const selectedOrder = orders?.data?.filter((order) => order?.id === id);
+      const providerNotificationToken =
+        selectedOrder[0]?.attributes?.provider?.data?.attributes
+          ?.expoPushNotificationToken;
+      if (providerNotificationToken) {
+        sendPushNotification(
+          providerNotificationToken,
+          "تم دفع الطلب",
+          `تم دفع الطلب بواسطه ${user?.attributes?.name}`
+        );
+      }
       if (res) {
         // Alert.alert(t("payment has been processed successfully."));
         navigation.dispatch(
@@ -112,13 +124,70 @@ export default function OrderDetails({ navigation, route }) {
       setIsLoading(false);
     }
   };
+  const calculateTotalPriceBeforeAddional = ()=>{
+    const provider_fee =Number( item?.attributes?.provider_fee)
+    const additional_prices_array= item?.attributes?.additional_prices?.data?.map((accumulator) => {
+      return accumulator?.attributes?.Price
+    }); //
+    const additional_prices_sum = additional_prices_array?.reduce((accumulator,currentValue)=>{
+      
+      return Number(accumulator) + Number(currentValue);
+    },0)
+    console.log("adduibaku ",additional_prices_sum )
+    console.log("feee ",provider_fee )
+    return (additional_prices_sum > Number(provider_fee) )? (additional_prices_sum + provider_fee ):( provider_fee + additional_prices_sum )
+  }
+  const handleRejectAddionalPrices = async (id) => {
+    try {
+      console.log("the button is just clikcked", id);
+      const res = await updateOrderData(id,{
+        additional_prices:null,
+        PaymentStatus:'pending',
+        status : "finish_work",
+        provider_payment_status:'pending',
+        totalPrice:(item?.attributes?.totalPrice > calculateTotalPriceBeforeAddional()) ?
+        (item?.attributes?.totalPrice - calculateTotalPriceBeforeAddional() ):
+        (calculateTotalPriceBeforeAddional() - item?.attributes?.totalPrice ),
+        addtional_prices_state:'rejected' ,
+        provider_fee:0
+      });
+      const selectedOrder = orders?.data?.filter((order) => order?.id === id);
+      const providerNotificationToken =
+        selectedOrder[0]?.attributes?.provider?.data?.attributes
+          ?.expoPushNotificationToken;
+      if (providerNotificationToken) {
+        sendPushNotification(
+          providerNotificationToken,
+          "تم رفض  عملية الد فع ",
+          `تم رفض  عملية الد فع  ${user?.attributes?.name} الرجاء ادخال سعر اخر`
+        );
+      }
+      if (res) {
+        // Alert.alert(t("payment has been processed successfully."));
+        navigation.goBack()
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: t(HOME) }],
+          })
+        );
+        Alert.alert(t("تم بنجاح"));
+      } else {
+        Alert.alert(t("Something Went Wrong, Please try again!"));
+      }
+    } catch (error) {
+      console.log(error, "error paying the order");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (isLoading) return <LoadingScreen />;
   return (
-    <ScrollView style={{backgroundColor:'white'}} showsVerticalScrollIndicator={false}>
+    <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
       <ArrowBack subPage={true} />
-      <ScrollView style={styles.container}  showsVerticalScrollIndicator={false}>
-        {(item?.attributes?.services?.data?.length > 0 )? (
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        {(item?.attributes?.services?.data?.length > 0) ? (
           <View style={styles.itemContainer}>
             <FlatList
               data={item?.attributes?.services.data}
@@ -151,23 +220,23 @@ export default function OrderDetails({ navigation, route }) {
                       text={item.attributes?.name}
                       style={[styles.name, { fontSize: RFPercentage(1.8), paddingRight: 10 }]}
                     />
-                     
-                     <PriceTextComponent
-                style={{
-                  backgroundColor: Colors.primaryColor,
-                  fontSize: RFPercentage(1.5),
-                  padding: 6,
-                  borderRadius: 40,
-                  color: Colors.whiteColor,
-                }}
-                price={item?.attributes?.Price}
-              />
+
+                    <PriceTextComponent
+                      style={{
+                        backgroundColor: Colors.primaryColor,
+                        fontSize: RFPercentage(1.5),
+                        padding: 6,
+                        borderRadius: 40,
+                        color: Colors.whiteColor,
+                      }}
+                      price={item?.attributes?.Price}
+                    />
                   </View>
                 );
               }}
             />
           </View>
-        ) : (item?.attributes?.packages?.data?.length > 0)  ? (
+        ) : (item?.attributes?.packages?.data?.length > 0) ? (
           <View style={styles.itemContainer}>
             <FlatList
               data={item?.attributes?.packages.data}
@@ -199,96 +268,96 @@ export default function OrderDetails({ navigation, route }) {
                     <AppText
                       centered={false}
                       text={item.attributes?.name}
-                      style={[styles.name, { fontSize:RFPercentage(1.65), paddingRight: 10 }]}
+                      style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10 }]}
                     />
-                     <PriceTextComponent
-                style={{
-                  backgroundColor: Colors.primaryColor,
-                  fontSize: RFPercentage(1.5),
-                  padding: 6,
-                  borderRadius: 40,
-                  color: Colors.whiteColor,
-                }}
-                price={item?.attributes?.price}
-              />
+                    <PriceTextComponent
+                      style={{
+                        backgroundColor: Colors.primaryColor,
+                        fontSize: RFPercentage(1.5),
+                        padding: 6,
+                        borderRadius: 40,
+                        color: Colors.whiteColor,
+                      }}
+                      price={item?.attributes?.price}
+                    />
                   </View>
                 );
               }}
             />
-          </View> ): (item?.attributes?.service_carts?.data?.length > 0) ? 
+          </View>) : (item?.attributes?.service_carts?.data?.length > 0) ?
           <View style={styles.itemContainer}>
-          <FlatList
-            data={ item?.attributes?.service_carts?.data}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
+            <FlatList
+              data={item?.attributes?.service_carts?.data}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
 
-            keyExtractor={(item, index) => item.id}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              direction: "rtl",
-              flexWrap: "wrap",
-              marginTop: 15,
-              gap: 15,
-              width: width,
-            }}
-            renderItem={({ item }) => {
-              return (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    flexWrap:'wrap',
-                    maxWidth:width*0.90,
-                    gap: 15,
-                  }}
-                >
-                  <AppText
-                    centered={false}
-                    text={item?.attributes?.service?.data?.attributes?.name}
-                    style={[styles.name, { fontSize:RFPercentage(1.65), paddingRight: 10,paddingTop:10 }]}
-                  />
-                   <View style={styles.CartServiceStylesContainer}>
-                   <PriceTextComponent
+              keyExtractor={(item, index) => item.id}
               style={{
-                backgroundColor: Colors.primaryColor,
-                fontSize: RFPercentage(1.5),
-                padding: 6,
-                borderRadius: 40,
-                color: Colors.whiteColor,
+                display: "flex",
+                flexDirection: "row",
+                direction: "rtl",
+                flexWrap: "wrap",
+                marginTop: 15,
+                gap: 15,
+                width: width,
               }}
-              price={item?.attributes?.service?.data?.attributes?.Price}
-            />
-                   <AppText
-              style={{
-                backgroundColor: Colors.whiteColor,
-                fontSize: RFPercentage(1.8),
-                padding: 6,
-                borderRadius: 40,
-                paddingHorizontal:15,
-                color: Colors.primaryColor,
-              }}
-              text={"x"}
-            />
-                   <AppText
-              style={{
-                backgroundColor: Colors.primaryColor,
-                fontSize: RFPercentage(1.5),
-                padding: 6,
-                borderRadius: 40,
-                paddingHorizontal:15,
-                color: Colors.whiteColor,
-              }}
-              text={item?.attributes?.qty}
-            />
+              renderItem={({ item }) => {
+                return (
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      flexWrap: 'wrap',
+                      maxWidth: width * 0.90,
+                      gap: 15,
+                    }}
+                  >
+                    <AppText
+                      centered={false}
+                      text={item?.attributes?.service?.data?.attributes?.name}
+                      style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10, paddingTop: 10 }]}
+                    />
+                    <View style={styles.CartServiceStylesContainer}>
+                      <PriceTextComponent
+                        style={{
+                          backgroundColor: Colors.primaryColor,
+                          fontSize: RFPercentage(1.5),
+                          padding: 6,
+                          borderRadius: 40,
+                          color: Colors.whiteColor,
+                        }}
+                        price={item?.attributes?.service?.data?.attributes?.Price}
+                      />
+                      <AppText
+                        style={{
+                          backgroundColor: Colors.whiteColor,
+                          fontSize: RFPercentage(1.8),
+                          padding: 6,
+                          borderRadius: 40,
+                          paddingHorizontal: 15,
+                          color: Colors.primaryColor,
+                        }}
+                        text={"x"}
+                      />
+                      <AppText
+                        style={{
+                          backgroundColor: Colors.primaryColor,
+                          fontSize: RFPercentage(1.5),
+                          padding: 6,
+                          borderRadius: 40,
+                          paddingHorizontal: 15,
+                          color: Colors.whiteColor,
+                        }}
+                        text={item?.attributes?.qty}
+                      />
                     </View>
-                </View>
-              );
-            }}
-          />
-        </View>
-         : null }
+                  </View>
+                );
+              }}
+            />
+          </View>
+          : null}
         <View style={styles.itemContainer}>
           <AppText centered={false} text={"Price"} style={styles.title} />
           <PriceTextComponent
@@ -312,21 +381,66 @@ export default function OrderDetails({ navigation, route }) {
             style={styles.price}
           />
         </View>
-      
-          <View style={styles.descriptionContainer}>
-            <AppText centered={false} text={"Notes"} style={styles.title} />
+
+        <View style={styles.descriptionContainer}>
+          <AppText centered={false} text={"Notes"} style={styles.title} />
+          <AppText
+            centered={false}
+            text={
+              item?.attributes?.description
+                ? item?.attributes?.description
+                : "لا يوجد"
+            }
+            style={styles.price}
+          />
+        </View>
+        {
+          item?.attributes?.provider_fee > 0 &&
+          <View style={styles.itemContainer}>
+            <AppText centered={false} text={"أجرة الفني"} style={styles.title} />
             <AppText
               centered={false}
               text={
-                item?.attributes?.description
-                  ? item?.attributes?.description
-                  : "لا يوجد"
+                `${item?.attributes?.provider_fee} ${CURRENCY}`
               }
               style={styles.price}
             />
           </View>
-          
-     
+        }
+        {item?.attributes?.additional_prices?.data?.length > 0 &&
+          <>
+            <AppText centered={false} text={"اسعار اضافية"} style={[styles.title, { paddingHorizontal: 10 }]} />
+            <FlatList
+              data={item?.attributes?.additional_prices?.data}
+              showsVerticalScrollIndicator={false}
+
+              renderItem={({ item }) => {
+
+                return (<View style={styles.itemContainer}>
+                  <AppText centered={false} text={item?.attributes?.details} style={[styles.title, { maxWidth: width * 0.68 }]} />
+                  <AppText
+                    centered={false}
+                    text={
+                      `${item?.attributes?.Price} ${CURRENCY}`
+
+                    }
+                    style={styles.price}
+                  />
+                </View>)
+              }}
+              keyExtractor={(item) => item?.id}
+            />
+            {
+              item?.attributes?.addtional_prices_state === 'pending' &&
+            <View style={{alignItems:'center',display:'flex',flexDirection:'row',justifyContent:'center'}}>
+            <AppButton  title={"Accept and Pay"} onPress={() => handlePayOrder(item?.id)} style={{backgroundColor:Colors.success}}/>
+            <AppButton  title={"Reject"} onPress={() => handleRejectAddionalPrices(item?.id)} style={{backgroundColor:Colors.redColor}}/>
+            </View>
+            }
+
+          </>
+        }
+
         {item?.attributes?.images?.data ? (
           <View style={styles.descriptionContainer}>
             <>
@@ -369,8 +483,8 @@ export default function OrderDetails({ navigation, route }) {
           </View>
         ) : null}
         {
-           item?.attributes?.delay_request?.data?.attributes?.accepted === 'pending ' &&
-  <DelayOrderCard item={item}/>
+          item?.attributes?.delay_request?.data?.attributes?.accepted === 'pending ' &&
+          <DelayOrderCard item={item} />
         }
         {item?.attributes?.status === "pending" && (
           <AppButton
@@ -378,11 +492,11 @@ export default function OrderDetails({ navigation, route }) {
             onPress={() => setModalVisible(true)}
           />
         )}
-        {(item?.attributes?.status === "pending" ||item?.attributes?.status === "assigned")&& (
+        {(item?.attributes?.status === "pending" || item?.attributes?.status === "assigned") && (
           <AppButton
             title={"Delay Order"}
-            style={{marginTop:10}}
-            onPress={() =>navigation.navigate(CHANGE_ORDER_DATE,{orderId:item?.id ,item:item})}
+            style={{ marginTop: 10 }}
+            onPress={() => navigation.navigate(CHANGE_ORDER_DATE, { orderId: item?.id, item: item })}
           />
         )}
         {item?.attributes?.status === "payed" &&
@@ -413,6 +527,8 @@ export default function OrderDetails({ navigation, route }) {
           )}
         {item?.attributes?.status === "payment_required" &&
           item?.attributes?.PaymentStatus !== "payed" && (
+            item?.attributes?.additional_prices?.data?.length === 0 
+          ) && (
             <AppButton
               title={"Pay"}
               style={{ backgroundColor: Colors.success }}
@@ -504,23 +620,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  delayHeader:{
-    fontSize:RFPercentage(2.2),
+  delayHeader: {
+    fontSize: RFPercentage(2.2),
     backgroundColor: Colors.primaryColor,
-    padding:10,
-    borderRadius:10,
-    color:Colors.whiteColor
+    padding: 10,
+    borderRadius: 10,
+    color: Colors.whiteColor
   },
-  CartServiceStylesContainer:{
-    display:'flex',
-  flexDirection:'row',
-  borderWidth:0.5,
- 
-  padding:5,
-  borderRadius:10,
-  // height:100,
-  // width:100,
-  gap:4,
-  backgroundColor:Colors.piege,
-  borderColor:Colors.grayColor}
+  CartServiceStylesContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderWidth: 0.5,
+
+    padding: 5,
+    borderRadius: 10,
+    // height:100,
+    // width:100,
+    gap: 4,
+    backgroundColor: Colors.piege,
+    borderColor: Colors.grayColor
+  }
 });

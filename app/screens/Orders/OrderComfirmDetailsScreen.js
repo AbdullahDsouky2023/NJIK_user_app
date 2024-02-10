@@ -95,21 +95,21 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
         }
         }
         console.log("the data before navigation ",CartServicesItems?.length)
-        if ((totalPrice || totalPriceServices) > 0) {
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name: "Payment", params: { orderId: data } }],
-            })
-          );
-        } else if ((totalPrice || totalPriceServices) === 0) {
+        // if ((totalPrice || totalPriceServices) > 0) {
+        //   navigation.dispatch(
+        //     CommonActions.reset({
+        //       index: 0,
+        //       routes: [{ name: "Payment", params: { orderId: data } }],
+        //     })
+        //   );
+        // } else if ((totalPrice || totalPriceServices) === 0) {
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
               routes: [{ name: ORDER_SUCCESS_SCREEN }],
             })
           );
-        }
+        // }
       }
     } catch (error) {
       console.log(error, "error deleting the order");
@@ -137,7 +137,6 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
     });
     setCurrentSelectedPackages(data);
   }, []);
-  console.log("current page",currentSelectedPackages)
   useEffect(() => {
     handleCreatingServiceCartIds()
   }, []);

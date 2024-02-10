@@ -171,6 +171,7 @@
     "Accept":"قبول",
     "Reject":"رفض",
     "Reason":"سبب التأجيل",
-    "Delay Request":"طلب تأجيل "
+    "Delay Request":"طلب تأجيل ",
+    "Accept and Pay":"قبول و دفع"
    
 }

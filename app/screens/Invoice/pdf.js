@@ -1,5 +1,5 @@
 // Pdf.js
-import React ,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { View, Button, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -10,11 +10,11 @@ import QRCode from 'react-native-qrcode-svg';
 // ... inside your component
 
 import { Colors } from '../../constant/styles';
-const { height }= Dimensions.get('screen')
-export default function Pdf({item}) {
+const { height } = Dimensions.get('screen')
+export default function Pdf({ item }) {
   const qrCodeValue = item?.id; // Replace with your item ID
-  const qrCodeSize =  100; // Adjust the size as needed
-  const cartServiveItems = item?.attributes?.service_carts?.data?.length > 0 && item?.attributes?.service_carts?.data?.map((item)=>(
+  const qrCodeSize = 100; // Adjust the size as needed
+  const cartServiveItems = item?.attributes?.service_carts?.data?.length > 0 && item?.attributes?.service_carts?.data?.map((item) => (
     `
     <tr>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #f2652a;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
@@ -22,23 +22,23 @@ export default function Pdf({item}) {
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"> ${item?.attributes?.qty}</td>
                       <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
-                      ${item?.attributes?.service?.data?.attributes?.Price}    ر.س 
+                      ${item?.attributes?.service?.data?.attributes?.Price}  
                                  </td>
                                  </tr>`
-                                 ))
+  ))
 
-  const servicesItem = item?.attributes?.services?.data?.length > 0  &&  item?.attributes?.services?.data?.map((item)=>(`
+  const servicesItem = item?.attributes?.services?.data?.length > 0 && item?.attributes?.services?.data?.map((item) => (`
     <tr>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #f2652a;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
                        ${item?.attributes?.name}
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center">1</td>
                       <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
-                      ${item?.attributes?.Price > 0  ? `${item?.attributes?.Price}   ر.س ` : "بعد الزيارة"}  
+                      ${item?.attributes?.Price > 0 ? `${item?.attributes?.Price}  ` : "بعد الزيارة"}  
                                  </td>
                                  </tr>`
-                                 ))
-  const packageItems = item?.attributes?.packages?.data?.length > 0 && item?.attributes?.packages?.data?.map((item)=>(
+  ))
+  const packageItems = item?.attributes?.packages?.data?.length > 0 && item?.attributes?.packages?.data?.map((item) => (
     `
     <tr>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #f2652a;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
@@ -49,23 +49,46 @@ export default function Pdf({item}) {
                       ${item?.attributes?.price}   
                                  </td>
                                  </tr>`
-                                 ))
+  ))
+  const additionalPriceItems = item?.attributes?.additional_prices?.data?.length > 0 && item?.attributes?.additional_prices?.data?.map((item) => (
+    `
+    <tr>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #f2652a;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
+                       ${item.attributes?.details}
+                      </td>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"> </td>
+                      <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
+                      ${item?.attributes?.Price}   
+                                 </td>
+                                 </tr>`
+  ))
+  const ProviderFee = item?.attributes?.provider_fee > 0 &&
+    `
+    <tr>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #f2652a;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
+                       أجرة الفني
+                      </td>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"> </td>
+                      <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
+                      ${item?.attributes?.provider_fee}   
+                                 </td>
+                                 </tr>`
+  console.log("prvider fee", item?.attributes?.provider_fee)
 
-                                 
   const printToFile = async () => {
     try {
-     
+
       const htmlContentWithQRCode = `
       <!-- ... your existing HTML content ... -->
       <img src="https://www.bing.com/ck/a?!&&p=395218a13b7afa0fJmltdHM9MTcwNzM1MDQwMCZpZ3VpZD0xMzAzNGU2MS0xNDFhLTYxMTMtM2Y5Mi01YTc4MTUyOTYwOTUmaW5zaWQ9NTYxMQ&ptn=3&ver=2&hsh=3&fclid=13034e61-141a-6113-3f92-5a7815296095&u=a1L2ltYWdlcy9zZWFyY2g_cT1xciBjb2RlIGltYWdlJkZPUk09SVFGUkJBJmlkPUZBODNERkRBMUNCOTBFRkYzODgyOTFBQkJFNEE4QjE3NTlDRkVFMEU&ntb=1" alt="QR Code" />
     `;
       let servicesHtml = '';
       item?.attributes?.services?.data?.forEach((service, index) => {
-        servicesHtml += `<tr><td>${index+1}</td><td>${service.attributes?.name}</td>
-        <td class="right">${service.attributes?.Price>0 ?service.attributes?.Price : "بعد الزيارة"}</td></tr>`;
+        servicesHtml += `<tr><td>${index + 1}</td><td>${service.attributes?.name}</td>
+        <td class="right">${service.attributes?.Price > 0 ? service.attributes?.Price : "بعد الزيارة"}</td></tr>`;
       });
       const { uri } = await Print.printToFileAsync({
-html:`
+        html: `
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title> Order confirmation </title>
 <meta name="robots" content="noindex,nofollow" />
@@ -127,7 +150,9 @@ html:`
                     <table   width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
                       <tbody  >
                         <tr>
-                          <td align="left"> <img src="https://res.cloudinary.com/dgjgthsst/image/upload/v1707419519/icon_f26d3d1cd3.png" width="80" height="80" alt="logo" border="0" /></td>
+                          <td align="left">
+                           <img src="https://res.cloudinary.com/dgjgthsst/image/upload/v1707494679/splash2_29ae9d3224.png"
+                            width="240" height="100" alt="logo" border="0" /></td>
                         </tr>
                         <tr class="hiddenMobile">
                           <td height="40"></td>
@@ -161,7 +186,7 @@ html:`
                         <tr>
                           <td style="font-size: 21px; color: #f2652a; letter-spacing: -1px; font-family: 'Open Sans', sans-serif; line-height: 1; vertical-align: top; text-align: right;">
                             
-                           <div style="margin-top:-29px;background-color:#f2652a;color:white;display:flex;padding:20px;align-items:center;justify-content:center;height:55px;width:55px;border-radius: 60px;">
+                           <div style="margin-top:-10px;background-color:#f2652a;color:white;display:flex;padding:20px;align-items:center;justify-content:center;height:55px;width:55px;border-radius: 60px;">
                              
                            فاتورة
                           </div>
@@ -176,7 +201,7 @@ html:`
                         </tr>
                         <tr>
                           <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: right;">
-                            <div style="display: flex;flex-direction: column;gap:8px">     
+                            <div style="display: flex;flex-direction: column;gap:15px">     
                             <p   style="margin:10px">
                             <span style='color:#f2652a'> 
 
@@ -239,9 +264,11 @@ html:`
                     <tr>
                       <td height="10" colspan="4"></td>
                     </tr>
-                    ${cartServiveItems?cartServiveItems:""}
-                    ${servicesItem?servicesItem:""}
-                    ${packageItems?packageItems:""}
+                    ${cartServiveItems ? cartServiveItems : ""}
+                    ${servicesItem ? servicesItem : ""}
+                    ${packageItems ? packageItems : ""}
+                    ${additionalPriceItems ? additionalPriceItems : ""}
+                    ${ProviderFee ? ProviderFee : ""}
                     <tr>
                       <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td>
                     </tr>
@@ -282,7 +309,7 @@ html:`
                         <strong>اجمالي التكلفة</strong>
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
-                        <strong> ${item?.attributes?.totalPrice}  <span style="padding-right:15px"> ر.س </span> </strong>
+                        <strong> ${item?.attributes?.totalPrice}  <span style="padding-right:15px;color:#f2652a">ريال سعودي</span> </strong>
                       </td>
                     </tr>
                     
@@ -335,11 +362,11 @@ html:`
                              الخدمة المطلوبة
                               </td>
                               <td style="font-size: 12px;min-width:200px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                               ${(item?.attributes?.packages?.data[0]?.attributes?.name )? item?.attributes?.packages?.data[0]?.attributes?.name:''}
-                               ${(item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name)?item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name:''}
-                               ${( item?.attributes?.services?.data[0]?.attributes?.category
-                                ?.data?.attributes?.name)? item?.attributes?.services?.data[0]?.attributes?.category
-                                ?.data?.attributes?.name: ''}
+                               ${(item?.attributes?.packages?.data[0]?.attributes?.name) ? item?.attributes?.packages?.data[0]?.attributes?.name : ''}
+                               ${(item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name) ? item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name : ''}
+                               ${(item?.attributes?.services?.data[0]?.attributes?.category
+            ?.data?.attributes?.name) ? item?.attributes?.services?.data[0]?.attributes?.category
+              ?.data?.attributes?.name : ''}
                               </td>
                             </tr>
                             <tr style="display: flex;flex-direction: row;gap:10px;justify-content: space-between;">
@@ -350,14 +377,15 @@ html:`
                                 ${item?.attributes?.provider?.data?.attributes?.name} 
                               </td>
                             </tr>
-                            <tr style="display: flex;flex-direction: row;gap:200px;">
+                            <tr style="display: flex;flex-direction: row;gap:10px;justify-content: space-between;">
                               <td style="font-size: 14px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
                                 التاريخ 
                               </td>
-                              <td style="font-size: 12px;min-width:200px font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                               ${item?.attributes?.date}
+                              <td style="font-size: 12px;min-width:200px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
+                                ${item?.attributes?.date} 
                               </td>
                             </tr>
+                           
                             
                           </tbody>
                         </table>
@@ -369,13 +397,13 @@ html:`
                 </table>
               </td>
             </tr>
-            <tr  dir="rtl">
+            <tr  style={display:flex;align-items:center;} dir="rtl">
               <td  dir="rtl">
                 <table  dir="rtl" width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
                   <tbody   dir="rtl">
                     <tr>
-                      <td >
-                        <table  width="380" border="0" cellpadding="0" cellspacing="0" align="right" class="col">
+                      <td styt>
+                        <table  width="320" border="0" cellpadding="0" cellspacing="0" align="right" class="col">
                           <tbody  dir="rtl" >
                             <tr class="hiddenMobile">
                               <td height="35"></td>
@@ -462,8 +490,8 @@ html:`
 </table>
 </body>
 </html>`,
-     height:height*1,
-    //  width:width*1
+        height: height * 1,
+        //  width:width*1
       });
 
       console.log('File has been saved to:', uri);
@@ -479,12 +507,12 @@ html:`
   return (
     <View style={styles.container}>
       <TouchableOpacity
-                style={styles.chatContainer}
-               onPress={printToFile}
-                >
-              <FontAwesome5 name="receipt" size={24} color={Colors.whiteColor} />
+        style={styles.chatContainer}
+        onPress={printToFile}
+      >
+        <FontAwesome5 name="receipt" size={24} color={Colors.whiteColor} />
 
-              </TouchableOpacity>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -493,15 +521,16 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20,
   },
-  chatContainer:{ 
-     paddingHorizontal: 19,
+  chatContainer: {
+    paddingHorizontal: 19,
     backgroundColor: Colors.primaryColor,
     width: "auto",
-    height: height*0.04,
+    height: height * 0.04,
     borderRadius: 20,
-    marginTop:-25,
+    marginTop: -25,
     left: 0,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",}
+    justifyContent: "center",
+  }
 });
