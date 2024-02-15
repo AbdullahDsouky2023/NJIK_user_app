@@ -26,11 +26,12 @@ import {
   removeServiceFromCart,
 } from "../../store/features/CartSlice";
 import {
-  clearCart as clearCartService,
+  clearCart as clearCartService, setCategoryId,
 } from "../../store/features/CartServiceSlice";
 import ReserveButton from "../../component/ReverveButton";
 import { CURRENCY, ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION, Offer_route_name } from "../../navigation/routes";
 import CartItem from "./CartItem";
+import { clearCurrentOrder, setCurrentOrderProperties } from "../../store/features/ordersSlice";
 const { width, height } = Dimensions.get("screen");
 const fontSize = RFPercentage(1.7); // Base font size
 
@@ -52,11 +53,13 @@ export default function CartScreen({ route ,navigation}) {
     );
     setServices(cartServices);
     setCategory(SelectedCategory);
-
+      dispatch(setCurrentOrderProperties({category_id:Number(SelectedCategory?.id)}))
 
     return ()=>{
         dispatch(clearCart())
         dispatch(clearCartService())
+        dispatch(clearCurrentOrder())
+
     }
   }, []);
   const handlePressAddButton = (id) => {

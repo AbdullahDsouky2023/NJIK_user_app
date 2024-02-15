@@ -35,10 +35,6 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
   const currentOrderData = useSelector(
     (state) => state?.orders?.currentOrderData
   );
-  const { data } = useRegions();
-  const region = data?.data?.filter(
-    (item) => item?.id === currentOrderData.region
-  )[0]?.attributes?.name;
   const dispatch = useDispatch();
   const [isModalVisible, setModalVisible] = useState(false);
   const { item, image } = route?.params;
@@ -51,6 +47,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
   const [currentSelectedPackages, setCurrentSelectedPackages] = useState([]);
   const userData = useSelector((state) => state?.user?.userData);
   const [cartServiceIds,setCartServiceIds] = useState([])
+  const category_id = useSelector((state) => state.cart.category_id);
   const handleComfirmOrder = async () => {
     try {
       setIsLoading(true);
@@ -60,6 +57,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
       ) {
         await Updates.reloadAsync();
       }
+      // console.log("the current order data is ",currentOrderData,category_id)
       const data = await postOrder(currentOrderData);
       if (currentOrderData?.coupons?.connect[0]?.id) {
         await updateUserData(userData?.id, {

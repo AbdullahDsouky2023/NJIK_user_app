@@ -8,6 +8,7 @@ import {useDispatch} from 'react-redux'
 import { ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION } from "../../navigation/routes";
 import { addServiceToCart, clearCart } from "../../store/features/CartSlice";
 import { useFocusEffect } from "@react-navigation/native";
+import { setCurrentOrderProperties } from "../../store/features/ordersSlice";
 
 export default function ItemScreen({ route,navigation }) {
 
@@ -19,11 +20,7 @@ export default function ItemScreen({ route,navigation }) {
   const ReserveButtonHandler = ()=>{
     navigation.navigate(ITEM_ORDER_DETAILS)
   }
-  // useEffect(()=>{
-  //   return ()=>{
-  //     dispatch(clearCart())
-  //   }
-  // },[])
+
   useFocusEffect(
     React.useCallback(() => {
  
@@ -31,6 +28,11 @@ export default function ItemScreen({ route,navigation }) {
  
     }, [])
   );
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch(clearCurrentOrder());
+  //   };
+  // }, []);
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}> 
@@ -45,9 +47,10 @@ export default function ItemScreen({ route,navigation }) {
       onPress={()=>{
       dispatch(addServiceToCart({
         item:item?.id,
-        price:item?.attributes?.Price
+        price:item?.attributes?.Price,
       }))
-      
+      dispatch(setCurrentOrderProperties({        category_id:Number(item?.attributes?.category?.data?.id)
+      }))
       navigation.navigate(ITEM_ORDER_DETAILS, { item: route?.params?.item })
       setButtonDisabled(true)
 

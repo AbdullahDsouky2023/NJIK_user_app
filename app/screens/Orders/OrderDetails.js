@@ -104,7 +104,7 @@ export default function OrderDetails({ navigation, route }) {
         sendPushNotification(
           providerNotificationToken,
           "تم دفع الطلب",
-          `تم دفع الطلب بواسطه ${user?.attributes?.name}`
+          `تم دفع الطلب بواسطه ${user?.attributes?.username}`
         );
       }
       if (res) {

@@ -4,6 +4,7 @@ const CartServiceSlice = createSlice({
     name: "cartService",
     initialState: {
       services: [],
+      category_id:0,
       totalPrice:  0, // Total price of all items in the cart
     },
     reducers: {
@@ -75,6 +76,9 @@ const CartServiceSlice = createSlice({
       AddDiscount:(state,action) => {
         state.totalPrice=action.payload
       },
+      setCategoryId:(state,action) => {
+        state.category_id=action.payload
+      },
       RemoveDiscount:(state,action) => {
         state.totalPrice=action.payload
       },
@@ -86,7 +90,8 @@ const CartServiceSlice = createSlice({
     updateServiceQuantity,
     clearCart,
     AddDiscount,
-    RemoveDiscount
+    RemoveDiscount,
+    setCategoryId
   } = CartServiceSlice.actions;
   
   export default CartServiceSlice.reducer;
