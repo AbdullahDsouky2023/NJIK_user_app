@@ -37,7 +37,29 @@ export default function Pdf({ item }) {
                       ${item?.attributes?.Price > 0 ? `${item?.attributes?.Price}  ` : "بعد الزيارة"}  
                                  </td>
                                  </tr>`
-  ))
+                                 ))
+   const VisitingPrice = (`
+                                 <tr>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #f2652a;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
+                       سعر الكشف والزيارة 
+                      </td>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"></td>
+                      <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
+                      0
+                                 </td>
+                                 </tr>`
+                                 )
+   const TaxesFees = (`
+                                 <tr>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #f2652a;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
+                      ضريبة القيمة المضافة
+                      </td>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"></td>
+                      <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
+                   15 %
+                                 </td>
+                                 </tr>`
+                                 )
   const packageItems = item?.attributes?.packages?.data?.length > 0 && item?.attributes?.packages?.data?.map((item) => (
     `
     <tr>
@@ -266,9 +288,12 @@ export default function Pdf({ item }) {
                     </tr>
                     ${cartServiveItems ? cartServiveItems : ""}
                     ${servicesItem ? servicesItem : ""}
+                    ${VisitingPrice ? VisitingPrice : ""}
+
                     ${packageItems ? packageItems : ""}
                     ${additionalPriceItems ? additionalPriceItems : ""}
                     ${ProviderFee ? ProviderFee : ""}
+                    ${TaxesFees}
                     <tr>
                       <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td>
                     </tr>
@@ -413,14 +438,14 @@ export default function Pdf({ item }) {
                             </tr>
                             <tr>
                             <td  dir="rtl"  listyle="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top;" style="color:#f2652a;">
-                            <strong>السياسات و الاحكام</strong>
+                            <strong>الضمان</strong>
                               </td>
                             </tr>
                             <tr>
                               <td width="100%" height="10"></td>
                             </tr>
                             <tr dir="rtl">
-                              <td  style="font-size: 14px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
+                              <td  style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
                               <ul style="list-style:decimal;color: #000;display:flex;flex-direction:column;gap:10px">
 
                               <li >

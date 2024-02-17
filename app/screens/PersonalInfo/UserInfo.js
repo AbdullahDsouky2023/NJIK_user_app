@@ -13,6 +13,7 @@ import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import { EXPO_PUBLIC_BASE_URL } from "@env";
 import { Switch } from "react-native-elements";
+import i18n from "i18next";
 
 import ArrowBack from "../../component/ArrowBack";
 import { Colors } from "../../constant/styles";
@@ -33,6 +34,8 @@ import UserImagePicker from "../../component/Account/UserImagePicker";
 import { uploadToStrapi } from "../../../utils/UploadToStrapi";
 import UserDatePicker from "../../component/Account/UserDatePicker";
 import NotificationComponent from "../../component/NotificationComponent";
+import AppButton from "../../component/AppButton";
+import { changeLanguage } from "../../../utils/language";
 const { width } = Dimensions.get("screen");
 const UserInfo = ({ navigation }) => {
   const [error, setError] = useState();
@@ -173,6 +176,16 @@ const UserInfo = ({ navigation }) => {
       </View>
       <ScrollView style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
+        <AppButton
+            onPress={() => {
+              // Toggle the language between Arabic and English
+              i18n.language === "ar"
+                ? changeLanguage("en")
+                : changeLanguage("ar");
+            }}
+          
+            title={i18n.language === "ar" ? "English" : "العربية"}
+          />
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
               text={"Personal information"}

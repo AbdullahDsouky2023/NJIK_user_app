@@ -39,7 +39,7 @@ const SigninScreen = ({ navigation }) => {
     const { phoneNumber, agreedToTerms, length } = { ...state, ...data };
 
     console.log(phoneNumber, agreedToTerms, length, "fff");
-    if (phoneNumber?.length === state?.length - 1 && agreedToTerms === true) {
+    if (phoneNumber?.length === state?.length - 1 ) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -101,14 +101,14 @@ const SigninScreen = ({ navigation }) => {
             <AppText
               centered={true}
               text={"Signin with Phone Number"}
-              style={{ marginBottom: width*0.05,color:Colors.primaryColor ,fontSize: RFPercentage(2) }}
+              style={{ marginBottom: width*0.05,color:Colors.primaryColor ,fontSize: RFPercentage(2.1) ,textAlign:'center'}}
             />
           </View>
           <PhoneNumberTextField
             phoneNumber={phoneNumber}
             updateState={updateState}
           />
-          <CheckBox
+          {/* <CheckBox
             title={t("I agree to the Terms and Conditions")}
             checked={agreedToTerms}
             style={{ backgroundColor: Colors.redColor }}
@@ -123,7 +123,7 @@ const SigninScreen = ({ navigation }) => {
               // flexDirection:"row"
             }}
             onPress={toggleAgreement}
-          />
+          /> */}
       <View style={{ flex: 1,width:100, justifyContent: 'center', alignItems: 'center' }}>
             <FirebaseRecaptchaVerifierModal
               // style={{ backgroundColor: "red" ,width:100}}

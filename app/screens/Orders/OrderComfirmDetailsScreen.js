@@ -308,6 +308,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                       // justifyContent: "center",
                       flexWrap:"wrap",
                       // backgroundColor:"red",
+                      width:width*0.92,
                       gap: 15,
                     }}
                   >
@@ -419,14 +420,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
       <View style={styles.ButtonContainer}>
         <AppButton
           title={"تأكيد الطلب"}
-          style={{
-            // marginTop:-height*0.1
-            // ,
-            // height:100,
-            marginTop:15,
-            paddingVertical: 15,
-            paddingHorizontal: 50,
-          }}
+          style={styles.buttonStyles}
           onPress={() => setModalVisible(true)}
         />
       </View>
@@ -446,7 +440,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: Colors.whiteColor,
     position:'relative',
-    marginBottom: height*0.1
+    marginBottom: height*0.15
 
   },
   name: {
@@ -521,14 +515,27 @@ const styles = StyleSheet.create({
   ButtonContainer: {
     display: "flex",
     alignItems: "center",
+    justifyContent:'center',
     // padding:-1000,
-    height:height*0.2,
+    height:height*0.15,
     width:width*1,
     // paddingBottom:20,
-    backgroundColor: Colors.piege,
+    backgroundColor: Colors.whiteColor,
     position:'absolute',
-    bottom:0,
+    bottom:100,
+    marginTop:height*0.15,
+    right: 0,
     margin:'auto',
-    alignSelf:'center'
+    alignSelf:'center',
+                // marginVertical:15,
+            // paddingVertical: 15,
+            // paddingHorizontal: 50,
   },
+  buttonStyles :{
+    // backgroundColor:'orange',
+    paddingHorizontal:width*0.095,
+    paddingVertical:width*0.03,
+
+
+  }
 });
