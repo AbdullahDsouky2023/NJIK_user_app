@@ -3,8 +3,6 @@ import { Channel, MessageInput, MessageList , ImageUploadPreview, } from "stream
 import { useSelector } from "react-redux";
 import { useChatClient } from "./useChatClient";
 import LoadingScreen from "../loading/LoadingScreen";
-import { InputBox } from "../../assets/chat/InputBox";
-import { VoiceMessageAttachment } from "../../assets/chat/VoiceMessageAttchment";
 
 
 export default function ChatRoom() {
