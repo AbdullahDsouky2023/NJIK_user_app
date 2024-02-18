@@ -441,13 +441,9 @@ export default function Pdf({ item }) {
                             <strong>الضمان</strong>
                               </td>
                             </tr>
-                            <tr>
-                              <td width="100%" height="10"></td>
-                            </tr>
                             <tr dir="rtl">
                               <td  style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
                               <ul style="list-style:decimal;color: #000;display:flex;flex-direction:column;gap:10px">
-
                               <li >
                                 مدة الضمان 30 يوم من تاريخ 
                                 اكتماال الطلب عند الدفع الالكتروني

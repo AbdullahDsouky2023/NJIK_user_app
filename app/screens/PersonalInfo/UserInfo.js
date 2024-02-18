@@ -176,16 +176,7 @@ const UserInfo = ({ navigation }) => {
       </View>
       <ScrollView style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
-        <AppButton
-            onPress={() => {
-              // Toggle the language between Arabic and English
-              i18n.language === "ar"
-                ? changeLanguage("en")
-                : changeLanguage("ar");
-            }}
-          
-            title={i18n.language === "ar" ? "English" : "العربية"}
-          />
+       
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
               text={"Personal information"}

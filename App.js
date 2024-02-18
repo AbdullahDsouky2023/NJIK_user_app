@@ -24,32 +24,15 @@ export const client = new QueryClient();
 
 const App = () => {
   const [loading, setLoading] = useState(false);
-
-  const [direction, setDirection] = useState('ltr');
-  useEffect(() => {
-    // Get the language key from local storage
-    AsyncStorage.getItem('language').then((languageKey) => {
-      // If there is a language key, change the app language and layout direction
-      if (languageKey) {
-       i18n.changeLanguage(languageKey);
-        I18nManager.forceRTL(languageKey === 'ar');
-        I18nManager.allowRTL(languageKey === 'ar');
-        setDirection(languageKey === 'ar' ? 'rtl' : 'ltr'); 
-      }
-      else {
-       i18n.changeLanguage('ar');
-       reload()
-        I18nManager.forceRTL(true);
-        I18nManager.allowRTL(true);
-        setDirection('rtl'); // Set the direction state variable
-
-      }
-      setTimeout(() => {
-        setLoading(true);
-        console.log("f");
-      }, 500);
-    });
-  }, []);
+  useEffect(()=>{
+    reload()
+    I18nManager.forceRTL(true);
+    I18nManager.allowRTL(true);
+    setTimeout(() => {
+      setLoading(true);
+    }, 500);
+    
+  },[])
   useEffect(() => {
     registerNotificationListeners();
   }, []);
@@ -95,3 +78,4 @@ const App = () => {
 };
 
 export default App;
+

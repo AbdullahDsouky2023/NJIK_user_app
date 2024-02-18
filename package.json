@@ -119,7 +119,8 @@
     "redux-thunk": "^2.4.2",
     "stream-chat-expo": "^5.21.0",
     "uuid": "^9.0.1",
-    "yup": "^1.3.2"
+    "yup": "^1.3.2",
+    "expo-permissions": "~14.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
