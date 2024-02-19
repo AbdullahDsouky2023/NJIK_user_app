@@ -40,7 +40,6 @@
   "verification": "التحقق",
   "pleaseWait": "يرجى الأنتظار...",
   "waiting for the technician":"في انتظار الفني ",
-  "Send":"ارسال",
   "EGP":"جنيه مصري",
   "Error":"خطأ",
   "Home": "الرئيسية",
@@ -172,6 +171,8 @@
     "Reject":"رفض",
     "Reason":"سبب التأجيل",
     "Delay Request":"طلب تأجيل ",
-    "Accept and Pay":"قبول و دفع"
+    "Accept and Pay":"قبول و دفع",
+    "Send":"إرسال",
+    "Type a message":"أكتب رسالة"
    
 }

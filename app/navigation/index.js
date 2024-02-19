@@ -27,6 +27,7 @@ import {
   OFFERS_SCREEN,
   CHANGE_ORDER_DATE,
   NO_CONNECTION_SCREEN,
+  CHAT_ROOM_fireBase,
 } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
@@ -48,6 +49,7 @@ import StarsComponent from "../component/StarsComponent";
 import OffersScreen from "../component/Offers/OffersScreen";
 import ChangeDateOrderScreen from "../screens/Orders/ChangeDateOrderScreen";
 import NoConnectionScreen from "../screens/NoConnectionScreen";
+import ChatRoom from "../screens/firebaseChat/ChatRoom";
 
 LogBox.ignoreAllLogs();
 
@@ -153,6 +155,10 @@ const RootNavigator = () => {
         <Stack.Screen
           name={NO_CONNECTION_SCREEN}
           component={NoConnectionScreen}
+        />
+        <Stack.Screen
+          name={CHAT_ROOM_fireBase}
+          component={ChatRoom}
         />
         <Stack.Screen name={"Payment"} component={PaymentScreen} />
       </Stack.Navigator>

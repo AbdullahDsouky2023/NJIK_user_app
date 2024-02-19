@@ -15,7 +15,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
 import { useNavigation } from "@react-navigation/native";
-import { ORDERS_DETAILS } from "../../navigation/routes";
+import { CHAT_ROOM_fireBase, ORDERS_DETAILS } from "../../navigation/routes";
 import PriceTextComponent from "../PriceTextComponent";
 const { width ,height} = Dimensions.get("screen");
 import { Ionicons } from "@expo/vector-icons";
@@ -148,7 +148,7 @@ export default function CurrentOrderCard({ item, onPress }) {
                     setcurrentChatChannel(item?.attributes?.chat_channel_id)
                   );
 
-                  navigation.navigate("Chat");
+                  navigation.navigate(CHAT_ROOM_fireBase);
                 }}
               >
                 <Entypo name="chat" size={22} color="white" />
