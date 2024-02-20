@@ -8,10 +8,12 @@ import ModalComponent from "../../component/Modal";
 import AppText from "../../component/AppText";
 
 import RBSheet from "react-native-raw-bottom-sheet";
+import { RFPercentage } from "react-native-responsive-fontsize";
 const { width ,height} = Dimensions.get('screen')
 
 const CustomImagePicker = ({ onImageSelected, ...otherProps }) => {
   const [image, setImage] = useState(null);
+  const refRBSheet = useRef();
 
   const pickImage = async () => {
     try {
@@ -26,6 +28,9 @@ const CustomImagePicker = ({ onImageSelected, ...otherProps }) => {
         if (result?.assets[0]?.uri) {
           setImage(result?.assets[0]?.uri);
           onImageSelected(result?.assets[0]?.uri);
+          refRBSheet.current.close(); // Close the bottom sheet
+          console.log("closing tthe  modal")
+
         }
       }
     } catch (error) {
@@ -51,20 +56,22 @@ const CustomImagePicker = ({ onImageSelected, ...otherProps }) => {
       if (result?.assets[0]?.uri) {
         setImage(result?.assets[0]?.uri);
         onImageSelected(result?.assets[0]?.uri);
+        refRBSheet.current.close(); // Close the bottom sheet
+
       }
     }
   };
 
   return (
     <View style={styles.container}>
-      <CustomModal >
+      <CustomModal  refRBSheet={refRBSheet}>
         <TouchableOpacity  onPress={pickImage}>
           <View style={styles.popupContainer}>
             <View style={styles.imagePicker}>
               <Ionicons name="image" size={24} color="white" />
             </View>
             <View>
-              <AppText text={"Choose Image"}  style={{color:Colors.blackColor}}/>
+              <AppText text={"Choose Image"}  style={{color:Colors.blackColor,fontSize:RFPercentage(2)}}/>
             </View>
           </View>
         </TouchableOpacity>
@@ -74,7 +81,7 @@ const CustomImagePicker = ({ onImageSelected, ...otherProps }) => {
               <Ionicons name="camera" size={24} color="white" />
             </View>
             <View>
-              <AppText text={"Take a photo"}  style={{color:Colors.blackColor}}/>
+              <AppText text={"Take a photo"}  style={{color:Colors.blackColor,ontSize:RFPercentage(2)}}/>
             </View>
           </View>
         </TouchableOpacity>
@@ -146,8 +153,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export  function CustomModal({children}) {
-  const refRBSheet = useRef();
+export  function CustomModal({children,refRBSheet}) {
+  // const refRBSheet = useRef();
   return (
     <View
       style={{
@@ -198,9 +205,9 @@ const styles2 = StyleSheet.create({
     },
     imagePicker: {
       // borderWidth: 1,
-      width: width * 0.071,
+      width: width * 0.072,
       borderRadius: width * 0.2 * 0.5,
-      height: width *  0.071,
+      height: width *  0.072,
       backgroundColor: Colors.primaryColor,
       justifyContent: "center",
       alignItems: "center",
