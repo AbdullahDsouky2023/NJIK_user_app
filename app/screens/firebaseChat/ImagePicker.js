@@ -205,9 +205,9 @@ const styles2 = StyleSheet.create({
     },
     imagePicker: {
       // borderWidth: 1,
-      width: width * 0.072,
+      width: width * 0.078,
       borderRadius: width * 0.2 * 0.5,
-      height: width *  0.072,
+      height: width *  0.078,
       backgroundColor: Colors.primaryColor,
       justifyContent: "center",
       alignItems: "center",

@@ -5,7 +5,7 @@ import { GiftedChat, Send, Actions, MessageImage } from 'react-native-gifted-cha
 import { Colors } from '../../constant/styles';
 import { View, StyleSheet, Dimensions, Touchable, TouchableOpacity, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { CustomBubble, CustomInputToolbar, renderMessageImage, CustomMessageText, CustomSend } from './CustomComponents';
+import { CustomBubble, CustomInputToolbar, renderMessageImage, CustomMessageText, CustomSend,CustomVoiceMessage } from './CustomComponents';
 import { useSelector } from 'react-redux';
 import CustomImagePicker from './ImagePicker';
 import { EXPO_PUBLIC_BASE_URL } from "@env";
@@ -33,8 +33,9 @@ const ChatRoom = () => {
   const user = useSelector((state) => state?.user?.userData)
   const [text, setText] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [recording, setCurrentISRecording] = useState(false);
 
-
+  const userId = user?.id
 // Function to start recording
 
 
@@ -75,7 +76,7 @@ const ChatRoom = () => {
 
     return unsubscribe;
   }, [currentChannelName]);
-
+  // console.log(auth?.currentUser?.uid)
   useEffect(() => {
     if (CurrentChatRoom?.length > 0) {
       const messagesCollection = collection(db, `chatRooms/${CurrentChatRoom[0]?._id}/messages`);
@@ -106,7 +107,7 @@ const ChatRoom = () => {
         text: newMessagesArray?.text, // No text for image messages
         createdAt: new Date(), // Current date and time
         user: {
-          _id: user?.id, // The ID of the current user
+          _id: userId, // The ID of the current user
         },
         loading: true, // Indicator for loading state
       }];
@@ -126,7 +127,7 @@ const ChatRoom = () => {
             image: response.downloadURL,
             loading: false, // Set loading to false after successful upload
             user: {
-              _id: user?.id, // Add the user ID here
+              _id: userId, // Add the user ID here
             },
           };
         });
@@ -137,7 +138,7 @@ const ChatRoom = () => {
           createdAt: new Date(), // Current date and time
           image: "",
           user: {
-            _id: user?.id, // The ID of the current user
+            _id: userId, // The ID of the current user
           },
         };
 
@@ -163,7 +164,7 @@ const ChatRoom = () => {
           text: newMessages[0]?.text, // No text for image messages
           createdAt: new Date(), // Current date and time
           user: {
-            _id: user?.id, // The ID of the current user
+            _id: userId, // The ID of the current user
           },
         };
 
@@ -195,7 +196,7 @@ const ChatRoom = () => {
       createdAt: new Date(), // Current date and time
       audio: audioUrl,
       user: {
-        _id: user?.id, // The ID of the current user
+        _id: userId, // The ID of the current user
       },
     };
   
@@ -279,7 +280,7 @@ const ChatRoom = () => {
         createdAt: new Date(), // Current date and time
         image: downloadURL,
         user: {
-          _id: user?.id, // The ID of the current user
+          _id: userId, // The ID of the current user
         },
       };
 
@@ -347,13 +348,12 @@ const ChatRoom = () => {
         onSend={onSend}
         inverted
         user={{
-          _id: user?.id, // Use user ID from your authentication system
+          _id: userId, // Use user ID from your authentication system
         }}
         isAnimated
         isLoadingEarlier={true}
-        renderMessageAudio={(props)=><View>
+        // renderMessageAudio={(props) => <CustomVoiceMessage {...props} />}
 
-        </View>}
         renderLoading={() => {
           if (isUploading) {
             return (
@@ -364,7 +364,7 @@ const ChatRoom = () => {
           }
         }} renderSend={(props) => {
           return (
-            text?.length > 0 &&
+            text?.length > 0 && !recording &&
 
             <Send
               {...props}
@@ -383,7 +383,6 @@ const ChatRoom = () => {
         renderActions={(props) => (
           text?.length === 0 &&
           <>
-          <RenderVoiceActions {...props} onAudioRecorded={sendAudioMessage} />
  
             <Actions
             
@@ -453,6 +452,7 @@ const RenderVoiceActions = (props) => {
       Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
     );
     setRecording(recording);
+    props.setCurrentISRecording(recording)
     setIsRecording(true);
   }
 
@@ -521,7 +521,20 @@ async function stopRecording() {
             onPressOut={stopRecording}
             disabled={isRecording}
           >
-            <Text>{isRecording ? `Recording ${duration}s` : 'Hold to Record'}</Text>
+           {isRecording ?
+           <View style={{display:'flex',flexDirection:'row' ,
+            gap:10}}>
+<Ionicons name='mic' size={24} color={"red"}/>
+<AppText  style={{fontSize:RFPercentage(2),color:Colors.primaryColor}} text={ 
+  
+  
+   `يتم التسجيل ${duration}  ث`
+}/>
+
+           </View> : 
+           <View style={{marginBottom:10}}>
+<Ionicons name='mic' size={26}/>
+           </View>}
           </TouchableOpacity>
   );
 };
