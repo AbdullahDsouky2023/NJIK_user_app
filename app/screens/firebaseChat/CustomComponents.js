@@ -117,7 +117,7 @@ export const CustomComposer = (props) => {
         cursorColor={Colors.primaryColor}
         placeholder={t("Type a message....")}
         placeholderTextColor='#999'
-        style={[styles.composer,{height:FitHeight,borderRadius:FitHeight*0.2}]}
+        style={[styles.composer,{height:FitHeight,borderRadius:FitHeight*0.2, width:props?.textInputValue ? width*0.82 : width * 0.7}]}
         multiline={true}
         
         numberOfLines={4}
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
       borderColor: '#ccc',
       borderWidth:  1,
       borderRadius:  height*0.01,
-    width:width*0.80,
+    // width:width*0.80,
     paddingLeft:  10,
     padding:10,
     fontFamily:mainFont.bold,

@@ -28,6 +28,7 @@ import {
   CHANGE_ORDER_DATE,
   NO_CONNECTION_SCREEN,
   CHAT_ROOM_fireBase,
+  SELECT_LAN,
 } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
@@ -50,6 +51,8 @@ import OffersScreen from "../component/Offers/OffersScreen";
 import ChangeDateOrderScreen from "../screens/Orders/ChangeDateOrderScreen";
 import NoConnectionScreen from "../screens/NoConnectionScreen";
 import ChatRoom from "../screens/firebaseChat/ChatRoom";
+import SelectLanguageScreen from "../component/language/SelectLanguageScreen";
+import SelectLangaugeScreen from "../component/language/SelectLanguageScreen";
 
 LogBox.ignoreAllLogs();
 
@@ -151,6 +154,10 @@ const RootNavigator = () => {
         <Stack.Screen
           name={MANUAL_LOCATION_ADD}
           component={AddManualLocationScreen}
+        />
+        <Stack.Screen
+          name={SELECT_LAN}
+          component={SelectLangaugeScreen}
         />
         <Stack.Screen
           name={NO_CONNECTION_SCREEN}

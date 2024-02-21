@@ -24,6 +24,7 @@ import FormField from "../../component/Form/FormField";
 import SubmitButton from "../../component/Form/FormSubmitButton";
 import { auth } from "../../../firebaseConfig";
 import * as Updates from "expo-updates";
+import { AntDesign } from '@expo/vector-icons';
 
 import LoadingModal from "../../component/Loading";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,6 +37,7 @@ import UserDatePicker from "../../component/Account/UserDatePicker";
 import NotificationComponent from "../../component/NotificationComponent";
 import AppButton from "../../component/AppButton";
 import { changeLanguage } from "../../../utils/language";
+import { SELECT_LAN } from "../../navigation/routes";
 const { width } = Dimensions.get("screen");
 const UserInfo = ({ navigation }) => {
   const [error, setError] = useState();
@@ -171,7 +173,11 @@ const UserInfo = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
       <View style={styles.headerContainer}>
+        <View style={{display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'row'}}>
         <NotificationComponent />
+        <AntDesign onPress={()=>navigation?.navigate(SELECT_LAN)} name="earth" size={24} color={Colors.primaryColor}/>
+
+        </View>
         <ArrowBack />
       </View>
       <ScrollView style={{ flex: 1 }}>

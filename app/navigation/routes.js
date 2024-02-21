@@ -27,3 +27,4 @@ export const Offer_route_name="العروض"
 export const CHANGE_ORDER_DATE = 'ChangeDateOrderScreen'
 export const NO_CONNECTION_SCREEN="noconnection"
 export const CHAT_ROOM_fireBase = " chatroomfirebase"
+export const SELECT_LAN = "SelectLanguageScreen"

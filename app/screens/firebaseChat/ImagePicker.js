@@ -71,7 +71,7 @@ const CustomImagePicker = ({ onImageSelected, ...otherProps }) => {
               <Ionicons name="image" size={24} color="white" />
             </View>
             <View>
-              <AppText text={"Choose Image"}  style={{color:Colors.blackColor,fontSize:RFPercentage(2)}}/>
+              <AppText text={"Choose Image"}  style={{color:Colors.blackColor,fontSize:RFPercentage(2.2)}}/>
             </View>
           </View>
         </TouchableOpacity>
@@ -81,7 +81,7 @@ const CustomImagePicker = ({ onImageSelected, ...otherProps }) => {
               <Ionicons name="camera" size={24} color="white" />
             </View>
             <View>
-              <AppText text={"Take a photo"}  style={{color:Colors.blackColor,ontSize:RFPercentage(2)}}/>
+              <AppText text={"Take a photo"}  style={{color:Colors.blackColor,fontSize:RFPercentage(2.2)}}/>
             </View>
           </View>
         </TouchableOpacity>
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     // backgroundColor:'blue',
     flexWrap: "wrap",
-    width: width * 1,
+    // width: width * 1,
     marginTop:10,
   },
   imagePicker: {
@@ -166,7 +166,7 @@ export  function CustomModal({children,refRBSheet}) {
     >
       <TouchableOpacity onPress={() => refRBSheet.current.open()} >
           <View style={styles2.imagePicker}>
-            <Ionicons name="camera" size={24} color="white" />
+            <Ionicons name="camera" size={RFPercentage(2.5)} color="white" />
           </View>
         </TouchableOpacity>
       <RBSheet
