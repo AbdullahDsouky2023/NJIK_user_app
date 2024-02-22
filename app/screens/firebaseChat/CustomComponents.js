@@ -3,12 +3,15 @@ import { getFirestore, collection, addDoc, query, orderBy, onSnapshot } from 'fi
 import { auth } from '../../../firebaseConfig';
 import { GiftedChat, Bubble, MessageText,InputToolbar } from 'react-native-gifted-chat';
 import { Colors, mainFont } from '../../constant/styles';
-import { TextInput, View, StyleSheet, Dimensions, TouchableOpacity, Image ,Text,ProgressBar} from 'react-native';
+import { TextInput, View, StyleSheet, Dimensions, TouchableOpacity, Image ,Text,Button} from 'react-native';
 import { useTranslation } from 'react-i18next';
 // import { Button, ProgressBar } from 'react-native-paper';
 import { Ionicons,MaterialIcons } from '@expo/vector-icons';
 import { RFPercentage } from 'react-native-responsive-fontsize';
-
+import { Audio } from 'expo-av';
+import { Feather ,AntDesign} from '@expo/vector-icons';
+import { ProgressBar } from 'react-native-paper';
+// import { Play } from 'stream-chat-expo';
 
 // import R from '@carchaze/react-native-voice-message-player';
 
@@ -116,7 +119,7 @@ export const CustomComposer = (props) => {
         cursorColor={Colors.primaryColor}
         placeholder={t("Type a message....")}
         placeholderTextColor='#999'
-        style={[styles.composer,{height:FitHeight,borderRadius:FitHeight*0.2, width:props?.textInputValue ? width*0.82 : width * 0.8}]}
+        style={[styles.composer,{height:FitHeight,borderRadius:FitHeight*0.2, width:props?.textInputValue ? width*0.82 : width * 0.72,display:props?.recording ? 'none':'flex'}]}
         multiline={true}
         
         numberOfLines={4}
@@ -217,12 +220,93 @@ const styles = StyleSheet.create({
 
 
 
-// export const CustomVoiceMessage = ({ currentMessage }) => {
-  
-  
-//   return (
-//     <RNVoiceMessagePlayer source={currentMessage?.audio} autoDownload={true} />
+export function CustomVoiceMessage({ currentMessage }) {
+  const [sound, setSound] = useState();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [position, setPosition] = useState(0);
 
-//   );
-// };
+  async function playSound() {
+    console.log('Loading Sound');
+    const { sound, status } = await Audio.Sound.createAsync({ uri: currentMessage.audio });
+    setSound(sound);
+    setDuration(status.durationMillis /  1000); // Convert duration to seconds
+    console.log('Playing Sound');
+    await sound.playAsync();
+    setIsPlaying(true);
 
+    // Add a listener for the sound to complete
+    sound.setOnPlaybackStatusUpdate(status => {
+      if (status.didJustFinish) {
+        setIsPlaying(false);
+        console.log("sound findis")
+        sound.unloadAsync(); // Unload the sound when it's done playing
+      }
+    });
+  }
+
+  useEffect(() => {
+    if (sound) {
+      const updatePosition = async () => {
+        const currentPosition = await sound.getStatusAsync();
+        setPosition(currentPosition.positionMillis /  1000); // Convert position to seconds
+      };
+
+      const intervalId = setInterval(updatePosition,  1000); // Update position every second
+
+      return () => {
+        clearInterval(intervalId);
+        sound.unloadAsync();
+      };
+    }
+  }, [sound]);
+
+  // const safeProgress = Math.min(Math.max(position / duration,  0),  1);
+  return (
+    <View style={voiceStyles.container}>
+      
+      {
+        isPlaying ?   
+        <View style={voiceStyles.audio}>
+
+        
+{/* <ProgressBar progress={safeProgress} color="#00695C" /> */}
+
+        <AntDesign key="pause" name="pausecircleo" size={24} color={Colors.whiteColor}
+        onPress={() => {
+          sound.pauseAsync();
+          setIsPlaying(false);
+        }} />
+        </View>
+        : 
+        <View style={voiceStyles.audio}>
+        <Feather key="play" name="play" size={24} color={Colors.whiteColor} onPress={() => {
+          playSound();
+          setIsPlaying(true);
+        }}  />
+      </View>
+      }
+    </View>
+  );
+}
+
+const voiceStyles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: height *  0.05,
+    width: width * 0.3,
+    // backgroundColor: Colors.primaryColor,
+    borderRadius: width * 0.3 *  0.5
+  },
+  audio:{
+    backgroundColor:Colors.primaryColor,
+    padding:7,
+borderRadius:25,
+display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+  }
+});

@@ -1,15 +1,15 @@
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { collection, addDoc, onSnapshot, } from 'firebase/firestore';
 import { auth, db } from '../../../firebaseConfig';
 import { GiftedChat, Send, Actions, MessageImage } from 'react-native-gifted-chat';
 import { Colors } from '../../constant/styles';
 import { View, StyleSheet, Dimensions, Touchable, TouchableOpacity, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { CustomBubble, CustomInputToolbar, renderMessageImage, CustomMessageText, CustomSend,CustomVoiceMessage } from './CustomComponents';
+import { CustomBubble, CustomInputToolbar, renderMessageImage, CustomMessageText, CustomSend, CustomVoiceMessage } from './CustomComponents';
 import { useSelector } from 'react-redux';
 import CustomImagePicker from './ImagePicker';
 import { EXPO_PUBLIC_BASE_URL } from "@env";
-import { Ionicons, FontAwesome, AntDesign } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 
 
@@ -36,7 +36,7 @@ const ChatRoom = () => {
   const [recording, setCurrentISRecording] = useState(false);
 
   const userId = user?.id
-// Function to start recording
+  // Function to start recording
 
 
 
@@ -132,29 +132,28 @@ const ChatRoom = () => {
           };
         });
         const uploadedMessages = await Promise.all(promises);
-        const newMessage = {
-          _id: Math.random().toString(), // Generate a unique ID
-          text: null, // No text for image messages
-          createdAt: new Date(), // Current date and time
-          image: "",
-          user: {
-            _id: userId, // The ID of the current user
-          },
-        };
+        setMessages((prevMessages) => GiftedChat.append(prevMessages, uploadedMessages));
 
-        // Append the new message to the messages array
-        setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessage));
+        // const newMessage = {
+        //   _id: Math.random().toString(), // Generate a unique ID
+        //   text: null, // No text for image messages
+        //   createdAt: new Date(), // Current date and time
+        //   image: "",
+        //   user: {
+        //     _id: userId, // The ID of the current user
+        //   },
+        // };
+
+        // // Append the new message to the messages array
+        // setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessage));
         // Send image messages to Firestore
-        setMessages(prevMessages => GiftedChat.append(prevMessages, uploadedMessages));
+        // setMessages(prevMessages => GiftedChat.append(prevMessages, uploadedMessages));
         uploadedMessages.forEach(async (message) => {
           await addMessageToFirestore(message);
         });
 
         // Update the state with the actual image message
 
-      }  if (audioUri) {
-        await sendAudioMessage();
-        setAudioUri(null); // Reset the audio URI after sending
       } else {
         setText('');
         console.log("new message are ", newMessages);
@@ -185,10 +184,10 @@ const ChatRoom = () => {
       alert('No audio recorded.');
       return;
     }
-  
+
     // Upload the audio file and get the download URL
     const audioUrl = await uploadAudio(audioUri);
-  
+
     // Create a new message object with the audio URL
     const newMessage = {
       _id: Math.random().toString(), // Generate a unique ID
@@ -199,14 +198,14 @@ const ChatRoom = () => {
         _id: userId, // The ID of the current user
       },
     };
-  
+
     // Append the new message to the messages array
     setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessage));
-  
+
     // Save the new message to Firestore
     await addMessageToFirestore(newMessage);
   };
-  
+
   const uploadImage = async (image, values, ImageName) => {
     try {
       setIsUploading(true)
@@ -308,17 +307,17 @@ const ChatRoom = () => {
         type: "audio/mpeg", // Set the correct MIME type for the audio file
         uri: Platform.OS === "ios" ? audioUri.replace("file://", "") : audioUri,
       });
-  
+
       try {
         const response = await fetch(`${EXPO_PUBLIC_BASE_URL}/api/upload`, {
           method: "POST",
           body: formData,
         });
-  
+
         if (!response.ok) {
           throw new Error(`Audio upload failed with status: ${response.status}`);
         }
-  
+
         const responseData = await response.json();
         const audioId = responseData[0]?.id;
         console.log("the audio id :", responseData[0]?.url);
@@ -329,9 +328,9 @@ const ChatRoom = () => {
       }
     } catch (error) {
       console.log("error uploading audio ", error);
-    } 
+    }
   };
-  
+
 
   if (!currentChannelName || !messages || !CurrentChatRoom) {
     return <LoadingScreen />
@@ -352,7 +351,7 @@ const ChatRoom = () => {
         }}
         isAnimated
         isLoadingEarlier={true}
-        // renderMessageAudio={(props) => <CustomVoiceMessage {...props} />}
+        renderMessageAudio={(props) => <CustomVoiceMessage {...props} />}
 
         renderLoading={() => {
           if (isUploading) {
@@ -383,30 +382,35 @@ const ChatRoom = () => {
         renderActions={(props) => (
           text?.length === 0 &&
           <>
- 
-            <Actions
-            
-              onPressActionButton={() => console.log("show image picker")}
-              containerStyle={{
-                marginBottom: 8,
-                marginHorizontal: 5,
-                padding: 1, borderRadius: width * 0.09 * 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', height: width * 0.09, width: width * 0.09
-              }}
-              icon={() => (
-                <View style={styles.actionsContainer}>
-                  <View style={{ marginTop: -8 }} >
-                    <CustomImagePicker onImageSelected={handleImageSelected} />
+            <RenderVoiceActions onAudioRecorded={sendAudioMessage} {...props} setCurrentISRecording={setCurrentISRecording} />
+
+            {
+              !recording &&
+              <Actions
+
+                onPressActionButton={() => console.log("show image picker")}
+                containerStyle={{
+                  marginBottom: 8,
+                  marginHorizontal: 5,
+                  padding: 1, borderRadius: width * 0.09 * 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', height: width * 0.09, width: width * 0.09
+                }}
+                icon={() => (
+                  <View style={styles.actionsContainer}>
+                    <View style={{ marginTop: -8 }} >
+                      <CustomImagePicker onImageSelected={handleImageSelected} />
+                    </View>
                   </View>
-                </View>
-              )}
+                )}
               />
-            
+            }
+
           </>
         )}
         messagesContainerStyle={{ backgroundColor: Colors.whiteColor, paddingBottom: height * 0.07 }}
         renderMessageText={(props) => <CustomMessageText {...props} />}
         renderInputToolbar={(props) => {
-        return (  <CustomInputToolbar
+          return (<CustomInputToolbar
+            recording={recording}
             setText={setText} textInputValue={text} {...props} containerStyle={{ borderTopWidth: 0, borderTopColor: '#333', }} />)
         }}
       />
@@ -435,75 +439,85 @@ const styles = StyleSheet.create({
 
 
 const RenderVoiceActions = (props) => {
- 
+
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [duration, setDuration] = useState(0);
   const user = useSelector((state) => state?.user?.userData)
 
   async function startRecording() {
-    await Audio.requestPermissionsAsync();
+    try{
+
+      console.log("start recording voice  ")
+      // Request permissions if not already granted
+      await Audio.requestPermissionsAsync();
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: true,
       playsInSilentModeIOS: true,
     });
-
-    const { recording } = await Audio.Recording.createAsync(
+  
+    // Check if there's an existing recording and stop it
+    if (recording) {
+      await recording.stopAndUnloadAsync();
+      console.log('Stopped and unloaded existing recording');
+    }
+  
+    // Create a new recording
+    const { recording: newRecording } = await Audio.Recording.createAsync(
       Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
     );
-    setRecording(recording);
-    props.setCurrentISRecording(recording)
+      console.log('Created new recording', newRecording);
+    // Update the state with the new recording
+    setRecording(newRecording);
+    props.setCurrentISRecording(newRecording);
     setIsRecording(true);
+  }catch(err){
+    console.log("error starting recording ",err)
+  }
+  }
+  
+  // In your RenderVoiceActions component
+  async function stopRecording() {
+    try {
+      
+      await recording.stopAndUnloadAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+      });
+
+    const uri = recording.getURI();
+    console.log('Recording stopped and stored at', uri);
+
+    // Call the onAudioRecorded callback with the audio URI
+    props.onAudioRecorded(uri);
+    setRecording(undefined);
+    props.setCurrentISRecording(false)
+    // setIsRecording(true);
+    setIsRecording(false);
+    setDuration(0)
+  } catch (error) {
+    console.log("error stop recording ",error)
+  }
+  }
+  async function deleteRecording() {
+    await recording.stopAndUnloadAsync();
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+    });
+
+    const uri = recording.getURI();
+    console.log('Recording stopped and stored at', uri);
+
+    // Call the onAudioRecorded callback with the audio URI
+    // props.onAudioRecorded(uri);
+    setRecording(undefined);
+    props.setCurrentISRecording(false)
+    // setIsRecording(true);
+    setDuration(0)
+    setIsRecording(false);
   }
 
-// In your RenderVoiceActions component
-async function stopRecording() {
-  await recording.stopAndUnloadAsync();
-  await Audio.setAudioModeAsync({
-    allowsRecordingIOS: false,
-  });
 
-  const uri = recording.getURI();
-  console.log('Recording stopped and stored at', uri);
-
-  // Call the onAudioRecorded callback with the audio URI
-  props.onAudioRecorded(uri);
-
-  setIsRecording(false);
-}
-
-  const uploadAudio = async (audioUri) => {
-    try {
-      // setIsUploading(true);
-      const formData = new FormData();
-      formData.append("files", {
-        name: `audio_message_${Date.now()}`, // Give the file a unique name
-        type: "audio/mpeg", // Set the correct MIME type for the audio file
-        uri: Platform.OS === "ios" ? audioUri.replace("file://", "") : audioUri,
-      });
-  
-      try {
-        const response = await fetch(`${EXPO_PUBLIC_BASE_URL}/api/upload`, {
-          method: "POST",
-          body: formData,
-        });
-  
-        if (!response.ok) {
-          throw new Error(`Audio upload failed with status: ${response.status}`);
-        }
-  
-        const responseData = await response.json();
-        const audioId = responseData[0]?.id;
-        console.log("the audio id :", responseData[0]?.url);
-        return responseData[0]?.url; // Return the URL of the uploaded audio file
-      } catch (error) {
-        console.error("Error uploading audio:", error);
-        // Handle error gracefully
-      }
-    } catch (error) {
-      console.log("error uploading audio ", error);
-    } 
-  };
   useEffect(() => {
     if (isRecording) {
       const interval = setInterval(() => {
@@ -517,24 +531,35 @@ async function stopRecording() {
 
   return (
     <TouchableOpacity
-            onPressIn={startRecording}
-            onPressOut={stopRecording}
-            disabled={isRecording}
-          >
-           {isRecording ?
-           <View style={{display:'flex',flexDirection:'row' ,
-            gap:10}}>
-<Ionicons name='mic' size={24} color={"red"}/>
-<AppText  style={{fontSize:RFPercentage(2),color:Colors.primaryColor}} text={ 
-  
-  
-   `يتم التسجيل ${duration}  ث`
-}/>
+      onPress={startRecording}
+      // onPressOut={stopRecording}
+      disabled={isRecording}
+    >
+      {isRecording ?
+        <View style={{
+          display: 'flex', flexDirection: 'row',
+          backgroundColor:Colors.grayColor,
+          alignSelf:'center',
+          paddingBottom:10,
+          paddingHorizontal:20,
+          gap:30,
+          // alignItems:'center',
+          justifyContent:'center',
 
-           </View> : 
-           <View style={{marginBottom:10}}>
-<Ionicons name='mic' size={26}/>
-           </View>}
-          </TouchableOpacity>
+          borderRadius:width*0.2*0.5,
+          marginHorizontal:width*0.2,
+          // gap: 10
+        }}>
+          <MaterialIcons name="delete-outline" size={24}  style={{marginTop:8}} color={Colors.redColor} onPress={deleteRecording}/>
+          <AppText style={{ fontSize: RFPercentage(2), color: Colors.primaryColor,marginTop:4 }} text={
+            `يتم التسجيل ${duration}  ث ... `
+          } />
+          <Ionicons name="send" size={RFPercentage(2.4)} color={Colors.success} style={styles.icon} onPress={stopRecording} />
+
+        </View> :
+        <View style={{ marginBottom: 10 }}>
+          <Ionicons name='mic' size={26} />
+        </View>}
+    </TouchableOpacity>
   );
 };
