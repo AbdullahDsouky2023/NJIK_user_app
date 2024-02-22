@@ -69,23 +69,23 @@ const RegisterScreen = ({ navigation, route }) => {
       const res = await createUser({
         email: values.emailAddress,
         username: values.fullName,
-        password: "hoohofyu242121fyufdh",
+        password: `${values?.emailAddress}${values?.fullName}`,
         city: values?.city || null,
         district: values?.district || null,
         birth_date: values?.birth_date,
         gender:values.gender,
         phoneNumber: phoneNumber,
       });
-      console.log({
-        email: values.emailAddress,
-        username: values.fullName,
-        password: `${values.emailAddress}${values.fullName}`,
-        city: values?.city || null,
-        district: values?.district || null,
-        birth_date: values?.birth_date,
-        gender:values.gender,
-        phoneNumber: phoneNumber,
-      });
+      // console.log({
+      //   email: values.emailAddress,
+      //   username: values.fullName,
+      //   password: `${values?.emailAddress}${values?.fullName}`,
+      //   city: values?.city || null,
+      //   district: values?.district || null,
+      //   birth_date: values?.birth_date,
+      //   gender:values.gender,
+      //   phoneNumber:"1212121212211",
+      // });
       if (res) {
         dispatch(userRegisterSuccess(auth?.currentUser));
         setItem("userData", auth?.currentUser);
