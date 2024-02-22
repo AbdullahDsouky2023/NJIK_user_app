@@ -15,10 +15,11 @@ import { Audio } from 'expo-av';
 
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import 'react-native-get-random-values';
-import LoadingScreen from '../loading/LoadingScreen';
+// import LoadingScreen from '../loading/LoadingScreen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { ActivityIndicator } from 'react-native-paper';
 import AppText from '../../component/AppText';
+import LoadingScreen from '../loading/LoadingScreen';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -391,6 +392,7 @@ const ChatRoom = () => {
                 containerStyle={{
                   marginBottom: 8,
                   marginHorizontal: 5,
+                  backgroundColor:Colors.primaryColor,
                   padding: 1, borderRadius: width * 0.09 * 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', height: width * 0.09, width: width * 0.09
                 }}
                 icon={() => (
