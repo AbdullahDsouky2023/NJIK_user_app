@@ -15,7 +15,6 @@ import { Audio } from 'expo-av';
 
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
 import LoadingScreen from '../loading/LoadingScreen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { ActivityIndicator } from 'react-native-paper';
