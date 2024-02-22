@@ -61,7 +61,7 @@ export default function OrderDetails({ navigation, route }) {
         sendPushNotification(
           providerNotificationToken,
           "تم الغاء الطلب",
-          `تم الغاء الطلب بواسطه ${user?.attributes?.name}`
+          `تم الغاء الطلب بواسطه ${user?.username}`
         );
       }
       if (res) {
@@ -101,10 +101,11 @@ export default function OrderDetails({ navigation, route }) {
         selectedOrder[0]?.attributes?.provider?.data?.attributes
           ?.expoPushNotificationToken;
       if (providerNotificationToken) {
+        // console.log("user data",user)
         sendPushNotification(
           providerNotificationToken,
           "تم دفع الطلب",
-          `تم دفع الطلب بواسطه ${user?.attributes?.username}`
+          `تم دفع الطلب بواسطه ${user?.username}`
         );
       }
       if (res) {
@@ -159,7 +160,7 @@ export default function OrderDetails({ navigation, route }) {
         sendPushNotification(
           providerNotificationToken,
           "تم رفض  عملية الد فع ",
-          `تم رفض  عملية الد فع  ${user?.attributes?.name} الرجاء ادخال سعر اخر`
+          `تم رفض  عملية الد فع  ${user?.username} الرجاء ادخال سعر اخر`
         );
       }
       if (res) {
