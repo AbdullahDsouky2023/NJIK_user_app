@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Njik-نجيك",
-    "slug": "rn-Nijk",
+    "slug": "rn-Nijk-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/images/icon4.png",
@@ -65,11 +65,6 @@
     },
     "updates": {
       "url": "https://u.expo.dev/82d0aeae-8255-4ee8-b129-b32e752a8cce"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "82d0aeae-8255-4ee8-b129-b32e752a8cce"
-      }
     }
   }
 }
