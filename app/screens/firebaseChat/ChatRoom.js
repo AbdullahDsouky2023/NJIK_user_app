@@ -465,7 +465,7 @@ const RenderVoiceActions = (props) => {
   
     // Create a new recording
     const { recording: newRecording } = await Audio.Recording.createAsync(
-      Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+      Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY
     );
       console.log('Created new recording', newRecording);
     // Update the state with the new recording
