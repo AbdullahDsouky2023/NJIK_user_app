@@ -14,12 +14,14 @@ import { Audio } from 'expo-av';
 
 
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-
+// import 'react-native-get-random-values';
+// import { v4 as uuidv4 } from 'uuid';
 // import LoadingScreen from '../loading/LoadingScreen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { ActivityIndicator } from 'react-native-paper';
 import AppText from '../../component/AppText';
 import LoadingScreen from '../loading/LoadingScreen';
+// import LoadingScreen from '../../LoadingSc';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -37,7 +39,10 @@ const ChatRoom = () => {
   const MAX_RETRIES =  5; // Maximum number of upload attempts
 
   const userId = user?.id
-  
+  // Function to start recording
+
+
+
   useEffect(() => {
     const ref = collection(db, 'chatRooms');
     // console.log("Chat room ref");
@@ -352,7 +357,7 @@ const ChatRoom = () => {
 
 
   if (!currentChannelName || !messages || !CurrentChatRoom) {
-    return <LoadingScreen/>
+    return <LoadingScreen />
   }
 
   return (
@@ -486,7 +491,7 @@ const RenderVoiceActions = (props) => {
     const { recording: newRecording } = await Audio.Recording.createAsync(
       Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY
     );
-      // console.log('Created new recording', newRecording);
+      console.log('Created new recording', newRecording);
     // Update the state with the new recording
     setRecording(newRecording);
     props.setCurrentISRecording(newRecording);
