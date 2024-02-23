@@ -21,7 +21,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import { ActivityIndicator } from 'react-native-paper';
 import AppText from '../../component/AppText';
 import LoadingScreen from '../loading/LoadingScreen';
-// import LoadingScreen from '../../LoadingSc';
+// import LoadingScreen from '../../screens/loading/LoadingScreen';
 
 const { height, width } = Dimensions.get('screen');
 
