@@ -14,7 +14,7 @@ import { Audio } from 'expo-av';
 
 
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import 'react-native-get-random-values';
+
 // import LoadingScreen from '../loading/LoadingScreen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { ActivityIndicator } from 'react-native-paper';
@@ -34,12 +34,10 @@ const ChatRoom = () => {
   const [text, setText] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [recording, setCurrentISRecording] = useState(false);
+  const MAX_RETRIES =  5; // Maximum number of upload attempts
 
   const userId = user?.id
-  // Function to start recording
-
-
-
+  
   useEffect(() => {
     const ref = collection(db, 'chatRooms');
     // console.log("Chat room ref");
@@ -206,57 +204,69 @@ const ChatRoom = () => {
     await addMessageToFirestore(newMessage);
   };
 
-  const uploadImage = async (image, values, ImageName) => {
+
+  const uploadImage = async (image, values, ImageName, retryCount =  0) => {
     try {
-      setIsUploading(true)
+      setIsUploading(true);
       const imageIds = [];
-      console.log("the items is ", image)
-      console.log("the images array ", image)
+      console.log("the items is ", image);
+      console.log("the images array ", image);
+  
       for (const imageUri of image) {
         const formData = new FormData();
         formData.append("files", {
           name: `Nijk_IMAGE_ORDER`,
-          type: "image/jpeg",
+          type: "image/jpeg", // Ensure this matches the file type
           uri: Platform.OS === "ios" ? imageUri.replace("file://", "") : imageUri,
         });
-
+  
         try {
           const response = await fetch(`${EXPO_PUBLIC_BASE_URL}/api/upload`, {
             method: "POST",
             body: formData,
           });
-
+  
           if (!response.ok) {
             throw new Error(`Image upload failed with status: ${response.status}`);
           }
-
+  
           const responseData = await response.json();
           const imageId = responseData[0]?.id;
-          imageIds.push(imageId);
-          console.log("the image id :", responseData[0]?.url)
-          return responseData[0]?.url
+  
+          if (imageId) {
+            imageIds.push(imageId);
+            console.log("the image id :", responseData[0]?.url);
+            return responseData[0]?.url;
+          } else {
+            console.error("Error: imageId is undefined");
+          }
         } catch (error) {
           console.error("Error uploading image:", error);
-          // Handle error gracefully
+          // If upload fails and retries are not exhausted, retry
+          if (retryCount < MAX_RETRIES -  1) {
+            console.log(`Retrying upload... Attempt ${retryCount +  1}`);
+            return uploadImage(image, values, ImageName, retryCount +  1);
+          } else {
+            console.error("Upload failed after maximum retries.");
+          }
         }
       }
-      //   console.log("the image ids are ",imageIds)
+  
       dispatch(setCurrentRegisterProperties({ [ImageName]: imageIds }));
-
-      // Return the download URLs instead of dispatching to Redux store
+  
       const downloadURLs = await Promise.all(imageIds.map(async (id) => {
         const url = `${EXPO_PUBLIC_BASE_URL}/api/images/${id}`;
         return url;
       }));
-
+  
       return downloadURLs;
     } catch (error) {
-      console.log("error uploadign image ", error)
+      console.log("Error uploading image ", error);
     } finally {
-      setIsUploading(false)
-
+      setIsUploading(false);
     }
   };
+  
   const addMessageToFirestore = async (message) => {
     const messagesCollection = collection(db, `chatRooms/${CurrentChatRoom[0]?._id}/messages`);
     await addDoc(messagesCollection, {
@@ -298,42 +308,51 @@ const ChatRoom = () => {
     return <AntDesign name="down" size={20} color="#333" />
       ;
   };
-  const uploadAudio = async (audioUri) => {
+  // Maximum number of upload attempts
+
+  const uploadAudio = async (audioUri, retryCount =  0) => {
     try {
-      // setIsUploading(true);
+      // setIsUploading(true); // Uncomment if you have a state management for upload status
       const formData = new FormData();
       formData.append("files", {
         name: `audio_message_${Date.now()}`, // Give the file a unique name
         type: "audio/mpeg", // Set the correct MIME type for the audio file
         uri: Platform.OS === "ios" ? audioUri.replace("file://", "") : audioUri,
       });
-
+  
       try {
         const response = await fetch(`${EXPO_PUBLIC_BASE_URL}/api/upload`, {
           method: "POST",
           body: formData,
         });
-
+  
         if (!response.ok) {
           throw new Error(`Audio upload failed with status: ${response.status}`);
         }
-
+  
         const responseData = await response.json();
         const audioId = responseData[0]?.id;
         console.log("the audio id :", responseData[0]?.url);
         return responseData[0]?.url; // Return the URL of the uploaded audio file
       } catch (error) {
         console.error("Error uploading audio:", error);
-        // Handle error gracefully
+        // If upload fails and retries are not exhausted, retry
+        if (retryCount < MAX_RETRIES -  1) {
+          console.log(`Retrying upload... Attempt ${retryCount +  1}`);
+          return uploadAudio(audioUri, retryCount +  1);
+        } else {
+          console.error("Upload failed after maximum retries.");
+        }
       }
     } catch (error) {
-      console.log("error uploading audio ", error);
+      console.log("Error uploading audio ", error);
     }
   };
+  
 
 
   if (!currentChannelName || !messages || !CurrentChatRoom) {
-    return <LoadingScreen />
+    return <LoadingScreen/>
   }
 
   return (
@@ -467,7 +486,7 @@ const RenderVoiceActions = (props) => {
     const { recording: newRecording } = await Audio.Recording.createAsync(
       Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY
     );
-      console.log('Created new recording', newRecording);
+      // console.log('Created new recording', newRecording);
     // Update the state with the new recording
     setRecording(newRecording);
     props.setCurrentISRecording(newRecording);
