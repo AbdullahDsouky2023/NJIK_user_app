@@ -213,20 +213,19 @@ const ChatRoom = () => {
   const uploadImage = async (image, values, ImageName, retryCount =  0) => {
     try {
       setIsUploading(true);
-      const imageIds = [];
-      console.log("the items is ", image);
-      console.log("the images array ", image);
+      const imageUrls = [];
   
       for (const imageUri of image) {
         const formData = new FormData();
-        formData.append("files", {
-          name: `Nijk_IMAGE_ORDER`,
+        formData.append("file", {
+          uri: imageUri,
           type: "image/jpeg", // Ensure this matches the file type
-          uri: Platform.OS === "ios" ? imageUri.replace("file://", "") : imageUri,
+          name: `image_${Date.now()}.jpg`, // Generate a unique file name
         });
+        formData.append("upload_preset", "tegmyn81"); // Replace with your Cloudinary upload preset
   
         try {
-          const response = await fetch(`${EXPO_PUBLIC_BASE_URL}/api/upload`, {
+          const response = await fetch("https://api.cloudinary.com/v1_1/dwtxbh9ms/image/upload", {
             method: "POST",
             body: formData,
           });
@@ -236,14 +235,14 @@ const ChatRoom = () => {
           }
   
           const responseData = await response.json();
-          const imageId = responseData[0]?.id;
+          const imageUrl = responseData.secure_url; // The URL of the uploaded image
   
-          if (imageId) {
-            imageIds.push(imageId);
-            console.log("the image id :", responseData[0]?.url);
-            return responseData[0]?.url;
+          if (imageUrl) {
+            imageUrls.push(imageUrl);
+            console.log("The image URL:", imageUrl);
+            return imageUrl
           } else {
-            console.error("Error: imageId is undefined");
+            console.error("Error: imageUrl is undefined");
           }
         } catch (error) {
           console.error("Error uploading image:", error);
@@ -257,20 +256,17 @@ const ChatRoom = () => {
         }
       }
   
-      dispatch(setCurrentRegisterProperties({ [ImageName]: imageIds }));
+      // Assuming you want to dispatch the image URLs to your Redux store
+      // dispatch(setCurrentRegisterProperties({ [ImageName]: imageUrls }));
   
-      const downloadURLs = await Promise.all(imageIds.map(async (id) => {
-        const url = `${EXPO_PUBLIC_BASE_URL}/api/images/${id}`;
-        return url;
-      }));
-  
-      return downloadURLs;
+      return imageUrls;
     } catch (error) {
       console.log("Error uploading image ", error);
     } finally {
       setIsUploading(false);
     }
   };
+  
   
   const addMessageToFirestore = async (message) => {
     const messagesCollection = collection(db, `chatRooms/${CurrentChatRoom[0]?._id}/messages`);
@@ -315,18 +311,19 @@ const ChatRoom = () => {
   };
   // Maximum number of upload attempts
 
-  const uploadAudio = async (audioUri, retryCount =  0) => {
+  const uploadAudio = async (audioUri, retryCount =   0) => {
     try {
       // setIsUploading(true); // Uncomment if you have a state management for upload status
       const formData = new FormData();
-      formData.append("files", {
-        name: `audio_message_${Date.now()}`, // Give the file a unique name
+      formData.append("file", {
+        uri: audioUri,
         type: "audio/mpeg", // Set the correct MIME type for the audio file
-        uri: Platform.OS === "ios" ? audioUri.replace("file://", "") : audioUri,
+        name: `audio_message_${Date.now()}.mp3`, // Give the file a unique name
       });
+      formData.append("upload_preset", "tegmyn81"); // Use the name of your upload preset
   
       try {
-        const response = await fetch(`${EXPO_PUBLIC_BASE_URL}/api/upload`, {
+        const response = await fetch("https://api.cloudinary.com/v1_1/dwtxbh9ms/upload", {
           method: "POST",
           body: formData,
         });
@@ -336,15 +333,16 @@ const ChatRoom = () => {
         }
   
         const responseData = await response.json();
-        const audioId = responseData[0]?.id;
-        console.log("the audio id :", responseData[0]?.url);
-        return responseData[0]?.url; // Return the URL of the uploaded audio file
+        const audioUrl = responseData.secure_url; // The URL of the uploaded audio file
+        console.log("The audio URL:", audioUrl);
+        return audioUrl; // Return the URL of the uploaded audio file
+        
       } catch (error) {
         console.error("Error uploading audio:", error);
         // If upload fails and retries are not exhausted, retry
-        if (retryCount < MAX_RETRIES -  1) {
-          console.log(`Retrying upload... Attempt ${retryCount +  1}`);
-          return uploadAudio(audioUri, retryCount +  1);
+        if (retryCount < MAX_RETRIES -   1) {
+          console.log(`Retrying upload... Attempt ${retryCount +   1}`);
+          return uploadAudio(audioUri, retryCount +   1);
         } else {
           console.error("Upload failed after maximum retries.");
         }
@@ -353,6 +351,7 @@ const ChatRoom = () => {
       console.log("Error uploading audio ", error);
     }
   };
+  
   
 
 
