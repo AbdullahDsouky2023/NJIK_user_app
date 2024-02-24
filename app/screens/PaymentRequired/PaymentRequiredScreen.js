@@ -305,21 +305,12 @@ export default function PaymentRequiredScreen({ navigation, route }) {
             />
           </View>
           <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
-          <ItemComponent name={"الرقم الضريبي"} data={`4545454545`} />
+          <ItemComponent name={"الرقم الضريبي"} data={`311964554400003`} />
 
 
           {
             item?.attributes?.provider_fee > 0 &&
-            <View style={styles.itemContainer}>
-              <AppText centered={false} text={"أجرة الفني"} style={styles.title} />
-              <AppText
-                centered={false}
-                text={
-                  `${item?.attributes?.provider_fee} ${CURRENCY}`
-                }
-                style={styles.price}
-              />
-            </View>
+<ItemComponent name={"اجرة الفني"} data={        `${item?.attributes?.provider_fee} ${CURRENCY}`}/>
           }
           {item?.attributes?.additional_prices?.data?.length > 0 &&
             <>

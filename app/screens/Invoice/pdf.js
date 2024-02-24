@@ -228,7 +228,7 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
 
                              الرقم الضريبي :
                              </span>
-                             454545454.</p>
+                             311964554400003.</p>
 
                             <p style="margin:10px">  <span style='color:#f2652a'>الاسم  :</span> ${item?.attributes?.user?.data?.attributes?.username} </p>
                                  <p>  <span style='color:#f2652a'> رقم الهاتف :</span> ${item?.attributes?.phoneNumber} </p>
