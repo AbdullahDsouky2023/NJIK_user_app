@@ -172,7 +172,10 @@ export default function CompleteOrderCard({ item, onPress }) {
             />
           </View>
 
-          <Pdf item={item} />
+          <Pdf item={item} >
+          <FontAwesome5 name="receipt" size={24} color={Colors.whiteColor} />
+
+            </Pdf>
         </View>
 
       </View>

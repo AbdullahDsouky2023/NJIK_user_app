@@ -10,8 +10,9 @@ import useOrders, { useAllOrders } from "../../../utils/orders";
 import LoadingScreen from "../loading/LoadingScreen";
 const { width ,height} = Dimensions.get("screen");
 import { RefreshControl  } from 'react-native';
-import { ORDERS_DETAILS } from "../../navigation/routes";
+import { ORDERS_DETAILS, REQUIRED_PAY_SCREEN } from "../../navigation/routes";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
+import { CommonActions } from "@react-navigation/native";
 
 
  function CurrentOrders({navigation}) {
@@ -32,7 +33,21 @@ const fetchData=()=>{
   const currentOrders = data?.data?.filter(
     (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished"
     );
-  
+    const CurentRequiredOrdersForPayment = currentOrders.filter((order)=>order?.attributes?.status === "payment_required")
+    if(CurentRequiredOrdersForPayment?.length > 0 ){
+      return (
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name:REQUIRED_PAY_SCREEN ,
+              params:{
+                item:CurentRequiredOrdersForPayment[0]
+              }
+         }],
+          })))  
+      
+    }
+    // console.log("there are some orders to pay",CurentRequiredOrdersForPayment)
     setCurrentData(currentOrders)
     refetch()
     console.log(ordersRedux?.data?.length)

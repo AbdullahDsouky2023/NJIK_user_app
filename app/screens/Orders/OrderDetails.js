@@ -562,7 +562,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: "auto",
-
+justifyContent:'space-between',
+paddingHorizontal:20,
     width: width * 0.9,
     padding: 10,
     // borderWidth: 0.7,

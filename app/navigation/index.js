@@ -29,6 +29,8 @@ import {
   NO_CONNECTION_SCREEN,
   CHAT_ROOM_fireBase,
   SELECT_LAN,
+  REQUIRED_PAY_SCREEN,
+  ORDERS_DETAILS,
 } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
@@ -53,6 +55,8 @@ import NoConnectionScreen from "../screens/NoConnectionScreen";
 import ChatRoom from "../screens/firebaseChat/ChatRoom";
 import SelectLanguageScreen from "../component/language/SelectLanguageScreen";
 import SelectLangaugeScreen from "../component/language/SelectLanguageScreen";
+import PaymentRequiredScreen from "../screens/PaymentRequired/PaymentRequiredScreen";
+import OrderDetails from "../screens/Orders/OrderDetails";
 
 LogBox.ignoreAllLogs();
 
@@ -159,6 +163,15 @@ const RootNavigator = () => {
           name={SELECT_LAN}
           component={SelectLangaugeScreen}
         />
+        <Stack.Screen
+          name={REQUIRED_PAY_SCREEN}
+          component={PaymentRequiredScreen}
+        />
+               <Stack.Screen
+                    name={ORDERS_DETAILS}
+                    component={OrderDetails}
+                   
+                />
         <Stack.Screen
           name={NO_CONNECTION_SCREEN}
           component={NoConnectionScreen}

@@ -11,7 +11,7 @@ import QRCode from 'react-native-qrcode-svg';
 
 import { Colors } from '../../constant/styles';
 const { height } = Dimensions.get('screen')
-export default function Pdf({ item }) {
+export default function Pdf({ item ,chatContainerStyles,children}) {
   const qrCodeValue = item?.id; // Replace with your item ID
   const qrCodeSize = 100; // Adjust the size as needed
   const cartServiveItems = item?.attributes?.service_carts?.data?.length > 0 && item?.attributes?.service_carts?.data?.map((item) => (
@@ -157,7 +157,6 @@ export default function Pdf({ item }) {
     <td  dir="rtl">
       <table   dir="rtl" width="600" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#ffffff" style="border-radius: 10px 10px 0 0;">
         <tr class="hiddenMobile">
-          <td height="40"></td>
         </tr>
         <tr class="visibleMobile">
           <td height="30"></td>
@@ -528,11 +527,12 @@ export default function Pdf({ item }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.chatContainer}
+        style={[styles.chatContainer,{...chatContainerStyles}]}
         onPress={printToFile}
       >
-        <FontAwesome5 name="receipt" size={24} color={Colors.whiteColor} />
-
+{
+  children
+}
       </TouchableOpacity>
     </View>
   );
