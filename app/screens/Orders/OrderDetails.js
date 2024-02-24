@@ -33,6 +33,7 @@ import useNotifications from "../../../utils/notifications";
 import { Colors } from "../../constant/styles";
 import DelayOrderCard from "../../component/orders/DelayOrderCard ";
 import useCartServices from "../../../utils/CartService";
+import ItemComponent from "../../component/Payment/ItemComponent";
 const { width, height } = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
@@ -47,6 +48,9 @@ export default function OrderDetails({ navigation, route }) {
   const [cartServicesSelected, setCartServicesSelected] = useState([])
   const { sendPushNotification } = useNotifications();
   const { t } = useTranslation();
+  const categoryName1 = item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name
+  const categoryName2 = item?.attributes?.services.data[0]?.attributes?.category?.data?.attributes?.name
+  const categoryName3 = item?.attributes?.packages?.data[0]?.attributes?.name
   // console.log("results ",item?.attributes?.service_carts)
   const handleOrderCancle = async (id) => {
     try {
@@ -188,6 +192,35 @@ export default function OrderDetails({ navigation, route }) {
     <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
       <ArrowBack subPage={true} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ItemComponent name="رقم الطلب" iconName={"hashtag"} data={item?.id} />
+      <ItemComponent iconName={"server"} name="حالة الطلب" data={
+            item?.attributes?.status === "assigned"
+              ? "New"
+              : item?.attributes?.status === "pending"
+                ? "New"
+                : item?.attributes?.status === "accepted"
+                  ? "Accepted"
+                  : item?.attributes?.status === "working"
+                    ? "Working"
+                    : item?.attributes?.status === "finish_work"
+                      ? "Finished"
+                      : item?.attributes?.status === "payed"
+                        ? "Payed"
+                        : "Finished"
+
+          } />
+              <ItemComponent name="التاريخ" iconName={"clock-o"} data={item?.attributes?.date} />
+              {
+                     item?.attributes?.provider?.data?.attributes?.name &&
+              <ItemComponent name=" اسم الفني" iconName="user" data={
+                item?.attributes?.provider?.data?.attributes?.name
+                
+              } />
+            }
+               <ItemComponent name="الخدمة" data={
+            categoryName1 || categoryName2 || categoryName3
+
+          } />
         {(item?.attributes?.services?.data?.length > 0) ? (
           <View style={styles.itemContainer}>
             <FlatList
@@ -374,14 +407,7 @@ export default function OrderDetails({ navigation, route }) {
             style={styles.price}
           />
         </View>
-        <View style={styles.itemContainer}>
-          <AppText centered={false} text={"Date"} style={styles.title} />
-          <AppText
-            centered={false}
-            text={item?.attributes?.date}
-            style={styles.price}
-          />
-        </View>
+    
 
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={"Notes"} style={styles.title} />

@@ -88,13 +88,24 @@ export default function StarsComponent({ route }) {
       const OrderProvider = selectedOrder[0]?.attributes?.provider?.data?.id;
       const OrderUserId = selectedOrder[0]?.attributes?.user?.data?.id;
       if (res) {
-        navigation.goBack();
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: t(HOME) }],
-          })
-        );
+        if(route?.params?.firstReview){
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name:"App" }],
+            })
+          );
+          
+        }else {
+          
+          navigation.goBack();
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: t(HOME) }],
+            })
+          );
+        }
         await updateUserData(OrderUserId, {
           orders: {
             connect: [{ id: orderID }],

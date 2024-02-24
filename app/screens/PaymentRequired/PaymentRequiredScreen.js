@@ -16,7 +16,7 @@ import PriceTextComponent from "../../component/PriceTextComponent";
 import LoadingScreen from "../loading/LoadingScreen";
 import ArrowBack from "../../component/ArrowBack";
 import { ScrollView } from "react-native-virtualized-view";
-import { CHAT_ROOM_fireBase, CURRENCY, HOME, ORDERS_DETAILS, ORDER_SUCCESS_SCREEN } from "../../navigation/routes";
+import { CHAT_ROOM_fireBase, CURRENCY, HOME, ORDERS_DETAILS, ORDER_SUCCESS_SCREEN, SUCESS_PAYMENT_SCREEN } from "../../navigation/routes";
 import { FontAwesome,AntDesign, MaterialIcons } from '@expo/vector-icons';
 import ReserveButton from "../../component/ReverveButton";
 import AppButton from "../../component/AppButton";
@@ -61,7 +61,10 @@ export default function PaymentRequiredScreen({ navigation, route }) {
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: t(ORDER_SUCCESS_SCREEN) }],
+            routes: [{ name: (SUCESS_PAYMENT_SCREEN) ,
+              params:{
+              item
+            }}],
           })
         );
       } else {

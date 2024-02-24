@@ -17,13 +17,16 @@ import LoadingScreen from "../loading/LoadingScreen";
 import ArrowBack from "../../component/ArrowBack";
 import { ScrollView } from "react-native-virtualized-view";
 import { CURRENCY } from "../../navigation/routes";
+import ItemComponent from "../../component/Payment/ItemComponent";
 
 const { width, height } = Dimensions.get("screen");
 
 export default function CompleteOrderDetails({ navigation, route }) {
   const { item } = route?.params;
   const [isLoading, setIsLoading] = useState(false);
-
+  const categoryName1 = item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name
+  const categoryName2 = item?.attributes?.services.data[0]?.attributes?.category?.data?.attributes?.name
+  const categoryName3 = item?.attributes?.packages?.data[0]?.attributes?.name
   if (isLoading) return <LoadingScreen />;
   return (
     <ScrollView
@@ -31,7 +34,37 @@ export default function CompleteOrderDetails({ navigation, route }) {
       style={{ backgroundColor: Colors.whiteColor }}
     >
       <ArrowBack subPage={true} />
+
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ItemComponent name="رقم الطلب" iconName={"hashtag"} data={item?.id} />
+      <ItemComponent iconName={"server"} name="حالة الطلب" data={
+            item?.attributes?.status === "assigned"
+              ? "New"
+              : item?.attributes?.status === "pending"
+                ? "New"
+                : item?.attributes?.status === "accepted"
+                  ? "Accepted"
+                  : item?.attributes?.status === "working"
+                    ? "Working"
+                    : item?.attributes?.status === "finish_work"
+                      ? "Finished"
+                      : item?.attributes?.status === "payed"
+                        ? "Payed"
+                        : "Finished"
+
+          } />
+              <ItemComponent name="التاريخ" iconName={"clock-o"} data={item?.attributes?.date} />
+          {/* <ItemComponent2 name="الموقع" iconName={"map-marker"} data={item?.attributes?.location} /> */}
+          <ItemComponent name="الخدمة" data={
+            categoryName1 || categoryName2 || categoryName3
+
+          } />
+          <ItemComponent name=" اسم الفني" iconName="user" data={
+            item?.attributes?.provider?.data?.attributes?.name
+
+          } />
+                    <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
+
       {(item?.attributes?.services?.data?.length > 0 )? (
           <View style={styles.itemContainer}>
             <FlatList
@@ -210,30 +243,29 @@ export default function CompleteOrderDetails({ navigation, route }) {
             style={styles.name}
           />
         </View>
-        <View style={styles.itemContainer}>
-          <AppText centered={false} text={" السعر"} style={styles.title} />
-          <PriceTextComponent
-            style={{ color: Colors.blackColor, fontSize: RFPercentage(1.9), marginTop: 4 }}
-            price={item?.attributes?.totalPrice}
-          />
-        </View>
-        <View style={styles.descriptionContainer}>
-          <AppText centered={false} text={" العنوان"} style={styles.title} />
-          <AppText
-            centered={false}
-            text={item?.attributes?.location}
-            style={styles.price}
-          />
-        </View>
+        
+        <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${CURRENCY}`} />
+          <ItemComponent name={"الضريبة"} iconName={"money"} data={`${0} ${CURRENCY}`} />
+          {
+            item?.attributes?.provider_fee > 0 &&
+<ItemComponent name={"اجرة الفني"} data={        `${item?.attributes?.provider_fee} ${CURRENCY}`}/>
+          }
+          {item?.attributes?.additional_prices?.data?.length > 0 &&
+            <>
+              <FlatList
+                data={item?.attributes?.additional_prices?.data}
+                showsVerticalScrollIndicator={false}
 
-        <View style={styles.itemContainer}>
-          <AppText centered={false} text={" التاريخ"} style={styles.title} />
-          <AppText
-            centered={false}
-            text={item?.attributes?.date}
-            style={styles.price}
-          />
-        </View>
+                renderItem={({ item }) => {
+
+                  return <ItemComponent name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`} />
+                }}
+                keyExtractor={(item) => item?.id}
+              />
+
+            </>
+          }
+          <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={" ملاحظات"} style={styles.title} />
           <AppText
@@ -288,45 +320,9 @@ export default function CompleteOrderDetails({ navigation, route }) {
           )}
           
         </View>
-        {
-            item?.attributes?.provider_fee > 0 &&
-          <View style={styles.itemContainer}>
-            <AppText centered={false} text={"أجرة الفني"} style={styles.title} />
-            <AppText
-              centered={false}
-              text={
-               `${item?.attributes?.provider_fee} ${CURRENCY}`
-              }
-              style={styles.price}
-              />
-          </View>
-            }
-          {item?.attributes?.additional_prices?.data?.length > 0 &&
-          <>
-          <AppText centered={false} text={"اسعار اضافية"} style={[styles.title,{paddingHorizontal:10}]} />
-          <FlatList
-      data={item?.attributes?.additional_prices?.data}
-      showsVerticalScrollIndicator={false}
-
-      renderItem={({item})=>{
-        
-        return  (<View style={styles.itemContainer}>
-          <AppText centered={false} text={item?.attributes?.details} style={[styles.title,{maxWidth:width*0.68}]} />
-          <AppText
-            centered={false}
-            text={
-              `${item?.attributes?.Price} ${CURRENCY}`
-               
-            }
-            style={styles.price}
-          />
-        </View>)
-      }}
-      keyExtractor={(item)=>item?.id}
-      />
-      
-            </>
-          }
+       
+             
+     
       </ScrollView>
     </ScrollView>
   );

@@ -29,3 +29,4 @@ export const NO_CONNECTION_SCREEN="noconnection"
 export const CHAT_ROOM_fireBase = " chatroomfirebase"
 export const SELECT_LAN = "SelectLanguageScreen"
 export const REQUIRED_PAY_SCREEN = 'require_payment_screen '
+export const SUCESS_PAYMENT_SCREEN = 'PaymentSucessScreen '

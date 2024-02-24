@@ -31,6 +31,7 @@ import {
   SELECT_LAN,
   REQUIRED_PAY_SCREEN,
   ORDERS_DETAILS,
+  SUCESS_PAYMENT_SCREEN,
 } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
@@ -57,6 +58,7 @@ import SelectLanguageScreen from "../component/language/SelectLanguageScreen";
 import SelectLangaugeScreen from "../component/language/SelectLanguageScreen";
 import PaymentRequiredScreen from "../screens/PaymentRequired/PaymentRequiredScreen";
 import OrderDetails from "../screens/Orders/OrderDetails";
+import PaymentSucessScreen from "../screens/payment/SucessPaymentScreen";
 
 LogBox.ignoreAllLogs();
 
@@ -162,6 +164,10 @@ const RootNavigator = () => {
         <Stack.Screen
           name={SELECT_LAN}
           component={SelectLangaugeScreen}
+        />
+        <Stack.Screen
+          name={SUCESS_PAYMENT_SCREEN}
+          component={PaymentSucessScreen}
         />
         <Stack.Screen
           name={REQUIRED_PAY_SCREEN}
