@@ -59,11 +59,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
             categoryName1 || categoryName2 || categoryName3
 
           } />
-          <ItemComponent name=" اسم الفني" iconName="user" data={
-            item?.attributes?.provider?.data?.attributes?.name
-
-          } />
-                    <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
+        
 
       {(item?.attributes?.services?.data?.length > 0 )? (
           <View style={styles.itemContainer}>
@@ -236,6 +232,11 @@ export default function CompleteOrderDetails({ navigation, route }) {
           />
         </View>
          : null }
+           <ItemComponent name=" اسم الفني" iconName="user" data={
+            item?.attributes?.provider?.data?.attributes?.name
+
+          } />
+                    <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
         <View>
           <AppText
             centered={false}
