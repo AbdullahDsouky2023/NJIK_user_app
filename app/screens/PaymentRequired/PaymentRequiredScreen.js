@@ -58,15 +58,18 @@ export default function PaymentRequiredScreen({ navigation, route }) {
       }
       if (res) {
         // Alert.alert(t("payment has been processed successfully."));
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: (SUCESS_PAYMENT_SCREEN) ,
-              params:{
-              item
-            }}],
-          })
-        );
+        // navigation.dispatch(
+        //   CommonActions.reset({
+        //     index: 0,
+        //     routes: [{ name: (SUCESS_PAYMENT_SCREEN) ,
+        //       params:{
+        //       item
+        //     }}],
+        //   })
+        // );
+        navigation?.navigate(SUCESS_PAYMENT_SCREEN,{
+          item
+        })
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
       }
@@ -360,7 +363,15 @@ export default function PaymentRequiredScreen({ navigation, route }) {
           style={styles.buttonStyles2}
           textStyle={{ fontSize: RFPercentage(1.7) }}
           onPress={() => {
-            navigation.navigate(CHAT_ROOM_fireBase);
+            console.log("f222eeees",item?.attributes?.provider_fee >0,item?.attributes?.additional_prices?.data?.length )
+            if(item?.attributes?.provider_fee > false|| item?.attributes?.additional_prices?.data?.length === 0){
+              navigation.navigate(CHAT_ROOM_fireBase)
+              dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id))
+
+            }else {
+              
+              navigation.navigate(ORDERS_DETAILS,{item:item});
+            }
             dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id))
           }}
         />
