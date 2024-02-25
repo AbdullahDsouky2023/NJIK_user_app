@@ -34,10 +34,10 @@ export default function StarsComponent({ route }) {
   const [isLoading, setIsLoading] = useState(false);
   const [focus, setFocus] = useState(null);
   const [description, setDescription] = useState(null);
+  const  { t }= useTranslation()
   const TemporaryImage =
     "https://cdn-icons-png.flaticon.com/128/6998/6998122.png";
   const { sendPushNotification } = useNotifications();
-  const { t } = useTranslation();
   const RatingEmojs = [
     {
       emoji: "emoticon-outline",
@@ -69,7 +69,7 @@ export default function StarsComponent({ route }) {
   const handleFormSubmit = async (values) => {
     try {
       setIsLoading(true);
-      const { orderID, item } = route?.params;
+      const { orderID, item } = route?.params || {};
       const SelectedRate = RatingEmojs.filter(
         (item) => item?.explain === focus
       )[0];
@@ -77,13 +77,11 @@ export default function StarsComponent({ route }) {
         rating: SelectedRate.rate.toString(),
         content: description,
       });
-      const selectedOrder = UserOrders?.data?.filter(
+      const selectedOrder = UserOrders?.filter(
         (order) => order?.id === orderID
       );
 
-      const providerNotificationToken =
-        selectedOrder[0]?.attributes?.provider?.data?.attributes
-          ?.expoPushNotificationToken;
+   const providerNotificationToken = selectedOrder[0]?.attributes?.provider?.data?.attributes?.expoPushNotificationToken;
 
       const OrderProvider = selectedOrder[0]?.attributes?.provider?.data?.id;
       const OrderUserId = selectedOrder[0]?.attributes?.user?.data?.id;

@@ -33,54 +33,46 @@ const { width, height } = Dimensions.get("screen");
 export default function PaymentRequiredScreen({ navigation, route }) {
   const { item } = route?.params;
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { sendPushNotification } = useNotifications();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const orders = useSelector((state) => state?.orders?.orders);
   const user = useSelector((state) => state?.user?.userData);
-  const categoryName1 = item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes
-  const categoryName2 = item?.attributes?.services.data[0]?.attributes?.category?.data?.attributes
-  const categoryName3 = item?.attributes?.packages?.data[0]?.attributes
+
+  // Added checks to ensure objects are defined before accessing their properties
+  const categoryName1 = item?.attributes?.service_carts?.data?.[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes;
+  const categoryName2 = item?.attributes?.services?.data?.[0]?.attributes?.category?.data?.attributes;
+  const categoryName3 = item?.attributes?.packages?.data?.[0]?.attributes;
+
   const handlePayOrder = async (id) => {
     try {
-      console.log("the button is just clikcked", id);
+      console.log("the button is just clicked", id);
       const res = await PayOrder(id);
       const selectedOrder = orders?.data?.filter((order) => order?.id === id);
-      const providerNotificationToken =
-        selectedOrder[0]?.attributes?.provider?.data?.attributes
-          ?.expoPushNotificationToken;
+      const providerNotificationToken = selectedOrder?.[0]?.attributes?.provider?.data?.attributes?.expoPushNotificationToken;
       if (providerNotificationToken) {
-        // console.log("user data",user)
         sendPushNotification(
           providerNotificationToken,
-          "تم دفع الطلب",
-          `تم دفع الطلب بواسطه ${user?.username}`
+          "تم  دفع الطلب",
+          `تم  دفع الطلب  بواسطه ${user?.username}`
         );
       }
       if (res) {
-        // Alert.alert(t("payment has been processed successfully."));
-        // navigation.dispatch(
-        //   CommonActions.reset({
-        //     index: 0,
-        //     routes: [{ name: (SUCESS_PAYMENT_SCREEN) ,
-        //       params:{
-        //       item
-        //     }}],
-        //   })
-        // );
         navigation?.navigate(SUCESS_PAYMENT_SCREEN,{
-          item
+          item,
+          firstReview:true
         })
+        console.log("current data", id, res, providerNotificationToken, user?.username);
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
       }
     } catch (error) {
-      console.log(error, "error paying the order");
+      console.log(error, "error paying3 the order");
     } finally {
       setIsLoading(false);
     }
   };
-  console.log("services",categoryName1)
+
   if (isLoading) return <LoadingScreen />;
   return (
     <View style={styles.wrapper}>
