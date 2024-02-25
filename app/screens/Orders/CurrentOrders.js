@@ -30,10 +30,11 @@ import { CommonActions } from "@react-navigation/native";
   };
 const [currentOrders,setCurrentData]=useState([])
 const fetchData=()=>{
-  const currentOrders = data?.data?.filter(
+  console.log("the current orders daat adad ad ",data?.length)
+  const currentOrders = data?.filter(
     (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished"
     );
-    const CurentRequiredOrdersForPayment = currentOrders.filter((order)=>order?.attributes?.status === "payment_required")
+    const CurentRequiredOrdersForPayment = currentOrders?.filter((order)=>order?.attributes?.status === "payment_required")
     if(CurentRequiredOrdersForPayment?.length > 0 ){
       return (
         navigation.dispatch(
@@ -47,7 +48,7 @@ const fetchData=()=>{
           })))  
       
     }
-    // console.log("there are some orders to pay",CurentRequiredOrdersForPayment)
+    console.log("there are some orders to pay", data?.data?.length,user?.phoneNumber)
     setCurrentData(currentOrders)
     refetch()
     console.log(ordersRedux?.data?.length)

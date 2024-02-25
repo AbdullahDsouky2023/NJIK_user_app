@@ -9,7 +9,7 @@ export function ErrorScreen({hanleRetry}) {
     return (
    <View>
 
-       <AppHeader />
+       {/* <AppHeader /> */}
       <View style={{
           display:"flex",
         alignItems:'center',

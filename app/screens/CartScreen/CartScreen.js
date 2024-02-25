@@ -44,7 +44,7 @@ export default function CartScreen({ route ,navigation}) {
   const cartItems = useSelector((state) => state?.cartService?.services);
   const totalPrice = useSelector((state) => state?.cartService?.totalPrice);
   useEffect(() => {
-    const SelectedCategory = data?.data.filter(
+    const SelectedCategory = data?.filter(
       (item) => item?.attributes?.name === category
     )[0];
     const services = SelectedCategory?.attributes?.services;

@@ -24,7 +24,7 @@ export default function OffersBanner() {
   return (
     <View>
       <Carousel
-        data={banners?.data}
+        data={banners}
         sliderWidth={width}
         inactiveSlideOpacity={1}
         inactiveSlideScale={1}

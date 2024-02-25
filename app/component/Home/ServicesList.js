@@ -15,10 +15,11 @@ export default function ServicesList() {
   const handleServiceCardPress = (item) => {
     navigation.navigate(CART, { name: item?.attributes?.name });
   };
+  console.log("categories data",categories?.length)
   return (
     <HeaderTextComponent style={styles.container} name={"Services"} showAll={true}>
       <FlatList
-        data={categories.data}
+        data={categories}
         style={styles.listContainer}
         showsVerticalScrollIndicator={false}
 

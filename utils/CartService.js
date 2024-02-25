@@ -2,21 +2,41 @@ import { useQuery } from "@tanstack/react-query";
 // import api from './index';
 
 import api from './index'
+import { useSelector } from "react-redux";
 
 
 
 export default function useCartServices() {
   const fetchOrders = async () => {
     try {
-      const response = await api.get(`/api/service-carts?populate=deep
-      `);
-
-      return response.data;
+      let allCartServices = [];
+      let page =  1; // Start with the first page
+  
+      while (true) {
+        const response = await api.get(`/api/service-carts?populate=deep&pagination[page]=${parseInt(page,  10)}`);
+        console.log("cart Services Response data:", response?.data?.data?.length); // Log the response data
+  
+        // Assuming response.data is an array, proceed with adding to the allCartServices array
+        const currentPageCartServices = response?.data?.data || [];
+        allCartServices = [...allCartServices, ...currentPageCartServices];
+  
+        // Check if there is a next page in the pagination information
+        const nextPage = response?.data?.meta?.pagination.pageCount;
+        if (nextPage === page) {
+          break; // No more pages, exit the loop
+        }
+  
+        // Move to the next page
+        page++;
+      }
+  
+      return allCartServices;
     } catch (error) {
-      console.error("Error fetching cart-services:", error);
+      console.log("Error fetching cart-services:", error);
       throw error;
     }
   };
+  
 
   const { data, isLoading, isError ,refetch} = useQuery({
     queryKey: ["cart-services"],
@@ -30,20 +50,40 @@ export default function useCartServices() {
     isError,
     refetch
   };
-}
-export  function useAllOrders() {
+}export  function useAllOrders() {
+  const user = useSelector((state) => state?.user?.user);
+
   const fetchOrders = async () => {
     try {
-      const response = await api.get(`/api/orders?populate=*
-      `);
-
-      return response.data;
+      let allOrders = [];
+      let page = 1; // Start with the first page
+  
+      while (true) {
+        const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page, 10)}`);
+        console.log("Response data:", response?.data?.data?.length); // Log the response data
+  
+        // Assuming response.data is an array, proceed with filtering
+        const currentPageOrders = response?.data?.data || [];
+        const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber);
+        allOrders = [...allOrders, ...filteredOrders];
+        console.log("pageingation data", response?.data?.meta?.pagination.pageCount,page)
+        // Check if there is a next page in the pagination information
+        const nextPage = response?.data?.meta?.pagination.pageCount
+        if (nextPage === page) {
+          break; // No more pages, exit the loop
+        }
+  
+        // Move to the next page
+        page++;
+      }
+  
+      return allOrders;
     } catch (error) {
-      console.error("Error fetching order:", error);
+      console.log("Error fetching orders:", error);
       throw error;
     }
   };
-
+  
   const { data, isLoading, isError ,refetch} = useQuery({
     queryKey: ["order"],
     queryFn: fetchOrders,

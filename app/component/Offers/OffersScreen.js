@@ -65,7 +65,7 @@ export default function OffersScreen({ route, navigation, Offers }) {
           />
         </View>
         <FlatList
-          data={Banners?.data}
+          data={Banners}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => item.id + index}
           style={{

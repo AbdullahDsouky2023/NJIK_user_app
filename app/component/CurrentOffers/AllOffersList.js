@@ -7,12 +7,12 @@ import useServices from '../../../utils/services';
 export default function AllOffersList() {
     const categories = useSelector((state) => state.categories.categories);
     const { data, isLoading, isError } = useServices();
-   
+  //  console.log("ooof")
   return (
     <View >
    <View >
    {
-   categories?.data?.map((category)=>{
+   categories?.map((category)=>{
           const services = data?.data?.filter(
             (item) => item?.attributes?.category?.data?.id === category?.id
           );
