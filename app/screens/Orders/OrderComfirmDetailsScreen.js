@@ -118,7 +118,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
   };
   useEffect(() => {
     const data = currentOrderData?.services?.connect.map((item) => {
-      const service = services.data.filter(
+      const service = services?.filter(
         (service) => service?.id === item?.id
       );
       return service[0];
@@ -128,7 +128,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
 
   useEffect(() => {
     const data = currentOrderData?.packages?.connect.map((item) => {
-      const service = packages.data.filter(
+      const service = packages.filter(
         (Packageitem) => Packageitem?.id === item?.id
       );
       return service[0];

@@ -29,12 +29,12 @@ export default function OffersServiceComponentList({ data, slectedItem }) {
         /> */}
       </View>
       <FlatList
-        data={data?.data}
+        data={data}
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
 
         renderItem={({ item }) => {
-          console.log("heh",item?.attributes?.image?.data[0]?.attributes?.url)
+          // console.log("heh",item?.attributes?.name)
           return (
             <OfferCard
               service={item?.attributes?.name}

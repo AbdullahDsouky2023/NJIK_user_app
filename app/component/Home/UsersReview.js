@@ -54,7 +54,7 @@ export default   function UsersReviews() {
           <View style={styles.container2}>
 
             <Carousel
-                data={data?.data}
+                data={data}
                 sliderWidth={width}
                 autoplay={true}
                 loop={true}
@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
       // paddingHorizontal: 20,
       // paddingTop:10,
       // paddingBottom:10,
-      // paddingVertical: -10,
+      // marginBottom: -30,
+      marginVertical:10,
       display:'flex',
       alignItems:'center',
       justifyContent:'center',

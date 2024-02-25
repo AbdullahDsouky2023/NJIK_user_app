@@ -30,6 +30,7 @@ const CurrentOffersScreen = ({ route, navigation }) => {
   );
   const { data } = useServices();
   const { data: packages, isLoading, isError } = usePackages();
+  console.log("the coming data from api packages",packages?.length)
   const services = data?.data?.filter(
     (item) => item?.attributes?.category?.data?.id === selectedItemsData?.id
   );
@@ -37,7 +38,7 @@ const CurrentOffersScreen = ({ route, navigation }) => {
   const getServices = async () => {
     if (data) {
       dispatch(setServices(data));
-      dispatch(setpackages(packages?.data));
+      dispatch(setpackages(packages));
     } else if (isError) {
       console.log(isError);
     }

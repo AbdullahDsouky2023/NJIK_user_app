@@ -6,15 +6,34 @@ import api from './index'
 export default function usePackages() {
   const fetchPackages = async () => {
     try {
-      const response = await api.get(`/api/packages?populate=deep`);
-      
-      return response.data
+      let allPackages = [];
+      let page =   1; // Start with the first page
+  
+      while (true) {
+        const response = await api.get(`/api/packages?populate=deep&pagination[page]=${parseInt(page,   10)}`);
+        console.log("packages data:", response?.data?.data?.length); // Log the response data
+  
+        // Assuming response.data is an array, proceed with adding to the allPackages array
+        const currentPagePackages = response?.data?.data || [];
+        allPackages = [...allPackages, ...currentPagePackages];
+  
+        // Check if there is a next page in the pagination information
+        const nextPage = response?.data?.meta?.pagination.pageCount;
+        if (nextPage === page) {
+          break; // No more pages, exit the loop
+        }
+  
+        // Move to the next page
+        page++;
+      }
+  
+      return allPackages;
     } catch (error) {
-      console.error("Error fetching Packages:", error);
+      console.log("Error fetching packages:", error);
       throw error;
     }
   };
-
+  
   const { data , isLoading,isError } = useQuery(
     { queryKey: ["Packages"], queryFn: fetchPackages }
   ); // Changed the query key to 'superheroes'

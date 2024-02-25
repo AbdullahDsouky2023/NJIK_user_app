@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     sliderPaginationWrapStyle: {
         position: 'absolute',
         bottom: -20.0,
+        
         left: 0.0,
         right: 0.0,
 

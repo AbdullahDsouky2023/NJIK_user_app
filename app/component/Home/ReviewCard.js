@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     width: width * 0.92,
     padding: 20,
     marginTop:5,
-    marginBottom: 10,
+    // padding: 10,
     borderTopWidth:0,
     backgroundColor: Colors.whiteColor,
     elevation: 2,
