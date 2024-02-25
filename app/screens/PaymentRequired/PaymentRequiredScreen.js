@@ -80,7 +80,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
       setIsLoading(false);
     }
   };
-  console.log("services", categoryName2?.image?.data[0]?.attributes?.url)
+  console.log("services",categoryName1)
   if (isLoading) return <LoadingScreen />;
   return (
     <View style={styles.wrapper}>
@@ -162,13 +162,13 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                       }}
                      
                     >
-                      <Image src={ { uri: categoryName2?.image?.data[0]?.attributes?.url}} style={{backgroundColor:'red',height:100,width:100}} height={100} width={100}/>
+                      {/* <Image source={ { uri: categoryName2?.image?.data[0]?.attributes?.url}} style={{height:width*0.085,width:width*0.085}} height={width*0.085} width={width*0.085}/> */}
                       <AppText
                         centered={false}
                         text={item.attributes?.name}
                         style={[styles.name, { fontSize: RFPercentage(2), paddingRight: 10 }]}
                       />
-                      {/* <PriceTextComponent
+                      <PriceTextComponent
                         style={{
                           backgroundColor: Colors.primaryColor,
                           fontSize: RFPercentage(1.5),
@@ -177,7 +177,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                           color: Colors.whiteColor,
                         }}
                         price={item?.attributes?.Price}
-                      /> */}
+                      />
                     </View>
                   );
                 }}
@@ -208,7 +208,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
-                        justifyContent: "center",
+                        justifyContent: "space-between",
                         gap: 15,
                       }}
                     >
@@ -217,7 +217,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                         text={item.attributes?.name}
                         style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10 }]}
                       />
-                      {/* <PriceTextComponent
+                      <PriceTextComponent
                         style={{
                           backgroundColor: Colors.primaryColor,
                           fontSize: RFPercentage(1.5),
@@ -226,7 +226,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                           color: Colors.whiteColor,
                         }}
                         price={item?.attributes?.price}
-                      /> */}
+                      />
                     </View>
                   );
                 }}
@@ -260,12 +260,19 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                         gap: 15,
                       }}
                     >
+                                            {/* <Image source={ { uri: categoryName1?.image?.data[0]?.attributes?.url}} style={{height:width*0.085,width:width*0.085}} height={width*0.085} width={width*0.085}/> */}
+
                       <AppText
                         centered={false}
                         text={item?.attributes?.service?.data?.attributes?.name}
                         style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10, paddingTop: 10 }]}
                       />
-                      {/* <View style={styles.CartServiceStylesContainer}>
+                      {/* <AppText
+                        centered={false}
+                        text={item?.attributes?.service?.data?.attributes?.name}
+                        style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10, paddingTop: 10 }]}
+                      /> */}
+                      <View style={styles.CartServiceStylesContainer}>
                         <PriceTextComponent
                           style={{
                             backgroundColor: Colors.primaryColor,
@@ -276,29 +283,10 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                           }}
                           price={item?.attributes?.service?.data?.attributes?.Price}
                         />
-                        <AppText
-                          style={{
-                            backgroundColor: Colors.whiteColor,
-                            fontSize: RFPercentage(1.8),
-                            padding: 6,
-                            borderRadius: 40,
-                            paddingHorizontal: 15,
-                            color: Colors.primaryColor,
-                          }}
-                          text={"x"}
-                        />
-                        <AppText
-                          style={{
-                            backgroundColor: Colors.primaryColor,
-                            fontSize: RFPercentage(1.5),
-                            padding: 6,
-                            borderRadius: 40,
-                            paddingHorizontal: 15,
-                            color: Colors.whiteColor,
-                          }}
-                          text={item?.attributes?.qty}
-                        />
-                      </View> */}
+                       
+                           
+                      
+                      </View>
                     </View>
                   );
                 }}
