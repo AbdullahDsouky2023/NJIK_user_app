@@ -43,7 +43,7 @@ export default function OrderCoupon() {
   const currentOrderData = useSelector(
     (state) => state?.orders?.currentOrderData
   );
-console.log("the coupon..........",userCoupons)
+
   const handleDeleteCoupon = ()=>{
     setAddedCoupon(null)
     dispatch(RemoveDiscount(PriceBefore))
@@ -78,7 +78,7 @@ console.log("the coupon..........",userCoupons)
             console.log("aplly now ");
             const discountPercentage = Number(isValideCoupon[0]?.attributes?.value)/100
             const currentOrderPrice = Number(cartItems || cartServicesPrice)
-            const CurrentPrice  = Math.floor((currentOrderPrice -  (discountPercentage * currentOrderPrice)).toFixed(2))
+            const CurrentPrice  =(currentOrderPrice -  (discountPercentage * currentOrderPrice)).toFixed(2)
             refRBSheet.current.close()
             setAddedCoupon(isValideCoupon)
             console.log("adding the coupon to the user ",isValideCoupon[0].id)

@@ -46,6 +46,7 @@ export default function OffersServiceComponentList({ data, slectedItem }) {
           );
         }}
         keyExtractor={(item) => item.id}
+
         ItemSeparatorComponent={<View style={{ height: 10 }} />}
       />
     </View>

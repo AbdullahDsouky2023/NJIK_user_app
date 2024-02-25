@@ -93,6 +93,8 @@ const HomeScreen = ({ navigation }) => {
           }
           data={topCategoriesList}
           numColumns={2}
+          // windowSize={5} // Adjust based on your needs
+
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => `${item.id}`}
           ListFooterComponent={<UsersReviews />}
