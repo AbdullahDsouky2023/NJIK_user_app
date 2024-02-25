@@ -26,6 +26,7 @@ import useNotifications from "../../../utils/notifications";
 import { useTranslation } from "react-i18next";
 import { CommonActions } from "@react-navigation/native";
 import Pdf from "../Invoice/pdf";
+import * as Linking from "expo-linking";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -37,9 +38,9 @@ export default function PaymentRequiredScreen({ navigation, route }) {
   const { t } = useTranslation()
   const orders = useSelector((state) => state?.orders?.orders);
   const user = useSelector((state) => state?.user?.userData);
-  const categoryName1 = item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name
-  const categoryName2 = item?.attributes?.services.data[0]?.attributes?.category?.data?.attributes?.name
-  const categoryName3 = item?.attributes?.packages?.data[0]?.attributes?.name
+  const categoryName1 = item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes
+  const categoryName2 = item?.attributes?.services.data[0]?.attributes?.category?.data?.attributes
+  const categoryName3 = item?.attributes?.packages?.data[0]?.attributes
   const handlePayOrder = async (id) => {
     try {
       console.log("the button is just clikcked", id);
@@ -79,7 +80,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
       setIsLoading(false);
     }
   };
-  console.log("services", item?.attributes?.packages?.data[0]?.attributes?.name)
+  console.log("services", categoryName2?.image?.data[0]?.attributes?.url)
   if (isLoading) return <LoadingScreen />;
   return (
     <View style={styles.wrapper}>
@@ -123,7 +124,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
           <ItemComponent name="التاريخ" iconName={"clock-o"} data={item?.attributes?.date} />
           <ItemComponent2 name="الموقع" iconName={"map-marker"} data={item?.attributes?.location} />
           <ItemComponent name="الخدمة" data={
-            categoryName1 || categoryName2 || categoryName3
+            categoryName1?.name || categoryName2?.name || categoryName3?.name
 
           } />
           <ItemComponent name=" اسم الفني" iconName="user" data={
@@ -159,14 +160,15 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                         justifyContent: "center",
                         gap: 15,
                       }}
+                     
                     >
+                      <Image src={ { uri: categoryName2?.image?.data[0]?.attributes?.url}} style={{backgroundColor:'red',height:100,width:100}} height={100} width={100}/>
                       <AppText
                         centered={false}
                         text={item.attributes?.name}
-                        style={[styles.name, { fontSize: RFPercentage(1.8), paddingRight: 10 }]}
+                        style={[styles.name, { fontSize: RFPercentage(2), paddingRight: 10 }]}
                       />
-
-                      <PriceTextComponent
+                      {/* <PriceTextComponent
                         style={{
                           backgroundColor: Colors.primaryColor,
                           fontSize: RFPercentage(1.5),
@@ -175,7 +177,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                           color: Colors.whiteColor,
                         }}
                         price={item?.attributes?.Price}
-                      />
+                      /> */}
                     </View>
                   );
                 }}
@@ -215,7 +217,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                         text={item.attributes?.name}
                         style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10 }]}
                       />
-                      <PriceTextComponent
+                      {/* <PriceTextComponent
                         style={{
                           backgroundColor: Colors.primaryColor,
                           fontSize: RFPercentage(1.5),
@@ -224,7 +226,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                           color: Colors.whiteColor,
                         }}
                         price={item?.attributes?.price}
-                      />
+                      /> */}
                     </View>
                   );
                 }}
@@ -263,7 +265,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                         text={item?.attributes?.service?.data?.attributes?.name}
                         style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10, paddingTop: 10 }]}
                       />
-                      <View style={styles.CartServiceStylesContainer}>
+                      {/* <View style={styles.CartServiceStylesContainer}>
                         <PriceTextComponent
                           style={{
                             backgroundColor: Colors.primaryColor,
@@ -296,7 +298,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                           }}
                           text={item?.attributes?.qty}
                         />
-                      </View>
+                      </View> */}
                     </View>
                   );
                 }}
@@ -359,7 +361,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
           onPress={() => handlePayOrder(item?.id)}
         />
         <AppButton
-          title={" ما اتفقنا علي كذا"}
+          title={" ما اتفقنا على كذا"}
           style={styles.buttonStyles2}
           textStyle={{ fontSize: RFPercentage(1.7) }}
           onPress={() => {
@@ -510,17 +512,23 @@ const ItemComponent = ({ name, data, iconName }) => {
 }
 const ItemComponent2 = ({ name, data, iconName }) => {
   return (
-    <View style={[styles.descriptionContainer, { justifyContent: 'space-between' }]}>
-      <View style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', width: width * 0.8 }}>
+    <View style={[styles.itemContainer, { justifyContent: 'space-between' }]}>
+      <View style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', width: width * 0.7 }}>
         <FontAwesome name={iconName} size={RFPercentage(2.2)} color={Colors.grayColor} />
 
         <AppText centered={false} text={name} style={styles.title} />
       </View>
-      <AppText
+      <View style={{backgroundColor:Colors.primaryColor,width:50,display:'flex',alignItems:'center', padding:10, borderRadius:10}}>
+
+        <FontAwesome name={iconName} onPress={()=>{
+            Linking.openURL("https://maps.app.goo.gl/UXMEAg7v7eAQCQAp9")
+        }} size={RFPercentage(2.3)}  color={Colors.whiteColor} />
+      </View>
+      {/* <AppText
         centered={false}
         text={data}
         style={[styles.price, { fontSize: RFPercentage(1.7) }]}
-      />
+      /> */}
     </View>
   )
 }
