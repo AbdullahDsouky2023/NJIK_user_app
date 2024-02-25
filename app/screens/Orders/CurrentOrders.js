@@ -31,7 +31,7 @@ import { CommonActions } from "@react-navigation/native";
 const [currentOrders,setCurrentData]=useState([])
 const fetchData=()=>{
   console.log("the current orders daat adad ad ",data?.length)
-  const currentOrders = data?.filter(
+  const currentOrders = data?.data?.filter(
     (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished"
     );
     const CurentRequiredOrdersForPayment = currentOrders?.filter((order)=>order?.attributes?.status === "payment_required")

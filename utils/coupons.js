@@ -12,11 +12,11 @@ export function useUserCoupons() {
         let page =   1; // Start with the first page
     
         while (true) {
-          const response = await api.get(`/api/users/${userData?.id}/coupons?populate=*&pagination[page]=${parseInt(page,   10)}`);
+          const response = await api.get(`/api/users/${userData?.id}?populate=*&pagination[page]=${parseInt(page,   10)}`);
           console.log("coupons data:", response?.data?.data?.length); // Log the response data
     
           // Assuming response.data is an array, proceed with adding to the allUserCoupons array
-          const currentPageCoupons = response?.data?.data || [];
+          const currentPageCoupons = response?.data || [];
           allUserCoupons = [...allUserCoupons, ...currentPageCoupons];
     
           // Check if there is a next page in the pagination information

@@ -13,7 +13,7 @@ export default function OrderCreationSuccess({navigation}) {
   const {sendPushNotification,token}=useNotifications()
 
   const handleReturn = ()=> {
-    dispatch(setOrders(orders))
+    dispatch(setOrders(orders?.data))
     navigation.navigate('App')
     sendPushNotification(token,"تم حجز الطلب بنجاح")
 

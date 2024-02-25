@@ -55,9 +55,9 @@ export default function OrderDetails({ navigation, route }) {
   const handleOrderCancle = async (id) => {
     try {
       setIsLoading(true);
-      console.log("ccalcning....")
+      console.log("ccalcning....",id,UserOrders?.data?.length)
       const res = await cancleOrder(id);
-      const selectedOrder = orders?.data?.filter((order) => order?.id === id);
+      const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken =
         selectedOrder[0]?.attributes?.provider?.data?.attributes
           ?.expoPushNotificationToken;

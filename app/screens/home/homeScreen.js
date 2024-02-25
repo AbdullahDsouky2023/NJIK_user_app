@@ -58,7 +58,7 @@ const HomeScreen = ({ navigation }) => {
       // Dispatch the fetched categories to the Redux store
         dispatch(setCategories(data));
         dispatch(setServices(services));
-       dispatch(setOrders(orders));
+       dispatch(setOrders(orders?.data));
        dispatch(setBanners(banners));
       const chat = generateUserToken(user)
       // requestLocationPermission()

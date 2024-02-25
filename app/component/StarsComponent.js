@@ -77,7 +77,7 @@ export default function StarsComponent({ route }) {
         rating: SelectedRate.rate.toString(),
         content: description,
       });
-      const selectedOrder = UserOrders?.filter(
+      const selectedOrder = UserOrders?.data?.filter(
         (order) => order?.id === orderID
       );
 

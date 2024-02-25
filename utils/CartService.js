@@ -66,7 +66,7 @@ export default function useCartServices() {
         const currentPageOrders = response?.data?.data || [];
         const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber);
         allOrders = [...allOrders, ...filteredOrders];
-        console.log("pageingation data", response?.data?.meta?.pagination.pageCount,page)
+        console.log("pageingation data cart service", response?.data?.meta?.pagination.pageCount,page)
         // Check if there is a next page in the pagination information
         const nextPage = response?.data?.meta?.pagination.pageCount
         if (nextPage === page) {

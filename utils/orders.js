@@ -12,9 +12,10 @@ export const postOrder = async (values) => {
         status:"pending"
       },
     });
+
     return res?.data?.data?.id ? res?.data?.data?.id : null;
   } catch (error) {
-    console.error("Error:", error.message); // Log the error response
+    console.log("Error:", error.message,values); // Log the error response
   }
 };
 
@@ -131,47 +132,46 @@ connect:[{id:ComplainId}]
     console.error("Error accepting order   :", error.message); // Log the error response
   }
 };
+
+
 export default function useOrders() {
   const user = useSelector((state) => state?.user?.user);
 
   const fetchOrders = async () => {
     try {
       let allOrders = [];
-      let page = 1; // Start with the first page
-  
+      let page =  1; // Start with the first page
+   
       while (true) {
-        const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page, 10)}`);
-        console.log("Response data:", response?.data?.data?.length); // Log the response data
-  
-        // Assuming response.data is an array, proceed with filtering
+        const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page,  10)}`);
+        console.log("Response data:", response?.data?.data?.length);
+   
         const currentPageOrders = response?.data?.data || [];
         const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber);
         allOrders = [...allOrders, ...filteredOrders];
-        console.log("pageingation data", response?.data?.meta?.pagination.pageCount,page)
-        // Check if there is a next page in the pagination information
-        const nextPage = response?.data?.meta?.pagination.pageCount
-        if (nextPage === page) {
+   
+        // Corrected pagination check
+        const totalPages = response?.data?.meta?.pagination?.pageCount;
+        if (!totalPages || page >= totalPages) {
           break; // No more pages, exit the loop
         }
-  
-        // Move to the next page
+   
         page++;
       }
-  
-      return allOrders;
+   
+      return {
+        data: allOrders
+      };
     } catch (error) {
       console.log("Error fetching orders:", error);
       throw error;
     }
   };
-  
-  
-  
-  const { data, isLoading, isError ,refetch} = useQuery({
+   
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["order"],
     queryFn: fetchOrders,
-  
-  }); // Changed the query key to 'superheroes'
+  });
 
   return {
     data,
@@ -180,45 +180,46 @@ export default function useOrders() {
     refetch
   };
 }
-export  function useAllOrders() {
+
+
+export function useAllOrders() {
   const user = useSelector((state) => state?.user?.user);
 
   const fetchOrders = async () => {
     try {
       let allOrders = [];
-      let page = 1; // Start with the first page
-  
+      let page =   1; // Start with the first page
+   
       while (true) {
-        const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page, 10)}`);
-        console.log("Response data:", response?.data?.data?.length); // Log the response data
-  
-        // Assuming response.data is an array, proceed with filtering
+        const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page,   10)}`);
+        console.log("Response data:", response?.data?.data?.length);
+   
         const currentPageOrders = response?.data?.data || [];
         const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber);
         allOrders = [...allOrders, ...filteredOrders];
-        console.log("pageingation data", response?.data?.meta?.pagination.pageCount,page)
-        // Check if there is a next page in the pagination information
-        const nextPage = response?.data?.meta?.pagination.pageCount
-        if (nextPage === page) {
+   
+        // Corrected pagination check
+        const totalPages = response?.data?.meta?.pagination?.pageCount;
+        if (!totalPages || page >= totalPages) {
           break; // No more pages, exit the loop
         }
-  
-        // Move to the next page
+   
         page++;
       }
-  
-      return allOrders;
+   
+      return {
+        data: allOrders
+      };
     } catch (error) {
       console.log("Error fetching orders:", error);
       throw error;
     }
   };
-  
-  const { data, isLoading, isError ,refetch} = useQuery({
-    queryKey: ["order"],
+   
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ["all-orders"],
     queryFn: fetchOrders,
-  
-  }); // Changed the query key to 'superheroes'
+  });
 
   return {
     data,
