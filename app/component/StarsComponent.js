@@ -9,7 +9,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Hoverable } from "react-native-web-hover";
 import * as Linking from "expo-linking";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons,AntDesign } from "@expo/vector-icons";
 import React, { useRef, useState } from "react";
 import AppText from "./AppText";
 import { RFPercentage } from "react-native-responsive-fontsize";
@@ -25,6 +25,7 @@ import { Colors, mainFont } from "../constant/styles";
 import useOrders, { AddOrderReview } from "../../utils/orders";
 import { HOME } from "../navigation/routes";
 import ArrowBack from "./ArrowBack";
+import Pdf from "../screens/Invoice/pdf";
 const { width } = Dimensions.get("screen");
 
 export default function StarsComponent({ route }) {
@@ -236,7 +237,19 @@ export default function StarsComponent({ route }) {
           disabled={!focus}
           style={styles.buttonSubmit}
         />
+        <View style={{marginVertical:10}}>
+
+<Pdf item={route?.params?.item} chatContainerStyles={{width:160,borderRadius:50,height:55,alignSelf:'center'}}>
+  <View style={{display:'flex',flexDirection:'row',gap:15,alignItems:'center',justifyContent:'center',alignSelf:'center'}}>
+
+  <AppText text={"تحميل الفاتورة"} style={{color:Colors.whiteColor,fontSize:RFPercentage(2.2)}}/>
+{/* <AntDesign name="upload" size={20} color={Colors.whiteColor} /> */}
+{/* <AntDesign name="upload" size={24} color="black" /> */}
+  </View>
+  </Pdf>
+</View>
       </View>
+
     </ScrollView>
   );
 }

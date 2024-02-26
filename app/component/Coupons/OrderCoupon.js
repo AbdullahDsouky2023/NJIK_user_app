@@ -78,7 +78,7 @@ export default function OrderCoupon() {
             console.log("aplly now ");
             const discountPercentage = Number(isValideCoupon[0]?.attributes?.value)/100
             const currentOrderPrice = Number(cartItems || cartServicesPrice)
-            const CurrentPrice  =(currentOrderPrice -  (discountPercentage * currentOrderPrice)).toFixed(2)
+            const CurrentPrice = Math.floor(currentOrderPrice - (discountPercentage * currentOrderPrice));
             refRBSheet.current.close()
             setAddedCoupon(isValideCoupon)
             console.log("adding the coupon to the user ",isValideCoupon[0].id)

@@ -11,7 +11,7 @@ export default function  ItemComponent ({ name, data, iconName })  {
         <View style={{ display: 'flex', flexDirection: 'row', gap: 15, alignItems: 'center', }}>
           <FontAwesome name={iconName} size={RFPercentage(2.2)} color={Colors.grayColor} />
   
-          <AppText centered={false} text={name} style={[styles.title, { fontSize: RFPercentage(2.1) }]} />
+          <AppText centered={false} text={name} style={[styles.title, { fontSize: RFPercentage(2.1), maxWidth:width*0.5 }]} />
         </View>
         <AppText
           centered={false}

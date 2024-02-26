@@ -13,6 +13,7 @@ import { RefreshControl  } from 'react-native';
 import { ORDERS_DETAILS, REQUIRED_PAY_SCREEN } from "../../navigation/routes";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 import { CommonActions } from "@react-navigation/native";
+// import useNearProviders from "../../../utils/providers";
 
 
  function CurrentOrders({navigation}) {
@@ -23,14 +24,16 @@ import { CommonActions } from "@react-navigation/native";
   const {data,isLoading,refetch} = useOrders()
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch()
+  // const { data:providers}= useNearProviders()
   const onRefresh = () => {
     setRefreshing(true);
-    // console.log("getting data")
+    // console.log("provider data",)
+    // console.log("the current orders daat adad ad ",providers?.length)
+
     fetchData();
   };
 const [currentOrders,setCurrentData]=useState([])
 const fetchData=()=>{
-  console.log("the current orders daat adad ad ",data?.length)
   const currentOrders = data?.data?.filter(
     (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished"
     );
@@ -51,6 +54,7 @@ const fetchData=()=>{
     console.log("there are some orders to pay", data?.data?.length,user?.phoneNumber)
     setCurrentData(currentOrders)
     refetch()
+
     console.log(ordersRedux?.data?.length)
   setRefreshing(false)
 }

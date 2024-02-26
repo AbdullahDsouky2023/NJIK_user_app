@@ -104,7 +104,10 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
-              routes: [{ name: ORDER_SUCCESS_SCREEN }],
+              routes: [{ name:ORDER_SUCCESS_SCREEN
+                 ,params:{
+                order:data
+              }}],
             })
           );
         // }
@@ -402,7 +405,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                 ? currentOrderData?.description
                 : "لا يوجد"
             }
-            style={styles.price}
+            style={[styles.price,{width:width*0.9}]}
           />
         </View>
         <Image

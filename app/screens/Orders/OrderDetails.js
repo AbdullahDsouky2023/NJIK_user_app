@@ -8,6 +8,7 @@ import {
   HOME,
   ORDER_SUCCESS_SCREEN,
   REVIEW_ORDER_SCREEN,
+  SUCESS_PAYMENT_SCREEN,
 } from "../../navigation/routes";
 import { FlatList } from "react-native";
 import { RFPercentage } from 'react-native-responsive-fontsize'
@@ -21,7 +22,7 @@ import useOrders, {
   cancleOrder,
   updateOrderData,
 } from "../../../utils/orders";
-
+import { MaterialIcons} from '@expo/vector-icons'
 import ArrowBack from "../../component/ArrowBack";
 import LoadingScreen from "../loading/LoadingScreen";
 import AppText from "../../component/AppText";
@@ -100,7 +101,7 @@ export default function OrderDetails({ navigation, route }) {
     try {
       console.log("the button is just clikcked", id);
       const res = await PayOrder(id);
-      const selectedOrder = orders?.data?.filter((order) => order?.id === id);
+      const selectedOrder = orders?.filter((order) => order?.id === id);
       const providerNotificationToken =
         selectedOrder[0]?.attributes?.provider?.data?.attributes
           ?.expoPushNotificationToken;
@@ -117,9 +118,13 @@ export default function OrderDetails({ navigation, route }) {
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: t(ORDER_SUCCESS_SCREEN) }],
+            routes: [{ name: SUCESS_PAYMENT_SCREEN , params:{
+              item,
+              firstReview:true
+            }}], // Replace 'Login' with the name of your login screen
           })
         );
+       
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
       }
@@ -138,8 +143,8 @@ export default function OrderDetails({ navigation, route }) {
       
       return Number(accumulator) + Number(currentValue);
     },0)
-    console.log("adduibaku ",additional_prices_sum )
-    console.log("feee ",provider_fee )
+    // console.log("adduibaku ",additional_prices_sum )
+    // console.log("feee ",provider_fee )
     return (additional_prices_sum > Number(provider_fee) )? (additional_prices_sum + provider_fee ):( provider_fee + additional_prices_sum )
   }
   const handleRejectAddionalPrices = async (id) => {
@@ -149,6 +154,7 @@ export default function OrderDetails({ navigation, route }) {
         additional_prices:null,
         PaymentStatus:'pending',
         status : "finish_work",
+        provider_fee:0,
         provider_payment_status:'pending',
         totalPrice:(item?.attributes?.totalPrice > calculateTotalPriceBeforeAddional()) ?
         (item?.attributes?.totalPrice - calculateTotalPriceBeforeAddional() ):
@@ -156,7 +162,8 @@ export default function OrderDetails({ navigation, route }) {
         addtional_prices_state:'rejected' ,
         provider_fee:0
       });
-      const selectedOrder = orders?.data?.filter((order) => order?.id === id);
+      console.log("the orders length " , orders?.length)
+      const selectedOrder = orders?.filter((order) => order?.id === id);
       const providerNotificationToken =
         selectedOrder[0]?.attributes?.provider?.data?.attributes
           ?.expoPushNotificationToken;
@@ -169,11 +176,11 @@ export default function OrderDetails({ navigation, route }) {
       }
       if (res) {
         // Alert.alert(t("payment has been processed successfully."));
-        navigation.goBack()
+        // navigation.goBack()
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: t(HOME) }],
+            routes: [{ name: "App" }],
           })
         );
         Alert.alert(t("تم بنجاح"));
@@ -217,7 +224,7 @@ export default function OrderDetails({ navigation, route }) {
                 
               } />
             }
-               <ItemComponent name="الخدمة" data={
+               <ItemComponent name="الخدمة" iconName={"gear"} data={
             categoryName1 || categoryName2 || categoryName3
 
           } />
@@ -245,17 +252,19 @@ export default function OrderDetails({ navigation, route }) {
                       display: "flex",
                       flexDirection: "row",
                       alignItems: "center",
-                      justifyContent: "center",
+                      // justifyContent: "center",
                       gap: 15,
                     }}
                   >
+                                                       <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
                     <AppText
                       centered={false}
                       text={item.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.8), paddingRight: 10 }]}
+                      style={[styles.name, { fontSize: RFPercentage(1.8), width : width * 0.9  }]}
                     />
 
-                    <PriceTextComponent
+                    {/* <PriceTextComponent
                       style={{
                         backgroundColor: Colors.primaryColor,
                         fontSize: RFPercentage(1.5),
@@ -264,7 +273,7 @@ export default function OrderDetails({ navigation, route }) {
                         color: Colors.whiteColor,
                       }}
                       price={item?.attributes?.Price}
-                    />
+                    /> */}
                   </View>
                 );
               }}
@@ -288,23 +297,25 @@ export default function OrderDetails({ navigation, route }) {
                 width: width,
               }}
               renderItem={({ item }) => {
-                console.log('item')
+                // console.log('item')
                 return (
                   <View
                     style={{
                       display: "flex",
                       flexDirection: "row",
                       alignItems: "center",
-                      justifyContent: "center",
+                      // justifyContent: "center",
                       gap: 15,
                     }}
                   >
+                                                       <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
                     <AppText
                       centered={false}
                       text={item.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10 }]}
+                      style={[styles.name, { fontSize: RFPercentage(1.75), width : width *0.9 }]}
                     />
-                    <PriceTextComponent
+                    {/* <PriceTextComponent
                       style={{
                         backgroundColor: Colors.primaryColor,
                         fontSize: RFPercentage(1.5),
@@ -313,7 +324,7 @@ export default function OrderDetails({ navigation, route }) {
                         color: Colors.whiteColor,
                       }}
                       price={item?.attributes?.price}
-                    />
+                    /> */}
                   </View>
                 );
               }}
@@ -347,12 +358,14 @@ export default function OrderDetails({ navigation, route }) {
                       gap: 15,
                     }}
                   >
+                                                       <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
                     <AppText
                       centered={false}
                       text={item?.attributes?.service?.data?.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10, paddingTop: 10 }]}
+                      style={[styles.name, { fontSize: RFPercentage(1.75),  width: width *0.9}]}
                     />
-                    <View style={styles.CartServiceStylesContainer}>
+                    {/* <View style={styles.CartServiceStylesContainer}>
                       <PriceTextComponent
                         style={{
                           backgroundColor: Colors.primaryColor,
@@ -385,20 +398,21 @@ export default function OrderDetails({ navigation, route }) {
                         }}
                         text={item?.attributes?.qty}
                       />
-                    </View>
+                    </View> */}
                   </View>
                 );
               }}
             />
           </View>
           : null}
-        <View style={styles.itemContainer}>
+          <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ?`${item?.attributes?.totalPrice} ${CURRENCY}` : "السعر بعد الزيارة"} name={"Price"}/>
+        {/* <View style={styles.itemContainer}>
           <AppText centered={false} text={"Price"} style={styles.title} />
           <PriceTextComponent
             style={{ color: Colors.blackColor, fontSize: RFPercentage(1.85), marginTop: 4 }}
             price={item?.attributes?.totalPrice}
           />
-        </View>
+        </View> */}
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={"Location"} style={styles.title} />
           <AppText
@@ -418,57 +432,10 @@ export default function OrderDetails({ navigation, route }) {
                 ? item?.attributes?.description
                 : "لا يوجد"
             }
-            style={styles.price}
+            style={[styles.price,{width:width*0.9}]}
           />
         </View>
-        {
-          item?.attributes?.provider_fee > 0 &&
-          <View style={styles.itemContainer}>
-            <AppText centered={false} text={"أجرة الفني"} style={styles.title} />
-            <AppText
-              centered={false}
-              text={
-                `${item?.attributes?.provider_fee} ${CURRENCY}`
-              }
-              style={styles.price}
-            />
-          </View>
-        }
-        {item?.attributes?.additional_prices?.data?.length > 0 &&
-          <>
-            <AppText centered={false} text={"اسعار اضافية"} style={[styles.title, { paddingHorizontal: 10 }]} />
-            <FlatList
-              data={item?.attributes?.additional_prices?.data}
-              showsVerticalScrollIndicator={false}
-
-              renderItem={({ item }) => {
-
-                return (<View style={styles.itemContainer}>
-                  <AppText centered={false} text={item?.attributes?.details} style={[styles.title, { maxWidth: width * 0.68 }]} />
-                  <AppText
-                    centered={false}
-                    text={
-                      `${item?.attributes?.Price} ${CURRENCY}`
-
-                    }
-                    style={styles.price}
-                  />
-                </View>)
-              }}
-              keyExtractor={(item) => item?.id}
-            />
-            {
-              item?.attributes?.addtional_prices_state === 'pending' &&
-            <View style={{alignItems:'center',display:'flex',flexDirection:'row',justifyContent:'center'}}>
-            <AppButton  title={"Accept and Pay"} onPress={() => handlePayOrder(item?.id)} style={{backgroundColor:Colors.success}}/>
-            <AppButton  title={"Reject"} onPress={() => handleRejectAddionalPrices(item?.id)} style={{backgroundColor:Colors.redColor}}/>
-            </View>
-            }
-
-          </>
-        }
-
-        {item?.attributes?.images?.data ? (
+         {item?.attributes?.images?.data ? (
           <View style={styles.descriptionContainer}>
             <>
               <AppText centered={false} text={"Images"} style={styles.title} />
@@ -489,7 +456,7 @@ export default function OrderDetails({ navigation, route }) {
                 autoplayInterval={10000}
                 itemWidth={width}
                 renderItem={({ item }) => {
-                  console.log(item?.attributes?.url);
+                  // console.log(item?.attributes?.url);
                   return (
                     <Image
                       //  resizeMethod="contain"
@@ -509,6 +476,39 @@ export default function OrderDetails({ navigation, route }) {
             </>
           </View>
         ) : null}
+        {((item?.attributes?.additional_prices?.data?.length > 0) || (item?.attributes?.provider_fee > 0 ))&&
+          <>
+            <AppText centered={false} text={"اسعار اضافية"} style={[styles.title, { paddingHorizontal: 10 }]} />
+            <FlatList
+              data={item?.attributes?.additional_prices?.data}
+              showsVerticalScrollIndicator={false}
+
+              renderItem={({ item }) => {
+
+                return (
+                
+                <ItemComponent  iconName={"tags"} name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`}/>
+                )
+              }}
+              keyExtractor={(item) => item?.id}
+            />
+            {
+              item?.attributes?.provider_fee > 0 &&
+               <ItemComponent  iconName={"money"} data={`${item?.attributes?.provider_fee} ${CURRENCY}`} name={"أجرة الفنى"}/>
+            }
+
+            {
+              item?.attributes?.addtional_prices_state === 'pending' &&
+            <View style={{alignItems:'center',display:'flex',flexDirection:'row',justifyContent:'center'}}>
+            <AppButton  title={"Accept and Pay"} onPress={() => handlePayOrder(item?.id)} style={{backgroundColor:Colors.success}}/>
+            <AppButton  title={"Reject"} onPress={() => handleRejectAddionalPrices(item?.id)} style={{backgroundColor:Colors.redColor}}/>
+            </View>
+            }
+
+          </>
+        }
+
+       
         {
           item?.attributes?.delay_request?.data?.attributes?.accepted === 'pending ' &&
           <DelayOrderCard item={item} />
@@ -554,7 +554,7 @@ export default function OrderDetails({ navigation, route }) {
           )}
         {item?.attributes?.status === "payment_required" &&
           item?.attributes?.PaymentStatus !== "payed" && (
-            item?.attributes?.additional_prices?.data?.length === 0 
+            item?.attributes?.additional_prices?.data?.length === 0 && item?.attributes?.provider_fee === 0
           ) && (
             <AppButton
               title={"Pay"}

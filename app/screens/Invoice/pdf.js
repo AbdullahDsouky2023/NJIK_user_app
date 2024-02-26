@@ -88,7 +88,7 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
     `
     <tr>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #f2652a;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
-                       أجرة الفني
+                  أجرة الفنى
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"> </td>
                       <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
@@ -207,7 +207,7 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
                         <tr>
                           <td style="font-size: 21px; color: #f2652a; letter-spacing: -1px; font-family: 'Open Sans', sans-serif; line-height: 1; vertical-align: top; text-align: right;">
                             
-                           <div style="margin-top:-10px;background-color:#f2652a;color:white;display:flex;padding:20px;align-items:center;justify-content:center;height:55px;width:55px;border-radius: 60px;">
+                           <div style="margin-top:4px;background-color:#f2652a;color:white;display:flex;padding:20px;align-items:center;justify-content:center;height:55px;width:55px;border-radius: 60px;">
                              
                            فاتورة
                           </div>

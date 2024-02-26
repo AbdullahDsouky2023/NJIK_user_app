@@ -13,7 +13,7 @@ export default function PaymentSucessScreen({navigation,route}) {
   const { data:orders } = useOrders()
   const { item }= route?.params
   const {sendPushNotification,token}=useNotifications()
-console.log(item)
+// console.log(item)
   const handleReturn = ()=> {
 
       navigation.navigate(REVIEW_ORDER_SCREEN, {

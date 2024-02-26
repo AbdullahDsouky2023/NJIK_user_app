@@ -58,10 +58,17 @@ export default function PaymentRequiredScreen({ navigation, route }) {
         );
       }
       if (res) {
-        navigation?.navigate(SUCESS_PAYMENT_SCREEN,{
-          item,
-          firstReview:true
-        })
+         // Inside your sign-out function:
+         navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: SUCESS_PAYMENT_SCREEN , params:{
+              item,
+              firstReview:true
+            }}], // Replace 'Login' with the name of your login screen
+          })
+        );
+      
         console.log("current data", id, res, providerNotificationToken, user?.username);
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
@@ -115,7 +122,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
           } />
           <ItemComponent name="التاريخ" iconName={"clock-o"} data={item?.attributes?.date} />
           <ItemComponent2 name="الموقع" iconName={"map-marker"} data={item?.attributes?.location} />
-          <ItemComponent name="الخدمة" data={
+          <ItemComponent name="الخدمة"   iconName={"gear"}data={
             categoryName1?.name || categoryName2?.name || categoryName3?.name
 
           } />
@@ -149,27 +156,18 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
-                        justifyContent: "center",
+                        // justifyContent: "center",
                         gap: 15,
                       }}
                      
                     >
-                      {/* <Image source={ { uri: categoryName2?.image?.data[0]?.attributes?.url}} style={{height:width*0.085,width:width*0.085}} height={width*0.085} width={width*0.085}/> */}
+                                   <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
                       <AppText
                         centered={false}
                         text={item.attributes?.name}
-                        style={[styles.name, { fontSize: RFPercentage(2), paddingRight: 10 }]}
+                        style={[styles.name, { fontSize: RFPercentage(1.75), paddingRight: 10, width:width*0.9 }]}
                       />
-                      <PriceTextComponent
-                        style={{
-                          backgroundColor: Colors.primaryColor,
-                          fontSize: RFPercentage(1.5),
-                          padding: 6,
-                          borderRadius: 40,
-                          color: Colors.whiteColor,
-                        }}
-                        price={item?.attributes?.Price}
-                      />
+                    
                     </View>
                   );
                 }}
@@ -200,25 +198,18 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
-                        justifyContent: "space-between",
+                        // justifyContent: "space-between",
                         gap: 15,
                       }}
                     >
+                                                         <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
                       <AppText
                         centered={false}
                         text={item.attributes?.name}
-                        style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10 }]}
+                        style={[styles.name, { fontSize: RFPercentage(1.75), paddingRight: 10 , width:width*0.9}]}
                       />
-                      <PriceTextComponent
-                        style={{
-                          backgroundColor: Colors.primaryColor,
-                          fontSize: RFPercentage(1.5),
-                          padding: 6,
-                          borderRadius: 40,
-                          color: Colors.whiteColor,
-                        }}
-                        price={item?.attributes?.price}
-                      />
+                      
                     </View>
                   );
                 }}
@@ -249,36 +240,19 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                         alignItems: "center",
                         flexWrap: 'wrap',
                         maxWidth: width * 0.90,
+                        // justifyContent:'center',
                         gap: 15,
                       }}
                     >
-                                            {/* <Image source={ { uri: categoryName1?.image?.data[0]?.attributes?.url}} style={{height:width*0.085,width:width*0.085}} height={width*0.085} width={width*0.085}/> */}
+                                   <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
 
                       <AppText
                         centered={false}
                         text={item?.attributes?.service?.data?.attributes?.name}
-                        style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10, paddingTop: 10 }]}
+                        style={[styles.name, { fontSize: RFPercentage(1.75), paddingRight: 10, width:width*0.9 }]}
                       />
-                      {/* <AppText
-                        centered={false}
-                        text={item?.attributes?.service?.data?.attributes?.name}
-                        style={[styles.name, { fontSize: RFPercentage(1.65), paddingRight: 10, paddingTop: 10 }]}
-                      /> */}
-                      <View style={styles.CartServiceStylesContainer}>
-                        <PriceTextComponent
-                          style={{
-                            backgroundColor: Colors.primaryColor,
-                            fontSize: RFPercentage(1.5),
-                            padding: 6,
-                            borderRadius: 40,
-                            color: Colors.whiteColor,
-                          }}
-                          price={item?.attributes?.service?.data?.attributes?.Price}
-                        />
-                       
-                           
-                      
-                      </View>
+                    
                     </View>
                   );
                 }}
@@ -298,7 +272,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
 
           {
             item?.attributes?.provider_fee > 0 &&
-<ItemComponent name={"اجرة الفني"} data={        `${item?.attributes?.provider_fee} ${CURRENCY}`}/>
+<ItemComponent name={"اجرة الفني"} iconName="money" data={        `${item?.attributes?.provider_fee} ${CURRENCY}`}/>
           }
           {item?.attributes?.additional_prices?.data?.length > 0 &&
             <>
@@ -308,7 +282,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
 
                 renderItem={({ item }) => {
 
-                  return <ItemComponent name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`} />
+                  return <ItemComponent iconName={"tags"} name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`} />
                 }}
                 keyExtractor={(item) => item?.id}
               />
@@ -318,17 +292,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
           <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${CURRENCY}`} />
           <ItemComponent name={"الضريبة"} iconName={"money"} data={`${0} ${CURRENCY}`} />
           <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
-          <View style={{marginVertical:10}}>
-
-            <Pdf item={item} chatContainerStyles={{width:200,height:50,alignSelf:'center'}}>
-              <View style={{display:'flex',flexDirection:'row',gap:15,alignItems:'center',justifyContent:'center',alignSelf:'center'}}>
-
-              <AppText text={"تصدير"} style={{color:Colors.whiteColor}}/>
-            <AntDesign name="upload" size={20} color={Colors.whiteColor} />
-            {/* <AntDesign name="upload" size={24} color="black" /> */}
-              </View>
-              </Pdf>
-          </View>
+          
 
         </ScrollView>
       </ScrollView>
@@ -345,14 +309,17 @@ export default function PaymentRequiredScreen({ navigation, route }) {
           style={styles.buttonStyles2}
           textStyle={{ fontSize: RFPercentage(1.7) }}
           onPress={() => {
-            console.log("f222eeees",item?.attributes?.provider_fee >0,item?.attributes?.additional_prices?.data?.length )
-            if(item?.attributes?.provider_fee > false|| item?.attributes?.additional_prices?.data?.length === 0){
+    
+            // console.log("f222eeees",item?.attributes?.provider_fee >0,item?.attributes?.additional_prices?.data?.length )
+            if ( item?.attributes?.additional_prices?.data?.length > 0  || item?.attributes?.provider_fee > 0){
+              navigation.navigate(ORDERS_DETAILS,{item:item});
+              console.log("the current provider feee2",(item?.attributes?.provider_fee) > 0 )
+              
+            }else {
+              console.log("the current provider feee",(item?.attributes?.provider_fee) === 0 )
               navigation.navigate(CHAT_ROOM_fireBase)
               dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id))
-
-            }else {
               
-              navigation.navigate(ORDERS_DETAILS,{item:item});
             }
             dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id))
           }}

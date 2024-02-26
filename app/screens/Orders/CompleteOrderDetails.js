@@ -18,7 +18,7 @@ import ArrowBack from "../../component/ArrowBack";
 import { ScrollView } from "react-native-virtualized-view";
 import { CURRENCY } from "../../navigation/routes";
 import ItemComponent from "../../component/Payment/ItemComponent";
-
+import { MaterialIcons} from '@expo/vector-icons'
 const { width, height } = Dimensions.get("screen");
 
 export default function CompleteOrderDetails({ navigation, route }) {
@@ -55,7 +55,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
           } />
               <ItemComponent name="التاريخ" iconName={"clock-o"} data={item?.attributes?.date} />
           {/* <ItemComponent2 name="الموقع" iconName={"map-marker"} data={item?.attributes?.location} /> */}
-          <ItemComponent name="الخدمة" data={
+          <ItemComponent name="الخدمة" iconName={"gear"} data={
             categoryName1 || categoryName2 || categoryName3
 
           } />
@@ -85,16 +85,18 @@ export default function CompleteOrderDetails({ navigation, route }) {
                       display: "flex",
                       flexDirection: "row",
                       alignItems: "center",
-                      justifyContent: "center",
+                      // justifyContent: "center",
                       gap: 15,
                     }}
                   >
+                                                       <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
                     <AppText
                       centered={false}
                       text={item.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.8), paddingRight: 10 }]}
+                      style={[styles.name, { fontSize: RFPercentage(1.8), paddingRight: 10, width:width*0.9 }]}
                     />
-                     
+{/*                      
                      <PriceTextComponent
                 style={{
                   backgroundColor: Colors.primaryColor,
@@ -104,7 +106,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
                   color: Colors.whiteColor,
                 }}
                 price={item?.attributes?.Price}
-              />
+              /> */}
                   </View>
                 );
               }}
@@ -135,16 +137,18 @@ export default function CompleteOrderDetails({ navigation, route }) {
                       display: "flex",
                       flexDirection: "row",
                       alignItems: "center",
-                      justifyContent: "center",
+                      // justifyContent: "center",
                       gap: 15,
                     }}
                   >
+                                                       <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
                     <AppText
                       centered={false}
                       text={item.attributes?.name}
-                      style={[styles.name, { fontSize:RFPercentage(1.65), paddingRight: 10 }]}
+                      style={[styles.name, { fontSize:RFPercentage(1.75), paddingRight: 10 , width:width*0.9}]}
                     />
-                     <PriceTextComponent
+                     {/* <PriceTextComponent
                 style={{
                   backgroundColor: Colors.primaryColor,
                   fontSize: RFPercentage(1.5),
@@ -153,7 +157,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
                   color: Colors.whiteColor,
                 }}
                 price={item?.attributes?.price}
-              />
+              /> */}
                   </View>
                 );
               }}
@@ -187,12 +191,14 @@ export default function CompleteOrderDetails({ navigation, route }) {
                     gap: 15,
                   }}
                 >
+                                                     <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
                   <AppText
                     centered={false}
                     text={item?.attributes?.service?.data?.attributes?.name}
-                    style={[styles.name, { fontSize:RFPercentage(1.65), paddingRight: 10,paddingTop:10 }]}
+                    style={[styles.name, { fontSize:RFPercentage(1.65), paddingRight: 10,width:width*0.9 }]}
                   />
-                   <View style={styles.CartServiceStylesContainer}>
+                   {/* <View style={styles.CartServiceStylesContainer}>
                    <PriceTextComponent
               style={{
                 backgroundColor: Colors.primaryColor,
@@ -225,14 +231,14 @@ export default function CompleteOrderDetails({ navigation, route }) {
               }}
               text={item?.attributes?.qty}
             />
-                    </View>
+                    </View> */}
                 </View>
               );
             }}
           />
         </View>
          : null }
-           <ItemComponent name=" اسم الفني" iconName="user" data={
+           <ItemComponent name=" اسم الفنى" iconName="user" data={
             item?.attributes?.provider?.data?.attributes?.name
 
           } />
@@ -249,7 +255,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
           <ItemComponent name={"الضريبة"} iconName={"money"} data={`${0} ${CURRENCY}`} />
           {
             item?.attributes?.provider_fee > 0 &&
-<ItemComponent name={"اجرة الفني"} data={        `${item?.attributes?.provider_fee} ${CURRENCY}`}/>
+<ItemComponent name={"اجرة الفني"} iconName={"money"} data={        `${item?.attributes?.provider_fee} ${CURRENCY}`}/>
           }
           {item?.attributes?.additional_prices?.data?.length > 0 &&
             <>
@@ -259,7 +265,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
 
                 renderItem={({ item }) => {
 
-                  return <ItemComponent name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`} />
+                  return <ItemComponent   iconName="tags" name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`} />
                 }}
                 keyExtractor={(item) => item?.id}
               />
@@ -276,7 +282,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
                 ? item?.attributes?.description
                 : "لا يوجد"
             }
-            style={styles.price}
+            style={[styles.price,{width:width*0.9}]}
           />
         </View>
         <View style={styles.descriptionContainer}>
