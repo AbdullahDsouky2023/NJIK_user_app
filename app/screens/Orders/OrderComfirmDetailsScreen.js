@@ -26,6 +26,7 @@ import useServices from "../../../utils/services";
 import ArrowBack from "../../component/ArrowBack";
 import usePackages from "../../../utils/packages";
 import { updateUserData } from "../../../utils/user";
+import Carousel from "react-native-snap-carousel-v4";
 
 const { width ,height} = Dimensions.get("screen");
 
@@ -408,6 +409,47 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
             style={[styles.price,{width:width*0.9}]}
           />
         </View>
+        {currentOrderData?.orderImages?.length > 0 && (
+          <View style={styles.descriptionContainer}>
+            <>
+              <AppText centered={false} text={"Images"} style={styles.title} />
+              <Carousel
+                data={currentOrderData?.orderImages}
+                sliderWidth={width}
+                inactiveSlideOpacity={1}
+                inactiveSlideScale={1}
+
+                slideStyle={{
+                  backgroundColor: "transparent",
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                autoplay={true}
+                loop={true}
+                autoplayInterval={10000}
+                itemWidth={width}
+                renderItem={({ item }) => {
+                  return (
+                    <Image
+                      //  resizeMethod="contain"
+                      source={{
+                        uri: item
+                      }}
+                      width={50}
+                      style={{
+                        height: height * 0.2,
+                        width: 200,
+                        objectFit: "fill",
+                        borderRadius: 10,
+                      }}
+                    />
+                  );
+                }}
+              />
+            </>
+          </View>
+        ) }
         <Image
           source={{
             uri: image,

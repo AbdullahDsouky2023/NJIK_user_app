@@ -12,6 +12,7 @@ import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import { CommonActions } from "@react-navigation/native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import {  EXPO_PUBLIC_CLOUDINARY_KEY,EXPO_PUBLIC_CLOUDINARY_PERSIST } from "@env"
 
 import ArrowBack from "../../component/ArrowBack";
 import { Colors } from "../../constant/styles";
@@ -66,8 +67,8 @@ const ComplainCreatingScreen = ({ navigation, route }) => {
       };
       if (values.images) {
         console.log("uplading images", values.images);
-        const imageIds = await uploadImage(values.images);
-        formData.images = imageIds;
+        const imagesUrls = await uploadImage(values.images);
+        formData.complainImages = imagesUrls;
         res = await createComplain(formData);
       } else {
         res = await createComplain(formData);
@@ -101,48 +102,63 @@ const ComplainCreatingScreen = ({ navigation, route }) => {
       setIsLoading(false);
     }
   };
-  const uploadImage = async (image, values) => {
+  const uploadImage = async (images, values, ImageName, retryCount =  0) => {
     try {
-      const imageIds = [];
-      console.log("the images array ", image);
-      for (const imageUri of image) {
+      setIsLoading(true);
+      const imageUrls = []; // Use an object to store image URLs with their IDs as keys
+  
+      for (const imageUri of images) {
         const formData = new FormData();
-        formData.append("files", {
-          name: `COOMLPAIN_IMAGE`,
-          type: "image/jpeg",
-          uri:
-            Platform.OS === "ios" ? imageUri.replace("file://", "") : imageUri,
+        formData.append("file", {
+          uri: imageUri,
+          type: "image/jpeg", // Ensure this matches the file type
+          name: `image_${Date.now()}.jpg`, // Generate a unique file name
         });
-
+        formData.append("upload_preset", EXPO_PUBLIC_CLOUDINARY_PERSIST ); // Replace with your Cloudinary upload preset
+  
         try {
-          const response = await fetch(`${EXPO_PUBLIC_BASE_URL}/api/upload`, {
+          const response = await fetch(`https://api.cloudinary.com/v1_1/${EXPO_PUBLIC_CLOUDINARY_KEY }/image/upload`, {
             method: "POST",
             body: formData,
           });
-
+  
           if (!response.ok) {
-            throw new Error(
-              `Image upload failed with status: ${response.status}`
-            );
+            throw new Error(`Image upload failed with status: ${response.status}`);
           }
-
+  
           const responseData = await response.json();
-          const imageId = responseData[0]?.id;
-          imageIds.push(imageId);
+          const imageUrl = responseData.secure_url; // The URL of the uploaded image
+          const imageId = responseData.public_id; // Assuming the response includes the public_id of the image
+  
+          if (imageUrl && imageId) {
+            imageUrls.push(imageUrl); // Store the URL with its ID as the key
+            console.log("The image URL:", imageUrl);
+          } else {
+            console.error("Error: imageUrl or imageId is undefined");
+          }
         } catch (error) {
           console.error("Error uploading image:", error);
-          // Handle error gracefully
+          // If upload fails and retries are not exhausted, retry
+          if (retryCount < MAX_RETRIES -  1) {
+            console.log(`Retrying upload... Attempt ${retryCount +  1}`);
+            return uploadImage(images, values, ImageName, retryCount +  1);
+          } else {
+            console.error("Upload failed after maximum retries.");
+          }
         }
       }
-      console.log("the image ids are ", imageIds);
-      setImageId(imageIds);
-      return imageIds;
-
-      // ... continue with form submission ...
+      console.log("the images was upload correlty ",imageUrls)
+      // Dispatch the image URLs to your Redux store or handle them as needed
+      //  dispatch(setCurrentOrderProperties({ orderImages: imageUrls }));
+  
+      return imageUrls;
     } catch (error) {
-      // ... error handling ...
+      console.log("Error uploading image ", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+  
 
   const getItemInfo = async () => {
     try {

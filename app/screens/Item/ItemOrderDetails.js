@@ -29,7 +29,7 @@ import { ORDER_COMFIRM_DETAILS, ORDER_SUCCESS_SCREEN } from "../../navigation/ro
 import { clearCurrentOrder, setCurrentOrderProperties } from "../../store/features/ordersSlice";
 import PriceTextComponent from "../../component/PriceTextComponent";
 import LoadingModal from "../../component/Loading";
-import {  EXPO_PUBLIC_BASE_URL} from "@env"
+import {  EXPO_PUBLIC_BASE_URL,EXPO_PUBLIC_CLOUDINARY_KEY,EXPO_PUBLIC_CLOUDINARY_PERSIST } from "@env"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UseLocation from "../../../utils/useLocation";
 import { clearCart } from "../../store/features/CartSlice";
@@ -116,44 +116,63 @@ const totalPriceServices = useSelector((state)=>state.cartService.totalPrice)
     Date: yup.date().required("من فضلك اختار يوم التنفيذ"),
     description: yup.string(),
   });
-  const uploadImage = async (image, values) => {
+  const uploadImage = async (images, values, ImageName, retryCount =  0) => {
     try {
-      const imageIds = [];
-      console.log("the images array ",image)
-    for (const imageUri of image) {
-      const formData = new FormData();
-      formData.append("files", {
-        name: `Nijk_IMAGE_ORDER`,
-        type: "image/jpeg",
-        uri: Platform.OS === "ios" ? imageUri.replace("file://", "") : imageUri,
-      });
-
-      try {
-        const response = await fetch(`${EXPO_PUBLIC_BASE_URL}/api/upload`, {
-          method: "POST",
-          body: formData,
+      setIsLoading(true);
+      const imageUrls = []; // Use an object to store image URLs with their IDs as keys
+  
+      for (const imageUri of images) {
+        const formData = new FormData();
+        formData.append("file", {
+          uri: imageUri,
+          type: "image/jpeg", // Ensure this matches the file type
+          name: `image_${Date.now()}.jpg`, // Generate a unique file name
         });
-
-        if (!response.ok) {
-          throw new Error(`Image upload failed with status: ${response.status}`);
+        formData.append("upload_preset", EXPO_PUBLIC_CLOUDINARY_PERSIST ); // Replace with your Cloudinary upload preset
+  
+        try {
+          const response = await fetch(`https://api.cloudinary.com/v1_1/${EXPO_PUBLIC_CLOUDINARY_KEY }/image/upload`, {
+            method: "POST",
+            body: formData,
+          });
+  
+          if (!response.ok) {
+            throw new Error(`Image upload failed with status: ${response.status}`);
+          }
+  
+          const responseData = await response.json();
+          const imageUrl = responseData.secure_url; // The URL of the uploaded image
+          const imageId = responseData.public_id; // Assuming the response includes the public_id of the image
+  
+          if (imageUrl && imageId) {
+            imageUrls.push(imageUrl); // Store the URL with its ID as the key
+            console.log("The image URL:", imageUrl);
+          } else {
+            console.error("Error: imageUrl or imageId is undefined");
+          }
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          // If upload fails and retries are not exhausted, retry
+          if (retryCount < MAX_RETRIES -  1) {
+            console.log(`Retrying upload... Attempt ${retryCount +  1}`);
+            return uploadImage(images, values, ImageName, retryCount +  1);
+          } else {
+            console.error("Upload failed after maximum retries.");
+          }
         }
-
-        const responseData = await response.json();
-        const imageId = responseData[0]?.id;
-        imageIds.push(imageId);
-      } catch (error) {
-        console.error("Error uploading image:", error);
-        // Handle error gracefully
       }
+      console.log("the images was upload correlty ",imageUrls)
+      // Dispatch the image URLs to your Redux store or handle them as needed
+       dispatch(setCurrentOrderProperties({ orderImages: imageUrls }));
+  
+      return imageUrls;
+    } catch (error) {
+      console.log("Error uploading image ", error);
+    } finally {
+      setIsLoading(false);
     }
-    console.log("the image ids are ",imageIds)
-    dispatch(setCurrentOrderProperties({ images: imageIds }));
-
-    // ... continue with form submission ...
-  } catch (error) {
-    // ... error handling ...
-  }
   };
+  
   
   return (
     <SafeAreaView

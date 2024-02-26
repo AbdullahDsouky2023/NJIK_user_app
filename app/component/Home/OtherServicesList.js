@@ -21,7 +21,7 @@ export default function OtherServicesList() {
     <HeaderTextComponent name={'otherServices'} >
         <FlatList
         horizontal
-        data={services?.data}
+        data={services}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item,index)=>item.id}
 

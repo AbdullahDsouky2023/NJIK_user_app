@@ -285,48 +285,46 @@ export default function CompleteOrderDetails({ navigation, route }) {
             style={[styles.price,{width:width*0.9}]}
           />
         </View>
-        <View style={styles.descriptionContainer}>
-          <AppText centered={false} text={" صور لطلبك"} style={styles.title} />
-          {item?.attributes?.images?.data ? (
-            <Carousel
-              data={item?.attributes?.images?.data}
-              sliderWidth={width}
-              inactiveSlideOpacity={1}
-              inactiveSlideScale={1}
-              loop={true}
-              autoplayInterval={10000}
-              slideStyle={{
-                backgroundColor: "transparent",
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              autoplay={true}
-              itemWidth={width}
-              renderItem={({ item }) => {
-                console.log(item?.attributes?.url);
-                return (
-                  <Image
-                    //  resizeMethod="contain"
-                    source={{
-                      uri: item?.attributes?.url,
-                    }}
-                    style={{
-                      height: height * 0.2,
-                      width: width * 0.6,
-                      objectFit: "contain",
-                      borderRadius: 10,
-                    }}
-                  />
-                );
-              }}
-              // onSnapToItem={(index) => updateState({ activeSlide: index })}
-            />
-          ) : (
-            <AppText centered={false} text={"لا يوجد"} style={styles.price} />
-          )}
-          
-        </View>
+        {item?.attributes?.orderImages?.length > 0 && (
+          <View style={styles.descriptionContainer}>
+            <>
+              <AppText centered={false} text={"Images"} style={styles.title} />
+              <Carousel
+                data={item?.attributes?.orderImages}
+                sliderWidth={width}
+                inactiveSlideOpacity={1}
+                inactiveSlideScale={1}
+
+                slideStyle={{
+                  backgroundColor: "transparent",
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                autoplay={true}
+                loop={true}
+                autoplayInterval={10000}
+                itemWidth={width}
+                renderItem={({ item }) => {
+                  return (
+                    <Image
+                      //  resizeMethod="contain"
+                      source={{
+                        uri: item
+                      }}
+                      style={{
+                        height: height * 0.2,
+                        width: width * 0.6,
+                        objectFit: "fill",
+                        borderRadius: 10,
+                      }}
+                    />
+                  );
+                }}
+              />
+            </>
+          </View>
+        ) }
        
              
      

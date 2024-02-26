@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { CustomBubble, CustomInputToolbar, renderMessageImage, CustomMessageText, CustomSend, CustomVoiceMessage } from './CustomComponents';
 import { useSelector } from 'react-redux';
 import CustomImagePicker from './ImagePicker';
-import { EXPO_PUBLIC_BASE_URL } from "@env";
+import { EXPO_PUBLIC_BASE_URL,EXPO_PUBLIC_CLOUDINARY_PERSIST ,EXPO_PUBLIC_CLOUDINARY_KEY } from "@env";
 import { Ionicons, FontAwesome, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 
@@ -222,7 +222,7 @@ const ChatRoom = () => {
           type: "image/jpeg", // Ensure this matches the file type
           name: `image_${Date.now()}.jpg`, // Generate a unique file name
         });
-        formData.append("upload_preset", "tegmyn81"); // Replace with your Cloudinary upload preset
+        formData.append("upload_preset", EXPO_PUBLIC_CLOUDINARY_PERSIST ); // Replace with your Cloudinary upload preset
   
         try {
           const response = await fetch("https://api.cloudinary.com/v1_1/dwtxbh9ms/image/upload", {
@@ -320,10 +320,10 @@ const ChatRoom = () => {
         type: "audio/mpeg", // Set the correct MIME type for the audio file
         name: `audio_message_${Date.now()}.mp3`, // Give the file a unique name
       });
-      formData.append("upload_preset", "tegmyn81"); // Use the name of your upload preset
+      formData.append("upload_preset",EXPO_PUBLIC_CLOUDINARY_PERSIST ); // Use the name of your upload preset
   
       try {
-        const response = await fetch("https://api.cloudinary.com/v1_1/dwtxbh9ms/upload", {
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${EXPO_PUBLIC_CLOUDINARY_KEY}/upload`, {
           method: "POST",
           body: formData,
         });

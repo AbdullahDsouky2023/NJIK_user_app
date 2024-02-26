@@ -101,7 +101,7 @@ export default function OrderDetails({ navigation, route }) {
     try {
       console.log("the button is just clikcked", id);
       const res = await PayOrder(id);
-      const selectedOrder = orders?.filter((order) => order?.id === id);
+      const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken =
         selectedOrder[0]?.attributes?.provider?.data?.attributes
           ?.expoPushNotificationToken;
@@ -149,7 +149,7 @@ export default function OrderDetails({ navigation, route }) {
   }
   const handleRejectAddionalPrices = async (id) => {
     try {
-      console.log("the button is just clikcked", id);
+      console.log("the button is just clikcked");
       const res = await updateOrderData(id,{
         additional_prices:null,
         PaymentStatus:'pending',
@@ -162,8 +162,8 @@ export default function OrderDetails({ navigation, route }) {
         addtional_prices_state:'rejected' ,
         provider_fee:0
       });
-      console.log("the orders length " , orders?.length)
-      const selectedOrder = orders?.filter((order) => order?.id === id);
+      // console.log("the orders length " , UserOrders?.length)
+      const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken =
         selectedOrder[0]?.attributes?.provider?.data?.attributes
           ?.expoPushNotificationToken;
@@ -435,12 +435,12 @@ export default function OrderDetails({ navigation, route }) {
             style={[styles.price,{width:width*0.9}]}
           />
         </View>
-         {item?.attributes?.images?.data ? (
+         {item?.attributes?.orderImages?.length >  0 && (
           <View style={styles.descriptionContainer}>
             <>
               <AppText centered={false} text={"Images"} style={styles.title} />
               <Carousel
-                data={item?.attributes?.images?.data}
+                data={item?.attributes?.orderImages}
                 sliderWidth={width}
                 inactiveSlideOpacity={1}
                 inactiveSlideScale={1}
@@ -456,17 +456,16 @@ export default function OrderDetails({ navigation, route }) {
                 autoplayInterval={10000}
                 itemWidth={width}
                 renderItem={({ item }) => {
-                  // console.log(item?.attributes?.url);
                   return (
                     <Image
                       //  resizeMethod="contain"
                       source={{
-                        uri: item?.attributes?.url,
+                        uri: item
                       }}
                       style={{
                         height: height * 0.2,
                         width: width * 0.6,
-                        objectFit: "contain",
+                        objectFit: "fill",
                         borderRadius: 10,
                       }}
                     />
@@ -475,7 +474,7 @@ export default function OrderDetails({ navigation, route }) {
               />
             </>
           </View>
-        ) : null}
+        ) }
         {((item?.attributes?.additional_prices?.data?.length > 0) || (item?.attributes?.provider_fee > 0 ))&&
           <>
             <AppText centered={false} text={"اسعار اضافية"} style={[styles.title, { paddingHorizontal: 10 }]} />

@@ -85,12 +85,12 @@ const styles = StyleSheet.create({
         
     },container2:{
       // height: "100%",
-      // backgroundColor: Colors.redColor,
+      backgroundColor: Colors.whiteColor,
       width: width*1,
       // paddingHorizontal: 20,
       // paddingTop:10,
-      // paddingBottom:10,
-      // marginBottom: -30,
+      paddingBottom:30,
+      marginBottom: -10,
       marginVertical:10,
       display:'flex',
       alignItems:'center',

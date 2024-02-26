@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import ItemDetails from "../../component/ItemDetails";
 import OtherServicesList from "../../component/Home/OtherServicesList";
 import ReserveButton from "../../component/ReverveButton";
@@ -28,11 +28,7 @@ export default function ItemScreen({ route,navigation }) {
  
     }, [])
   );
-  // useEffect(() => {
-  //   return () => {
-  //     dispatch(clearCurrentOrder());
-  //   };
-  // }, []);
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}> 

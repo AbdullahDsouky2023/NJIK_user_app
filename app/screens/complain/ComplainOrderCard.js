@@ -57,7 +57,7 @@ import LoadingScreen from "../loading/LoadingScreen";
               centered={false}
               style={[styles.Status,{
                 color:Colors.primaryColor,
-                maxWidth:width*0.6
+                maxWidth:width*0.62
               }]}
             />
           </View>

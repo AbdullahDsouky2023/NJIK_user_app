@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, Dimensions } from "react-native";
-import React from "react";
+import React, {useRef, useEffect} from "react";
 import AppText from "./AppText";
 import { StyleSheet } from "react-native";
 import { Colors } from "../constant/styles";
@@ -15,6 +15,16 @@ const content = [
 
 const { width, height } = Dimensions.get("screen");
 export default function ItemDetails({ item }) {
+
+  const scrollViewRef = useRef()
+
+  // Use useEffect to scroll to the top of the ScrollView when the component mounts or updates
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ x:  0, y:  0, animated: true });
+    }
+  }, [item]);
+ 
   return (
     <View style={styles.container}>
       <ArrowBack subPage={true} />
