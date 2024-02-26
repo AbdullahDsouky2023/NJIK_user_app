@@ -74,7 +74,6 @@
     "react-native": "0.72.6",
     "react-native-animated-spinkit": "^1.5.2",
     "react-native-animated-splash-screen": "^2.0.5",
-    "react-native-blob-util": "^0.19.6",
     "react-native-confirmation-code-field": "^7.3.2",
     "react-native-countdown-component": "^2.7.1",
     "react-native-dashed-line": "^1.1.0",
