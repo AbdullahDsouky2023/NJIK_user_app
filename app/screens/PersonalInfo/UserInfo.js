@@ -57,7 +57,7 @@ const UserInfo = ({ navigation }) => {
       .string()
       // .required(t("Full name is required"))
       .min(2, "الاسم  المدخل قصير جدا")
-      .max(50, "الاسم المدخل طويل جدا"),
+      .max(30, "الاسم المدخل طويل جدا"),
     emailAddress: yup.string().email("الايميل المدخل غير صالح"),
     // .required("الايميل مطلوب"),
     location: yup.string(),
@@ -204,7 +204,9 @@ const UserInfo = ({ navigation }) => {
               <FormField
                 autoCorrect={false}
                 name="fullName"
-                value={userData?.username}
+                // value={userData?.username}
+                placeholderTextColor={Colors.blackColor}
+
                 icon={"user"}
                 placeholder={userData?.username}
               />
@@ -222,7 +224,7 @@ const UserInfo = ({ navigation }) => {
                 // placeholder="emailAddress"
                 textContentType="emailAddress"
                 placeholder={userData?.email}
-                value={userData?.email}
+                placeholderTextColor={Colors.blackColor}
               />
               <AppText
                 text={"Birth Date"}
@@ -246,8 +248,10 @@ const UserInfo = ({ navigation }) => {
                 name="city"
                 // placeholder="emailAddress"
                 // textContentType="emailAddress"
+                placeholderTextColor={Colors.blackColor}
+
                 placeholder={userData?.city}
-                value={userData?.city}
+                // value={userData?.city}
               />
               <View style={styles.switchContainer}>
                 <AppText text={"Allow Offers"} style={styles.allow_offers} />

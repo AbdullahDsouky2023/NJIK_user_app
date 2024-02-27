@@ -9,10 +9,11 @@ import AppText from "../../component/AppText";
 import useOrders from "../../../utils/orders";
 import LoadingScreen from "../loading/LoadingScreen";
 import { RefreshControl  } from 'react-native';
-import { COMPLAIN_ORDER_DETAILS, COMPLETE_ORDER_DETAILS, ORDERS_DETAILS } from "../../navigation/routes";
+import { ACCOUNT, COMPLAIN_ORDER_DETAILS, COMPLETE_ORDER_DETAILS, ORDERS_DETAILS } from "../../navigation/routes";
 import CompleteOrderCard from "../../component/orders/CompleteOrderCard";
 import ComplainOrderCard from "./ComplainOrderCard";
 import ArrowBack from "../../component/ArrowBack";
+import { useTranslation } from "react-i18next";
 
 const { height , width } = Dimensions.get('screen')
  function ComplainListScreen({navigation}) {
@@ -23,7 +24,7 @@ const { height , width } = Dimensions.get('screen')
   const {data,isLoading,refetch} = useOrders()
   const [refreshing, setRefreshing] = useState(false);
   const [currentOrders,setCurrentData]=useState([])
-console.log("currentOrders",currentOrders?.length)
+const { t} = useTranslation()
   const onRefresh = () => {
     setRefreshing(true);
     fetchData();
@@ -51,7 +52,7 @@ const fetchData=()=>{
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
   }>
-    <ArrowBack />
+    <ArrowBack back={t(ACCOUNT)}/>
     {
       currentOrders?.length === 0  &&
       <View style={styles.noItemContainer}>

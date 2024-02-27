@@ -169,7 +169,7 @@ export default function StarsComponent({ route }) {
             source={{
               uri:
                 route?.params?.item?.attributes?.provider?.data?.attributes
-                  ?.Personal_image?.data[0]?.attributes?.url || TemporaryImage,
+                  ?.Personal_image || TemporaryImage,
             }}
             style={styles.Image}
           />
