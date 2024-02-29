@@ -460,7 +460,7 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
                
                       </td>
                       <td>
-                      <img src="https://th.bing.com/th/id/R.89bac843ee3c2d1a305291abe7b6657c?rik=Ka8RuX9CNkVIyA&pid=ImgRaw&r=0" height=100 width=100 alt="QR Code" />
+                      <img src="https://res.cloudinary.com/dgjgthsst/image/upload/v1709225967/Njik_qr_code_3e5b854b0b.png" height=100 width=100 alt="QR Code" />
                       </td>
                     </tr>
                   </tbody>

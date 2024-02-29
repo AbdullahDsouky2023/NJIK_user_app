@@ -135,8 +135,9 @@ export default function CurrentOrderCard({ item, onPress }) {
                 "waiting for the technician"
               }
               centered={false}
-              style={styles.title}
-            />
+              style={[styles.title,{width:width*0.52,
+                textAlign: "left", // Align text to the right
+              }]}            />
           </View>
 
           <View>

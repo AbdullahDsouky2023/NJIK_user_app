@@ -168,7 +168,9 @@ export default function CompleteOrderCard({ item, onPress }) {
                 "في انتظار العامل "
               }
               centered={false}
-              style={styles.title}
+              style={[styles.title,{width:width*0.58,
+                textAlign: "left", // Align text to the right
+              }]}
             />
           </View>
 
