@@ -10,6 +10,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@carchaze/react-native-voice-message-player": "^1.0.4",
     "@fortawesome/react-native-fontawesome": "^0.3.0",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/datetimepicker": "7.2.0",
@@ -74,6 +75,7 @@
     "react-native": "0.72.6",
     "react-native-animated-spinkit": "^1.5.2",
     "react-native-animated-splash-screen": "^2.0.5",
+    "react-native-background-runner": "^3.3.1",
     "react-native-confirmation-code-field": "^7.3.2",
     "react-native-countdown-component": "^2.7.1",
     "react-native-dashed-line": "^1.1.0",
