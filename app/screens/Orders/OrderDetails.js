@@ -22,7 +22,7 @@ import useOrders, {
   cancleOrder,
   updateOrderData,
 } from "../../../utils/orders";
-import { MaterialIcons} from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import ArrowBack from "../../component/ArrowBack";
 import LoadingScreen from "../loading/LoadingScreen";
 import AppText from "../../component/AppText";
@@ -56,7 +56,7 @@ export default function OrderDetails({ navigation, route }) {
   const handleOrderCancle = async (id) => {
     try {
       setIsLoading(true);
-      console.log("ccalcning....",id,UserOrders?.data?.length)
+      console.log("ccalcning....", id, UserOrders?.data?.length)
       const res = await cancleOrder(id);
       const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken =
@@ -118,13 +118,15 @@ export default function OrderDetails({ navigation, route }) {
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: SUCESS_PAYMENT_SCREEN , params:{
-              item,
-              firstReview:true
-            }}], // Replace 'Login' with the name of your login screen
+            routes: [{
+              name: SUCESS_PAYMENT_SCREEN, params: {
+                item,
+                firstReview: true
+              }
+            }], // Replace 'Login' with the name of your login screen
           })
         );
-       
+
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
       }
@@ -134,33 +136,33 @@ export default function OrderDetails({ navigation, route }) {
       setIsLoading(false);
     }
   };
-  const calculateTotalPriceBeforeAddional = ()=>{
-    const provider_fee =Number( item?.attributes?.provider_fee)
-    const additional_prices_array= item?.attributes?.additional_prices?.data?.map((accumulator) => {
+  const calculateTotalPriceBeforeAddional = () => {
+    const provider_fee = Number(item?.attributes?.provider_fee)
+    const additional_prices_array = item?.attributes?.additional_prices?.data?.map((accumulator) => {
       return accumulator?.attributes?.Price
     }); //
-    const additional_prices_sum = additional_prices_array?.reduce((accumulator,currentValue)=>{
-      
+    const additional_prices_sum = additional_prices_array?.reduce((accumulator, currentValue) => {
+
       return Number(accumulator) + Number(currentValue);
-    },0)
+    }, 0)
     // console.log("adduibaku ",additional_prices_sum )
     // console.log("feee ",provider_fee )
-    return (additional_prices_sum > Number(provider_fee) )? (additional_prices_sum + provider_fee ):( provider_fee + additional_prices_sum )
+    return (additional_prices_sum > Number(provider_fee)) ? (additional_prices_sum + provider_fee) : (provider_fee + additional_prices_sum)
   }
   const handleRejectAddionalPrices = async (id) => {
     try {
       console.log("the button is just clikcked");
-      const res = await updateOrderData(id,{
-        additional_prices:null,
-        PaymentStatus:'pending',
-        status : "finish_work",
-        provider_fee:0,
-        provider_payment_status:'pending',
-        totalPrice:(item?.attributes?.totalPrice > calculateTotalPriceBeforeAddional()) ?
-        (item?.attributes?.totalPrice - calculateTotalPriceBeforeAddional() ):
-        (calculateTotalPriceBeforeAddional() - item?.attributes?.totalPrice ),
-        addtional_prices_state:'rejected' ,
-        provider_fee:0
+      const res = await updateOrderData(id, {
+        additional_prices: null,
+        PaymentStatus: 'pending',
+        status: "finish_work",
+        provider_fee: 0,
+        provider_payment_status: 'pending',
+        totalPrice: (item?.attributes?.totalPrice > calculateTotalPriceBeforeAddional()) ?
+          (item?.attributes?.totalPrice - calculateTotalPriceBeforeAddional()) :
+          (calculateTotalPriceBeforeAddional() - item?.attributes?.totalPrice),
+        addtional_prices_state: 'rejected',
+        provider_fee: 0
       });
       // console.log("the orders length " , UserOrders?.length)
       const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
@@ -199,35 +201,35 @@ export default function OrderDetails({ navigation, route }) {
     <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
       <ArrowBack subPage={true} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <ItemComponent name="رقم الطلب" iconName={"hashtag"} data={item?.id} />
-      <ItemComponent iconName={"server"} name="حالة الطلب" data={
-            item?.attributes?.status === "assigned"
+        <ItemComponent name="رقم الطلب" iconName={"hashtag"} data={item?.id} />
+        <ItemComponent iconName={"server"} name="حالة الطلب" data={
+          item?.attributes?.status === "assigned"
+            ? "New"
+            : item?.attributes?.status === "pending"
               ? "New"
-              : item?.attributes?.status === "pending"
-                ? "New"
-                : item?.attributes?.status === "accepted"
-                  ? "Accepted"
-                  : item?.attributes?.status === "working"
-                    ? "Working"
-                    : item?.attributes?.status === "finish_work"
-                      ? "Finished"
-                      : item?.attributes?.status === "payed"
-                        ? "Payed"
-                        : "Finished"
+              : item?.attributes?.status === "accepted"
+                ? "Accepted"
+                : item?.attributes?.status === "working"
+                  ? "Working"
+                  : item?.attributes?.status === "finish_work"
+                    ? "Finished"
+                    : item?.attributes?.status === "payed"
+                      ? "Payed"
+                      : "Finished"
+
+        } />
+        <ItemComponent name="التاريخ" iconName={"clock-o"} data={item?.attributes?.date} />
+        {
+          item?.attributes?.provider?.data?.attributes?.name &&
+          <ItemComponent name=" اسم الفني" iconName="user" data={
+            item?.attributes?.provider?.data?.attributes?.name
 
           } />
-              <ItemComponent name="التاريخ" iconName={"clock-o"} data={item?.attributes?.date} />
-              {
-                     item?.attributes?.provider?.data?.attributes?.name &&
-              <ItemComponent name=" اسم الفني" iconName="user" data={
-                item?.attributes?.provider?.data?.attributes?.name
-                
-              } />
-            }
-               <ItemComponent name="الخدمة" iconName={"gear"} data={
-            categoryName1 || categoryName2 || categoryName3
+        }
+        <ItemComponent name="الخدمة" iconName={"gear"} data={
+          categoryName1 || categoryName2 || categoryName3
 
-          } />
+        } />
         {(item?.attributes?.services?.data?.length > 0) ? (
           <View style={styles.itemContainer}>
             <FlatList
@@ -256,12 +258,12 @@ export default function OrderDetails({ navigation, route }) {
                       gap: 15,
                     }}
                   >
-                                                       <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+                    <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
 
                     <AppText
                       centered={false}
                       text={item.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.8), width : width * 0.9  }]}
+                      style={[styles.name, { fontSize: RFPercentage(1.8), width: width * 0.9 }]}
                     />
 
                     {/* <PriceTextComponent
@@ -308,12 +310,12 @@ export default function OrderDetails({ navigation, route }) {
                       gap: 15,
                     }}
                   >
-                                                       <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+                    <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
 
                     <AppText
                       centered={false}
                       text={item.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.75), width : width *0.9 }]}
+                      style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.9 }]}
                     />
                     {/* <PriceTextComponent
                       style={{
@@ -358,12 +360,12 @@ export default function OrderDetails({ navigation, route }) {
                       gap: 15,
                     }}
                   >
-                                                       <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+                    <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
 
                     <AppText
                       centered={false}
                       text={item?.attributes?.service?.data?.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.75),  width: width *0.9}]}
+                      style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.9 }]}
                     />
                     {/* <View style={styles.CartServiceStylesContainer}>
                       <PriceTextComponent
@@ -405,7 +407,7 @@ export default function OrderDetails({ navigation, route }) {
             />
           </View>
           : null}
-          <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ?`${item?.attributes?.totalPrice} ${CURRENCY}` : "السعر بعد الزيارة"} name={"Price"}/>
+        <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? `${item?.attributes?.totalPrice} ${CURRENCY}` : "السعر بعد الزيارة"} name={"Price"} />
         {/* <View style={styles.itemContainer}>
           <AppText centered={false} text={"Price"} style={styles.title} />
           <PriceTextComponent
@@ -421,7 +423,7 @@ export default function OrderDetails({ navigation, route }) {
             style={styles.price}
           />
         </View>
-    
+
 
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={"Notes"} style={styles.title} />
@@ -432,10 +434,10 @@ export default function OrderDetails({ navigation, route }) {
                 ? item?.attributes?.description
                 : "لا يوجد"
             }
-            style={[styles.price,{width:width*0.9}]}
+            style={[styles.price, { width: width * 0.9 }]}
           />
         </View>
-         {item?.attributes?.orderImages?.length >  0 && (
+        {item?.attributes?.orderImages?.length > 0 && (
           <View style={styles.descriptionContainer}>
             <>
               <AppText centered={false} text={"Images"} style={styles.title} />
@@ -474,8 +476,8 @@ export default function OrderDetails({ navigation, route }) {
               />
             </>
           </View>
-        ) }
-        {((item?.attributes?.additional_prices?.data?.length > 0) || (item?.attributes?.provider_fee > 0 ))&&
+        )}
+        {((item?.attributes?.additional_prices?.data?.length > 0) || (item?.attributes?.provider_fee > 0)) &&
           <>
             <AppText centered={false} text={"اسعار اضافية"} style={[styles.title, { paddingHorizontal: 10 }]} />
             <FlatList
@@ -485,29 +487,29 @@ export default function OrderDetails({ navigation, route }) {
               renderItem={({ item }) => {
 
                 return (
-                
-                <ItemComponent  iconName={"tags"} name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`}/>
+
+                  <ItemComponent iconName={"tags"} name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`} />
                 )
               }}
               keyExtractor={(item) => item?.id}
             />
             {
               item?.attributes?.provider_fee > 0 &&
-               <ItemComponent  iconName={"money"} data={`${item?.attributes?.provider_fee} ${CURRENCY}`} name={"أجرة الفنى"}/>
+              <ItemComponent iconName={"money"} data={`${item?.attributes?.provider_fee} ${CURRENCY}`} name={"أجرة الفنى"} />
             }
 
             {
               item?.attributes?.addtional_prices_state === 'pending' &&
-            <View style={{alignItems:'center',display:'flex',flexDirection:'row',justifyContent:'center'}}>
-            <AppButton  title={"Accept and Pay"} onPress={() => handlePayOrder(item?.id)} style={{backgroundColor:Colors.success}}/>
-            <AppButton  title={"Reject"} onPress={() => handleRejectAddionalPrices(item?.id)} style={{backgroundColor:Colors.redColor}}/>
-            </View>
+              <View style={{ alignItems: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                <AppButton title={"Accept and Pay"} onPress={() => handlePayOrder(item?.id)} style={{ backgroundColor: Colors.success }} />
+                <AppButton title={"Reject"} onPress={() => handleRejectAddionalPrices(item?.id)} style={{ backgroundColor: Colors.redColor }} />
+              </View>
             }
 
           </>
         }
 
-       
+
         {
           item?.attributes?.delay_request?.data?.attributes?.accepted === 'pending ' &&
           <DelayOrderCard item={item} />
@@ -587,8 +589,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: "auto",
-justifyContent:'space-between',
-paddingHorizontal:20,
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
     width: width * 0.9,
     padding: 10,
     // borderWidth: 0.7,

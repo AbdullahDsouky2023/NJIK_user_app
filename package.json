@@ -12,6 +12,7 @@
   "dependencies": {
     "@carchaze/react-native-voice-message-player": "^1.0.4",
     "@fortawesome/react-native-fontawesome": "^0.3.0",
+    "@mtourj/react-native-skeleton-content": "^1.0.33",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/datetimepicker": "7.2.0",
     "@react-native-community/geolocation": "^3.1.0",

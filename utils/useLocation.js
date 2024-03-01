@@ -60,7 +60,6 @@ export default function UseLocation() {
                 location:JSON.parse(localStorageLocation)?.readable
               })
             }
-            console.log("Data Found",JSON.stringify(localStorageLocation))
           }else {               
             handleSetCurrentLocation(coordinate)
             console.log("Data Not  Found",JSON.stringify(localStorageLocation))
@@ -79,7 +78,6 @@ export default function UseLocation() {
         requestLocationPermission()
         //  Updates.reloadAsync();
       }
-      console.log("the user current location",currentLocation)
       }, []);
 
       const handleSetCurrentLocation =   async (coordinate) => {

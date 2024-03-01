@@ -46,7 +46,7 @@ export const storeNotification = async (notification) => {
   // ...
 } catch (error) {
   // Handle the error
-  console.error(error);
+  console.error("error notfication ", error);
   return;
 }  
 };

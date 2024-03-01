@@ -15,11 +15,6 @@ import {
 } from "../../data/home";
 import OffersBanner from "../../component/Home/OffersBanner";
 import ServicesList from "../../component/Home/ServicesList";
-import LowOffers from "../../component/Home/LowOffers";
-import OtherServicesList from "../../component/Home/OtherServicesList";
-import ReadyPackages from "../../component/Home/ReadyPackages";
-import CleaningServices from "../../component/Home/CleaningServices";
-import AskWorker from "../../component/Home/AskWorker";
 import UsersReviews from "../../component/Home/UsersReview";
 import AppHeader from "../../component/AppHeader";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,14 +27,10 @@ import LoadingScreen from "../loading/LoadingScreen";
 import { ErrorScreen } from "../Error/ErrorScreen";
 import useNotifications from "../../../utils/notifications";
 import useOrders from "../../../utils/orders";
-import AppButton from "../../component/AppButton";
 import { generateUserToken } from "../chat/chatconfig";
 import { setUserStreamData } from "../../store/features/userSlice";
 import useBanners from "../../../utils/banners";
-import { requestLocationPermission } from "../../component/Home/UserLocation";
 import CurrentOffersScreen from "../CurrentOffersScreen/CurrentOffersScreen";
-import AppText from "../../component/AppText";
-import Pdf from "../Invoice/pdf";
 const { width } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {
@@ -55,17 +46,14 @@ const HomeScreen = ({ navigation }) => {
   
   const getData =async()=>{
     if (data) {
-      // Dispatch the fetched categories to the Redux store
         dispatch(setCategories(data));
         dispatch(setServices(services));
        dispatch(setOrders(orders?.data));
        dispatch(setBanners(banners));
       const chat = generateUserToken(user)
-      // requestLocationPermission()
       dispatch(setUserStreamData(chat));
     } else if (isError) {
       console.log(isError)
-      // Handle the error
     }
   }
 
@@ -93,8 +81,6 @@ const HomeScreen = ({ navigation }) => {
           }
           data={topCategoriesList}
           numColumns={2}
-          // windowSize={5} // Adjust based on your needs
-
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => `${item.id}`}
           ListFooterComponent={<UsersReviews />}

@@ -9,7 +9,6 @@ import api from './index'
   
       while (true) {
         const response = await api.get(`/api/reviews?populate=*&pagination[page]=${parseInt(page,   10)}`);
-        console.log("Response data:", response?.data?.data?.length); // Log the response data
   
         // Assuming response.data is an array, proceed with adding to the allReviews array
         const currentPageReviews = response?.data?.data || [];

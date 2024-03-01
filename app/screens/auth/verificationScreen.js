@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   View,
   SafeAreaView,
@@ -11,9 +11,8 @@ import {
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import DropdownAlert, {
-  DropdownAlertData,
   DropdownAlertType,
 } from 'react-native-dropdownalert';
 import { Colors } from "../../constant/styles";
@@ -31,7 +30,7 @@ import { auth, db } from "../../../firebaseConfig";
 import { getUserByPhoneNumber } from "../../../utils/user";
 import { useTranslation } from "react-i18next";
 
-const { width ,height} = Dimensions.get("screen");
+const { width, height } = Dimensions.get("screen");
 
 const VerificationScreen = ({ navigation, route }) => {
   const [isLoading, setisLoading] = useState(false);
@@ -39,16 +38,17 @@ const VerificationScreen = ({ navigation, route }) => {
   const [resendDisabled, setResendDisabled] = useState(true);
   const [secondsRemaining, setSecondsRemaining] = useState(30);
   const dispatch = useDispatch();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const { result, handleSendVerificationCode, phoneNumber } = route.params;
+
   let alert = (_data) => new Promise(res => res);
 
   const confirmVerificationCode = async () => {
     try {
-      console.log("the code want send to ",phoneNumber)
+      console.log("the code want send to ", phoneNumber);
       const res = await result?.confirm(otpInput);
       setResendDisabled(true);
-      setisLoading(true)
+      setisLoading(true);
       setSecondsRemaining(30);
       dispatch(userRegisterSuccess(auth?.currentUser));
       await AsyncStorage.setItem("userData", JSON.stringify(auth?.currentUser));
@@ -57,37 +57,39 @@ const VerificationScreen = ({ navigation, route }) => {
         dispatch(setUserData(user[0]));
         return navigation.dispatch(
           CommonActions.reset({
-          index: 0,
-          routes: [{ name:"App" }],
-        }))
+            index: 0,
+            routes: [{ name: "App" }],
+          })
+        );
       } else if (!user) {
-        return  navigation.dispatch(
+        return navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name:"Register" ,
-            params:{phoneNumber:phoneNumber}}],
-          }))
-        }
-        setisLoading(false)
+            routes: [
+              {
+                name: "Register",
+                params: { phoneNumber: phoneNumber },
+              },
+            ],
+          })
+        );
+      }
     } catch (error) {
       console.log("Error from verification screen:", error?.message);
       const errorMessage =
         errorMessages[error.message] ||
         t("Something Went Wrong, Please try again!");
-      // Alert.alert(errorMessage);
       setOtpInput("");
 
       const alertData = await alert({
         type: DropdownAlertType.Error,
         title: t('Error'),
-        Colors:Colors.primaryColor,
-                message: errorMessage
+        Colors: Colors.primaryColor,
+        message: errorMessage,
       });
-      // setisLoading(false)
     } finally {
-      setisLoading(false)
+      setisLoading(false);
       setOtpInput("");
-
     }
   };
 
@@ -98,6 +100,7 @@ const VerificationScreen = ({ navigation, route }) => {
     const phoneNumber = Number(phoneNumberWithoutPlus);
     return phoneNumber;
   };
+
   useEffect(() => {
     if (resendDisabled) {
       const timer = setInterval(() => {
@@ -113,12 +116,16 @@ const VerificationScreen = ({ navigation, route }) => {
     }
   }, [resendDisabled, secondsRemaining]);
 
+  const formattedPhoneNumber = useMemo(() => {
+    // Your formatting logic here
+    return `+${phoneNumber}`;
+  }, [phoneNumber]);
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
+    <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.primaryColor} />
-      <ArrowBack/>
+      <ArrowBack />
       <ScrollView showsVerticalScrollIndicator={false}>
-       
         <View>
           <View style={styles.textContainer}>
             <AppText
@@ -130,18 +137,19 @@ const VerificationScreen = ({ navigation, route }) => {
               }}
               centered={false}
             />
-            <View style={{display:'flex',flexDirection:'row',width:width,gap:8,paddingHorizontal:10}}>
-            <AppText
-              text={`OTP Code Was Sent To`}
-              // centered={false}
-              style={{ fontSize: RFPercentage(2.3) }}
-            />
-            <AppText
-              text={`+${phoneNumber}`}
-              // centered={false}
-              style={{ fontSize: RFPercentage(2.3),color:Colors.primaryColor }}
-            />
-              </View>
+            <View style={styles.phoneContainer}>
+              <AppText
+                text={`OTP Code Was Sent To`}
+                style={{ fontSize: RFPercentage(2.3) }}
+              />
+              <AppText
+                text={formattedPhoneNumber}
+                style={{
+                  fontSize: RFPercentage(2.3),
+                  color: Colors.primaryColor,
+                }}
+              />
+            </View>
           </View>
           <OtpFields
             setisLoading={setisLoading}
@@ -150,13 +158,16 @@ const VerificationScreen = ({ navigation, route }) => {
             confirmVerificationCode={(otpInput) =>
               confirmVerificationCode(otpInput)
             }
-            // clearOtpInput={clearOtpInput} // Pass the clearOtpInput function
           />
           <AppButton
             title={"Continue"}
             path={"Register"}
-            disabled={otpInput.length !== 6 }
-            style={{ paddingHorizontal: width * 0.35,paddingVertical:height*0.012, alignSelf: 'center' }}
+            disabled={otpInput.length !== 6}
+            style={{
+              paddingHorizontal: width * 0.35,
+              paddingVertical: height * 0.012,
+              alignSelf: "center",
+            }}
             textStyle={{ fontSize: RFPercentage(2.5) }}
             onPress={confirmVerificationCode}
           />
@@ -172,40 +183,50 @@ const VerificationScreen = ({ navigation, route }) => {
             />
             <AppButton
               title={
-                resendDisabled ? ` 00 :${secondsRemaining} ` : "Resend"
+                resendDisabled
+                  ? ` 00 :${secondsRemaining} `
+                  : "Resend"
               }
-              textStyle={{fontSize:RFPercentage(1.9)}}
+              textStyle={{ fontSize: RFPercentage(1.9) }}
               disabled={resendDisabled}
               onPress={() => {
-              setResendDisabled(true);
+                setResendDisabled(true);
                 setSecondsRemaining(30);
                 handleSendVerificationCode();
               }}
             />
           </View>
         </View>
-        {/* <AppButton title="Change Number" style={{width:width*0.5,marginLeft:width*0.2}} onPress={()=>navigation.goBack()}  /> */}
       </ScrollView>
       <LoadingModal visible={isLoading} />
       <DropdownAlert alert={func => (alert = func)} />
-
     </SafeAreaView>
   );
 };
 
 export default VerificationScreen;
+
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.bodyBackColor,
+  },
   textContainer: {
     flex: 1,
     alignItems: "flex-start",
     marginTop: 10,
     paddingHorizontal: 25,
   },
+  phoneContainer: {
+    flexDirection: "row",
+    width: width,
+    gap: 8,
+    paddingHorizontal: 10,
+  },
   sendMessasesContainer: {
     flex: 1,
     alignItems: "center",
     marginTop: 10,
-    // marginRight: 25,
     justifyContent: "space-between",
     flexDirection: "row",
   },

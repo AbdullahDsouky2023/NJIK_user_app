@@ -58,7 +58,6 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
       ) {
         await Updates.reloadAsync();
       }
-      // console.log("the current order data is ",currentOrderData,category_id)
       const data = await postOrder(currentOrderData);
       if (currentOrderData?.coupons?.connect[0]?.id) {
         await updateUserData(userData?.id, {
@@ -77,15 +76,12 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
           if(cartServiceIds?.length === 0 ){
           const idData = await   handleCreatingServiceCartIds()
           if(idData){
-            console.log("the data returned",idData)
             await updateOrderData(data, {
               service_carts: cartServiceIds,
               totalPrice:totalPriceServices
             });
-            console.log("update the order",data,"with the data",cartServiceIds)
           }
           }else {
-            console.log("update the order",data,"with the data",cartServiceIds)
             await updateOrderData(data, {
               service_carts: cartServiceIds,
               totalPrice:totalPriceServices
@@ -93,15 +89,6 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
              
         }
         }
-        console.log("the data before navigation ",CartServicesItems?.length)
-        // if ((totalPrice || totalPriceServices) > 0) {
-        //   navigation.dispatch(
-        //     CommonActions.reset({
-        //       index: 0,
-        //       routes: [{ name: "Payment", params: { orderId: data } }],
-        //     })
-        //   );
-        // } else if ((totalPrice || totalPriceServices) === 0) {
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
@@ -365,9 +352,6 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
             />
           </View>
         )}
-        
-        
-
         <View style={styles.itemContainer}>
           <AppText centered={false} text={" السعر"} style={styles.title} />
           <PriceTextComponent
@@ -450,16 +434,19 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
             </>
           </View>
         ) }
-        <Image
-          source={{
-            uri: image,
-          }}
+
+        <View
+        
+     
           style={{
-            height: 120,
+            height:height*0.15,
+
             width: 200,
+            // display:'none',
             borderRadius: 10,
           }}
         />
+      
         </ScrollView>
       </ScrollView>
       <View style={styles.ButtonContainer}>
@@ -483,6 +470,7 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
     paddingHorizontal: 10,
+    // paddingBottom:height*0.2,
     backgroundColor: Colors.whiteColor,
     position:'relative',
     marginBottom: height*0.15

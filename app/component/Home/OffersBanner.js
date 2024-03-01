@@ -1,30 +1,36 @@
-import { View, Text, Dimensions } from "react-native";
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { View, Dimensions } from "react-native";
 import Carousel from "react-native-snap-carousel-v4";
-import React from "react";
 
 import { offersBannerList } from "../../data/home";
 import PaginationComponent from "./Pagination";
 import useBanners from "../../../utils/banners";
 import SlideItem from "../SlideItem";
 import LoadingScreen from "../../screens/loading/LoadingScreen";
+
 const { width } = Dimensions.get("window");
 
 export default function OffersBanner() {
-  const { data: banners, isLoading } = useBanners();
-  const [state, setState] = useState({
+ const { data: banners, isLoading } = useBanners();
+ const [state, setState] = useState({
     offers: offersBannerList,
     activeSlide: 0,
     days: 694,
-  });
+ });
 
-  const updateState = (data) => setState((state) => ({ ...state, ...data }));
-  const { offers, activeSlide, days } = state;
-  if (isLoading) return <LoadingScreen />;
-  return (
+ const updateState = (data) => setState((state) => ({ ...state, ...data }));
+
+ const { offers, activeSlide, days } = state;
+
+ // Use useMemo to optimize the carousel data
+ const carouselData = useMemo(() => banners, [banners]);
+
+ if (isLoading) return <LoadingScreen />;
+
+ return (
     <View>
       <Carousel
-        data={banners}
+        data={carouselData}
         sliderWidth={width}
         inactiveSlideOpacity={1}
         inactiveSlideScale={1}
@@ -32,10 +38,10 @@ export default function OffersBanner() {
         loop={true}
         autoplayInterval={10000}
         itemWidth={width}
-        renderItem={(item) => <SlideItem item={item.item} />}
+        renderItem={({ item }) => <SlideItem item={item} />}
         onSnapToItem={(index) => updateState({ activeSlide: index })}
       />
       <PaginationComponent activeSlide={activeSlide} length={offers.length} />
     </View>
-  );
+ );
 }

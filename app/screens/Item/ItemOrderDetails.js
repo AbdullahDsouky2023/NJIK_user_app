@@ -55,17 +55,12 @@ const totalPriceServices = useSelector((state)=>state.cartService.totalPrice)
   const [currentLocation,setCurrenttLocation]=useState()
   const userData = useSelector((state) => state?.user?.userData);
   const currentOrderData = useSelector((state) => state?.orders?.currentOrderData);
-  console.log("ititit",totalPrice)
   const handleFormSubmit = async (values) => {
     try {
       setIsLoading(true);
   
-      // Wait for the image upload to complete
       await uploadImage(values.images);
-  console.log(values.images)
-      // Create valid Date objects
-      const date = new Date(values?.Date);
-  
+      const date = new Date(values?.Date)
       // Format the date and time
       const formattedDate = format(date, "dd MMMM yyyy", {
         locale: ar,

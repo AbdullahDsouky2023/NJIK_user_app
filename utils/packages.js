@@ -11,7 +11,6 @@ export default function usePackages() {
   
       while (true) {
         const response = await api.get(`/api/packages?populate=deep&pagination[page]=${parseInt(page,   10)}`);
-        console.log("packages data:", response?.data?.data?.length); // Log the response data
   
         // Assuming response.data is an array, proceed with adding to the allPackages array
         const currentPagePackages = response?.data?.data || [];

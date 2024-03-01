@@ -14,7 +14,6 @@ export default function useCartServices() {
   
       while (true) {
         const response = await api.get(`/api/service-carts?populate=deep&pagination[page]=${parseInt(page,  10)}`);
-        console.log("cart Services Response data:", response?.data?.data?.length); // Log the response data
   
         // Assuming response.data is an array, proceed with adding to the allCartServices array
         const currentPageCartServices = response?.data?.data || [];
@@ -60,13 +59,11 @@ export default function useCartServices() {
   
       while (true) {
         const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page, 10)}`);
-        console.log("Response data:", response?.data?.data?.length); // Log the response data
   
         // Assuming response.data is an array, proceed with filtering
         const currentPageOrders = response?.data?.data || [];
         const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber);
         allOrders = [...allOrders, ...filteredOrders];
-        console.log("pageingation data cart service", response?.data?.meta?.pagination.pageCount,page)
         // Check if there is a next page in the pagination information
         const nextPage = response?.data?.meta?.pagination.pageCount
         if (nextPage === page) {

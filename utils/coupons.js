@@ -38,7 +38,6 @@ const fetchUserCoupons = async () => {
   
       while (true) {
         const response = await api.get(`/api/coupons?populate=deep&pagination[page]=${page}`);
-        console.log("Response data:", response?.data?.data?.length);
   
         const currentPageCoupons = response?.data?.data || [];
         let validCoupons = [];

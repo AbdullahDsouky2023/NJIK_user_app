@@ -144,7 +144,6 @@ export default function useOrders() {
    
       while (true) {
         const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page,  10)}`);
-        console.log("Response data:", response?.data?.data?.length);
    
         const currentPageOrders = response?.data?.data || [];
         const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber);
@@ -192,7 +191,6 @@ export function useAllOrders() {
    
       while (true) {
         const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page,   10)}`);
-        console.log("Response data:", response?.data?.data?.length);
    
         const currentPageOrders = response?.data?.data || [];
         const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber);

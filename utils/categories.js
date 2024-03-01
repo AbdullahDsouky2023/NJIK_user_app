@@ -12,7 +12,6 @@ import api from './index'
   
       while (true) {
         const response = await api.get(`/api/categories?populate=*&pagination[page]=${parseInt(page,   10)}`);
-        console.log("categorires data:", response?.data?.data?.length); // Log the response data
   
         // Assuming response.data is an array, proceed with adding to the allCategories array
         const currentPageCategories = response?.data?.data || [];

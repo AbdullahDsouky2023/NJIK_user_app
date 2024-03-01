@@ -129,22 +129,17 @@ export default function CartScreen({ route ,navigation}) {
             width: width,
           }}
           renderItem={({ item }) => {
-            //   console.log(item?.attributes?.name)
-            
             return (
               <CartItem item={item}/>
             );
           }}
         />:
         <View style={styles.noItemContainer}>
-
         <AppText text={"Soon"}/>
         </View>
       
       }
-      
       </ScrollView>
-      
             {cartItems?.length > 0 && (
         <>
           <ReserveButton
