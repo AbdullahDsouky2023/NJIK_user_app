@@ -9,12 +9,11 @@ import { ScrollView } from 'react-native-virtualized-view';
 import HeaderTextComponent from '../Home/HeaderTextComponent';
 import AppText from '../AppText';
 const { height, width } = Dimensions.get('screen')
-export default function HomeScreenLoadingComponent() {
+export default function PackagesLoadingScreen() {
 
 
     return (
         <ScrollView>
-            <AppHeader />
             <MotiView
                 transition={{
                     type: 'timing',
@@ -25,28 +24,10 @@ export default function HomeScreenLoadingComponent() {
                 animate={{ backgroundColor: Colors.whiteColor }}
 
             >
-                <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.93} height={height * 0.25} />
-                <Spacer />
-
-                <HeaderTextComponent style={styles.container} name={"Services"} showAll={true}>
-
-
-                    <FlatList
-    numColumns={3} // Specify the number of columns you want
-    data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
-                        showsVerticalScrollIndicator={false}
-                        contentContainerStyle={styles.listContainer} renderItem={({ item }) => (
-                            <>
-                                <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.30} height={height * 0.12} />
-                                <Spacer />
-                            </>
-                        )}
-                        keyExtractor={(item, index) => item}
-                    />
-                </HeaderTextComponent>
+                
                 <HeaderTextComponent style={styles.container} name={"Packages"} showAll={true}>
                     <FlatList
-                        data={[1, 2,]}
+                        data={[1, 2,3,4,5]}
                         // style={styles.listContainer}
                         showsVerticalScrollIndicator={false}
 
@@ -59,25 +40,7 @@ export default function HomeScreenLoadingComponent() {
                         keyExtractor={(item, index) => item}
                     />
                 </HeaderTextComponent>
-                <HeaderTextComponent style={styles.container} name={""} showAll={true}>
-                    <View style={styles.header}>
-                        <AppText text={"SercureOrder"} style={styles.title} />
-                        <Image source={require('../../assets/images/award.png')} style={styles.awardImage} />
-                    </View>
-                    <FlatList
-                        data={[1]}
-                        // style={styles.listContainer}
-                        showsVerticalScrollIndicator={false}
-
-                        renderItem={({ item }) => (
-                            <>
-                                <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.93} height={height * 0.25} />
-                                <Spacer />
-                            </>
-                        )}
-                        keyExtractor={(item, index) => item}
-                    />
-                </HeaderTextComponent>
+      
             </MotiView>
         </ScrollView>
     );

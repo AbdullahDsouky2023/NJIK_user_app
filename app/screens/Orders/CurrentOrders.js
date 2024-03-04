@@ -12,6 +12,7 @@ import useOrders, { useAllOrders } from "../../../utils/orders";
 import LoadingScreen from "../loading/LoadingScreen";
 import { ORDERS_DETAILS, REQUIRED_PAY_SCREEN } from "../../navigation/routes";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
+import OrdersLoadingScreen from "../../component/LoadingComponents/OrdersLoadingSceen";
 // import useNearProviders from "../../../utils/providers";
 
 const { width, height } = Dimensions.get("screen");
@@ -61,7 +62,7 @@ function CurrentOrders({ navigation }) {
     fetchData()
   }, [data])
 
-  if (isLoading) return <LoadingScreen />
+  if (isLoading) return <OrdersLoadingScreen />
 
   return (
     <ScrollView

@@ -33,13 +33,9 @@ import { generateUserToken } from "../chat/chatconfig";
 import { setUserStreamData } from "../../store/features/userSlice";
 import useBanners from "../../../utils/banners";
 import CurrentOffersScreen from "../CurrentOffersScreen/CurrentOffersScreen";
+import HomeScreenLoadingComponent from "../../component/LoadingComponents/BannersLoadingComponent";
 const { width } = Dimensions.get("window");
-import ContentLoader, {
-  FacebookLoader,
-  InstagramLoader,
-  Bullets
-} from "react-native-easy-content-loader";
-import BannersLoadingComponent from "../../component/LoadingComponents/BannersLoadingComponent";
+
 const HomeScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
@@ -71,8 +67,13 @@ const HomeScreen = ({ navigation }) => {
   , [data]);
  
 
-  if (!isLoading || !serviceLoading) {
-    return (<BannersLoadingComponent/>)}
+  if (isLoading || serviceLoading) {
+    return (
+    <>
+    <HomeScreenLoadingComponent/>
+    </>
+    )
+  }
 
   if (isError) return <ErrorScreen hanleRetry={getData}/>
   return (
@@ -83,9 +84,9 @@ const HomeScreen = ({ navigation }) => {
         <FlatList
           ListHeaderComponent={
             <View >
-              {/* <OffersBanner /> */}
+              <OffersBanner />
               <ServicesList />
-              {/* <CurrentOffersScreen/>  */}
+              <CurrentOffersScreen/> 
             </View>
           }
           data={topCategoriesList}

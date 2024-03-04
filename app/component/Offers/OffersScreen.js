@@ -32,13 +32,14 @@ import AppText from "../AppText";
 import LoadingScreen from "../../screens/loading/LoadingScreen";
 import useBanners from "../../../utils/banners";
 import { ErrorScreen } from "../../screens/Error/ErrorScreen";
+import OffersLoadingComponent from "../LoadingComponents/OffersLoadingComponent";
 const { width, height } = Dimensions.get("screen");
 
 export default function OffersScreen({ route, navigation, Offers }) {
 
   const { data: Banners, isLoading ,isError} = useBanners();
 
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading || !Banners) return <OffersLoadingComponent />;
   if (isError) return <ErrorScreen hanleRetry={()=>console.log("data")}/>
 
   return (

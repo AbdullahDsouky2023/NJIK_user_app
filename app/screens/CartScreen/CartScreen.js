@@ -23,6 +23,7 @@ import ReserveButton from "../../component/ReverveButton";
 import { CURRENCY, ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION, Offer_route_name } from "../../navigation/routes";
 import CartItem from "./CartItem";
 import { clearCurrentOrder, setCurrentOrderProperties } from "../../store/features/ordersSlice";
+import CartLoadingComponent from "../../component/LoadingComponents/CartScreenLoadingComponent";
 const { width, height } = Dimensions.get("screen");
 
 
@@ -77,7 +78,7 @@ function CartScreen({ route ,navigation}) {
       }));
     }
   };
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading) return <CartLoadingComponent category={route?.params?.category}/>;
   return (
     <>
       <ScrollView
@@ -107,7 +108,7 @@ function CartScreen({ route ,navigation}) {
         data={services}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-
+          
           keyExtractor={(item, index) => item.id +index}
           style={{
             display: "flex",

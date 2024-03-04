@@ -12,6 +12,7 @@ const { width } = Dimensions.get("screen");
 import { RefreshControl  } from 'react-native';
 import { COMPLETE_ORDER_DETAILS, ORDERS_DETAILS } from "../../navigation/routes";
 import CompleteOrderCard from "../../component/orders/CompleteOrderCard";
+import OrdersLoadingScreen from "../../component/LoadingComponents/OrdersLoadingSceen";
 
 
  function CompleteOrderScreen({navigation}) {
@@ -39,7 +40,7 @@ const fetchData=()=>{
     fetchData()
     },[data])
 
-    if(isLoading) return <LoadingScreen/>
+    if(isLoading) return <OrdersLoadingScreen/>
     
   return (
     <ScrollView 

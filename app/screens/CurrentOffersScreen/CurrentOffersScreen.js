@@ -17,6 +17,7 @@ import { ErrorScreen } from "../Error/ErrorScreen";
 import OffersServiceComponentList from "../../component/CurrentOffers/OffersListComponent";
 import usePackages from "../../../utils/packages";
 import { setpackages } from "../../store/features/PackagesSlice";
+import PackagesLoadingScreen from "../../component/LoadingComponents/PackagesLoadingScreen";
 
 const { width } = Dimensions.get("screen");
 
@@ -50,7 +51,7 @@ console.log("offers is rerender .........")
     getServices();
  }, [getServices]);
 
- if (isLoading) return <LoadingScreen />;
+ if (isLoading) return <PackagesLoadingScreen />;
  if (isError) return <ErrorScreen />;
  return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
