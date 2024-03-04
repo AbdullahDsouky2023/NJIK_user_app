@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback ,memo} from "react";
 import {
  SafeAreaView,
  StatusBar,
@@ -24,7 +24,7 @@ const CurrentOffersScreen = ({ route, navigation }) => {
  const dispatch = useDispatch();
  const categories = useSelector((state) => state.categories.categories);
  const [selectedItem, setSelectedItem] = useState("all");
-
+console.log("offers is rerender .........")
  const selectedItemsData = categories?.data?.find(
     (category) => category?.attributes?.name === selectedItem
  );
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
  },
 });
 
-export default CurrentOffersScreen;
+export default memo(CurrentOffersScreen);

@@ -1,11 +1,11 @@
 import { View, Text, TouchableWithoutFeedback, Dimensions } from 'react-native'
-import React from 'react'
+import React , { memo } from 'react'
 import { StyleSheet } from 'react-native'
 import { Colors,Fonts } from '../../constant/styles'
 import { Image } from 'react-native'
 import AppText from '../AppText'
 const  { width } = Dimensions.get('screen')
-export default function OffersCard({image,name,onPress}) {
+ function OffersCard({image,name,onPress}) {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
     <View style={styles.card}>
@@ -15,6 +15,7 @@ export default function OffersCard({image,name,onPress}) {
     </TouchableWithoutFeedback>
   )
 }
+export default memo(OffersCard)
 const styles = StyleSheet.create({
     card :{
         height:100,

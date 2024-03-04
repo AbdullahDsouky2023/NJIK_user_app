@@ -1,4 +1,4 @@
-import React from "react";
+import React , { memo} from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 
 import AppText from "../AppText";
@@ -10,30 +10,23 @@ import { OFFERS } from "../../navigation/routes";
 const {
    width,height
 }= Dimensions.get('screen')
-export default function HeaderTextComponent({ name, showAll,style, children }) {
+
+function HeaderTextComponent({ name, showAll,style, children }) {
   const navigation = useNavigation()
   const { t } = useTranslation()
   return (
     <View style={style}>
       <View style={styles.headerTextContainer}>
         <AppText text={name} style={styles.text} />
-        {/* {showAll && (
-          <TouchableWithoutFeedback onPress={()=>navigation.navigate((OFFERS),{name:"all"})}>
-
-          <AppText text={"showAll"} style={{ ...Fonts.primaryColor15Light }} />
-          </TouchableWithoutFeedback>
-        )} */}
       </View>
       <View style={styles.cardContainer}>{children}</View>
     </View>
   );
 }
+
+
+export default memo(HeaderTextComponent);
 const styles = StyleSheet.create({
-  Container: {
-    // marginHorizontal: Sizes.fixPadding * 1.0,
-    // padding: Sizes.fixPadding * 1.0,
-    // backgroundColor:'red'
-  },
   headerTextContainer: {
     display: "flex",
     flexDirection: "row",

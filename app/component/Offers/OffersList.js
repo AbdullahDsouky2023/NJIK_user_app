@@ -1,7 +1,5 @@
-import React from "react";
+import React ,{memo} from "react";
 import { Dimensions, FlatList, StyleSheet ,SafeAreaView, View} from "react-native";
-
-// import ServiceCard from "./ServiceCard";
 import HeaderTextComponent from "../Home/HeaderTextComponent";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -15,7 +13,7 @@ import OffersCard from "./OffersCard";
 import { Colors } from "../../constant/styles";
 const  { width } = Dimensions.get('screen')
 
-export default function OffersList() {
+function OffersList() {
   const categories = useSelector((state) => state.categories.categories);
   const navigation = useNavigation();
   const {data:OffersData,isLoading} = useOffers()
@@ -36,7 +34,6 @@ export default function OffersList() {
         data={OffersData?.data[0]?.attributes?.services?.data}
         style={styles.listContainer}
         showsVerticalScrollIndicator={false}
-
         renderItem={({ item }) => {
           console.log(item?.attributes.name)
           return (
@@ -54,6 +51,7 @@ export default function OffersList() {
 </SafeAreaView>
   );
 }
+export default memo(OffersList)
 const styles = StyleSheet.create({
   listContainer: {
     display:'flex',

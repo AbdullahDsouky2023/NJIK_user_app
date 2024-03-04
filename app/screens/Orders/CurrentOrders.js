@@ -1,20 +1,20 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { RefreshControl } from 'react-native';
 import React, { useEffect, useState, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { CommonActions } from "@react-navigation/native";
 import { ScrollView } from "react-native-virtualized-view";
-import CurrentOrderCard from "../../component/orders/CurrentOrderCard";
 import { FlatList } from "react-native";
+import CurrentOrderCard from "../../component/orders/CurrentOrderCard";
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
 import useOrders, { useAllOrders } from "../../../utils/orders";
 import LoadingScreen from "../loading/LoadingScreen";
-const { width, height } = Dimensions.get("screen");
-import { RefreshControl } from 'react-native';
 import { ORDERS_DETAILS, REQUIRED_PAY_SCREEN } from "../../navigation/routes";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
-import { CommonActions } from "@react-navigation/native";
 // import useNearProviders from "../../../utils/providers";
 
+const { width, height } = Dimensions.get("screen");
 
 function CurrentOrders({ navigation }) {
 
@@ -30,6 +30,7 @@ function CurrentOrders({ navigation }) {
     fetchData();
   };
   const [currentOrders, setCurrentData] = useState([])
+
   const fetchData = () => {
     const currentOrders = data?.data?.filter(
       (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished"
@@ -82,7 +83,7 @@ function CurrentOrders({ navigation }) {
             data={currentOrders}
             style={styles.listContainer}
             showsVerticalScrollIndicator={false}
-
+              initialNumToRender={6}
             renderItem={({ item }) => {
 
               return <CurrentOrderCard item={item} onPress={() => {

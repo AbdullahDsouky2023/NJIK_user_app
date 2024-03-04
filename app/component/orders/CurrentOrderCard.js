@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
-import React, { useEffect ,useState} from "react";
+import React, { useEffect ,useState, memo} from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Colors } from "../../constant/styles";
@@ -23,7 +23,7 @@ import { useDispatch } from "react-redux";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 import Pdf from "../../screens/Invoice/pdf";
 
-export default function CurrentOrderCard({ item, onPress }) {
+function CurrentOrderCard({ item, onPress }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -162,7 +162,7 @@ export default function CurrentOrderCard({ item, onPress }) {
     </TouchableWithoutFeedback>
   );
 }
-
+export default memo(CurrentOrderCard)
 const styles = StyleSheet.create({
   container: {
     height: "100%",

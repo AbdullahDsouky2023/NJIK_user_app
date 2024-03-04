@@ -1,13 +1,9 @@
 import {
   View,
-  Text,
   FlatList,
   Dimensions,
-  Image,
-  Button,
-  TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import useCategories from "../../../utils/categories";
 import { ScrollView } from "react-native-virtualized-view";
@@ -15,15 +11,10 @@ import LoadingScreen from "../loading/LoadingScreen";
 import { StyleSheet } from "react-native";
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
-import AppButton from "../../component/AppButton";
 import { useDispatch, useSelector } from "react-redux";
-import { color } from "react-native-reanimated";
 import {
   addServiceToCart,
-  addTotalBalance,
   clearCart,
-  removeFromtotalBalance,
-  removeServiceFromCart,
 } from "../../store/features/CartSlice";
 import {
   clearCart as clearCartService, setCategoryId,
@@ -33,9 +24,9 @@ import { CURRENCY, ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION, Offer_route_name }
 import CartItem from "./CartItem";
 import { clearCurrentOrder, setCurrentOrderProperties } from "../../store/features/ordersSlice";
 const { width, height } = Dimensions.get("screen");
-const fontSize = RFPercentage(1.7); // Base font size
 
-export default function CartScreen({ route ,navigation}) {
+
+function CartScreen({ route ,navigation}) {
   const category = route.params?.name;
   const { data, isLoading, isError } = useCategories();
   const [services, setServices] = useState([]);
@@ -152,7 +143,7 @@ export default function CartScreen({ route ,navigation}) {
 
   );
 }
-
+export default memo(CartScreen)
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,

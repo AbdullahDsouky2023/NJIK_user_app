@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, memo } from "react";
 import { Dimensions, FlatList, StyleSheet } from "react-native";
 
 import ServiceCard from "./ServiceCard";
@@ -11,14 +11,14 @@ const { width } = Dimensions.get('screen');
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
-export default function ServicesList() {
+ function ServicesList() {
  const categories = useSelector((state) => state.categories.categories);
  const navigation = useNavigation();
 
  const handleServiceCardPress = useCallback((item) => {
     navigation.navigate(CART, { name: item?.attributes?.name });
  }, [navigation]);
-
+console.log("the servlice list is render .........")
  return (
     <HeaderTextComponent style={styles.container} name={"Services"} showAll={true}>
       <FlatList
@@ -28,6 +28,8 @@ export default function ServicesList() {
         getItemLayout={(data, index) => (
           {length: 100, offset: 100 * index, index}
         )}
+        initialNumToRender={15}
+
         renderItem={({ item }) => (
           <ServiceCard
             onPress={() => handleServiceCardPress(item)}
@@ -40,7 +42,7 @@ export default function ServicesList() {
     </HeaderTextComponent>
  );
 }
-
+export default memo(ServicesList)
 const styles = StyleSheet.create({
  listContainer: {
     display: 'flex',

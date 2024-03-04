@@ -32,6 +32,7 @@ export default function OffersServiceComponentList({ data, slectedItem }) {
         data={data}
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
+        initialNumToRender={7}
 
         renderItem={({ item }) => {
           // console.log("heh",item?.attributes?.name)

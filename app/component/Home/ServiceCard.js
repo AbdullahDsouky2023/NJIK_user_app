@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import { View, Text, TouchableWithoutFeedback, Dimensions, Image } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../../constant/styles';
@@ -7,7 +7,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 
 const { width, height } = Dimensions.get('screen');
 
-export default function ServiceCard({ image, name, onPress }) {
+ function ServiceCard({ image, name, onPress }) {
  const handlePress = React.useCallback(onPress, [onPress]);
 
  return (
@@ -26,7 +26,7 @@ export default function ServiceCard({ image, name, onPress }) {
     </TouchableWithoutFeedback>
  );
 }
-
+export default memo(ServiceCard)
 const styles = StyleSheet.create({
  card: {
     height: height * 0.12,

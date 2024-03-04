@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback , memo} from 'react';
 import { View, Dimensions, StyleSheet, Image } from 'react-native';
 import Carousel from 'react-native-snap-carousel-v4';
 import { userReviews } from '../../data/home';
@@ -10,7 +10,7 @@ import { Colors } from '../../constant/styles';
 
 const { width, height } = Dimensions.get("window");
 
-export default function UsersReviews() {
+ function UsersReviews() {
  const { data } = useReviews();
  const [state, setState] = useState({
     reviews: userReviews,
@@ -59,7 +59,7 @@ export default function UsersReviews() {
     </View>
  );
 }
-
+export default memo(UsersReviews)
 const styles = StyleSheet.create({
  container: {
     paddingVertical: 20,

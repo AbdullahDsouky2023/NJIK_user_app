@@ -1,17 +1,13 @@
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import React from "react";
+import React, {memo} from "react";
 import { Colors } from "../constant/styles";
 import AppText from "./AppText";
 import { Image } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
-import PriceTextComponent from "./PriceTextComponent";
-import Markdown from 'react-native-markdown-display';
 const { width, height } = Dimensions.get("screen");
-import { RenderHTML } from 'react-native-render-html';
 import { CURRENCY } from "../navigation/routes";
 
-export default function OfferCard({ service, price, image,onPress,content }) {
-  // console.log(content[0].children[0].text,"ceontnt")
+ function OfferCard({ service, price, image,onPress,content }) {
   return (
     <TouchableWithoutFeedback onPress={onPress} >
       <View style={styles.itemCardContainer}>
@@ -63,7 +59,7 @@ export default function OfferCard({ service, price, image,onPress,content }) {
     </TouchableWithoutFeedback>
   );
 }
-
+export default memo(OfferCard)
 const styles = StyleSheet.create({
   itemCardContainer: {
     display: "flex",

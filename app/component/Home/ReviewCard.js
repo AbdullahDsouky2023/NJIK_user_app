@@ -1,11 +1,11 @@
-import React from "react";
-import { View, Dimensions, Image ,StyleSheet} from "react-native";
+import React  , { memo} from "react";
+import { View, Dimensions, Image ,StyleSheet, } from "react-native";
 import {RFPercentage} from 'react-native-responsive-fontsize'
 import { Colors } from "../../constant/styles";
 import AppText from "../AppText";
 const { width ,height} = Dimensions.get("screen");
 
-export default function ReviewCard({ username, review, userImage }) {
+ function ReviewCard({ username, review, userImage }) {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.reviewContainer}>
@@ -36,6 +36,7 @@ export default function ReviewCard({ username, review, userImage }) {
     </View>
   );
 }
+export default memo(ReviewCard)
 const styles = StyleSheet.create({
   cardContainer: {
     // height: height*0.27,

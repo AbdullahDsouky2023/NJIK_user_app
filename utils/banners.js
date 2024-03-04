@@ -4,8 +4,8 @@ import api from './index'
 
 
  export default function useBanners() {
-  const fetchBanners = async () => {
-    try {
+   const fetchBanners = async () => {
+     try {
       let allBanners = [];
       let page =  1; // Start with the first page
   

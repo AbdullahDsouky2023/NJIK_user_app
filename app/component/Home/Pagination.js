@@ -1,19 +1,22 @@
-import React from 'react'
+import React ,{memo,useMemo} from 'react'
 import { Pagination } from 'react-native-snap-carousel-v4';
 import { StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../constant/styles';
 
-export default function PaginationComponent({length,activeSlide}) {
+function PaginationComponent({length,activeSlide}) {
+    const CurrentActiveSlide = useMemo(() => activeSlide, [activeSlide]);
+
     return (
         <Pagination
             dotsLength={length}
-            activeDotIndex={activeSlide}
+            activeDotIndex={CurrentActiveSlide}
             containerStyle={styles.sliderPaginationWrapStyle}
             dotStyle={styles.sliderActiveDotStyle}
             inactiveDotStyle={styles.sliderInactiveDotStyle}
         />
     );
 }
+export default  memo(PaginationComponent)
 const styles = StyleSheet.create({
     sliderActiveDotStyle: {
         width: 10,
