@@ -398,7 +398,6 @@ const ChatRoom = () => {
 
                 <Ionicons name="send" size={RFPercentage(2.4)} color="white" style={styles.icon} />
               </View>
-
             </Send>
           );
         }}
@@ -454,10 +453,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // gap:width*0.07,
-    // width:width*0.05,
-
-    // backgroundColor:'blue'
   }
 })
 

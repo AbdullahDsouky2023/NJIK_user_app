@@ -5273,7 +5273,7 @@ dtrace-provider@~0.8:
 
 eas-cli@^7.3.0:
   version "7.3.0"
-  resolved "https://registry.npmjs.org/eas-cli/-/eas-cli-7.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/eas-cli/-/eas-cli-7.3.0.tgz#66282dc350e56e54f0af4f193ec772f3f082d48d"
   integrity sha512-TVRri8+IXvmQjDiiL/bk6tyeBpxQAkjYSnLyy9lNm1NTQtnFOMYq8NgmPBoaJg2fqyr1ybBN7mTJDzla59tQwQ==
   dependencies:
     "@expo/apple-utils" "1.4.0"

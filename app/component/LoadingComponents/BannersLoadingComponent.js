@@ -32,15 +32,16 @@ export default function HomeScreenLoadingComponent() {
 
 
                     <FlatList
-    numColumns={3} // Specify the number of columns you want
-    data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
+                        numColumns={3}
+                        data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={styles.listContainer} renderItem={({ item }) => (
-                            <>
+                            <View style={{ marginHorizontal: 2 }}>
                                 <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.30} height={height * 0.12} />
-                                <Spacer />
-                            </>
+                                {/* <Spacer /> */}
+                            </View>
                         )}
+
                         keyExtractor={(item, index) => item}
                     />
                 </HeaderTextComponent>
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         display: 'flex',
-        flexDirection: "row",
+        flexDirection: "column",
         // flexWrap: "wrap",
         backgroundColor: Colors.whiteColor,
         justifyContent: 'center',
