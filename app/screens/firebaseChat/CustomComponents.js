@@ -76,7 +76,6 @@ export   const CustomMessageText = (props) => {
 export const CustomMessageViewer=(props)=>{
     const { imagePath } = props
     if (imagePath) {
-        console.log("the image uri i ",imagePath)
         return (
           <View style={styles2.chatFooter}>
             <Image source={{uri: imagePath}} style={{height: height*0.1,borderRadius:15, width: width*0.2}} />
@@ -112,7 +111,6 @@ export const CustomComposer = (props) => {
     // Adjust the height based on the content height
     setHeight(contentHeight < 40 ? 40 : contentHeight);
   };
-    console.log("the current value in input is ",props?.textInputValue)
     return (
       <TextInput
         {...props}
@@ -227,11 +225,9 @@ export function CustomVoiceMessage({ currentMessage }) {
   const [position, setPosition] = useState(0);
 
   async function playSound() {
-    console.log('Loading Sound');
     const { sound, status } = await Audio.Sound.createAsync({ uri: currentMessage.audio });
     setSound(sound);
     setDuration(status.durationMillis /  1000); // Convert duration to seconds
-    console.log('Playing Sound');
     await sound.playAsync();
     setIsPlaying(true);
 
@@ -239,7 +235,6 @@ export function CustomVoiceMessage({ currentMessage }) {
     sound.setOnPlaybackStatusUpdate(status => {
       if (status.didJustFinish) {
         setIsPlaying(false);
-        console.log("sound findis")
         sound.unloadAsync(); // Unload the sound when it's done playing
       }
     });

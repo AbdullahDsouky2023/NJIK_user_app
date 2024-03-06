@@ -67,7 +67,6 @@ const { width } = Dimensions.get('screen')
       if (status === 'granted') {
         // Fetch user's location
         const location = await Location.getCurrentPositionAsync({});
-        console.log(location,status,"rrrrrrrrrrr")
         // // Save the location to storage
         // await AsyncStorage.setItem('userLocation', JSON.stringify({
         //   readble:getAddressFromObject(reverseGeoCode(location?.coords)),

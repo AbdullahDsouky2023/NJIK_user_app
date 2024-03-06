@@ -83,7 +83,6 @@ const totalPriceServices = useSelector((state)=>state.cartService.totalPrice)
       };
   
       dispatch(setCurrentOrderProperties(formSubmitionData));
-      console.log(formSubmitionData)
       navigation.navigate(ORDER_COMFIRM_DETAILS,{item,image:"ff"})
     } catch (error) {
       Alert.alert("حدثت مشكله حاول مرة اخري");
@@ -103,7 +102,6 @@ const totalPriceServices = useSelector((state)=>state.cartService.totalPrice)
     return ()=>{
       dispatch(clearCart())
       dispatch(clearServiceCart())
-      console.log("clearing order dea")
     }
   },[])
 
@@ -141,7 +139,6 @@ const totalPriceServices = useSelector((state)=>state.cartService.totalPrice)
   
           if (imageUrl && imageId) {
             imageUrls.push(imageUrl); // Store the URL with its ID as the key
-            console.log("The image URL:", imageUrl);
           } else {
             console.error("Error: imageUrl or imageId is undefined");
           }
@@ -149,14 +146,12 @@ const totalPriceServices = useSelector((state)=>state.cartService.totalPrice)
           console.error("Error uploading image:", error);
           // If upload fails and retries are not exhausted, retry
           if (retryCount < MAX_RETRIES -  1) {
-            console.log(`Retrying upload... Attempt ${retryCount +  1}`);
             return uploadImage(images, values, ImageName, retryCount +  1);
           } else {
             console.error("Upload failed after maximum retries.");
           }
         }
       }
-      console.log("the images was upload correlty ",imageUrls)
       // Dispatch the image URLs to your Redux store or handle them as needed
        dispatch(setCurrentOrderProperties({ orderImages: imageUrls }));
   

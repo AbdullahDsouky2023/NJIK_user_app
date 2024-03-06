@@ -20,7 +20,6 @@ export default function ConditionsScreen() {
   const [CurrentTerms,setCurrentTerms]=useState(null)
 
   useEffect(()=>{
-      console.log("the therms",data?.data[0].attributes.content)
       if(data) setCurrentTerms(data?.data[0].attributes.content)
   },[])
   if(isLoading) return  <LoadingScreen/>

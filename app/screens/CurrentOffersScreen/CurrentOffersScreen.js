@@ -25,7 +25,6 @@ const CurrentOffersScreen = ({ route, navigation }) => {
  const dispatch = useDispatch();
  const categories = useSelector((state) => state.categories.categories);
  const [selectedItem, setSelectedItem] = useState("all");
-console.log("offers is rerender .........")
  const selectedItemsData = categories?.data?.find(
     (category) => category?.attributes?.name === selectedItem
  );

@@ -132,7 +132,6 @@ export default function CompleteOrderDetails({ navigation, route }) {
                 width: width,
               }}
               renderItem={({ item }) => {
-                console.log('item')
                 return (
                   <View
                     style={{

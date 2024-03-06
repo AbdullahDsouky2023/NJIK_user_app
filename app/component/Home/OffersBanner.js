@@ -26,7 +26,6 @@ const OffersBanner = () => {
   const carouselData = useMemo(() => banners, [banners]);
 
   
-  console.log("banners is rerender .............");
   
   const handleSnapToItem = useCallback((index) => {
     updateState({ activeSlide: index });

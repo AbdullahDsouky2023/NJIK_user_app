@@ -23,7 +23,6 @@ export default function DelayOrderCard ({item}) {
     const user = useSelector((state) => state?.user?.userData);
 
     const handleDelayAccept = async (id) => {
-        console.log("ccalcning....",id,orders?.data?.length)
         try {
           setIsLoading(true);
 
@@ -68,7 +67,6 @@ export default function DelayOrderCard ({item}) {
     const handleRejectDelay = async (id) => {
         try {
           setIsLoading(true);
-          console.log("ccalcning....")
           const res = await handleDelayOrder(id,{
             accepted:"false"
           });

@@ -61,7 +61,6 @@ export default function OrderCoupon() {
   const handleAddCoupon = async () => {
     try {
       setValiditing(true);
-      console.log("current",currentOrderData)
       const isValideCoupon = currentCoupons.filter((coupon) => {
         return coupon.attributes?.code === text;
       });
@@ -72,10 +71,8 @@ export default function OrderCoupon() {
         if (isUsed.length > 0  ) {
           SetError("Coupon is used before!");
         } else   {
-          console.log("use or unsded",currentOrderData.coupons === undefined)
           if (!AddedCoupon ) {
 
-            console.log("aplly now ");
             const discountPercentage = Number(isValideCoupon[0]?.attributes?.value)/100
             const currentOrderPrice = Number(cartItems || cartServicesPrice)
             const CurrentPrice = Math.floor(currentOrderPrice - (discountPercentage * currentOrderPrice));

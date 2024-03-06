@@ -58,7 +58,6 @@ function CartScreen({ route ,navigation}) {
     const foundIndex = cartItems.indexOf(id);
     if (foundIndex !== -1) {
       const price = services?.filter((item) => item?.id === id)[0]?.attributes?.Price;
-      console.log("the price removed is from scree ",cartItems);
       // dispatch(addServiceToCart({
       //   "cart-service":{
       //     qty:1,
@@ -68,7 +67,6 @@ function CartScreen({ route ,navigation}) {
       // }));
     } else {
       const price = services?.filter((item) => item?.id === id)[0]?.attributes?.Price;
-      console.log("the price added is from scree ", id,price);
       dispatch(addServiceToCart({
         cart_service:{
           qty:1,

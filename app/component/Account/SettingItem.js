@@ -29,7 +29,6 @@ export default function SettingItem({ item }) {
         message: "Check out this awesome app!",
         // You can also add a URL to your app here
       });
-      console.log("the sare mod", Share); // Check if Share is defined
 
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -64,8 +63,6 @@ export default function SettingItem({ item }) {
   const handlePress = () => {
     if (icon === "share") {
       onShare();
-    } else if (icon === "credit-card") {
-      console.log("test");
     } 
     else if (icon === "doc") {
       Linking.openURL("https://njik.sa/");

@@ -9,7 +9,6 @@ const cartSlice = createSlice({
       state.services.push(action.payload.item)
       state.totalPrice = Number(state.totalPrice) + Number(action.payload.price);    
 
-      console.log("adding new item from slice",state.services,state.totalPrice)
     },
     removeServiceFromCart: (state, action) => {
         const indexToRemove = state.services.findIndex(item => item === action.payload.item);
@@ -22,7 +21,6 @@ const cartSlice = createSlice({
       state.packages.push(action.payload.item)
       state.totalPrice = Number(state.totalPrice) + Number(action.payload.price);    
 
-      console.log("adding new item from slice",state.packages,state.totalPrice)
     },
     removePackageFromCart: (state, action) => {
         const indexToRemove = state.packages.findIndex(item => item === action.payload.item);

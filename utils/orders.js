@@ -63,7 +63,6 @@ export const handleDelayOrder = async (id,values) => {
         ...values,
       },
     });
-    console.log("res delay data",data?.data?.data?.id)
     return data?.data?.data || null
   } catch (error) {
     console.error("Error 22:", error.message); // Log the error response

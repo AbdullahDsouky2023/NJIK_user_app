@@ -45,6 +45,8 @@
     },
     "plugins": [
       "@react-native-firebase/app",
+      "expo-community-flipper"
+,
       [
         "expo-build-properties",
         {
@@ -53,6 +55,7 @@
           }
         }
       ],
+
       [
         "expo-location",
         {

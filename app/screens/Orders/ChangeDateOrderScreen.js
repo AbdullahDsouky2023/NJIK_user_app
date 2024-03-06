@@ -58,7 +58,7 @@ const ChangeDateOrderScreen = ({ navigation, route }) => {
       const formattedDate = format(date, "dd MMMM yyyy", {
         locale: ar,
       });
-      console.log(formattedDate.toString(),route?.params?.orderId)
+  
       const res = await updateOrderData(route?.params?.orderId,{
         date: formattedDate?.toString(),
       })

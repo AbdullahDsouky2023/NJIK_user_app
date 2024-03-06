@@ -56,7 +56,7 @@ export default function OrderDetails({ navigation, route }) {
   const handleOrderCancle = async (id) => {
     try {
       setIsLoading(true);
-      console.log("ccalcning....", id, UserOrders?.data?.length)
+     
       const res = await cancleOrder(id);
       const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken =
@@ -99,7 +99,7 @@ export default function OrderDetails({ navigation, route }) {
 
   const handlePayOrder = async (id) => {
     try {
-      console.log("the button is just clikcked", id);
+   
       const res = await PayOrder(id);
       const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken =
@@ -151,7 +151,7 @@ export default function OrderDetails({ navigation, route }) {
   }
   const handleRejectAddionalPrices = async (id) => {
     try {
-      console.log("the button is just clikcked");
+
       const res = await updateOrderData(id, {
         additional_prices: null,
         PaymentStatus: 'pending',

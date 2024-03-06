@@ -35,7 +35,6 @@ import ArrowBack from "../../component/ArrowBack";
   const [isModalVisible, setModalVisible] = useState(false);
   
  
-  console.log("complained ite",item?.attributes.complain.data)
     if(isLoading) return <LoadingScreen/>
     return (
       <ScrollView>

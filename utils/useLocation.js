@@ -62,7 +62,6 @@ export default function UseLocation() {
             }
           }else {               
             handleSetCurrentLocation(coordinate)
-            console.log("Data Not  Found",JSON.stringify(localStorageLocation))
 
           }
         }catch(error){

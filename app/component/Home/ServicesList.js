@@ -18,7 +18,6 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
  const handleServiceCardPress = useCallback((item) => {
     navigation.navigate(CART, { name: item?.attributes?.name });
  }, [navigation]);
-console.log("the servlice list is render .........")
  return (
     <HeaderTextComponent style={styles.container} name={"Services"} showAll={true}>
       <FlatList

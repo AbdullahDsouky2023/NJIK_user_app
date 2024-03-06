@@ -71,7 +71,6 @@ const ChatRoom = () => {
         });
       } else {
         const room = data?.filter((room) => room?.name === currentChannelName)
-        console.log("snap shot is found ", room)
         SetCurrentChatRoom(room)
 
       }
@@ -137,25 +136,11 @@ const ChatRoom = () => {
         const uploadedMessages = await Promise.all(promises);
         setMessages((prevMessages) => GiftedChat.append(prevMessages, uploadedMessages));
 
-        // const newMessage = {
-        //   _id: Math.random().toString(), // Generate a unique ID
-        //   text: null, // No text for image messages
-        //   createdAt: new Date(), // Current date and time
-        //   image: "",
-        //   user: {
-        //     _id: userId, // The ID of the current user
-        //   },
-        // };
 
-        // // Append the new message to the messages array
-        // setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessage));
-        // Send image messages to Firestore
-        // setMessages(prevMessages => GiftedChat.append(prevMessages, uploadedMessages));
         uploadedMessages.forEach(async (message) => {
           await addMessageToFirestore(message);
         });
 
-        // Update the state with the actual image message
 
       } else {
         setText('');

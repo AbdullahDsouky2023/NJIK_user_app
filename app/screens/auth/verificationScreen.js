@@ -45,7 +45,6 @@ const VerificationScreen = ({ navigation, route }) => {
 
   const confirmVerificationCode = async () => {
     try {
-      console.log("the code want send to ", phoneNumber);
       const res = await result?.confirm(otpInput);
       setResendDisabled(true);
       setisLoading(true);

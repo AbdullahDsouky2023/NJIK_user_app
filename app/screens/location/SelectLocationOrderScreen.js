@@ -58,7 +58,6 @@ const SlectLocationOrderScreen = ({ navigation, route }) => {
 
       if (storedLocations !== null) {
         setManualLocations(JSON.parse(storedLocations));
-        console.log(JSON.parse(storedLocations))
       }
     } catch (error) {
       console.error("Error loading manual locations:", error);
@@ -79,7 +78,6 @@ const SlectLocationOrderScreen = ({ navigation, route }) => {
             longitude: location.coords.longitude,
           }
      handleSetCurrentLocation(coordinate)
-      console.log("user Current Location selec",location)
     })();
   }, []);
   const getAddressFromObject = (locationObject) => {
@@ -125,10 +123,6 @@ const handleSetCurrentLocation =   async (coordinate) => {
        if (readableLocation) {
            const fromatedLocation = getAddressFromObject(readableLocation)
            setCurrentLocation({
-            readable:fromatedLocation,
-            coordinate 
-           })
-           console.log("setting the location",{
             readable:fromatedLocation,
             coordinate 
            })

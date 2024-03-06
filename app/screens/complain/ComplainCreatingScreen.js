@@ -66,16 +66,13 @@ const ComplainCreatingScreen = ({ navigation, route }) => {
         // phoneNumber: Number(validPhone),
       };
       if (values.images) {
-        console.log("uplading images", values.images);
         const imagesUrls = await uploadImage(values.images);
         formData.complainImages = imagesUrls;
         res = await createComplain(formData);
       } else {
         res = await createComplain(formData);
       }
-      console.log("the dat will be complain", formData);
       if (res) {
-        console.log("the resit is ", res?.data.id);
         // const gottenuser = await getUserByPhoneNumber(Number(validPhone))
         await AddOrderComplain(route?.params?.item?.id, res?.data.id);
         // dispatch(setUserData(gottenuser));
@@ -132,7 +129,6 @@ const ComplainCreatingScreen = ({ navigation, route }) => {
   
           if (imageUrl && imageId) {
             imageUrls.push(imageUrl); // Store the URL with its ID as the key
-            console.log("The image URL:", imageUrl);
           } else {
             console.error("Error: imageUrl or imageId is undefined");
           }
@@ -140,14 +136,12 @@ const ComplainCreatingScreen = ({ navigation, route }) => {
           console.error("Error uploading image:", error);
           // If upload fails and retries are not exhausted, retry
           if (retryCount < MAX_RETRIES -  1) {
-            console.log(`Retrying upload... Attempt ${retryCount +  1}`);
             return uploadImage(images, values, ImageName, retryCount +  1);
           } else {
             console.error("Upload failed after maximum retries.");
           }
         }
       }
-      console.log("the images was upload correlty ",imageUrls)
       // Dispatch the image URLs to your Redux store or handle them as needed
       //  dispatch(setCurrentOrderProperties({ orderImages: imageUrls }));
   

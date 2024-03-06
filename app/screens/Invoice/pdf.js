@@ -95,7 +95,6 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
                       ${item?.attributes?.provider_fee}   
                                  </td>
                                  </tr>`
-  console.log("prvider fee", item?.attributes?.provider_fee)
 
   const printToFile = async () => {
     try {
@@ -514,7 +513,6 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
         //  width:width*1
       });
 
-      console.log('File has been saved to:', uri);
 
       // Share the generated PDF
       await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });

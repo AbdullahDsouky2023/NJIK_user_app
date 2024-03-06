@@ -96,7 +96,6 @@ const RegisterScreen = ({ navigation, route }) => {
             routes: [{ name: "App" }],
           })
         );
-        console.log("the current resposnse after register is ", res.data);
       } else {
         Alert.alert("الاسم او البريد الالكتروني مستخدم من قبل ");
       }

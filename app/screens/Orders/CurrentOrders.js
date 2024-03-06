@@ -50,11 +50,9 @@ function CurrentOrders({ navigation }) {
           })))
 
     }
-    console.log("there are some orders to pay", data?.data?.length, user?.phoneNumber)
     setCurrentData(currentOrders)
     refetch()
 
-    console.log(ordersRedux?.data?.length)
     setRefreshing(false)
   }
   useEffect(() => {

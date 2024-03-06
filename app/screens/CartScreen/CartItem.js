@@ -41,7 +41,6 @@ export default function CartItem({ item }) {
         dispatch(removeServiceFromCart({ id }));
     };
     const handlePressUpdateQuantityButton = (id, newQuantity) => {
-        console.log("is selected",cartServicesItem)
         dispatch(updateServiceQuantity({ id, quantity: newQuantity }));
     };
     const handleClearCart = () => {

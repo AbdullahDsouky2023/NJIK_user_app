@@ -46,7 +46,6 @@ export default function PaymentRequiredScreen({ navigation, route }) {
 
   const handlePayOrder = async (id) => {
     try {
-      console.log("the button is just clicked", id);
       const res = await PayOrder(id);
       const selectedOrder = orders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken = selectedOrder?.[0]?.attributes?.provider?.data?.attributes?.expoPushNotificationToken;
@@ -69,7 +68,6 @@ export default function PaymentRequiredScreen({ navigation, route }) {
           })
         );
       
-        console.log("current data", id, res, providerNotificationToken, user?.username);
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
       }
@@ -193,7 +191,6 @@ export default function PaymentRequiredScreen({ navigation, route }) {
                   width: width,
                 }}
                 renderItem={({ item }) => {
-                  console.log('item')
                   return (
                     <View
                       style={{
@@ -317,10 +314,8 @@ export default function PaymentRequiredScreen({ navigation, route }) {
             // console.log("f222eeees",item?.attributes?.provider_fee >0,item?.attributes?.additional_prices?.data?.length )
             if ( item?.attributes?.additional_prices?.data?.length > 0  || item?.attributes?.provider_fee > 0){
               navigation.navigate(ORDERS_DETAILS,{item:item});
-              console.log("the current provider feee2",(item?.attributes?.provider_fee) > 0 )
               
             }else {
-              console.log("the current provider feee",(item?.attributes?.provider_fee) === 0 )
               navigation.navigate(CHAT_ROOM_fireBase)
               dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id))
               

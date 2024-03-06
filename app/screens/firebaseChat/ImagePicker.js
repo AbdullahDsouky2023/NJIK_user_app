@@ -29,7 +29,6 @@ const CustomImagePicker = ({ onImageSelected, ...otherProps }) => {
           setImage(result?.assets[0]?.uri);
           onImageSelected(result?.assets[0]?.uri);
           refRBSheet.current.close(); // Close the bottom sheet
-          console.log("closing tthe  modal")
 
         }
       }

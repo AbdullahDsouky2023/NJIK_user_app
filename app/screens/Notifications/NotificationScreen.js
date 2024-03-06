@@ -21,15 +21,12 @@ export default function NotificationScreen() {
       if(notifications){
 
         setNotifications(notifications);
-        console.log(notifications[0] === null,"current notificaiton")
       }
     })();
   },[]);
   const deleteNotification = async(item) => {
     try {
-      
-      console.log("deletei",item)
-  
+        
       setNotifications(notifications.filter((n) => n !== item));
       await AsyncStorage.setItem("notifications",JSON.stringify(notifications.filter((n) => n !== item)))
     } catch (error) {

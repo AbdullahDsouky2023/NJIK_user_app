@@ -21,7 +21,6 @@ function OffersList() {
     navigation.navigate(CART, { name: item?.attributes?.name });
   };
 
-  console.log("ofoers",OffersData?.data)
   if(isLoading){
     return <LoadingScreen/>
   }
@@ -37,7 +36,6 @@ function OffersList() {
         initialNumToRender={15}
 
         renderItem={({ item }) => {
-          console.log(item?.attributes.name)
           return (
             <OffersCard
               // onPress={() => handleServiceCardPress(item)}

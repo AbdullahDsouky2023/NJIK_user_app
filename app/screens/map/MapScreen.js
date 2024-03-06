@@ -40,7 +40,6 @@ useEffect(() => {
  const handleMapPress = async (e) => {
     try {
         const coordinate = e.nativeEvent.coordinate;
-        console.log(coordinate);
         setMarker(coordinate);
        
        const readableLocation = await  reverseGeoCode(coordinate)

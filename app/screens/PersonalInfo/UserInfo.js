@@ -51,7 +51,6 @@ const UserInfo = ({ navigation }) => {
   const userData = useSelector((state) => state?.user?.userData);
   const [isSwitchedOn, setIsSwitchedOn] = useState(userData?.allow_offers || false);
   // let user = useSelector((state) => state.user?.user?.phoneNumber);
-  console.log(userData?.birth_date, "dddd");
   const validationSchema = yup.object().shape({
     fullName: yup
       .string()
@@ -71,7 +70,6 @@ const UserInfo = ({ navigation }) => {
       setIsLoading(true);
       let res;
       if (image) {
-        console.log(image, values);
         res = await confirmImage(values);
       } else {
         const formData = {
@@ -89,9 +87,7 @@ const UserInfo = ({ navigation }) => {
       if (res) {
         const gottenuser = await getUserByPhoneNumber(Number(validPhone));
         dispatch(setUserData(gottenuser));
-        console.log("the image id is ", ImageID);
 
-        console.log("the new user is ", gottenuser);
         await AsyncStorage.setItem("userImage", JSON.stringify(image));
 
         Alert.alert("تم التعديل بنجاح");

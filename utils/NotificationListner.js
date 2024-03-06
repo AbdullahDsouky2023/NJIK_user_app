@@ -4,13 +4,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Call this function to listen for notifications
 export const registerNotificationListeners = async () => {
   // Listener for notifications received while the app is foregrounded
-  console.log("the notoification", JSON.parse(await AsyncStorage.getItem('notifications')))
   Notifications.addNotificationReceivedListener(response => {
     storeNotification(response.notification);
   })
   Notifications.addNotificationsDroppedListener(notifications => {
     // Loop through the notifications array and store each notification
-    console.log("reveced un tabed one so store ")
     notifications.forEach(notification => {
       storeNotification(notification);
     });
@@ -18,7 +16,6 @@ export const registerNotificationListeners = async () => {
   
   // Listener for interactions with notifications (e.g., user tapped on notification)
   Notifications.addNotificationResponseReceivedListener(response => {
-    console.log("tab on un tabed one so store ")
     storeNotification(response.notification);
   });
 };
