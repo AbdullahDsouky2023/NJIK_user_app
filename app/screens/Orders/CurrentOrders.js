@@ -7,8 +7,8 @@ import { FlatList } from "react-native";
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
 import useOrders, { useAllOrders } from "../../../utils/orders";
-import { CommonActions } from "@react-navigation/native";
 import LoadingScreen from "../loading/LoadingScreen";
+import { CommonActions } from "@react-navigation/native";
 const { width, height } = Dimensions.get("screen");
 import { RefreshControl } from 'react-native';
 import { ORDERS_DETAILS, REQUIRED_PAY_SCREEN } from "../../navigation/routes";
@@ -83,7 +83,7 @@ function CurrentOrders({ navigation }) {
             data={currentOrders}
             style={styles.listContainer}
             showsVerticalScrollIndicator={false}
-            initialNumToRender={10}
+              initialNumToRender={10}
             renderItem={({ item }) => {
 
               return <CurrentOrderCard item={item} onPress={() => {
