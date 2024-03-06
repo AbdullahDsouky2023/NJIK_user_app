@@ -48,7 +48,7 @@ export default function GeneralSettings() {
         <FlatList
           data={settingsItemArray}
           showsVerticalScrollIndicator={false}
-
+          initialNumToRender={15}
           style={{
             display: "flex",
             gap: 20,

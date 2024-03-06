@@ -108,7 +108,8 @@ function CartScreen({ route ,navigation}) {
         data={services}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          
+          initialNumToRender={10}
+
           keyExtractor={(item, index) => item.id +index}
           style={{
             display: "flex",

@@ -204,6 +204,7 @@ const handleSetCurrentLocation =   async (coordinate) => {
                 <FlatList
                 data={manualLocations}
                 showsVerticalScrollIndicator={false}
+                initialNumToRender={10}
 
                 renderItem={({ item }) => (
                   <SelectLocationItem

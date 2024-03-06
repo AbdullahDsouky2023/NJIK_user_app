@@ -59,7 +59,8 @@ const fetchData=()=>{
       :
       <ScrollView style={styles.container}>
       <FlatList
-      
+                initialNumToRender={10}
+
       data={currentOrders}
       style={styles.listContainer}
       showsVerticalScrollIndicator={false}

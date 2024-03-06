@@ -30,6 +30,7 @@ export default function PackagesLoadingScreen() {
                         data={[1, 2,3,4,5]}
                         // style={styles.listContainer}
                         showsVerticalScrollIndicator={false}
+                        initialNumToRender={10}
 
                         renderItem={({ item }) => (
                             <>

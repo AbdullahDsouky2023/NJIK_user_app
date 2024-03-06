@@ -168,6 +168,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
               data={currentSelectedServices}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
+              initialNumToRender={10}
 
               keyExtractor={(item, index) => item.id}
               style={{
@@ -223,6 +224,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
               data={currentSelectedPackages}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
+              initialNumToRender={10}
 
               keyExtractor={(item, index) => item.id}
               style={{
@@ -278,6 +280,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
               data={CartServicesItems}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
+              initialNumToRender={10}
 
               keyExtractor={(item, index) => item.id}
               style={{

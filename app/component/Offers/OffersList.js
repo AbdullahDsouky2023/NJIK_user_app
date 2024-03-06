@@ -34,6 +34,8 @@ function OffersList() {
         data={OffersData?.data[0]?.attributes?.services?.data}
         style={styles.listContainer}
         showsVerticalScrollIndicator={false}
+        initialNumToRender={15}
+
         renderItem={({ item }) => {
           console.log(item?.attributes.name)
           return (

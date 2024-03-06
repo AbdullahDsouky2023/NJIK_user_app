@@ -236,6 +236,7 @@ export default function OrderDetails({ navigation, route }) {
               data={item?.attributes?.services.data}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
+              initialNumToRender={10}
 
               keyExtractor={(item, index) => item.id}
               style={{
@@ -287,6 +288,7 @@ export default function OrderDetails({ navigation, route }) {
               data={item?.attributes?.packages.data}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
+              initialNumToRender={10}
 
               keyExtractor={(item, index) => item.id}
               style={{
@@ -337,6 +339,7 @@ export default function OrderDetails({ navigation, route }) {
               data={item?.attributes?.service_carts?.data}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
+              initialNumToRender={10}
 
               keyExtractor={(item, index) => item.id}
               style={{
@@ -483,6 +486,7 @@ export default function OrderDetails({ navigation, route }) {
             <FlatList
               data={item?.attributes?.additional_prices?.data}
               showsVerticalScrollIndicator={false}
+              initialNumToRender={10}
 
               renderItem={({ item }) => {
 

@@ -65,6 +65,7 @@ const fetchData=()=>{
       <FlatList
       data={currentOrders}
       showsVerticalScrollIndicator={false}
+      initialNumToRender={10}
 
       style={styles.listContainer}
       renderItem={({item})=>{

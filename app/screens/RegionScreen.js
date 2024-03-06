@@ -70,6 +70,7 @@ const SelectRegionScreen = ({ navigation, route }) => {
               <FlatList
                 data={regions?.data}
                 showsVerticalScrollIndicator={false}
+                initialNumToRender={15}
 
                 renderItem={({ item }) => (
                   <SelectLocationItem

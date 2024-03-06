@@ -1,21 +1,20 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { RefreshControl } from 'react-native';
 import React, { useEffect, useState, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CommonActions } from "@react-navigation/native";
 import { ScrollView } from "react-native-virtualized-view";
-import { FlatList } from "react-native";
 import CurrentOrderCard from "../../component/orders/CurrentOrderCard";
+import { FlatList } from "react-native";
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
 import useOrders, { useAllOrders } from "../../../utils/orders";
+import { CommonActions } from "@react-navigation/native";
 import LoadingScreen from "../loading/LoadingScreen";
+const { width, height } = Dimensions.get("screen");
+import { RefreshControl } from 'react-native';
 import { ORDERS_DETAILS, REQUIRED_PAY_SCREEN } from "../../navigation/routes";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
-import OrdersLoadingScreen from "../../component/LoadingComponents/OrdersLoadingSceen";
 // import useNearProviders from "../../../utils/providers";
 
-const { width, height } = Dimensions.get("screen");
 
 function CurrentOrders({ navigation }) {
 
@@ -62,7 +61,7 @@ function CurrentOrders({ navigation }) {
     fetchData()
   }, [data])
 
-  if (isLoading) return <OrdersLoadingScreen />
+  if (isLoading) return <LoadingScreen />
 
   return (
     <ScrollView
@@ -84,7 +83,7 @@ function CurrentOrders({ navigation }) {
             data={currentOrders}
             style={styles.listContainer}
             showsVerticalScrollIndicator={false}
-              initialNumToRender={6}
+            initialNumToRender={10}
             renderItem={({ item }) => {
 
               return <CurrentOrderCard item={item} onPress={() => {

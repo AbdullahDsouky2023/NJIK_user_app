@@ -44,6 +44,7 @@ export default function OffersLoadingComponent() {
                         data={[1, 2,3,4,5,6]}
                         // style={styles.listContainer}
                         showsVerticalScrollIndicator={false}
+                        initialNumToRender={7}
 
                         renderItem={({ item }) => (
                             <>

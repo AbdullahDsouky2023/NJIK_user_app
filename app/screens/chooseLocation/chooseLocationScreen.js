@@ -75,6 +75,7 @@ const ChooseLocationScreen = ({ navigation }) => {
                 <FlatList
                     data={savedAddressesList}
                     showsVerticalScrollIndicator={false}
+                    initialNumToRender={10}
 
                     keyExtractor={(item) => `${item.id}`}
                     renderItem={renderItem}

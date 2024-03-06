@@ -50,6 +50,7 @@ export default function HomeScreenLoadingComponent() {
                         data={[1, 2,]}
                         // style={styles.listContainer}
                         showsVerticalScrollIndicator={false}
+                        initialNumToRender={2}
 
                         renderItem={({ item }) => (
                             <>
@@ -69,6 +70,7 @@ export default function HomeScreenLoadingComponent() {
                         data={[1]}
                         // style={styles.listContainer}
                         showsVerticalScrollIndicator={false}
+                        initialNumToRender={2}
 
                         renderItem={({ item }) => (
                             <>

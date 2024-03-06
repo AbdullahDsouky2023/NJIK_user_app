@@ -91,6 +91,7 @@ const HomeScreen = ({ navigation }) => {
           }
           data={topCategoriesList}
           numColumns={2}
+          
           initialNumToRender={7}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => `${item.id}`}
