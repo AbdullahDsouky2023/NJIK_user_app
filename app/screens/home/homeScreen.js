@@ -66,6 +66,14 @@ const HomeScreen = ({ navigation }) => {
   }
   , [data]);
  
+  
+    const ListHeaderComponent = React.memo(()=>
+    <View >
+      <OffersBanner />
+      <ServicesList />
+      <CurrentOffersScreen/> 
+    </View>
+    )
 
   if (isLoading || serviceLoading) {
     return (
@@ -82,16 +90,9 @@ const HomeScreen = ({ navigation }) => {
       <View style={{ flex: 1}}>
         <AppHeader />
         <FlatList
-          ListHeaderComponent={
-            <View >
-              <OffersBanner />
-              <ServicesList />
-              <CurrentOffersScreen/> 
-            </View>
-          }
+          ListHeaderComponent={ListHeaderComponent}
           data={topCategoriesList}
           numColumns={2}
-          
           initialNumToRender={7}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => `${item.id}`}

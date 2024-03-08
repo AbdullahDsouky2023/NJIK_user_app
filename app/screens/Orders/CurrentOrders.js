@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState, memo } from "react";
+import React, { useEffect, useState,useCallback, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ScrollView } from "react-native-virtualized-view";
 import CurrentOrderCard from "../../component/orders/CurrentOrderCard";
@@ -13,6 +13,7 @@ const { width, height } = Dimensions.get("screen");
 import { RefreshControl } from 'react-native';
 import { ORDERS_DETAILS, REQUIRED_PAY_SCREEN } from "../../navigation/routes";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
+import OrdersLoadingScreen from "../../component/LoadingComponents/OrdersLoadingSceen";
 // import useNearProviders from "../../../utils/providers";
 
 
@@ -31,35 +32,44 @@ function CurrentOrders({ navigation }) {
   };
   const [currentOrders, setCurrentData] = useState([])
 
-  const fetchData = () => {
-    const currentOrders = data?.data?.filter(
-      (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished"
-    );
-    const CurentRequiredOrdersForPayment = currentOrders?.filter((order) => order?.attributes?.status === "payment_required")
-    if (CurentRequiredOrdersForPayment?.length > 0) {
-      return (
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{
-              name: REQUIRED_PAY_SCREEN,
-              params: {
-                item: CurentRequiredOrdersForPayment[0]
-              }
-            }],
-          })))
-
-    }
-    setCurrentData(currentOrders)
-    refetch()
-
-    setRefreshing(false)
-  }
+  const fetchData = useCallback(
+    () => {
+      const currentOrders = data?.data?.filter(
+        (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished"
+      );
+      const CurentRequiredOrdersForPayment = currentOrders?.filter((order) => order?.attributes?.status === "payment_required")
+      if (CurentRequiredOrdersForPayment?.length > 0) {
+        return (
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{
+                name: REQUIRED_PAY_SCREEN,
+                params: {
+                  item: CurentRequiredOrdersForPayment[0]
+                }
+              }],
+            })))
+  
+      }
+      setCurrentData(currentOrders)
+      refetch()
+  
+      setRefreshing(false)
+    },
+    [currentOrders,refetch],
+  )
+  
   useEffect(() => {
     fetchData()
   }, [data])
-
-  if (isLoading) return <LoadingScreen />
+  const renderItem = ({ item }) => (
+    <CurrentOrderCard item={item} onPress={() => {
+      navigation.navigate(ORDERS_DETAILS, { item });
+      dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id));
+    }} />
+ );
+  if (isLoading) return <OrdersLoadingScreen />
 
   return (
     <ScrollView
@@ -81,15 +91,9 @@ function CurrentOrders({ navigation }) {
             data={currentOrders}
             style={styles.listContainer}
             showsVerticalScrollIndicator={false}
-              initialNumToRender={10}
-            renderItem={({ item }) => {
-
-              return <CurrentOrderCard item={item} onPress={() => {
-                navigation.navigate(ORDERS_DETAILS, { item })
-                dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id))
-
-              }} />
-            }}
+            windowSize={10}
+            initialNumToRender={10}
+            renderItem={renderItem}
             keyExtractor={(item) => item?.id}
           />
         </ScrollView>

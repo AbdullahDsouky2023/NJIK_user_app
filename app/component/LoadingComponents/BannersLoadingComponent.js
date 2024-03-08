@@ -25,14 +25,18 @@ export default function HomeScreenLoadingComponent() {
                 animate={{ backgroundColor: Colors.whiteColor }}
 
             >
+                <View style={[styles.container,{paddingHorizontal:15}]}>
+
                 <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.93} height={height * 0.25} />
                 <Spacer />
+                </View>
 
                 <HeaderTextComponent style={styles.container} name={"Services"} showAll={true}>
 
 
                     <FlatList
                         numColumns={3}
+                        
                         data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={styles.listContainer} renderItem={({ item }) => (
@@ -53,10 +57,11 @@ export default function HomeScreenLoadingComponent() {
                         initialNumToRender={2}
 
                         renderItem={({ item }) => (
-                            <>
+                            <View style={{ marginHorizontal: 20 }}>
+
                                 <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.93} height={height * 0.25} />
                                 <Spacer />
-                            </>
+                            </View>
                         )}
                         keyExtractor={(item, index) => item}
                     />
@@ -73,10 +78,10 @@ export default function HomeScreenLoadingComponent() {
                         initialNumToRender={2}
 
                         renderItem={({ item }) => (
-                            <>
+                            <View style={{ marginHorizontal: 20 }}>
                                 <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.93} height={height * 0.25} />
                                 <Spacer />
-                            </>
+                            </View>
                         )}
                         keyExtractor={(item, index) => item}
                     />

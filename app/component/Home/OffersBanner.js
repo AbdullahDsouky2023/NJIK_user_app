@@ -30,6 +30,12 @@ const OffersBanner = () => {
   const handleSnapToItem = useCallback((index) => {
     updateState({ activeSlide: index });
   }, []);
+
+   
+  const SlideItemMemoized = React.memo(({ item }) => {
+    return <SlideItem item={item} />;
+  });
+  
   
   
   if (isLoading) return <LoadingScreen />;
@@ -44,7 +50,9 @@ const OffersBanner = () => {
         loop={true}
         autoplayInterval={10000}
         itemWidth={width}
-        renderItem={({ item }) => <SlideItem item={item} />}
+        renderItem={({ item }) => <SlideItemMemoized item={item} />}
+        keyExtractor={(item, index) => index.toString()}
+
         onSnapToItem={handleSnapToItem}
       />
       <PaginationComponent activeSlide={activeSlide} length={offers.length} />

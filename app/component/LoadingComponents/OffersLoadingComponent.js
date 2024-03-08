@@ -47,13 +47,14 @@ export default function OffersLoadingComponent() {
                         initialNumToRender={7}
 
                         renderItem={({ item }) => (
-                            <>
+                            <View style={{ marginHorizontal: 10 }}>
+
                                 <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} 
                                 
                               
                                 width={width * 0.92} height={height * 0.18} />
                                 <Spacer />
-                            </>
+                            </View>
                         )}
                         keyExtractor={(item, index) => item}
                     />

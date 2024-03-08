@@ -10,7 +10,6 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@carchaze/react-native-voice-message-player": "^1.0.4",
     "@fortawesome/react-native-fontawesome": "^0.3.0",
     "@mtourj/react-native-skeleton-content": "^1.0.33",
     "@react-native-async-storage/async-storage": "1.18.2",
@@ -91,6 +90,8 @@
     "react-native-easy-content-loader": "^0.3.2",
     "react-native-elements": "^3.4.3",
     "react-native-expo-image-cache": "^4.1.0",
+    "react-native-flipper": "^0.212.0",
+    "react-native-flipper-performance-plugin": "^0.4.0",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-gifted-chat": "^2.4.0",

@@ -31,12 +31,11 @@ export default function PackagesLoadingScreen() {
                         // style={styles.listContainer}
                         showsVerticalScrollIndicator={false}
                         initialNumToRender={10}
-
                         renderItem={({ item }) => (
-                            <>
+                           <View style={{ marginHorizontal: 15 }}>
                                 <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.93} height={height * 0.25} />
                                 <Spacer />
-                            </>
+                            </View>
                         )}
                         keyExtractor={(item, index) => item}
                     />

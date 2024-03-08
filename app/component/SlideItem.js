@@ -8,7 +8,6 @@ const { height , width }= Dimensions.get('screen')
 const SlideItem = ({ item }) => {
   const navigation = useNavigation();
   const uri = item?.attributes?.image?.data?.attributes?.url;
-
   const handlePress = useCallback(() => {
     navigation.navigate(ITEM_DETAILS, { item: item?.attributes?.service?.data });
   }, [item, navigation]);

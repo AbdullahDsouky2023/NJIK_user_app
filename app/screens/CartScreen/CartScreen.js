@@ -27,7 +27,7 @@ import CartLoadingComponent from "../../component/LoadingComponents/CartScreenLo
 const { width, height } = Dimensions.get("screen");
 
 
-function CartScreen({ route ,navigation}) {
+function CartScreen({ route, navigation }) {
   const category = route.params?.name;
   const { data, isLoading, isError } = useCategories();
   const [services, setServices] = useState([]);
@@ -45,49 +45,43 @@ function CartScreen({ route ,navigation}) {
     );
     setServices(cartServices);
     setCategory(SelectedCategory);
-      dispatch(setCurrentOrderProperties({category_id:Number(SelectedCategory?.id)}))
+    dispatch(setCurrentOrderProperties({ category_id: Number(SelectedCategory?.id) }))
 
-    return ()=>{
-        dispatch(clearCart())
-        dispatch(clearCartService())
-        dispatch(clearCurrentOrder())
+    return () => {
+      dispatch(clearCart())
+      dispatch(clearCartService())
+      dispatch(clearCurrentOrder())
 
     }
   }, []);
+  console.log("cart screen rerender again")
   const handlePressAddButton = (id) => {
     const foundIndex = cartItems.indexOf(id);
     if (foundIndex !== -1) {
       const price = services?.filter((item) => item?.id === id)[0]?.attributes?.Price;
-      // dispatch(addServiceToCart({
-      //   "cart-service":{
-      //     qty:1,
-      //     item:id,
-      //   },
-      //   price:price
-      // }));
     } else {
       const price = services?.filter((item) => item?.id === id)[0]?.attributes?.Price;
       dispatch(addServiceToCart({
-        cart_service:{
-          qty:1,
-          item:id,
+        cart_service: {
+          qty: 1,
+          item: id,
         },
-        price:price
+        price: price
       }));
     }
   };
-  if (isLoading) return <CartLoadingComponent category={route?.params?.category}/>;
+  if (isLoading) return <CartLoadingComponent category={route?.params?.category} />;
   return (
     <>
       <ScrollView
-       showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         style={{
           height: height * 0.78,
         }}
       >
         <View style={styles.header}>
           <AppText
-            text={category === Offer_route_name ? `${Offer_route_name}`:` خدمات ${slectedCategory?.attributes?.name} `}
+            text={category === Offer_route_name ? `${Offer_route_name}` : ` خدمات ${slectedCategory?.attributes?.name} `}
             centered={true}
             style={{
               backgroundColor: "white",
@@ -102,44 +96,44 @@ function CartScreen({ route ,navigation}) {
         </View>
         {
           services?.length > 0 ?
-        <FlatList
-        data={services}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          initialNumToRender={10}
+            <FlatList
+              data={services}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              initialNumToRender={10}
+              windowSize={5}
+              keyExtractor={(item, index) => item.id + index}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                direction: "rtl",
+                justifyContent: 'center',
+                flexWrap: "wrap",
+                marginVertical: 15,
+                gap: 15,
+                width: width,
+              }}
+              renderItem={({ item }) => {
+                return (
+                  <CartItem item={item} />
+                );
+              }}
+            /> :
+            <View style={styles.noItemContainer}>
+              <AppText text={"Soon"} />
+            </View>
 
-          keyExtractor={(item, index) => item.id +index}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            direction: "rtl",
-            justifyContent:'center',
-            flexWrap: "wrap",
-            marginVertical: 15,
-            gap: 15,
-            width: width,
-          }}
-          renderItem={({ item }) => {
-            return (
-              <CartItem item={item}/>
-            );
-          }}
-        />:
-        <View style={styles.noItemContainer}>
-        <AppText text={"Soon"}/>
-        </View>
-      
-      }
+        }
       </ScrollView>
-            {cartItems?.length > 0 && (
+      {cartItems?.length > 0 && (
         <>
           <ReserveButton
             price={totalPrice}
-            onPress={() => navigation.navigate(ITEM_ORDER_DETAILS,{item:""})}
+            onPress={() => navigation.navigate(ITEM_ORDER_DETAILS, { item: "" })}
           />
         </>
-      )} 
-      </>
+      )}
+    </>
 
   );
 }
@@ -166,7 +160,7 @@ const styles = StyleSheet.create({
     padding: 10,
     // borderWidth: 0.7,
     borderRadius: 10,
-      marginHorizontal: 8,
+    marginHorizontal: 8,
     backgroundColor: Colors.whiteColor,
     shadowColor: "#000",
     shadowOffset: {
@@ -238,13 +232,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: Colors.whiteColor,
   },
-  noItemContainer:{
-    height:height*1,
-    marginTop:10,
-    paddingBottom:height*0.3,
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor:Colors.whiteColor
+  noItemContainer: {
+    height: height * 1,
+    marginTop: 10,
+    paddingBottom: height * 0.3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.whiteColor
   }
 });
