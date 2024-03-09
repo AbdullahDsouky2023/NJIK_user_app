@@ -54,6 +54,8 @@ const totalPriceServices = useSelector((state)=>state.cartService.totalPrice)
   const selectedPackagesConnect =  packagesCartItems.map(item => ({ id: item }));
   const [currentLocation,setCurrenttLocation]=useState()
   const userData = useSelector((state) => state?.user?.userData);
+  const MAX_RETRIES = 5 
+
   const currentOrderData = useSelector((state) => state?.orders?.currentOrderData);
   const handleFormSubmit = async (values) => {
     try {

@@ -47,8 +47,7 @@
       "@react-native-firebase/app",
       [
         "react-native-flipper-performance-plugin"
-      ]
-,
+      ],
       [
         "expo-build-properties",
         {
@@ -57,7 +56,6 @@
           }
         }
       ],
-
       [
         "expo-location",
         {
@@ -70,6 +68,11 @@
     },
     "updates": {
       "url": "https://u.expo.dev/82d0aeae-8255-4ee8-b129-b32e752a8cce"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "39297bfa-3a9d-4e3e-afa7-027f65be1fc8"
+      }
     }
   }
 }

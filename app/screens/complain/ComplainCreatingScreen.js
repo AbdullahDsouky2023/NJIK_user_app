@@ -41,7 +41,7 @@ const ComplainCreatingScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const validPhone = auth?.currentUser?.phoneNumber?.replace("+", "");
   const [ImageID, setImageId] = useState(null);
-
+const MAX_RETRIES = 5 
   const userData = useSelector((state) => state?.user?.userData);
   const validationSchema = yup.object().shape({
     message: yup

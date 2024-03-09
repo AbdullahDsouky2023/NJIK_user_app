@@ -305,7 +305,6 @@ export default function PaymentRequiredScreen({ navigation, route }) {
             />
           </View>
           <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
-          <ItemComponent name={"الرقم الضريبي"} data={`311964554400003`} />
 
 
           {
@@ -328,8 +327,8 @@ export default function PaymentRequiredScreen({ navigation, route }) {
 
             </>
           }
+          <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${0} ${CURRENCY}`} />
           <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${CURRENCY}`} />
-          <ItemComponent name={"الضريبة"} iconName={"money"} data={`${0} ${CURRENCY}`} />
           <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
           
 
