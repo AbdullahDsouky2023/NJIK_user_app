@@ -241,8 +241,6 @@ export default function CompleteOrderDetails({ navigation, route }) {
           />
         </View>
         
-        <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${CURRENCY}`} />
-          <ItemComponent name={"الضريبة"} iconName={"money"} data={`${0} ${CURRENCY}`} />
           {
             item?.attributes?.provider_fee > 0 &&
 <ItemComponent name={"اجرة الفني"} iconName={"money"} data={        `${item?.attributes?.provider_fee} ${CURRENCY}`}/>
@@ -263,6 +261,8 @@ export default function CompleteOrderDetails({ navigation, route }) {
 
             </>
           }
+ <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${0} ${CURRENCY}`} />
+          <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${CURRENCY}`} />
           <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={" ملاحظات"} style={styles.title} />
