@@ -30,76 +30,69 @@ import { useDispatch, useSelector } from "react-redux";
 import { EXPO_PUBLIC_BASE_URL } from "@env";
 
 import { createComplain } from "../../../utils/complain";
-import { AddOrderComplain, updateOrderData } from "../../../utils/orders";
+import useOrders, { AddOrderComplain, cancleOrder, updateOrderData } from "../../../utils/orders";
 import { HOME } from "../../navigation/routes";
 import FormImagePicker from "../../component/Form/FormImagePicker";
 import FormDatePicker from "../../component/Form/FormDatePicker";
 import { updateUserData } from "../../../utils/user";
 import useNotifications from "../../../utils/notifications";
 const { width } = Dimensions.get("screen");
-const ChangeDateOrderScreen = ({ navigation, route }) => {
+const CancelOrderConfirmSceen = ({ navigation, route }) => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
-  const { item }= route?.params
+  const { itemId }= route?.params
+  const { data: UserOrders, isLoading: loading, isError } = useOrders();
+
   const { sendPushNotification} = useNotifications()
   const userData = useSelector((state) => state?.user?.userData);
   const validationSchema = yup.object().shape({
-    date: yup
-      .date().required("هذا الحفل مطلوب"),
-      reason: yup
+    reason: yup
       .string().min(15,"السبب المدخل قصير ").max(250,"السبب المدخل طويل ").required("هذا الحفل مطلوب"),
+    
     
   });
   const handleFormSubmit = async (values) => {
     try {
       setIsLoading(true);
-      const date = new Date(values?.date || Date.now());
-    // Format the date and time
-    const formattedDate = format(date, "dd MMMM yyyy", {
-      locale: ar,
-    });
-
-    const res = await updateOrderData(route?.params?.orderId,{
-      date: formattedDate?.toString(),
-      delay_order_by_user_reason:values?.reason
-    })
-      //
-      if(res){
-        Alert.alert("تم اعادة جدولة الطلب  بنجاح");
-        if( item?.attributes?.provider?.data?.attributes
-          ?.expoPushNotificationToken){
-
-            sendPushNotification(
-              item?.attributes?.provider?.data?.attributes
-              ?.expoPushNotificationToken,
-              "تغيير موعد الطلب",
-              `تم تغيير موعد الطلب الي ${formattedDate?.toString()}`
-              );
-            }
-        if( item?.attributes?.user?.data?.attributes
-          ?.expoPushNotificationToken){
-
-            sendPushNotification(
-              item?.attributes?.user?.data?.attributes
-              ?.expoPushNotificationToken,
-              "تغيير موعد الطلب",
-              `تم تغيير موعد الطلب الي ${formattedDate?.toString()}`
-              );
-            }
-            navigation.goBack();
-
+      const id = itemId
+      const res = await updateOrderData(id,{
+        order_cancel_reason:values?.reason,
+        status:'canceled'
+      })     
+       const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
+      const providerNotificationToken =
+        selectedOrder[0]?.attributes?.provider?.data?.attributes
+          ?.expoPushNotificationToken;
+      if (providerNotificationToken) {
+        sendPushNotification(
+          providerNotificationToken,
+          "تم الغاء الطلب",
+          `تم الغاء الطلب بواسطه ${user?.username}`
+        );
+      }
+      if (res) {
+        console.log(
+          {
+            id: id,
+            selectedOrder: selectedOrder,
+            providerNotificationToken: providerNotificationToken,
+            res: res
+          }
+        )
+        navigation.goBack();
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [{ name: t(HOME) }],
           })
         );
+        Alert.alert(("تم الغاء الطلب بنجاح"));
+      } else {
+        Alert.alert(t("Something Went Wrong, Please try again!"));
       }
-   
-      
-    } catch (err) {
-      console.log("error creating the resi", err);
+    } catch (error) {
+      console.log(error, "error deleting the order");
     } finally {
       setIsLoading(false);
     }
@@ -115,14 +108,13 @@ const ChangeDateOrderScreen = ({ navigation, route }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ flex: 1, alignItems: "center" }}>
             <AppText
-              text={"تغيير موعد الطلب"}
+              text={"الغاء الطلب"}
               style={{ color: Colors.primaryColor, marginBottom: 10 }}
             />
             <AppForm
               enableReinitialize={true}
               initialValues={{
-                date:"",
-                reason:''
+                date:""
               }}
               onSubmit={(data) => handleFormSubmit(data)}
               validationSchema={validationSchema}
@@ -130,16 +122,9 @@ const ChangeDateOrderScreen = ({ navigation, route }) => {
               <ErrorMessage error={error} visible={error} />
 
               <AppText
-                text={"أختر التاريخ"}
+                text={"سبب إلغاء الطلب"}
                 centered={false}
-                style={{marginHorizontal:19,marginVertical:10,color:Colors.blackColor,fontSize:RFPercentage(2)}}
-              />
-              <FormDatePicker name="date" placeholder="date" />
-              
-              <AppText
-                text={"سبب تأجيل الطلب"}
-                centered={false}
-                style={{marginHorizontal:19,marginVertical:10,color:Colors.blackColor,fontSize:RFPercentage(2)}}
+                style={{marginHorizontal:17,color:Colors.blackColor,fontSize:RFPercentage(2)}}
               />
               <FormField
                 autoCapitalize="none"
@@ -153,6 +138,8 @@ const ChangeDateOrderScreen = ({ navigation, route }) => {
 
                 // ... other props
               />
+              
+            
 
               <SubmitButton title="Confirm"  />
               
@@ -181,4 +168,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChangeDateOrderScreen;
+export default CancelOrderConfirmSceen;

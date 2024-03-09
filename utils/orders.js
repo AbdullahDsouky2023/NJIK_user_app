@@ -145,7 +145,7 @@ export default function useOrders() {
         const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page,  10)}`);
    
         const currentPageOrders = response?.data?.data || [];
-        const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber);
+        const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "canceled");
         allOrders = [...allOrders, ...filteredOrders];
    
         // Corrected pagination check
@@ -192,7 +192,7 @@ export function useAllOrders() {
         const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page,   10)}`);
    
         const currentPageOrders = response?.data?.data || [];
-        const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber);
+        const filteredOrders = currentPageOrders.filter(order => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "canceled");
         allOrders = [...allOrders, ...filteredOrders];
    
         // Corrected pagination check

@@ -35,7 +35,7 @@ function CurrentOrders({ navigation }) {
   const fetchData = useCallback(
     () => {
       const currentOrders = data?.data?.filter(
-        (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished"
+        (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.status !== "finished" 
       );
       const CurentRequiredOrdersForPayment = currentOrders?.filter((order) => order?.attributes?.status === "payment_required")
       if (CurentRequiredOrdersForPayment?.length > 0) {

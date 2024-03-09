@@ -32,6 +32,7 @@ import {
   REQUIRED_PAY_SCREEN,
   ORDERS_DETAILS,
   SUCESS_PAYMENT_SCREEN,
+  CANCEL_ORDER_CONFIRM,
 } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
@@ -59,6 +60,7 @@ import SelectLangaugeScreen from "../component/language/SelectLanguageScreen";
 import PaymentRequiredScreen from "../screens/PaymentRequired/PaymentRequiredScreen";
 import OrderDetails from "../screens/Orders/OrderDetails";
 import PaymentSucessScreen from "../screens/payment/SucessPaymentScreen";
+import CancelOrderConfirmScreen from "../screens/Orders/CancelOrderConfirmScreen";
 
 LogBox.ignoreAllLogs();
 
@@ -185,6 +187,10 @@ const RootNavigator = () => {
         <Stack.Screen
           name={CHAT_ROOM_fireBase}
           component={ChatRoom}
+        />
+        <Stack.Screen
+          name={CANCEL_ORDER_CONFIRM}
+          component={CancelOrderConfirmScreen}
         />
         <Stack.Screen name={"Payment"} component={PaymentScreen} />
       </Stack.Navigator>

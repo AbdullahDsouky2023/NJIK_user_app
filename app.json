@@ -45,7 +45,6 @@
     },
     "plugins": [
       "@react-native-firebase/app",
-     [ "expo-community-flipper"],
       [
         "react-native-flipper-performance-plugin"
       ]

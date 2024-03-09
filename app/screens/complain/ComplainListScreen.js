@@ -52,7 +52,7 @@ const fetchData=()=>{
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
   }>
-    <ArrowBack back={t(ACCOUNT)}/>
+    <ArrowBack />
     {
       currentOrders?.length === 0  &&
       <View style={styles.noItemContainer}>

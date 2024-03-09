@@ -5,18 +5,18 @@ import { Colors } from "../../constant/styles";
 import { View } from "react-native";
 import AppText from "../AppText";
 const { height , width } = Dimensions.get('screen')
-export default function  ItemComponent ({ name, data, iconName })  {
+export default function  ItemComponent ({ name, data, iconName,ServiceFontSize })  {
     return (
       <View style={[styles.itemContainer, { justifyContent: 'space-between' }]}>
         <View style={{ display: 'flex', flexDirection: 'row', gap: 15, alignItems: 'center', }}>
           <FontAwesome name={iconName} size={RFPercentage(2.2)} color={Colors.grayColor} />
   
-          <AppText centered={false} text={name} style={[styles.title, { fontSize: RFPercentage(2.1), maxWidth:width*0.5 }]} />
+          <AppText centered={false} text={name} style={[styles.title, { fontSize:   RFPercentage(2.1), maxWidth:width*0.5 }]} />
         </View>
         <AppText
           centered={false}
           text={data}
-          style={[styles.price, { fontSize: RFPercentage(2) }]}
+          style={[styles.price, { fontSize: ServiceFontSize || RFPercentage(2) }]}
         />
       </View>
     )

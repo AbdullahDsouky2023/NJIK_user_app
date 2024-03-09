@@ -27,7 +27,7 @@ export default function HomeScreenLoadingComponent() {
             >
                 <View style={[styles.container,{paddingHorizontal:15}]}>
 
-                <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.93} height={height * 0.25} />
+                <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.89} height={height * 0.25} />
                 <Spacer />
                 </View>
 

@@ -30,3 +30,4 @@ export const CHAT_ROOM_fireBase = " chatroomfirebase"
 export const SELECT_LAN = "SelectLanguageScreen"
 export const REQUIRED_PAY_SCREEN = 'require_payment_screen '
 export const SUCESS_PAYMENT_SCREEN = 'PaymentSucessScreen '
+export const CANCEL_ORDER_CONFIRM = 'cancel order  screeen '

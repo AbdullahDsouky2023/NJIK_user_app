@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Carousel from "react-native-snap-carousel-v4";
 import { useDispatch } from "react-redux";
 import {
+  CANCEL_ORDER_CONFIRM,
   CHANGE_ORDER_DATE,
   CURRENCY,
   HOME,
@@ -56,39 +57,10 @@ export default function OrderDetails({ navigation, route }) {
   const handleOrderCancle = async (id) => {
     try {
       setIsLoading(true);
-     
-      const res = await cancleOrder(id);
-      const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
-      const providerNotificationToken =
-        selectedOrder[0]?.attributes?.provider?.data?.attributes
-          ?.expoPushNotificationToken;
-      if (providerNotificationToken) {
-        sendPushNotification(
-          providerNotificationToken,
-          "تم الغاء الطلب",
-          `تم الغاء الطلب بواسطه ${user?.username}`
-        );
-      }
-      if (res) {
-        console.log(
-          {
-            id: id,
-            selectedOrder: selectedOrder,
-            providerNotificationToken: providerNotificationToken,
-            res: res
-          }
-        )
-        navigation.goBack();
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: t(HOME) }],
-          })
-        );
-        Alert.alert(t("payment has been cancled successfully."));
-      } else {
-        Alert.alert(t("Something Went Wrong, Please try again!"));
-      }
+        navigation.navigate(CANCEL_ORDER_CONFIRM,{
+          itemId:item?.id
+        })
+       
     } catch (error) {
       console.log(error, "error deleting the order");
     } finally {
@@ -231,110 +203,120 @@ export default function OrderDetails({ navigation, route }) {
 
         } />
         {(item?.attributes?.services?.data?.length > 0) ? (
-          <View style={styles.itemContainer}>
-            <FlatList
-              data={item?.attributes?.services.data}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              initialNumToRender={10}
+       <FlatList
+       data={item?.attributes?.services?.data}
+       showsHorizontalScrollIndicator={false}
+       showsVerticalScrollIndicator={false}
+       initialNumToRender={10}
 
-              keyExtractor={(item, index) => item.id}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                direction: "rtl",
-                flexWrap: "wrap",
-                marginTop: 15,
-                gap: 15,
-                width: width,
-              }}
-              renderItem={({ item }) => {
-                return (
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      // justifyContent: "center",
-                      gap: 15,
-                    }}
-                  >
-                    <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+       keyExtractor={(item, index) => item.id}
+       style={{
+         display: "flex",
+         flexDirection: "row",
+         direction: "rtl",
+         flexWrap: "wrap",
+         marginTop: 15,
+         gap: 15,
+         padding:5,
+         paddingVertical:10,
+         borderRadius:7,
+         width: width*0.9,
+         backgroundColor: Colors.whiteColor,
+         shadowColor: "#000",
+         shadowOffset: {
+           width: 0,
+           height: 1,
+         },
+         shadowOpacity: 0.2,
+         shadowRadius: 1.41,
+         elevation: 4,
+         gap: 10,
 
-                    <AppText
-                      centered={false}
-                      text={item.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.8), width: width * 0.9 }]}
-                    />
+       }}
+       renderItem={({ item }) => {
+         return (
+           <View
+             style={{
+               display: "flex",
+               flexDirection: "row",
+               alignItems: "center",
+               flexWrap: 'wrap',
+               backgroundColor:'white',
+               width: width * 0.80,
+               gap: 15,
+             }}
+           >
+             <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
 
-                    {/* <PriceTextComponent
-                      style={{
-                        backgroundColor: Colors.primaryColor,
-                        fontSize: RFPercentage(1.5),
-                        padding: 6,
-                        borderRadius: 40,
-                        color: Colors.whiteColor,
-                      }}
-                      price={item?.attributes?.Price}
-                    /> */}
-                  </View>
-                );
-              }}
-            />
-          </View>
+             <AppText
+               centered={false}
+               text={item?.attributes?.name}
+               style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
+             />
+            
+           </View>
+         );
+       }}
+     />
         ) : (item?.attributes?.packages?.data?.length > 0) ? (
-          <View style={styles.itemContainer}>
-            <FlatList
-              data={item?.attributes?.packages.data}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              initialNumToRender={10}
+          <FlatList
+          data={item?.attributes?.packages?.data}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          initialNumToRender={10}
 
-              keyExtractor={(item, index) => item.id}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                direction: "rtl",
-                flexWrap: "wrap",
-                marginTop: 15,
-                gap: 15,
-                width: width,
-              }}
-              renderItem={({ item }) => {
-                // console.log('item')
-                return (
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      // justifyContent: "center",
-                      gap: 15,
-                    }}
-                  >
-                    <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+          keyExtractor={(item, index) => item.id}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            direction: "rtl",
+            flexWrap: "wrap",
+            marginTop: 15,
+            gap: 15,
+            padding:5,
+            paddingVertical:10,
+            borderRadius:7,
+            width: width*0.9,
+            backgroundColor: Colors.whiteColor,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            shadowOpacity: 0.2,
+            shadowRadius: 1.41,
+            elevation: 4,
+            gap: 10,
 
-                    <AppText
-                      centered={false}
-                      text={item.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.9 }]}
-                    />
-                    {/* <PriceTextComponent
-                      style={{
-                        backgroundColor: Colors.primaryColor,
-                        fontSize: RFPercentage(1.5),
-                        padding: 6,
-                        borderRadius: 40,
-                        color: Colors.whiteColor,
-                      }}
-                      price={item?.attributes?.price}
-                    /> */}
-                  </View>
-                );
-              }}
-            />
-          </View>) : (item?.attributes?.service_carts?.data?.length > 0) ?
-          <View style={styles.itemContainer}>
+          }}
+          renderItem={({ item }) => {
+            return (
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  flexWrap: 'wrap',
+                  backgroundColor:'white',
+                  width: width * 0.80,
+                  gap: 15,
+                }}
+              >
+                <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
+                <AppText
+                  centered={false}
+                  text={item?.attributes?.name}
+                  style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
+                />
+               
+              </View>
+            );
+          }}
+        />
+          
+          ) : (item?.attributes?.service_carts?.data?.length > 0) ?
+          // <View style={styles.itemContainer}>
             <FlatList
               data={item?.attributes?.service_carts?.data}
               showsHorizontalScrollIndicator={false}
@@ -349,7 +331,20 @@ export default function OrderDetails({ navigation, route }) {
                 flexWrap: "wrap",
                 marginTop: 15,
                 gap: 15,
-                width: width,
+                padding:5,
+                borderRadius:7,
+                width: width*0.9,
+                backgroundColor: Colors.whiteColor,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.2,
+                shadowRadius: 1.41,
+                elevation: 4,
+                gap: 10,
+
               }}
               renderItem={({ item }) => {
                 return (
@@ -359,7 +354,9 @@ export default function OrderDetails({ navigation, route }) {
                       flexDirection: "row",
                       alignItems: "center",
                       flexWrap: 'wrap',
-                      maxWidth: width * 0.90,
+                      justifyContent:'space-between',
+                      backgroundColor:'white',
+                      width: width * 0.80,
                       gap: 15,
                     }}
                   >
@@ -368,56 +365,16 @@ export default function OrderDetails({ navigation, route }) {
                     <AppText
                       centered={false}
                       text={item?.attributes?.service?.data?.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.9 }]}
+                      style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
                     />
-                    {/* <View style={styles.CartServiceStylesContainer}>
-                      <PriceTextComponent
-                        style={{
-                          backgroundColor: Colors.primaryColor,
-                          fontSize: RFPercentage(1.5),
-                          padding: 6,
-                          borderRadius: 40,
-                          color: Colors.whiteColor,
-                        }}
-                        price={item?.attributes?.service?.data?.attributes?.Price}
-                      />
-                      <AppText
-                        style={{
-                          backgroundColor: Colors.whiteColor,
-                          fontSize: RFPercentage(1.8),
-                          padding: 6,
-                          borderRadius: 40,
-                          paddingHorizontal: 15,
-                          color: Colors.primaryColor,
-                        }}
-                        text={"x"}
-                      />
-                      <AppText
-                        style={{
-                          backgroundColor: Colors.primaryColor,
-                          fontSize: RFPercentage(1.5),
-                          padding: 6,
-                          borderRadius: 40,
-                          paddingHorizontal: 15,
-                          color: Colors.whiteColor,
-                        }}
-                        text={item?.attributes?.qty}
-                      />
-                    </View> */}
+                   
                   </View>
                 );
               }}
             />
-          </View>
+          // </View>
           : null}
         <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? `${item?.attributes?.totalPrice} ${CURRENCY}` : "السعر بعد الزيارة"} name={"Price"} />
-        {/* <View style={styles.itemContainer}>
-          <AppText centered={false} text={"Price"} style={styles.title} />
-          <PriceTextComponent
-            style={{ color: Colors.blackColor, fontSize: RFPercentage(1.85), marginTop: 4 }}
-            price={item?.attributes?.totalPrice}
-          />
-        </View> */}
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={"Location"} style={styles.title} />
           <AppText
@@ -521,8 +478,8 @@ export default function OrderDetails({ navigation, route }) {
         {item?.attributes?.status === "pending" && (
           <AppButton
             title={"Cancle Order"}
-            onPress={() => setModalVisible(true)}
-          />
+            onPress={() => handleOrderCancle(item.id)}
+            />
         )}
         {(item?.attributes?.status === "pending" || item?.attributes?.status === "assigned") && (
           <AppButton
