@@ -425,8 +425,8 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                       }}
                       width={50}
                       style={{
-                        height: height * 0.2,
-                        width: 200,
+                        height: height * 0.25,
+                        width: width*0.6,
                         objectFit: "fill",
                         borderRadius: 10,
                       }}
@@ -439,8 +439,6 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
         ) }
 
         <View
-        
-     
           style={{
             height:height*0.15,
 

@@ -48,7 +48,7 @@ const CancelOrderConfirmSceen = ({ navigation, route }) => {
   const userData = useSelector((state) => state?.user?.userData);
   const validationSchema = yup.object().shape({
     reason: yup
-      .string().min(15,"السبب المدخل قصير ").max(250,"السبب المدخل طويل ").required("هذا الحفل مطلوب"),
+      .string().min(15,"السبب المدخل قصير ").max(250,"السبب المدخل طويل ").required("هذا الحقل مطلوب"),
     
     
   });

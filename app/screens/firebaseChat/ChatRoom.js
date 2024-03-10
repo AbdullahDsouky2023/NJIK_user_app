@@ -16,11 +16,11 @@ import { Audio } from 'expo-av';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 // import 'react-native-get-random-values';
 // import { v4 as uuidv4 } from 'uuid';
-// import LoadingScreen from '../loading/LoadingScreen';
+import LoadingScreen from '../loading/LoadingScreen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { ActivityIndicator } from 'react-native-paper';
 import AppText from '../../component/AppText';
-import LoadingScreen from '../loading/LoadingScreen';
+// import LoadingScreen from '../loading/LoadingScreen';
 // import LoadingScreen from '../../screens/loading/LoadingScreen';
 
 const { height, width } = Dimensions.get('screen');
@@ -71,6 +71,7 @@ const ChatRoom = () => {
         });
       } else {
         const room = data?.filter((room) => room?.name === currentChannelName)
+        console.log("snap shot is found ", room)
         SetCurrentChatRoom(room)
 
       }
@@ -105,7 +106,7 @@ const ChatRoom = () => {
 
     try {
       const newMessages = [{
-        _id: Math.random().toString(), // Generate a unique ID
+        _id: Math.random()?.toString(), // Generate a unique ID
         text: newMessagesArray?.text, // No text for image messages
         createdAt: new Date(), // Current date and time
         user: {
@@ -136,11 +137,25 @@ const ChatRoom = () => {
         const uploadedMessages = await Promise.all(promises);
         setMessages((prevMessages) => GiftedChat.append(prevMessages, uploadedMessages));
 
+        // const newMessage = {
+        //   _id: Math.random().toString(), // Generate a unique ID
+        //   text: null, // No text for image messages
+        //   createdAt: new Date(), // Current date and time
+        //   image: "",
+        //   user: {
+        //     _id: userId, // The ID of the current user
+        //   },
+        // };
 
+        // // Append the new message to the messages array
+        // setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessage));
+        // Send image messages to Firestore
+        // setMessages(prevMessages => GiftedChat.append(prevMessages, uploadedMessages));
         uploadedMessages.forEach(async (message) => {
           await addMessageToFirestore(message);
         });
 
+        // Update the state with the actual image message
 
       } else {
         setText('');
@@ -383,6 +398,7 @@ const ChatRoom = () => {
 
                 <Ionicons name="send" size={RFPercentage(2.4)} color="white" style={styles.icon} />
               </View>
+
             </Send>
           );
         }}
@@ -438,6 +454,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    // gap:width*0.07,
+    // width:width*0.05,
+
+    // backgroundColor:'blue'
   }
 })
 
