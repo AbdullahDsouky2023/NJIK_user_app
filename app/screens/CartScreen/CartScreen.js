@@ -54,7 +54,6 @@ function CartScreen({ route, navigation }) {
 
     }
   }, []);
-  console.log("cart screen rerender again")
   const handlePressAddButton = (id) => {
     const foundIndex = cartItems.indexOf(id);
     if (foundIndex !== -1) {

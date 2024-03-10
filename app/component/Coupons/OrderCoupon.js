@@ -78,7 +78,6 @@ export default function OrderCoupon() {
             const CurrentPrice = Math.floor(currentOrderPrice - (discountPercentage * currentOrderPrice));
             refRBSheet.current.close()
             setAddedCoupon(isValideCoupon)
-            console.log("adding the coupon to the user ",isValideCoupon[0].id)
             dispatch(AddDiscount(CurrentPrice.toString()))
             if(Number( cartServicesPrice > 0)){
               dispatch(AddCartServicesDiscount(CurrentPrice.toString()))

@@ -71,7 +71,6 @@ const ChatRoom = () => {
         });
       } else {
         const room = data?.filter((room) => room?.name === currentChannelName)
-        console.log("snap shot is found ", room)
         SetCurrentChatRoom(room)
 
       }
@@ -102,7 +101,6 @@ const ChatRoom = () => {
 
   const onSend = async (newMessagesArray = []) => {
     // Handle image messages
-    console.log("the new message ", newMessagesArray);
 
     try {
       const newMessages = [{
