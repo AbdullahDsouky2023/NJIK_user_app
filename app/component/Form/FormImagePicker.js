@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -143,7 +143,7 @@ const FormImagePicker = ({ name, width, ...otherProps }) => {
   );
 };
 
-export default FormImagePicker;
+export default memo(FormImagePicker);
 
 const styles = StyleSheet.create({
   container: {

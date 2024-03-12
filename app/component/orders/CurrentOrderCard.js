@@ -67,9 +67,7 @@ function CurrentOrderCard({ item, onPress }) {
       />
   </>
     }
-
-
-          {item?.attributes?.packages?.data?.length > 0 && (
+    {item?.attributes?.packages?.data?.length > 0 && (
             <AppText
               text={item?.attributes?.packages?.data[0]?.attributes?.name}
               style={[
@@ -102,12 +100,10 @@ function CurrentOrderCard({ item, onPress }) {
             style={styles.title}
           />
         </View>
-        {/* Price */}
         <View style={styles.date}>
           <FontAwesome5 name="money-check" size={16} color="black" />
           <PriceTextComponent price={item?.attributes?.totalPrice} />
         </View>
-        {/* date */}
         <View style={styles.date}>
           <FontAwesome name="calendar" size={21} color="black" />
           <AppText
@@ -116,9 +112,6 @@ function CurrentOrderCard({ item, onPress }) {
             style={styles.title}
           />
         </View>
-        {/* {item?.attributes?.provider?.data?.attributes?.name && */}
-
-        {/* } */}
         <View
           style={{
             display: "flex",
@@ -186,23 +179,11 @@ const styles = StyleSheet.create({
     width: width * 0.88,
     paddingHorizontal: 20,
     marginBottom: 10,
-
-    // height: height*0.3,
-    // maxHeight: height * 0.2,
     height: "auto",
-    // minHeight: height * 0.2,
     flex: 1,
     gap: 3,
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 100.41,
     elevation: 2,
     borderColor: Colors.grayColor,
-    // borderWidth: 0.5,
     borderRadius: 8,
   },
   name: {

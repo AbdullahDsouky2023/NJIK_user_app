@@ -1,10 +1,10 @@
-import React from "react";
+import React, { memo } from "react";
 import IntlPhoneInput from "react-native-intl-phone-input";
 import { StyleSheet, I18nManager } from "react-native";
 
 import { Sizes, Fonts, Colors } from "../constant/styles";
 
-export default function PhoneNumberTextField({ phoneNumber, updateState }) {
+ function PhoneNumberTextField({ phoneNumber, updateState }) {
   return (
     <IntlPhoneInput
       onChangeText={(e) => {
@@ -22,6 +22,8 @@ export default function PhoneNumberTextField({ phoneNumber, updateState }) {
     />
   );
 }
+
+export default memo(PhoneNumberTextField)
 
 const styles = StyleSheet.create({
   phoneNumberTextFieldStyle: {

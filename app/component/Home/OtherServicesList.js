@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import HeaderTextComponent from './HeaderTextComponent';
 import AppCard from './AppCard';
 import { FlatList } from 'react-native';
@@ -8,7 +8,7 @@ import { ITEM_DETAILS } from '../../navigation/routes';
 import useServices from '../../../utils/services';
 import LoadingScreen from '../../screens/loading/LoadingScreen';
 
-export default function OtherServicesList() {
+function OtherServicesList() {
  const { data: services, isLoading } = useServices();
  const navigation = useNavigation();
 
@@ -41,3 +41,4 @@ export default function OtherServicesList() {
     </HeaderTextComponent>
  );
 }
+export default memo(OtherServicesList)

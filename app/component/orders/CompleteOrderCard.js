@@ -10,7 +10,7 @@ import {
 import { Entypo, Octicons } from "@expo/vector-icons";
 import { RFPercentage } from 'react-native-responsive-fontsize'
 
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Colors } from "../../constant/styles";
@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 import { useTranslation } from "react-i18next";
 import Pdf from "../../screens/Invoice/pdf";
-export default function CompleteOrderCard({ item, onPress }) {
+ function CompleteOrderCard({ item, onPress }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { t } = useTranslation()
@@ -184,7 +184,7 @@ export default function CompleteOrderCard({ item, onPress }) {
     </TouchableWithoutFeedback>
   );
 }
-
+export default memo(CompleteOrderCard)
 const styles = StyleSheet.create({
   container: {
     height: "100%",

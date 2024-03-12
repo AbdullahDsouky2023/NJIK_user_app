@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { useFormikContext } from "formik";
 import { format } from "date-fns";
 import { arSA } from "date-fns/locale"; // Import the Saudi Arabian locale
@@ -69,7 +69,7 @@ function FormDatePicker({ name, width, ...otherProps }) {
 }
 
 
-export default FormDatePicker;
+export default memo(FormDatePicker);
 
 const styles = StyleSheet.create({
   date: {

@@ -27,7 +27,7 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
         getItemLayout={(data, index) => (
           {length: 100, offset: 100 * index, index}
         )}
-        initialNumToRender={15}
+        initialNumToRender={25}
 
         renderItem={({ item }) => (
           <ServiceCard

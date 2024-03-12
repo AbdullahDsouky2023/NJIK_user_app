@@ -13,21 +13,23 @@ export default function HomeScreenLoadingComponent() {
 
 
     return (
-        <ScrollView>
+        <ScrollView           showsVerticalScrollIndicator={false}
+        >
             <AppHeader />
             <MotiView
                 transition={{
                     type: 'timing',
-                    duration: 20,
+                    duration: 5,
                 }}
+                
                 style={[styles.container, styles.padded]}
 
                 animate={{ backgroundColor: Colors.whiteColor }}
 
             >
-                <View style={[styles.container,{paddingHorizontal:15}]}>
+                <View style={[styles.container,{paddingHorizontal:20}]}>
 
-                <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.89} height={height * 0.25} />
+                <Skeleton colorMode={Colors.redColor} backgroundColor={Colors.grayColor} width={width * 0.92} height={height * 0.25} />
                 <Spacer />
                 </View>
 
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     padded: {
-        padding: 16,
+        paddingVertical: 16,
     },
     listContainer: {
         display: 'flex',
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Colors.whiteredColor,
+        backgroundColor: Colors.whiteColor,
         gap: 10,
         marginBottom: 10,
     },

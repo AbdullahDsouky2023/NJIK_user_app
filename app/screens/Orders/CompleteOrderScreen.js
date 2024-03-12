@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState,memo } from "react";
+import React, { useEffect, useState,memo, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { ScrollView } from "react-native-virtualized-view";
 import CurrentOrderCard from "../../component/orders/CurrentOrderCard";
@@ -8,12 +8,13 @@ import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
 import useOrders, { useAllOrders } from "../../../utils/orders";
 import LoadingScreen from "../loading/LoadingScreen";
-const { width } = Dimensions.get("screen");
 import { RefreshControl  } from 'react-native';
 import { COMPLETE_ORDER_DETAILS, ORDERS_DETAILS } from "../../navigation/routes";
 import CompleteOrderCard from "../../component/orders/CompleteOrderCard";
 import OrdersLoadingScreen from "../../component/LoadingComponents/OrdersLoadingSceen";
+import { FlashList } from "@shopify/flash-list";
 
+const { width , height } = Dimensions.get("screen");
 
  function CompleteOrderScreen({navigation}) {
   
@@ -28,14 +29,14 @@ import OrdersLoadingScreen from "../../component/LoadingComponents/OrdersLoading
     fetchData();
   };
 const [currentOrders,setCurrentData]=useState([])
-const fetchData=()=>{
+const fetchData=useCallback(()=>{
   const currentOrders = data?.data?.filter(
     (order) => order?.attributes?.phoneNumber === user?.phoneNumber && order?.attributes?.PaymentStatus === "payed"
      && order?.attributes?.status === "finished");
     setCurrentData(currentOrders)
   setRefreshing(false)
   refetch()
-}
+},[currentOrders,refetch])
   useEffect(()=>{
     fetchData()
     },[data])
@@ -44,33 +45,31 @@ const fetchData=()=>{
     
   return (
     <ScrollView 
-    style={{
-      backgroundColor:"white",
-      height:"100%"
-    }}
+    style={styles.wrapperStyles}
+    showsVerticalScrollIndicator={false}
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
   }>
-    {currentOrders?.length === 0 ? 
-      <View style={styles.noItemContainer}>
-
-      <AppText text={"لا يوجد طلبات لعرضها"} style={{marginTop:"50%"}}/> 
-      </View>
-      :
-      <ScrollView style={styles.container}>
-      <FlatList
-                initialNumToRender={10}
-
+  
+      
+      <FlashList
+       initialNumToRender={10}
       data={currentOrders}
-      style={styles.listContainer}
+      contentContainerStyle={styles.listContainer}
       showsVerticalScrollIndicator={false}
       renderItem={({item})=>{
         return <CompleteOrderCard item={item} onPress={() => navigation.navigate(COMPLETE_ORDER_DETAILS, { item })} />
       }}
+      estimatedItemSize={200}
       keyExtractor={(item)=>item?.id}
+      ListEmptyComponent={()=>(
+        <View style={styles.noItemContainer}>
+
+        <AppText text={"لا يوجد طلبات لعرضها"} /> 
+        </View>
+      )}
       />
-      </ScrollView>
-    }
+    
         </ScrollView>
   );
 }
@@ -79,23 +78,32 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     backgroundColor: Colors.whiteColor,
-    display:'flex',
-    flexDirection:'column',
-    alignItems:'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
- listContainer:{
-  // display:"flex",
-  gap:1,
-  marginVertical:10 
- },
- noItemContainer:{
+  listContainer: {
+    paddingHorizontal: 5,
+    backgroundColor:Colors.whiteColor,
+    paddingBottom:10
+
+  },
+ noItemContainer: {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height:height*0.7,
+  width: width*0.88,
+  backgroundColor: Colors.whiteColor
+},
+wrapperStyles: {
+  backgroundColor:Colors.whiteColor,
+  height:200,
   display:'flex',
-  alignItems:'center',
-  justifyContent:'center',
-  height:"100%",
-  // marginVertical:50,
-  width:width,
-  backgroundColor:Colors.whiteColor
- }
+  width:width*1,
+  paddingHorizontal:width*0.12*0.5,
+  paddingTop:10,
+  
+  }
 
 });

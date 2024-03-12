@@ -21,13 +21,12 @@ const { width, height } = Dimensions.get("window");
  const updateState = useCallback((data) => {
     setState((state) => ({ ...state, ...data }));
  }, []);
-
+ const handleSanpItem =  useCallback((index) => updateState({ activeSlide: index }),[])
  useEffect(() => {
     if (data) {
       updateState({ reviews: data });
     }
  }, [data, updateState]);
-
  return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -52,7 +51,7 @@ const { width, height } = Dimensions.get("window");
               userImage={item?.attributes?.image?.data?.attributes?.url}
             />
           )}
-          onSnapToItem={(index) => updateState({ activeSlide: index })}
+          onSnapToItem={handleSanpItem}
         />
         <PaginationComponent activeSlide={state.activeSlide} length={state.reviews.length} />
       </View>

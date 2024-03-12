@@ -18,6 +18,10 @@ import OffersServiceComponentList from "../../component/CurrentOffers/OffersList
 import usePackages from "../../../utils/packages";
 import { setpackages } from "../../store/features/PackagesSlice";
 import PackagesLoadingScreen from "../../component/LoadingComponents/PackagesLoadingScreen";
+import OfferCard from "../../component/OfferCard";
+import { FlashList } from "@shopify/flash-list";
+import { useNavigation } from "@react-navigation/core";
+import { PACKAGE_SCREEN } from "../../navigation/routes";
 
 const { width } = Dimensions.get("screen");
 
@@ -55,15 +59,15 @@ const CurrentOffersScreen = ({ route, navigation }) => {
  return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
-      <ScrollView style={styles.container}>
+       <ScrollView           showsVerticalScrollIndicator={false}
+ style={styles.container}>
         <View>
-          <AppText text="packages" centered={false} style={styles.title} />
-          <OffersServiceComponentList
-            data={packages}
-            selectedItem={selectedItem}
-          />
-        </View>
-      </ScrollView>
+          <AppText text="packages" centered={false} style={styles.title} /> 
+         {/* <OffersServiceComponentList data={packages}/> */}
+         <ListOffers  data={packages}/>
+
+        </View> 
+     </ScrollView> 
     </SafeAreaView>
  );
 };
@@ -91,3 +95,38 @@ const styles = StyleSheet.create({
 });
 
 export default memo(CurrentOffersScreen);
+
+const ListOffers = ({data})=>{
+   const navigation = useNavigation()
+   return (
+      <FlashList
+      data={data}
+     
+      estimatedItemSize={200}
+      renderItem={({ item }) => {
+        return (
+          <OfferCard
+            service={item?.attributes?.name}
+            price={item?.attributes?.price}
+            content={item?.attributes?.content}
+            onPress={() => navigation.navigate(PACKAGE_SCREEN, { item })}
+            image={item?.attributes?.image?.data[0]?.attributes?.url}
+          />
+        );
+      }}
+      ItemSeparatorComponent={
+         ()=>{
+            return <View style={{ height: 10 }} />
+         }
+      }
+      contentContainerStyle={{
+         paddingHorizontal: 20,
+         paddingTop: 15,
+      }}
+      showsVerticalScrollIndicator={false}
+      initialNumToRender={17}
+      keyExtractor={(item) => item?.id}
+      
+      />
+   )
+}

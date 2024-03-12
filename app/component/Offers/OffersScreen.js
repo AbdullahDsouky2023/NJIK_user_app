@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import useServices from "../../../utils/services";
 import { ScrollView } from "react-native-virtualized-view";
 import { StyleSheet } from "react-native";
@@ -33,6 +33,8 @@ import LoadingScreen from "../../screens/loading/LoadingScreen";
 import useBanners from "../../../utils/banners";
 import { ErrorScreen } from "../../screens/Error/ErrorScreen";
 import OffersLoadingComponent from "../LoadingComponents/OffersLoadingComponent";
+import { FlashList } from "@shopify/flash-list";
+import { useNavigation } from "@react-navigation/core";
 const { width, height } = Dimensions.get("screen");
 
 export default function OffersScreen({ route, navigation, Offers }) {
@@ -54,46 +56,26 @@ export default function OffersScreen({ route, navigation, Offers }) {
           <AppText
             text={` العروض`}
             centered={true}
-            style={{
-              backgroundColor: "white",
-              width: width,
-              textAlign: "center",
-              color: Colors.blackColor,
-              marginTop: 10,
-              padding: 5,
-              borderRadius: 15,
-            }}
+            style={styles.containerHeader}
           />
         </View>
-        <FlatList
+        <FlashList
           data={Banners}
           showsVerticalScrollIndicator={false}
           initialNumToRender={5}
-
+          estimatedItemSize={200}
+            ItemSeparatorComponent={
+          ()=>{
+            return <View style={{height:10}}/>
+          }
+            }
           keyExtractor={(item, index) => item.id + index}
-          style={{
-            display: "flex",
-            marginTop: 15,
-            alignItems: "center",
-            gap: 15,
-            width: width,
+          contentContainerStyle={{
+          paddingHorizontal:width*0.1*0.5
           }}
           renderItem={({ item }) => {
             return (
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  navigation.navigate(ITEM_DETAILS, {
-                    item: item?.attributes?.service?.data,
-                  });
-                }}
-              >
-                <Image
-                  source={{
-                    uri: item?.attributes?.image?.data?.attributes?.url,
-                  }}
-                  style={styles.image}
-                />
-              </TouchableWithoutFeedback>
+              <OfferItem item={item} />
             );
           }}
         />
@@ -102,11 +84,42 @@ export default function OffersScreen({ route, navigation, Offers }) {
   );
 }
 
+
+const OfferItem = memo(({item})=>{
+  const navigation = useNavigation()
+  const ImageUrl = item?.attributes?.image?.data?.attributes?.url
+  const ItemData = item?.attributes?.service?.data
+  return (
+    <TouchableWithoutFeedback
+                onPress={() => {
+                  navigation.navigate(ITEM_DETAILS, {
+                    item: ItemData,
+                  });
+                }}
+              >
+                <Image
+                  source={{
+                    uri:ImageUrl ,
+                  }}
+                  style={styles.image}
+                />
+              </TouchableWithoutFeedback>
+  )
+});
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
     paddingHorizontal: 18,
     backgroundColor: Colors.whiteColor,
+  },
+  containerHeader:{
+    backgroundColor: "white",
+    width: width,
+    textAlign: "center",
+    color: Colors.blackColor,
+    marginTop: 10,
+    padding: 5,
+    borderRadius: 15,
   },
   header: {
     textAlign: "center",

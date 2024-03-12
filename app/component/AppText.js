@@ -10,6 +10,7 @@ import { I18nManager } from "react-native";
 import en from "../locales/en.json";
 
 import 'intl-pluralrules';
+import { memo } from "react";
 I18nManager.forceRTL(false);
 
 i18n.use(initReactI18next).init({
@@ -23,7 +24,7 @@ i18n.use(initReactI18next).init({
   },
 });
 const { width } = Dimensions.get('screen')
-export default function AppText({ style, text, centered = true ,...otherProps}) {
+ function AppText({ style, text, centered = true ,...otherProps}) {
   const { t } = useTranslation();
 
   return (
@@ -40,6 +41,7 @@ export default function AppText({ style, text, centered = true ,...otherProps}) 
       </Text>
   );
 }
+export default memo(AppText)
 const styles = StyleSheet.create({
   text: {
     ...Fonts.grayColor18Medium,

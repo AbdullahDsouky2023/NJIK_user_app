@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { useFormikContext } from "formik";
 
 import FormTextInput from "./FormInput";
@@ -28,4 +28,4 @@ function AppFormField({ name, width, ...otherProps }) {
   );
 }
 
-export default AppFormField;
+export default memo(AppFormField);

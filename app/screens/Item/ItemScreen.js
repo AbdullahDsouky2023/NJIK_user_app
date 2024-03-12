@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import ItemDetails from "../../component/ItemDetails";
 import OtherServicesList from "../../component/Home/OtherServicesList";
@@ -9,8 +9,7 @@ import { ITEM_ORDER_DETAILS } from "../../navigation/routes";
 import { addServiceToCart, clearCart } from "../../store/features/CartSlice";
 import { useFocusEffect } from "@react-navigation/native";
 import { setCurrentOrderProperties } from "../../store/features/ordersSlice";
-
-export default function ItemScreen({ route, navigation }) {
+ function ItemScreen({ route, navigation }) {
  const { item } = route.params;
  const dispatch = useDispatch();
  const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -52,6 +51,7 @@ export default function ItemScreen({ route, navigation }) {
  );
 }
 
+export default memo(ItemScreen)
 const styles = StyleSheet.create({
  container: {
     paddingBottom: 100,

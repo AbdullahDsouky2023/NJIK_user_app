@@ -14,6 +14,7 @@ import { RefreshControl } from 'react-native';
 import { ORDERS_DETAILS, REQUIRED_PAY_SCREEN } from "../../navigation/routes";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 import OrdersLoadingScreen from "../../component/LoadingComponents/OrdersLoadingSceen";
+import { FlashList } from "@shopify/flash-list";
 // import useNearProviders from "../../../utils/providers";
 
 
@@ -63,6 +64,8 @@ function CurrentOrders({ navigation }) {
   useEffect(() => {
     fetchData()
   }, [data])
+
+
   const renderItem = ({ item }) => (
     <CurrentOrderCard item={item} onPress={() => {
       navigation.navigate(ORDERS_DETAILS, { item });
@@ -73,31 +76,30 @@ function CurrentOrders({ navigation }) {
 
   return (
     <ScrollView
-      style={{
-        backgroundColor: "white",
-        height: "100%"
-      }}
+      style={styles.wrapperStyles}
+        showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      {currentOrders?.length === 0 ?
-        <View style={styles.noItemContainer}>
 
-          <AppText text={"There are no orders."} style={{ marginTop: "50%" }} />
-        </View>
-        :
-        <ScrollView style={styles.container}>
-          <FlatList
+          <FlashList
             data={currentOrders}
-            style={styles.listContainer}
+            contentContainerStyle={styles.listContainer}
             showsVerticalScrollIndicator={false}
+       
             windowSize={10}
             initialNumToRender={10}
             renderItem={renderItem}
+            estimatedItemSize={200}
             keyExtractor={(item) => item?.id}
+            ListEmptyComponent={()=>(
+              <View style={styles.noItemContainer}>
+
+              <AppText text={"There are no orders."} style={{ marginTop: "50%" }} />
+            </View>
+            )}
           />
-        </ScrollView>
-      }
+      
     </ScrollView>
   );
 }
@@ -111,8 +113,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   listContainer: {
-    gap: 1,
-    marginVertical: 10
+    paddingHorizontal: 5,
+    backgroundColor:Colors.whiteColor,
+    paddingBottom:10
+
   },
   noItemContainer: {
     display: 'flex',
@@ -121,6 +125,15 @@ const styles = StyleSheet.create({
     height: "100%",
     width: width,
     backgroundColor: Colors.whiteColor
-  }
+  },
+  wrapperStyles: {
+    backgroundColor:Colors.whiteColor,
+    height:200,
+    display:'flex',
+    width:width*1,
+    paddingHorizontal:width*0.1*0.5,
+    paddingTop:10,
+    
+    }
 
 });

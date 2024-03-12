@@ -24,6 +24,8 @@ import { CURRENCY, ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION, Offer_route_name }
 import CartItem from "./CartItem";
 import { clearCurrentOrder, setCurrentOrderProperties } from "../../store/features/ordersSlice";
 import CartLoadingComponent from "../../component/LoadingComponents/CartScreenLoadingComponent";
+import { FlashList } from "@shopify/flash-list";
+import { useNavigation } from "@react-navigation/core";
 const { width, height } = Dimensions.get("screen");
 
 
@@ -33,8 +35,7 @@ function CartScreen({ route, navigation }) {
   const [services, setServices] = useState([]);
   const dispatch = useDispatch();
   const [slectedCategory, setCategory] = useState([]);
-  const cartItems = useSelector((state) => state?.cartService?.services);
-  const totalPrice = useSelector((state) => state?.cartService?.totalPrice);
+
   useEffect(() => {
     const SelectedCategory = data?.filter(
       (item) => item?.attributes?.name === category
@@ -54,21 +55,6 @@ function CartScreen({ route, navigation }) {
 
     }
   }, []);
-  const handlePressAddButton = (id) => {
-    const foundIndex = cartItems.indexOf(id);
-    if (foundIndex !== -1) {
-      const price = services?.filter((item) => item?.id === id)[0]?.attributes?.Price;
-    } else {
-      const price = services?.filter((item) => item?.id === id)[0]?.attributes?.Price;
-      dispatch(addServiceToCart({
-        cart_service: {
-          qty: 1,
-          item: id,
-        },
-        price: price
-      }));
-    }
-  };
   if (isLoading) return <CartLoadingComponent category={route?.params?.category} />;
   return (
     <>
@@ -78,65 +64,94 @@ function CartScreen({ route, navigation }) {
           height: height * 0.78,
         }}
       >
-        <View style={styles.header}>
-          <AppText
-            text={category === Offer_route_name ? `${Offer_route_name}` : ` خدمات ${slectedCategory?.attributes?.name} `}
-            centered={true}
-            style={{
-              backgroundColor: "white",
-              width: width,
-              textAlign: "center",
-              color: Colors.blackColor,
-              marginTop: 10,
-              padding: 5,
-              borderRadius: 15,
-            }}
-          />
-        </View>
-        {
-          services?.length > 0 ?
-            <FlatList
-              data={services}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              initialNumToRender={10}
-              windowSize={5}
-              keyExtractor={(item, index) => item.id + index}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                direction: "rtl",
-                justifyContent: 'center',
-                flexWrap: "wrap",
-                marginVertical: 15,
-                gap: 15,
-                width: width,
-              }}
-              renderItem={({ item }) => {
-                return (
-                  <CartItem item={item} />
-                );
-              }}
-            /> :
-            <View style={styles.noItemContainer}>
-              <AppText text={"Soon"} />
-            </View>
-
-        }
+        <HeaderComponent category={category} slectedCategory={slectedCategory}/>
+       <CartServiceList services={services}/>
+    
       </ScrollView>
-      {cartItems?.length > 0 && (
-        <>
-          <ReserveButton
-            price={totalPrice}
-            onPress={() => navigation.navigate(ITEM_ORDER_DETAILS, { item: "" })}
-          />
-        </>
-      )}
+     <ReverveButtonComponent />
     </>
 
   );
 }
 export default memo(CartScreen)
+
+
+const CartServiceList = memo(({services})=>{
+  if(!services){
+    return <LoadingScreen/>
+  }
+  return  (
+
+  <View style={styles.listContainer}>
+  <FlashList
+    data={services}
+    showsHorizontalScrollIndicator={false}
+    showsVerticalScrollIndicator={false}
+    initialNumToRender={10}
+    windowSize={5}
+    
+    keyExtractor={(item, index) => item.id + index}
+    contentContainerStyle={{
+      paddingVertical:10,
+      // width:width*1,
+      paddingHorizontal:width * (1-0.99)
+    }}
+    estimatedItemSize={200}
+    ListEmptyComponent={()=>(
+      <View style={styles.noItemContainer}>
+              <AppText text={"Soon"} />
+            </View>
+    )}
+    ItemSeparatorComponent={
+    
+      () => (
+        <View
+          style={{
+            height: 10,
+            width: "100%",
+          }}
+        />
+      )
+    }
+    renderItem={({ item }) => {
+      return (
+        <CartItem item={item} />
+        );
+      }}
+      /> 
+      </View>
+  )
+    }
+)
+const HeaderComponent = memo(({category,slectedCategory})=>{
+return(
+  <View style={styles.header}>
+  <AppText
+    text={category === Offer_route_name ? `${Offer_route_name}` : ` خدمات ${slectedCategory?.attributes?.name} `}
+    centered={true}
+    style={styles.headerStyle}
+  />
+</View>
+)
+})
+
+const ReverveButtonComponent = memo(()=>{
+  const cartItems = useSelector((state) => state?.cartService?.services);
+  const totalPrice = useSelector((state) => state?.cartService?.totalPrice);
+  const navigation = useNavigation()
+  if(cartItems?.length === 0){
+    return
+  }
+
+  return (
+    <View>
+      <ReserveButton
+        price={totalPrice}
+        onPress={() => navigation.navigate(ITEM_ORDER_DETAILS, { item: "" })}
+      />
+    </View>
+  )
+})
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
@@ -239,5 +254,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.whiteColor
+  },
+  listContainer:{
+    display: "flex",
+    flexDirection: "row",
+    direction: "rtl",
+    justifyContent: 'center',
+    flexWrap: "wrap",
+    marginVertical: 15,
+    backgroundColor: Colors.grayColor/10,
+    gap: 15,
+    width: width,
+    maxHeight: height * 1,
+    minHeight: height * 0.8,
+    // overflow:'hidden'
+  },
+  headerStyle:{
+    backgroundColor: "white",
+    width: width,
+    textAlign: "center",
+    color: Colors.blackColor,
+    marginTop: 10,
+    padding: 5,
+    borderRadius: 15,
   }
 });

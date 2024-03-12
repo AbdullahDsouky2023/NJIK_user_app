@@ -1,69 +1,70 @@
 import {
     View,
-    Text,
-    FlatList,
     Dimensions,
-    Image,
-    Button,
     TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import useCategories from "../../../utils/categories";
-import { ScrollView } from "react-native-virtualized-view";
-import LoadingScreen from "../loading/LoadingScreen";
 import { StyleSheet } from "react-native";
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
 import AppButton from "../../component/AppButton";
 import { useDispatch, useSelector } from "react-redux";
-import { color } from "react-native-reanimated";
 import {
     addServiceToCart,
-    removeServiceFromCart,
     updateServiceQuantity,
-    clearCart,
 } from "../../store/features/CartServiceSlice";
-import ReserveButton from "../../component/ReverveButton";
-import { CURRENCY, ITEM_ORDER_DETAILS, ORDER_SELECT_LOCATION, Offer_route_name } from "../../navigation/routes";
+import { CURRENCY } from "../../navigation/routes";
 const { width, height } = Dimensions.get("screen");
-const fontSize = RFPercentage(1.7); // Base font size
 
-export default function CartItem({ item }) {
+ function CartItem({ item }) {
     const dispatch = useDispatch()
     const cartServicesItem = useSelector((state) => state?.cartService?.services)
     const IsSelected = cartServicesItem?.filter((service)=>service?.id === item?.id);
-    const handlePressAddButton = (id)=>{
 
-        dispatch(addServiceToCart({ id, qty: 1 , price:item?.attributes?.Price,name:item.attributes?.name}))
-    }
-    const handlePressRemoveButton = (id) => {
-        dispatch(removeServiceFromCart({ id }));
-    };
-    const handlePressUpdateQuantityButton = (id, newQuantity) => {
-        dispatch(updateServiceQuantity({ id, quantity: newQuantity }));
-    };
-    const handleClearCart = () => {
-        // Dispatch the action to clear the cart
-        dispatch(clearCart());
-    };
 
 
     return (
         <View style={styles.itemContainer}>
-            <View style={styles.itemContainer2}>
-                <AppText
-                    centered={false}
-                    text={item.attributes?.name}
-                    style={[styles.name, { fontSize: RFPercentage(2), paddingRight: 10 }]}
-                />
-                <AppText
-                    centered={false}
-                    text={`${item.attributes?.Price} ` + CURRENCY}
-                    style={[styles.price, { fontSize: RFPercentage(2), paddingRight: 10 }]}
-                />
-            </View>
-            <View style={styles.buttonsContainer}>
+               <ItemInfoComponent price={item?.attributes?.Price} name={item?.attributes?.name}/> 
+            <QuantiyControlButton item={item} 
+            IsSelected={IsSelected}
+            />
+
+        </View>
+    )
+}
+export default memo(CartItem)
+
+const ItemInfoComponent = memo(({name,price})=>{
+    return (
+        <View style={styles.itemContainer2}>
+        <AppText
+            centered={false}
+            text={name}
+            style={[styles.name, { fontSize: RFPercentage(2), paddingRight: 10 }]}
+        />
+        <AppText
+            centered={false}
+            text={`${price} ` + CURRENCY}
+            style={[styles.price, { fontSize: RFPercentage(2), paddingRight: 10 }]}
+        />
+    </View>
+    )
+})
+const QuantiyControlButton = memo(({IsSelected,item})=>{
+    const dispatch = useDispatch()
+    const cartServicesItem = useSelector((state) => state?.cartService?.services)
+    const handlePressAddButton = useCallback((id)=>{
+
+        dispatch(addServiceToCart({ id, qty: 1 , price:item?.attributes?.Price,name:item.attributes?.name}))
+    },[])
+
+    const handlePressUpdateQuantityButton = useCallback((id, newQuantity) => {
+        dispatch(updateServiceQuantity({ id, quantity: newQuantity }));
+    },[])
+    return (
+        <View style={styles.buttonsContainer}>
                 {
                     (IsSelected[0]?.qty > 0)? 
                     <View style={styles.buttonsContainer2} >
@@ -86,12 +87,8 @@ export default function CartItem({ item }) {
                 }} />
                     }
             </View>
-
-        </View>
     )
-}
-
-
+})
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 10,
@@ -99,10 +96,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.whiteColor,
     },
     button1:{
-    // paddingVertical:height*0.004,
-    // height:width*0.098,
     width:width*0.098,
-    // paddingHorizontal:width*0.035,
     borderRadius:width*0.098*0.5,
     backgroundColor:Colors.primaryColor,
     },

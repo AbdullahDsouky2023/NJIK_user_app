@@ -39,10 +39,9 @@ const ChatRoom = () => {
   const MAX_RETRIES =  5; // Maximum number of upload attempts
 
   const userId = user?.id
-  // Function to start recording
 
 
-
+  
   useEffect(() => {
     const ref = collection(db, 'chatRooms');
     // console.log("Chat room ref");
@@ -158,6 +157,8 @@ const ChatRoom = () => {
       } else {
         setText('');
         console.log("new message are ", newMessages);
+        console.log("User ID:", userId);
+
         // Send text messages only
         const newMessage = {
           _id: Math.random().toString(), // Generate a unique ID
@@ -356,6 +357,7 @@ const ChatRoom = () => {
   if (!currentChannelName || !messages || !CurrentChatRoom) {
     return <LoadingScreen />
   }
+  console.log("User ID:", userId);
 
   return (
     <View style={{ flex: 1, display: 'flex' }}>
@@ -368,7 +370,7 @@ const ChatRoom = () => {
         onSend={onSend}
         inverted
         user={{
-          _id: userId, // Use user ID from your authentication system
+          _id: userId ||  ExtractUserID(currentChannelName)  , // Use user ID from your authentication system
         }}
         isAnimated
         isLoadingEarlier={true}
@@ -452,10 +454,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // gap:width*0.07,
-    // width:width*0.05,
-
-    // backgroundColor:'blue'
   }
 })
 
@@ -585,3 +583,14 @@ const RenderVoiceActions = (props) => {
     </TouchableOpacity>
   );
 };
+
+const ExtractUserID = (currentChannelName)=>{
+  const userIdMatch = currentChannelName.match(/user_(\d+)/);
+  
+  if (userIdMatch && userIdMatch[1]) {
+   const userId = userIdMatch[1]; // This will be the string "83"
+  return userId
+  } else {
+   console.log("User ID not found");
+  }
+}

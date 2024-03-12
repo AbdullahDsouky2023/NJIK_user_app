@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, memo } from "react";
 import { View, Text, ScrollView, Image, Dimensions } from "react-native";
 import AppText from "./AppText";
 import { StyleSheet } from "react-native";
@@ -8,7 +8,7 @@ import ArrowBack from "./ArrowBack";
 
 const { width, height } = Dimensions.get("screen");
 
-export default function ItemDetails({ item }) {
+ function ItemDetails({ item }) {
  const scrollViewRef = useRef();
 
  useEffect(() => {
@@ -72,7 +72,7 @@ export default function ItemDetails({ item }) {
     </View>
  );
 }
-
+export default memo(ItemDetails)
 const styles = StyleSheet.create({
  container: {
     height: "auto",
