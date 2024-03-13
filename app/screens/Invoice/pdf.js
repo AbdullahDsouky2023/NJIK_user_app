@@ -6,10 +6,8 @@ import { shareAsync } from 'expo-sharing';
 import Invoice from './Invoice'; // Import your Invoice component
 import { FontAwesome5 } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
-
-// ... inside your component
-
 import { Colors } from '../../constant/styles';
+import { CalculateTax, calculateTotalWithTax } from '../../utils/Payment/helpers';
 const { height } = Dimensions.get('screen')
 export default function Pdf({ item ,chatContainerStyles,children}) {
   const qrCodeValue = item?.id; // Replace with your item ID
@@ -56,7 +54,7 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"></td>
                       <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
-                   15 %
+                   ${CalculateTax(item?.attributes?.totalPrice)}
                                  </td>
                                  </tr>`
                                  )
@@ -332,7 +330,7 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
                         <strong>اجمالي التكلفة</strong>
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
-                        <strong> ${item?.attributes?.totalPrice}  <span style="padding-right:15px;color:#f2652a">ريال سعودي</span> </strong>
+                        <strong> ${calculateTotalWithTax(item?.attributes?.totalPrice)}  <span style="padding-right:15px;color:#f2652a">ريال سعودي</span> </strong>
                       </td>
                     </tr>
                     

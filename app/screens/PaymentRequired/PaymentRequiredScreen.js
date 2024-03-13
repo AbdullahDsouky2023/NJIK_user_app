@@ -16,7 +16,7 @@ import PriceTextComponent from "../../component/PriceTextComponent";
 import LoadingScreen from "../loading/LoadingScreen";
 import ArrowBack from "../../component/ArrowBack";
 import { ScrollView } from "react-native-virtualized-view";
-import { CHAT_ROOM_fireBase, CURRENCY, HOME, ORDERS_DETAILS, ORDER_SUCCESS_SCREEN, SUCESS_PAYMENT_SCREEN } from "../../navigation/routes";
+import { CECKOUT_WEBVIEW_SCREEN, CHAT_ROOM_fireBase, CHECkOUT_COUNTRY, CURRENCY, HOME, ORDERS_DETAILS, ORDER_SUCCESS_SCREEN, SUCESS_PAYMENT_SCREEN } from "../../navigation/routes";
 import { FontAwesome,AntDesign, MaterialIcons } from '@expo/vector-icons';
 import ReserveButton from "../../component/ReverveButton";
 import AppButton from "../../component/AppButton";
@@ -27,6 +27,8 @@ import { useTranslation } from "react-i18next";
 import { CommonActions } from "@react-navigation/native";
 import Pdf from "../Invoice/pdf";
 import * as Linking from "expo-linking";
+import initiatePayment from "../../utils/Payment/Initate";
+import { CalculateTax, calculateTotalWithTax } from "../../utils/Payment/helpers";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -44,8 +46,9 @@ export default function PaymentRequiredScreen({ navigation, route }) {
   const categoryName2 = item?.attributes?.services?.data?.[0]?.attributes?.category?.data?.attributes;
   const categoryName3 = item?.attributes?.packages?.data?.[0]?.attributes;
 
-  const handlePayOrder = async (id) => {
+  const handlePayOrder = async () => {
     try {
+      const id = item?.id
       const res = await PayOrder(id);
       const selectedOrder = orders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken = selectedOrder?.[0]?.attributes?.provider?.data?.attributes?.expoPushNotificationToken;
@@ -77,7 +80,45 @@ export default function PaymentRequiredScreen({ navigation, route }) {
       setIsLoading(false);
     }
   };
+  const handleGenererateInitator = ()=>{
+    const orderAmmount = calculateTotalWithTax(item?.attributes?.totalPrice)
 
+    const username = user.username.trim(); // Remove any leading or trailing spaces
+    const nameParts = username.split(' '); // Split the username into parts
+    
+    const firstName = nameParts[0]; // The first part is the first name
+    const lastName = nameParts.slice(1).join(' '); // The rest are the last name
+    
+    
+    
+    
+// Example usage
+const orderDetails = {
+  orderId: `ORDER${item?.id}`,
+  amount: orderAmmount.toFixed(2),
+  currency: CURRENCY,
+  description: item?.description || "no description",
+  payerFirstName:firstName,
+  payerLastName: lastName,
+  payerAddress: user?.location,
+  payerCountry:CHECkOUT_COUNTRY,
+  payerCity:user?.city,
+  payerZip: '12345',
+  payerEmail: user?.email,
+  payerPhone: user?.phoneNumber,
+  payerIp: '192.168.1.1'
+ };
+ 
+initiatePayment(orderDetails)
+ .then(response => {
+  navigation.navigate(CECKOUT_WEBVIEW_SCREEN,{
+    url:response?.redirect_url,
+    orderId: `ORDER${item?.id}`,
+    handlePayOrderFun:handlePayOrder
+  })
+  console.log('Payment initiated successfully:', response?.redirect_url)})
+ .catch(error => console.error('Error initiating payment:', error));
+  }
   if (isLoading) return <LoadingScreen />;
   return (
     <View style={styles.wrapper}>
@@ -304,12 +345,15 @@ export default function PaymentRequiredScreen({ navigation, route }) {
               style={styles.name}
             />
           </View>
-          <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
+          <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${
+            (item?.attributes?.totalPrice)
+
+          } ${t(CURRENCY)}`} />
 
 
           {
             item?.attributes?.provider_fee > 0 &&
-<ItemComponent name={"اجرة الفني"} iconName="money" data={        `${item?.attributes?.provider_fee} ${CURRENCY}`}/>
+<ItemComponent name={"اجرة الفني"} iconName="money" data={        `${item?.attributes?.provider_fee} ${t(CURRENCY)}`}/>
           }
           {item?.attributes?.additional_prices?.data?.length > 0 &&
             <>
@@ -320,16 +364,16 @@ export default function PaymentRequiredScreen({ navigation, route }) {
 
                 renderItem={({ item }) => {
 
-                  return <ItemComponent iconName={"tags"} name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`} />
+                  return <ItemComponent iconName={"tags"} name={item?.attributes?.details} data={`${item?.attributes?.Price} ${t(CURRENCY)}`} />
                 }}
                 keyExtractor={(item) => item?.id}
               />
 
             </>
           }
-          <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${0} ${CURRENCY}`} />
-          <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${CURRENCY}`} />
-          <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
+          <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${CalculateTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
+          {/* <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${t(CURRENCY)}`} /> */}
+          <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${calculateTotalWithTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
           
 
         </ScrollView>
@@ -340,8 +384,8 @@ export default function PaymentRequiredScreen({ navigation, route }) {
           textStyle={{ fontSize: RFPercentage(1.7) }}
 
           style={styles.buttonStyles}
-          onPress={() => handlePayOrder(item?.id)}
-        />
+          onPress={() => handleGenererateInitator()}
+          />
         <AppButton
           title={" ما اتفقنا على كذا"}
           style={styles.buttonStyles2}

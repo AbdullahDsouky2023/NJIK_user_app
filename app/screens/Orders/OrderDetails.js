@@ -6,6 +6,7 @@ import {
   CANCEL_ORDER_CONFIRM,
   CECKOUT_WEBVIEW_SCREEN,
   CHANGE_ORDER_DATE,
+  CHECkOUT_COUNTRY,
   CURRENCY,
   HOME,
   ORDER_SUCCESS_SCREEN,
@@ -38,7 +39,8 @@ import DelayOrderCard from "../../component/orders/DelayOrderCard ";
 import useCartServices from "../../../utils/CartService";
 import ItemComponent from "../../component/Payment/ItemComponent";
 import initiatePayment from "../../utils/Payment/Initate";
-import PaymentWebview from "../payment/PaymentWebview";
+import SuccessAlert from "../../component/CustomAlerts/SuccessAlert";
+import { calculateTotalWithTax } from "../../utils/Payment/helpers";
 const { width, height } = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
@@ -48,6 +50,7 @@ export default function OrderDetails({ navigation, route }) {
   const orders = useSelector((state) => state?.orders?.orders);
   const user = useSelector((state) => state?.user?.userData);
   const dispatch = useDispatch();
+  
   const [isModalVisible, setModalVisible] = useState(false);
   const [isReviewVisble, setIsReviewVisble] = useState(false);
   const [cartServicesSelected, setCartServicesSelected] = useState([])
@@ -72,9 +75,10 @@ export default function OrderDetails({ navigation, route }) {
     }
   };
 
-  const handlePayOrder = async (id) => {
+  const handlePayOrder = async () => {
     try {
-   
+      const id = item?.id
+
       const res = await PayOrder(id);
       const selectedOrder = UserOrders?.data?.filter((order) => order?.id === id);
       const providerNotificationToken =
@@ -171,26 +175,41 @@ export default function OrderDetails({ navigation, route }) {
     }
   };
   const handleGenererateInitator = ()=>{
-    const merchantPass = '00d005e3da5931bfe64178bf36018a60'; // Replace with your actual merchant password
+    const orderAmmount =calculateTotalWithTax(item?.attributes?.totalPrice)
+    const username = user.username.trim(); // Remove any leading or trailing spaces
+    const nameParts = username.split(' '); // Split the username into parts
+    
+    const firstName = nameParts[0]; // The first part is the first name
+    const lastName = nameParts.slice(1).join(' '); // The rest are the last name
+    
+    
+    
+    
 // Example usage
 const orderDetails = {
-  orderId: 'ORD001',
-  amount: '1.00',
-  currency: 'SAR',
-  description: 'An order',
-  payerFirstName: 'John',
-  payerLastName: 'Doe',
-  payerAddress: '123 Main St',
-  payerCountry: 'SA',
-  payerCity: 'Riyadh',
+  orderId: `ORDER${item?.id}`,
+  amount: orderAmmount.toFixed(2),
+  currency: CURRENCY,
+  description: item?.description || "no description",
+  payerFirstName:firstName,
+  payerLastName: lastName,
+  payerAddress: user?.location,
+  payerCountry:CHECkOUT_COUNTRY,
+  payerCity:user?.city,
   payerZip: '12345',
-  payerEmail: 'john.doe@example.com',
-  payerPhone: '1234567890',
+  payerEmail: user?.email,
+  payerPhone: user?.phoneNumber,
   payerIp: '192.168.1.1'
  };
  
-initiatePayment(orderDetails, merchantPass)
- .then(response => console.log('Payment initiated successfully:', response))
+initiatePayment(orderDetails)
+ .then(response => {
+  navigation.navigate(CECKOUT_WEBVIEW_SCREEN,{
+    url:response?.redirect_url,
+    orderId: `ORDER${item?.id}`,
+    handlePayOrderFun:handlePayOrder
+  })
+  console.log('Payment initiated successfully:', response?.redirect_url)})
  .catch(error => console.error('Error initiating payment:', error));
   }
   if (isLoading) return <LoadingScreen />;
@@ -399,7 +418,7 @@ initiatePayment(orderDetails, merchantPass)
             />
           // </View>
           : null}
-        <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? `${item?.attributes?.totalPrice} ${CURRENCY}` : "السعر بعد الزيارة"} name={"Price"} />
+        <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? `${item?.attributes?.totalPrice} ${t(CURRENCY)}` : "السعر بعد الزيارة"} name={"Price"} />
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={"Location"} style={styles.title} />
           <AppText
@@ -474,14 +493,14 @@ initiatePayment(orderDetails, merchantPass)
 
                 return (
 
-                  <ItemComponent iconName={"tags"} name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`} />
+                  <ItemComponent iconName={"tags"} name={item?.attributes?.details} data={`${item?.attributes?.Price} ${t(CURRENCY)}`} />
                 )
               }}
               keyExtractor={(item) => item?.id}
             />
             {
               item?.attributes?.provider_fee > 0 &&
-              <ItemComponent iconName={"money"} data={`${item?.attributes?.provider_fee} ${CURRENCY}`} name={"أجرة الفنى"} />
+              <ItemComponent iconName={"money"} data={`${item?.attributes?.provider_fee} ${t(CURRENCY)}`} name={"أجرة الفنى"} />
             }
 
             {
@@ -546,16 +565,11 @@ initiatePayment(orderDetails, merchantPass)
             <AppButton
               title={"Pay"}
               style={{ backgroundColor: Colors.success }}
-              onPress={() => handlePayOrder(item?.id)}
+              onPress={() => handleGenererateInitator()}
             />
           )}
-           <AppButton
-              title={"تمهيد"}
-              style={{ backgroundColor: Colors.success }}
-              onPress={() => {
-                navigation.navigate(CECKOUT_WEBVIEW_SCREEN)
-              }}
-            />
+          
+
       </ScrollView>
       <AppModal
         isModalVisible={isModalVisible}

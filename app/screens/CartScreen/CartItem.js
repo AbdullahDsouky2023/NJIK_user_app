@@ -15,6 +15,7 @@ import {
     updateServiceQuantity,
 } from "../../store/features/CartServiceSlice";
 import { CURRENCY } from "../../navigation/routes";
+import { useTranslation } from "react-i18next";
 const { width, height } = Dimensions.get("screen");
 
  function CartItem({ item }) {
@@ -37,6 +38,7 @@ const { width, height } = Dimensions.get("screen");
 export default memo(CartItem)
 
 const ItemInfoComponent = memo(({name,price})=>{
+    const { t} = useTranslation()
     return (
         <View style={styles.itemContainer2}>
         <AppText
@@ -46,7 +48,7 @@ const ItemInfoComponent = memo(({name,price})=>{
         />
         <AppText
             centered={false}
-            text={`${price} ` + CURRENCY}
+            text={`${price} ` + t(CURRENCY)}
             style={[styles.price, { fontSize: RFPercentage(2), paddingRight: 10 }]}
         />
     </View>

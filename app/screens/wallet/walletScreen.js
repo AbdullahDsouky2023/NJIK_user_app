@@ -19,9 +19,12 @@ import { CURRENCY } from "../../navigation/routes";
 import { ColorSpace } from "react-native-reanimated";
 import { FontAwesome5 } from "@expo/vector-icons";
 import SuccessModel from "../../component/SuccessModal";
+import { T } from "ramda";
+import { useTranslation } from "react-i18next";
 
 const { width } = Dimensions.get("screen");
 export default function WalletScreen() {
+  const { t} = useTranslation()
   const [state, setState] = useState({
     currentPaymentMethodIndex: 2,
     showSuccessDialog: false,
@@ -63,7 +66,7 @@ export default function WalletScreen() {
       <ScrollView>
         <View style={styles.wrapper}>
           <AppText text={"Your Balance"} style={styles.text} />
-          <AppText text={`${amount} ` + CURRENCY} style={styles.amount} />
+          <AppText text={`${amount} ` + t(CURRENCY)} style={styles.amount} />
         </View>
 
         <View style={styles.wrapper}>
@@ -114,7 +117,7 @@ export default function WalletScreen() {
                 style={styles.input}
               />
               <AppText
-                text={CURRENCY}
+                text={t(CURRENCY)}
                 centered={false}
                 style={{ paddingHorizontal: 5, color: Colors.blackColor }}
               />

@@ -6,8 +6,10 @@ import { Image } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 const { width, height } = Dimensions.get("screen");
 import { CURRENCY } from "../navigation/routes";
+import { useTranslation } from "react-i18next";
 
  function OfferCard({ service, price, image,onPress,content }) {
+  const { t }= useTranslation()
   return (
     <TouchableWithoutFeedback onPress={onPress} >
       <View style={styles.itemCardContainer}>
@@ -36,7 +38,7 @@ import { CURRENCY } from "../navigation/routes";
           centered={false}
         />
       <AppText
-          text={`${price} `+CURRENCY}
+          text={`${price} `+t(CURRENCY)}
           style={{
             color: Colors.primaryColor,
             maxWidth: width * 0.5,

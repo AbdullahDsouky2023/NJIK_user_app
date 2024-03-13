@@ -27,7 +27,9 @@ const { width , height } = Dimensions.get("screen");
   const onRefresh = () => {
     setRefreshing(true);
     fetchData();
-  };
+    console.log("reres",currentOrders?.length,data?.data?.length)
+  };    
+    
 const [currentOrders,setCurrentData]=useState([])
 const fetchData=useCallback(()=>{
   const currentOrders = data?.data?.filter(
@@ -36,7 +38,7 @@ const fetchData=useCallback(()=>{
     setCurrentData(currentOrders)
   setRefreshing(false)
   refetch()
-},[currentOrders,refetch])
+},[currentOrders,refetch,data])
   useEffect(()=>{
     fetchData()
     },[data])

@@ -50,7 +50,7 @@ const OffersBanner = () => {
         loop={true}
         autoplayInterval={10000}
         itemWidth={width}
-        renderItem={({ item }) => <SlideItemMemoized item={item} />}
+        renderItem={({ item }) => <SlideItem item={item} />}
         keyExtractor={(item, index) => index.toString()}
 
         onSnapToItem={handleSnapToItem}

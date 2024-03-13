@@ -19,10 +19,13 @@ import { ScrollView } from "react-native-virtualized-view";
 import { CURRENCY } from "../../navigation/routes";
 import ItemComponent from "../../component/Payment/ItemComponent";
 import { MaterialIcons} from '@expo/vector-icons'
+import { useTranslation } from "react-i18next";
+import { CalculateTax, calculateTotalWithTax } from "../../utils/Payment/helpers";
 const { width, height } = Dimensions.get("screen");
 
 export default function CompleteOrderDetails({ navigation, route }) {
   const { item } = route?.params;
+  const  { t} = useTranslation()
   const [isLoading, setIsLoading] = useState(false);
   const categoryName1 = item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name
   const categoryName2 = item?.attributes?.services.data[0]?.attributes?.category?.data?.attributes?.name
@@ -232,7 +235,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
             item?.attributes?.provider?.data?.attributes?.name
 
           } />
-                    <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
+                    <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${t(CURRENCY)}`} />
         <View>
           <AppText
             centered={false}
@@ -243,7 +246,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
         
           {
             item?.attributes?.provider_fee > 0 &&
-<ItemComponent name={"اجرة الفني"} iconName={"money"} data={        `${item?.attributes?.provider_fee} ${CURRENCY}`}/>
+<ItemComponent name={"اجرة الفني"} iconName={"money"} data={        `${item?.attributes?.provider_fee} ${t(CURRENCY)}`}/>
           }
           {item?.attributes?.additional_prices?.data?.length > 0 &&
             <>
@@ -254,16 +257,16 @@ export default function CompleteOrderDetails({ navigation, route }) {
 
                 renderItem={({ item }) => {
 
-                  return <ItemComponent   iconName="tags" name={item?.attributes?.details} data={`${item?.attributes?.Price} ${CURRENCY}`} />
+                  return <ItemComponent   iconName="tags" name={item?.attributes?.details} data={`${item?.attributes?.Price} ${t(CURRENCY)}`} />
                 }}
                 keyExtractor={(item) => item?.id}
               />
 
             </>
           }
- <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${0} ${CURRENCY}`} />
-          <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${CURRENCY}`} />
-          <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${CURRENCY}`} />
+ <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${CalculateTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
+          <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${t(CURRENCY)}`} />
+          <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${calculateTotalWithTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={" ملاحظات"} style={styles.title} />
           <AppText
