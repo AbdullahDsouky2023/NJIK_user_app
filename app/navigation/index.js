@@ -33,6 +33,7 @@ import {
   ORDERS_DETAILS,
   SUCESS_PAYMENT_SCREEN,
   CANCEL_ORDER_CONFIRM,
+  CECKOUT_WEBVIEW_SCREEN,
 } from "./routes";
 import ItemScreen from "../screens/Item/ItemScreen";
 import OrderNavigator from "./orderNavigator";
@@ -61,6 +62,7 @@ import PaymentRequiredScreen from "../screens/PaymentRequired/PaymentRequiredScr
 import OrderDetails from "../screens/Orders/OrderDetails";
 import PaymentSucessScreen from "../screens/payment/SucessPaymentScreen";
 import CancelOrderConfirmScreen from "../screens/Orders/CancelOrderConfirmScreen";
+import PaymentWebview from "../screens/payment/PaymentWebview";
 
 LogBox.ignoreAllLogs();
 
@@ -191,6 +193,10 @@ const RootNavigator = () => {
         <Stack.Screen
           name={CANCEL_ORDER_CONFIRM}
           component={CancelOrderConfirmScreen}
+        />
+        <Stack.Screen
+          name={CECKOUT_WEBVIEW_SCREEN}
+          component={PaymentWebview}
         />
         <Stack.Screen name={"Payment"} component={PaymentScreen} />
       </Stack.Navigator>

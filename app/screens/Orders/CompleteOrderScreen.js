@@ -83,9 +83,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   listContainer: {
-    paddingHorizontal: 5,
+    paddingHorizontal: width*0.12*0.5,
     backgroundColor:Colors.whiteColor,
-    paddingBottom:10
+    paddingBottom:10,
+    paddingTop:10,
+
 
   },
  noItemContainer: {
@@ -101,8 +103,8 @@ wrapperStyles: {
   height:200,
   display:'flex',
   width:width*1,
-  paddingHorizontal:width*0.12*0.5,
-  paddingTop:10,
+  // paddingHorizontal:width*0.1*0.5,
+  // paddingTop:10,
   
   }
 

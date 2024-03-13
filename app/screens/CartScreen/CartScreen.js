@@ -91,11 +91,7 @@ const CartServiceList = memo(({services})=>{
     windowSize={5}
     
     keyExtractor={(item, index) => item.id + index}
-    contentContainerStyle={{
-      paddingVertical:10,
-      // width:width*1,
-      paddingHorizontal:width * (1-0.99)
-    }}
+    contentContainerStyle={styles.contentContainerStyle}
     estimatedItemSize={200}
     ListEmptyComponent={()=>(
       <View style={styles.noItemContainer}>
@@ -277,5 +273,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 5,
     borderRadius: 15,
+  },
+  contentContainerStyle:{
+    paddingVertical:10,
+    // width:width*1,
+    paddingHorizontal:width * (1-0.995)
   }
 });

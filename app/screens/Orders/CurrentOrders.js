@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingHorizontal: 5,
     backgroundColor:Colors.whiteColor,
+    paddingTop:10,
     paddingBottom:10
 
   },
@@ -122,8 +123,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: "100%",
-    width: width,
+    height:height*0.5,
+    width: width*0.88,
     backgroundColor: Colors.whiteColor
   },
   wrapperStyles: {
@@ -132,7 +133,6 @@ const styles = StyleSheet.create({
     display:'flex',
     width:width*1,
     paddingHorizontal:width*0.1*0.5,
-    paddingTop:10,
     
     }
 

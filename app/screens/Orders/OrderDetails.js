@@ -4,6 +4,7 @@ import Carousel from "react-native-snap-carousel-v4";
 import { useDispatch } from "react-redux";
 import {
   CANCEL_ORDER_CONFIRM,
+  CECKOUT_WEBVIEW_SCREEN,
   CHANGE_ORDER_DATE,
   CURRENCY,
   HOME,
@@ -36,6 +37,8 @@ import { Colors } from "../../constant/styles";
 import DelayOrderCard from "../../component/orders/DelayOrderCard ";
 import useCartServices from "../../../utils/CartService";
 import ItemComponent from "../../component/Payment/ItemComponent";
+import initiatePayment from "../../utils/Payment/Initate";
+import PaymentWebview from "../payment/PaymentWebview";
 const { width, height } = Dimensions.get("screen");
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
@@ -167,7 +170,29 @@ export default function OrderDetails({ navigation, route }) {
       setIsLoading(false);
     }
   };
-
+  const handleGenererateInitator = ()=>{
+    const merchantPass = '00d005e3da5931bfe64178bf36018a60'; // Replace with your actual merchant password
+// Example usage
+const orderDetails = {
+  orderId: 'ORD001',
+  amount: '1.00',
+  currency: 'SAR',
+  description: 'An order',
+  payerFirstName: 'John',
+  payerLastName: 'Doe',
+  payerAddress: '123 Main St',
+  payerCountry: 'SA',
+  payerCity: 'Riyadh',
+  payerZip: '12345',
+  payerEmail: 'john.doe@example.com',
+  payerPhone: '1234567890',
+  payerIp: '192.168.1.1'
+ };
+ 
+initiatePayment(orderDetails, merchantPass)
+ .then(response => console.log('Payment initiated successfully:', response))
+ .catch(error => console.error('Error initiating payment:', error));
+  }
   if (isLoading) return <LoadingScreen />;
   return (
     <ScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
@@ -524,6 +549,13 @@ export default function OrderDetails({ navigation, route }) {
               onPress={() => handlePayOrder(item?.id)}
             />
           )}
+           <AppButton
+              title={"تمهيد"}
+              style={{ backgroundColor: Colors.success }}
+              onPress={() => {
+                navigation.navigate(CECKOUT_WEBVIEW_SCREEN)
+              }}
+            />
       </ScrollView>
       <AppModal
         isModalVisible={isModalVisible}
