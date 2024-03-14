@@ -13,10 +13,13 @@ import UserLocation from "./Home/UserLocation";
 import { CURRENCY } from "../navigation/routes";
 import { T } from "ramda";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 export default function AppHeader({ subPage = false}) {
     const navigation = useNavigation()
  const { t } = useTranslation()
+  const user = useSelector((state) => state?.user?.userData);
+
   return (
     <View style={styles.container}>
       <Image source={require("../assets/images/icon.png")} style={{
@@ -37,7 +40,7 @@ export default function AppHeader({ subPage = false}) {
         <TouchableWithoutFeedback >
 
           <View style={styles.WalletContainer}>
-            <AppText style={{fontSize:15,color:'white'}} text={`0.0 ${t(CURRENCY)}`}/>
+            <AppText style={{fontSize:15,color:'white'}} text={`${user?.wallet_amount} ${t(CURRENCY)}`}/>
           </View>
             </TouchableWithoutFeedback>
           ) }

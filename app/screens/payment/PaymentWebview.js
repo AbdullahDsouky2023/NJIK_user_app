@@ -1,19 +1,25 @@
 // Import necessary modules
 import React, { useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { CECKOUT_WEBVIEW_SCREEN, SUCESS_PAYMENT_SCREEN } from '../../navigation/routes';
 import { Alert } from 'react-native';
-import LoadingScreen from '../loading/LoadingScreen';
+import { MaterialIcons } from '@expo/vector-icons';
 import { checkOrderStatus } from '../../utils/Payment/Initate';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import { Dialog as PaperDialog } from 'react-native-paper';
+import { Colors, Fonts, Sizes } from "../../constant/styles";
+import AppText from '../../component/AppText';
 
+const { width , height } = Dimensions.get('screen')
 export default function PaymentWebview({ route, navigation }) {
     const url = route?.params?.url
     const orderId = route?.params?.orderId
     const handlePayOrder = route?.params?.handlePayOrderFun
     const [lastMessage, setLastMessage] = useState(null);
     const webViewRef = useRef(null)
+    const [orderStatusChecked, setOrderStatusChecked] = useState(false);
+const [showDialog,setShowDialog]=useState(false)
     const handleWebViewError = (syntheticEvent) => {
         const { nativeEvent } = syntheticEvent;
         console.error('WebView error: ', nativeEvent);
@@ -88,30 +94,29 @@ export default function PaymentWebview({ route, navigation }) {
     };
 
     const CheckOrderStatusAndDisplayMessage = () => {
+        if (orderStatusChecked) return;
+
         checkOrderStatus(orderId)
             .then(data => {
                 if (data?.responseBody?.status === "settled") {
-                    Dialog.show({
-                        type: ALERT_TYPE.SUCCESS,
-                        title: 'تم  بنجاح',
-                        textBody: '  تمت عملية الدفع بنجاح 🎉🎉🎉',
-                        button: 'إغلاق',
-                        onHide: () => handlePayOrder()
+                    navigation.goBack()
+                    handlePayOrder()
 
-                    })
-
-
-                    // navigation.goBack()
 
                 } else {
-                    Dialog.show({
-                        type: ALERT_TYPE.DANGER,
-                        title: 'عملية مرفوضة',
-                        textBody: 'هناك مشكلة ! حاول مرة اخري',
-                        button: 'إغلاق',
-                        onHide: () => navigation.goBack()
-                    })
-                    //   Alert.alert('عملية مرفوضة')
+                    setOrderStatusChecked(true); // Mark the status as checked
+                        
+                 
+                    setShowDialog(true)
+                    navigation.goBack()
+                    Alert.alert("عملية مرفوضة ","هناك  مشكلة في البطاقة المدخلة حاول مرة اخري")
+                    // Dialog.show({
+                    //     type: ALERT_TYPE.DANGER,
+                    //     title: 'عملية مرفوضة',
+                    //     button: 'إغلاق',
+                    //     onHide: () => navigation.navigate("App")
+
+                    // })
 
                 }
                 console.log('Success:', data?.responseBody !== "The order ORD1134 has already been paid, the link is expired")
@@ -162,6 +167,11 @@ export default function PaymentWebview({ route, navigation }) {
                 />
 
             </View>
+            <AlertDialog
+            
+            setShowSuccessDialog={setShowDialog}
+            showSuccessDialog={showDialog}
+            />
         </AlertNotificationRoot>
 
     );
@@ -171,4 +181,30 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    dialogWrapStyle: {
+        borderRadius: Sizes.fixPadding,
+        width: width - 100,
+        backgroundColor: Colors.whiteColor,
+        paddingHorizontal: Sizes.fixPadding * 2.0,
+        paddingVertical: Sizes.fixPadding * 3.,
+        alignSelf: 'center',
+    },
 });
+
+function AlertDialog({showSuccessDialog,setShowSuccessDialog}) {
+    return (
+        <PaperDialog
+            visible={showSuccessDialog}
+            style={styles.dialogWrapStyle}
+            onDismiss={() => setShowSuccessDialog( false )}
+        >
+            <View style={{ backgroundColor: Colors.whiteColor, alignItems: 'center' }}>
+                <View style={styles.successIconWrapStyle}>
+                    <MaterialIcons name="error" size={40} color={Colors.primaryColor} />
+                </View>
+                <AppText  style={{ ...Fonts.blackColor20Medium, marginTop: Sizes.fixPadding + 10.0 }} text={" عملية مرفوضة"}/>
+                 
+            </View>
+        </PaperDialog>
+    )
+}

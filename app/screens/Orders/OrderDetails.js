@@ -1,15 +1,14 @@
 import { Alert, Dimensions, StyleSheet, View } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import Carousel from "react-native-snap-carousel-v4";
 import { useDispatch } from "react-redux";
+import { MaterialIcons } from '@expo/vector-icons'
 import {
   CANCEL_ORDER_CONFIRM,
   CECKOUT_WEBVIEW_SCREEN,
   CHANGE_ORDER_DATE,
   CHECkOUT_COUNTRY,
   CURRENCY,
-  HOME,
-  ORDER_SUCCESS_SCREEN,
   REVIEW_ORDER_SCREEN,
   SUCESS_PAYMENT_SCREEN,
 } from "../../navigation/routes";
@@ -17,31 +16,33 @@ import { FlatList } from "react-native";
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import { useTranslation } from "react-i18next";
 import { Image } from "react-native";
-import { CommonActions } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { ScrollView } from "react-native-virtualized-view";
+
 import useOrders, {
   PayOrder,
   cancleOrder,
   updateOrderData,
 } from "../../../utils/orders";
-import { MaterialIcons } from '@expo/vector-icons'
 import ArrowBack from "../../component/ArrowBack";
 import LoadingScreen from "../loading/LoadingScreen";
 import AppText from "../../component/AppText";
-import PriceTextComponent from "../../component/PriceTextComponent";
 import AppButton from "../../component/AppButton";
 import LoadingModal from "../../component/Loading";
 import AppModal from "../../component/AppModal";
 import useNotifications from "../../../utils/notifications";
 import { Colors } from "../../constant/styles";
 import DelayOrderCard from "../../component/orders/DelayOrderCard ";
-import useCartServices from "../../../utils/CartService";
 import ItemComponent from "../../component/Payment/ItemComponent";
 import initiatePayment from "../../utils/Payment/Initate";
-import SuccessAlert from "../../component/CustomAlerts/SuccessAlert";
 import { calculateTotalWithTax } from "../../utils/Payment/helpers";
+
+
+
 const { width, height } = Dimensions.get("screen");
+
+
 export default function OrderDetails({ navigation, route }) {
   const { item } = route?.params;
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +51,7 @@ export default function OrderDetails({ navigation, route }) {
   const orders = useSelector((state) => state?.orders?.orders);
   const user = useSelector((state) => state?.user?.userData);
   const dispatch = useDispatch();
-  
+
   const [isModalVisible, setModalVisible] = useState(false);
   const [isReviewVisble, setIsReviewVisble] = useState(false);
   const [cartServicesSelected, setCartServicesSelected] = useState([])
@@ -59,14 +60,13 @@ export default function OrderDetails({ navigation, route }) {
   const categoryName1 = item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name
   const categoryName2 = item?.attributes?.services.data[0]?.attributes?.category?.data?.attributes?.name
   const categoryName3 = item?.attributes?.packages?.data[0]?.attributes?.name
-  // console.log("results ",item?.attributes?.service_carts)
   const handleOrderCancle = async (id) => {
     try {
       setIsLoading(true);
-        navigation.navigate(CANCEL_ORDER_CONFIRM,{
-          itemId:item?.id
-        })
-       
+      navigation.navigate(CANCEL_ORDER_CONFIRM, {
+        itemId: item?.id
+      })
+
     } catch (error) {
       console.log(error, "error deleting the order");
     } finally {
@@ -174,43 +174,39 @@ export default function OrderDetails({ navigation, route }) {
       setIsLoading(false);
     }
   };
-  const handleGenererateInitator = ()=>{
-    const orderAmmount =calculateTotalWithTax(item?.attributes?.totalPrice)
+  const handleGenererateInitator = () => {
+    const orderAmmount = calculateTotalWithTax(item?.attributes?.totalPrice)
     const username = user.username.trim(); // Remove any leading or trailing spaces
     const nameParts = username.split(' '); // Split the username into parts
-    
+
     const firstName = nameParts[0]; // The first part is the first name
     const lastName = nameParts.slice(1).join(' '); // The rest are the last name
-    
-    
-    
-    
-// Example usage
-const orderDetails = {
-  orderId: `ORDER${item?.id}`,
-  amount: orderAmmount.toFixed(2),
-  currency: CURRENCY,
-  description: item?.description || "no description",
-  payerFirstName:firstName,
-  payerLastName: lastName,
-  payerAddress: user?.location,
-  payerCountry:CHECkOUT_COUNTRY,
-  payerCity:user?.city,
-  payerZip: '12345',
-  payerEmail: user?.email,
-  payerPhone: user?.phoneNumber,
-  payerIp: '192.168.1.1'
- };
- 
-initiatePayment(orderDetails)
- .then(response => {
-  navigation.navigate(CECKOUT_WEBVIEW_SCREEN,{
-    url:response?.redirect_url,
-    orderId: `ORDER${item?.id}`,
-    handlePayOrderFun:handlePayOrder
-  })
-  console.log('Payment initiated successfully:', response?.redirect_url)})
- .catch(error => console.error('Error initiating payment:', error));
+    const orderDetails = {
+      orderId: `ORDER${item?.id}`,
+      amount: orderAmmount.toFixed(2),
+      currency: CURRENCY,
+      description: item?.description || "no description",
+      payerFirstName: firstName,
+      payerLastName: lastName,
+      payerAddress: user?.location,
+      payerCountry: CHECkOUT_COUNTRY,
+      payerCity: user?.city,
+      payerZip: '12345',
+      payerEmail: user?.email,
+      payerPhone: user?.phoneNumber,
+      payerIp: '192.168.1.1'
+    };
+
+    initiatePayment(orderDetails)
+      .then(response => {
+        navigation.navigate(CECKOUT_WEBVIEW_SCREEN, {
+          url: response?.redirect_url,
+          orderId: `ORDER${item?.id}`,
+          handlePayOrderFun: handlePayOrder
+        })
+        console.log('Payment initiated successfully:', response?.redirect_url)
+      })
+      .catch(error => console.error('Error initiating payment:', error));
   }
   if (isLoading) return <LoadingScreen />;
   return (
@@ -218,357 +214,53 @@ initiatePayment(orderDetails)
       <ArrowBack subPage={true} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <ItemComponent name="رقم الطلب" iconName={"hashtag"} data={item?.id} />
-        <ItemComponent iconName={"server"} name="حالة الطلب" data={
-          item?.attributes?.status === "assigned"
-            ? "New"
-            : item?.attributes?.status === "pending"
-              ? "New"
-              : item?.attributes?.status === "accepted"
-                ? "Accepted"
-                : item?.attributes?.status === "working"
-                  ? "Working"
-                  : item?.attributes?.status === "finish_work"
-                    ? "Finished"
-                    : item?.attributes?.status === "payed"
-                      ? "Payed"
-                      : "Finished"
-
-        } />
+        <ItemComponent iconName={"server"} name="حالة الطلب" data={CalculteOrderStatus(item?.attributes?.status)} />
         <ItemComponent name="التاريخ" iconName={"clock-o"} data={item?.attributes?.date} />
-        {
-          item?.attributes?.provider?.data?.attributes?.name &&
-          <ItemComponent name=" اسم الفني" iconName="user" data={
-            item?.attributes?.provider?.data?.attributes?.name
+        <View>
+          {
+            item?.attributes?.provider?.data?.attributes?.name &&
+            <ItemComponent name=" اسم الفني" iconName="user" data={
+              item?.attributes?.provider?.data?.attributes?.name
 
-          } />
-        }
+            } />
+          }
+        </View>
         <ItemComponent name="الخدمة" iconName={"gear"} data={
           categoryName1 || categoryName2 || categoryName3
 
         } />
-        {(item?.attributes?.services?.data?.length > 0) ? (
-       <FlatList
-       data={item?.attributes?.services?.data}
-       showsHorizontalScrollIndicator={false}
-       showsVerticalScrollIndicator={false}
-       initialNumToRender={10}
-
-       keyExtractor={(item, index) => item.id}
-       style={{
-         display: "flex",
-         flexDirection: "row",
-         direction: "rtl",
-         flexWrap: "wrap",
-         marginTop: 15,
-         gap: 15,
-         padding:5,
-         paddingVertical:10,
-         borderRadius:7,
-         width: width*0.9,
-         backgroundColor: Colors.whiteColor,
-         shadowColor: "#000",
-         shadowOffset: {
-           width: 0,
-           height: 1,
-         },
-         shadowOpacity: 0.2,
-         shadowRadius: 1.41,
-         elevation: 4,
-         gap: 10,
-
-       }}
-       renderItem={({ item }) => {
-         return (
-           <View
-             style={{
-               display: "flex",
-               flexDirection: "row",
-               alignItems: "center",
-               flexWrap: 'wrap',
-               backgroundColor:'white',
-               width: width * 0.80,
-               gap: 15,
-             }}
-           >
-             <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
-
-             <AppText
-               centered={false}
-               text={item?.attributes?.name}
-               style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
-             />
-            
-           </View>
-         );
-       }}
-     />
-        ) : (item?.attributes?.packages?.data?.length > 0) ? (
-          <FlatList
-          data={item?.attributes?.packages?.data}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          initialNumToRender={10}
-
-          keyExtractor={(item, index) => item.id}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            direction: "rtl",
-            flexWrap: "wrap",
-            marginTop: 15,
-            gap: 15,
-            padding:5,
-            paddingVertical:10,
-            borderRadius:7,
-            width: width*0.9,
-            backgroundColor: Colors.whiteColor,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowOpacity: 0.2,
-            shadowRadius: 1.41,
-            elevation: 4,
-            gap: 10,
-
-          }}
-          renderItem={({ item }) => {
-            return (
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  flexWrap: 'wrap',
-                  backgroundColor:'white',
-                  width: width * 0.80,
-                  gap: 15,
-                }}
-              >
-                <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
-
-                <AppText
-                  centered={false}
-                  text={item?.attributes?.name}
-                  style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
-                />
-               
-              </View>
-            );
-          }}
-        />
-          
+        <View>
+          {(item?.attributes?.services?.data?.length > 0) ? (
+            <ServicesList data={item?.attributes?.services?.data} />
+          ) : (item?.attributes?.packages?.data?.length > 0) ? (
+            <ServicesList data={item?.attributes?.packages?.data} />
           ) : (item?.attributes?.service_carts?.data?.length > 0) ?
-          // <View style={styles.itemContainer}>
-            <FlatList
-              data={item?.attributes?.service_carts?.data}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              initialNumToRender={10}
-
-              keyExtractor={(item, index) => item.id}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                direction: "rtl",
-                flexWrap: "wrap",
-                marginTop: 15,
-                gap: 15,
-                padding:5,
-                borderRadius:7,
-                width: width*0.9,
-                backgroundColor: Colors.whiteColor,
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.2,
-                shadowRadius: 1.41,
-                elevation: 4,
-                gap: 10,
-
-              }}
-              renderItem={({ item }) => {
-                return (
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      flexWrap: 'wrap',
-                      justifyContent:'space-between',
-                      backgroundColor:'white',
-                      width: width * 0.80,
-                      gap: 15,
-                    }}
-                  >
-                    <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
-
-                    <AppText
-                      centered={false}
-                      text={item?.attributes?.service?.data?.attributes?.name}
-                      style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
-                    />
-                   
-                  </View>
-                );
-              }}
-            />
-          // </View>
-          : null}
+            <CartServicesList data={item?.attributes?.service_carts?.data} />
+            : null}
+        </View>
         <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? `${item?.attributes?.totalPrice} ${t(CURRENCY)}` : "السعر بعد الزيارة"} name={"Price"} />
-        <View style={styles.descriptionContainer}>
-          <AppText centered={false} text={"Location"} style={styles.title} />
-          <AppText
-            centered={false}
-            text={item?.attributes?.location}
-            style={styles.price}
-          />
+        <LocationAndNotesComponent location={item?.attributes?.location} description={item?.attributes?.description} />
+        <OrderImagesComponent orderImages={item?.attributes?.orderImages} />
+        <OrderAddionalPricesComponent
+          item={item}
+          handleGenererateInitator={handleGenererateInitator}
+          handleRejectAddionalPrices={handleRejectAddionalPrices}
+
+        />
+        <View>
+          {
+            item?.attributes?.delay_request?.data?.attributes?.accepted === 'pending ' &&
+            <DelayOrderCard item={item} />
+          }
         </View>
+        <ComponentsButtonWrapper
 
+          handleOrderCancle={handleOrderCancle}
+          handleGenererateInitator={handleGenererateInitator}
+          item={item}
 
-        <View style={styles.descriptionContainer}>
-          <AppText centered={false} text={"Notes"} style={styles.title} />
-          <AppText
-            centered={false}
-            text={
-              item?.attributes?.description
-                ? item?.attributes?.description
-                : "لا يوجد"
-            }
-            style={[styles.price, { width: width * 0.9 }]}
-          />
-        </View>
-        {item?.attributes?.orderImages?.length > 0 && (
-          <View style={styles.descriptionContainer}>
-            <>
-              <AppText centered={false} text={"Images"} style={styles.title} />
-              <Carousel
-                data={item?.attributes?.orderImages}
-                sliderWidth={width}
-                inactiveSlideOpacity={1}
-                inactiveSlideScale={1}
+        />
 
-                slideStyle={{
-                  backgroundColor: "transparent",
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                autoplay={true}
-                loop={true}
-                autoplayInterval={10000}
-                itemWidth={width}
-                renderItem={({ item }) => {
-                  return (
-                    <Image
-                      //  resizeMethod="contain"
-                      source={{
-                        uri: item
-                      }}
-                      style={{
-                        height: height * 0.2,
-                        width: width * 0.6,
-                        objectFit: "fill",
-                        borderRadius: 10,
-                      }}
-                    />
-                  );
-                }}
-              />
-            </>
-          </View>
-        )}
-        {((item?.attributes?.additional_prices?.data?.length > 0) || (item?.attributes?.provider_fee > 0)) &&
-          <>
-            <AppText centered={false} text={"اسعار اضافية"} style={[styles.title, { paddingHorizontal: 10 }]} />
-            <FlatList
-              data={item?.attributes?.additional_prices?.data}
-              showsVerticalScrollIndicator={false}
-              initialNumToRender={10}
-
-              renderItem={({ item }) => {
-
-                return (
-
-                  <ItemComponent iconName={"tags"} name={item?.attributes?.details} data={`${item?.attributes?.Price} ${t(CURRENCY)}`} />
-                )
-              }}
-              keyExtractor={(item) => item?.id}
-            />
-            {
-              item?.attributes?.provider_fee > 0 &&
-              <ItemComponent iconName={"money"} data={`${item?.attributes?.provider_fee} ${t(CURRENCY)}`} name={"أجرة الفنى"} />
-            }
-
-            {
-              item?.attributes?.addtional_prices_state === 'pending' &&
-              <View style={{ alignItems: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                <AppButton title={"Accept and Pay"} onPress={() => handlePayOrder(item?.id)} style={{ backgroundColor: Colors.success }} />
-                <AppButton title={"Reject"} onPress={() => handleRejectAddionalPrices(item?.id)} style={{ backgroundColor: Colors.redColor }} />
-              </View>
-            }
-
-          </>
-        }
-
-
-        {
-          item?.attributes?.delay_request?.data?.attributes?.accepted === 'pending ' &&
-          <DelayOrderCard item={item} />
-        }
-        {item?.attributes?.status === "pending" && (
-          <AppButton
-            title={"Cancle Order"}
-            onPress={() => handleOrderCancle(item.id)}
-            />
-        )}
-        {(item?.attributes?.status === "pending" || item?.attributes?.status === "assigned") && (
-          <AppButton
-            title={"Delay Order"}
-            style={{ marginTop: 10 }}
-            onPress={() => navigation.navigate(CHANGE_ORDER_DATE, { orderId: item?.id, item: item })}
-          />
-        )}
-        {item?.attributes?.status === "payed" &&
-          item?.attributes?.PaymentStatus === "payed" && (
-            <AppButton
-              title={"finish Order"}
-              style={{ backgroundColor: Colors.success }}
-              onPress={() =>
-                navigation.navigate(REVIEW_ORDER_SCREEN, {
-                  orderID: item?.id,
-                  item: item,
-                })
-              }
-            />
-          )}
-        {item?.attributes?.status === "payment_required" &&
-          item?.attributes?.PaymentStatus === "payed" && (
-            <AppButton
-              title={"finish Order"}
-              style={{ backgroundColor: Colors.success }}
-              onPress={() =>
-                navigation.navigate(REVIEW_ORDER_SCREEN, {
-                  orderID: item?.id,
-                  item: item,
-                })
-              }
-            />
-          )}
-        {item?.attributes?.status === "payment_required" &&
-          item?.attributes?.PaymentStatus !== "payed" && (
-            item?.attributes?.additional_prices?.data?.length === 0 && item?.attributes?.provider_fee === 0
-          ) && (
-            <AppButton
-              title={"Pay"}
-              style={{ backgroundColor: Colors.success }}
-              onPress={() => handleGenererateInitator()}
-            />
-          )}
-          
 
       </ScrollView>
       <AppModal
@@ -677,3 +369,322 @@ const styles = StyleSheet.create({
     borderColor: Colors.grayColor
   }
 });
+
+
+const CalculteOrderStatus = (status) => {
+  return (
+
+    status === "assigned"
+      ? "New"
+      : status === "pending"
+        ? "New"
+        : status === "accepted"
+          ? "Accepted"
+          : status === "working"
+            ? "Working"
+            : status === "finish_work"
+              ? "Finished"
+              : status === "payed"
+                ? "Payed"
+                : "Finished"
+
+
+  )
+}
+
+const ServicesList = memo(({ data }) => {
+  return (
+    <FlatList
+      data={data}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
+      initialNumToRender={10}
+
+      keyExtractor={(item, index) => item.id}
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        direction: "rtl",
+        flexWrap: "wrap",
+        marginTop: 15,
+        gap: 15,
+        padding: 5,
+        paddingVertical: 10,
+        borderRadius: 7,
+        width: width * 0.9,
+        backgroundColor: Colors.whiteColor,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+        elevation: 4,
+        gap: 10,
+
+      }}
+      renderItem={({ item }) => {
+        return (
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              flexWrap: 'wrap',
+              backgroundColor: 'white',
+              width: width * 0.80,
+              gap: 15,
+            }}
+          >
+            <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
+            <AppText
+              centered={false}
+              text={item?.attributes?.name}
+              style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
+            />
+
+          </View>
+        );
+      }}
+    />
+  )
+})
+
+const CartServicesList = memo(({ data }) => {
+  return (
+    <FlatList
+      data={data}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
+      initialNumToRender={10}
+
+      keyExtractor={(item, index) => item.id}
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        direction: "rtl",
+        flexWrap: "wrap",
+        marginTop: 15,
+        gap: 15,
+        padding: 5,
+        borderRadius: 7,
+        width: width * 0.9,
+        backgroundColor: Colors.whiteColor,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+        elevation: 4,
+        gap: 10,
+
+      }}
+      renderItem={({ item }) => {
+        return (
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              backgroundColor: 'white',
+              width: width * 0.80,
+              gap: 15,
+            }}
+          >
+            <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
+            <AppText
+              centered={false}
+              text={item?.attributes?.service?.data?.attributes?.name}
+              style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
+            />
+
+          </View>
+        );
+      }}
+    />
+  )
+})
+
+const LocationAndNotesComponent = memo(({ location, description }) => {
+  return (
+    <View>
+
+      <View style={styles.descriptionContainer}>
+        <AppText centered={false} text={"Location"} style={styles.title} />
+        <AppText
+          centered={false}
+          text={location}
+          style={styles.price}
+        />
+      </View>
+
+
+      <View style={styles.descriptionContainer}>
+        <AppText centered={false} text={"Notes"} style={styles.title} />
+        <AppText
+          centered={false}
+          text={
+            description
+              ? description
+              : "لا يوجد"
+          }
+          style={[styles.price, { width: width * 0.9 }]}
+        />
+      </View>
+    </View>
+  )
+})
+
+
+const OrderImagesComponent = memo(({ orderImages }) => {
+  if (!orderImages) return
+  return (
+    <View style={styles.descriptionContainer}>
+      <>
+        <AppText centered={false} text={"Images"} style={styles.title} />
+        <Carousel
+          data={orderImages}
+          sliderWidth={width}
+          inactiveSlideOpacity={1}
+          inactiveSlideScale={1}
+
+          slideStyle={{
+            backgroundColor: "transparent",
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          autoplay={true}
+          loop={true}
+          autoplayInterval={10000}
+          itemWidth={width}
+          renderItem={({ item }) => {
+            return (
+              <Image
+                //  resizeMethod="contain"
+                source={{
+                  uri: item
+                }}
+                style={{
+                  height: height * 0.2,
+                  width: width * 0.6,
+                  objectFit: "fill",
+                  borderRadius: 10,
+                }}
+              />
+            );
+          }}
+        />
+      </>
+    </View>
+
+  )
+})
+
+const OrderAddionalPricesComponent = memo(({ item, handleGenererateInitator, handleRejectAddionalPrices }) => {
+  const { t}= useTranslation()
+  const RenderCondition = (item?.attributes?.additional_prices?.data?.length > 0) || (item?.attributes?.provider_fee > 0)
+  if(!RenderCondition) return
+  return (
+
+    <View>
+    <AppText centered={false} text={"اسعار اضافية"} style={[styles.title, { paddingHorizontal: 10 }]} />
+    <FlatList
+      data={item?.attributes?.additional_prices?.data}
+      showsVerticalScrollIndicator={false}
+      initialNumToRender={10}
+
+      renderItem={({ item }) => {
+
+        return (
+
+          <ItemComponent iconName={"tags"} name={item?.attributes?.details} data={`${item?.attributes?.Price} ${t(CURRENCY)}`} />
+        )
+      }}
+      keyExtractor={(item) => item?.id}
+    />
+    {
+      item?.attributes?.provider_fee > 0 &&
+      <ItemComponent iconName={"money"} data={`${item?.attributes?.provider_fee} ${t(CURRENCY)}`} name={"أجرة الفنى"} />
+    }
+
+    {
+      item?.attributes?.addtional_prices_state === 'pending' &&
+      <View style={{ alignItems: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+        <AppButton title={"Accept and Pay"} onPress={() => handleGenererateInitator()} style={{ backgroundColor: Colors.success }} />
+        <AppButton title={"Reject"} onPress={() => handleRejectAddionalPrices(item?.id)} style={{ backgroundColor: Colors.redColor }} />
+      </View>
+    }
+
+  </View>
+  )
+})
+
+const ComponentsButtonWrapper = memo(({
+  item,
+  handleOrderCancle,
+  handleGenererateInitator
+}) => {
+  const navigation = useNavigation()
+  return (
+    <>
+      {item?.attributes?.status === "pending" && (
+        <AppButton
+          title={"Cancle Order"}
+          onPress={() => handleOrderCancle(item.id)}
+        />
+      )}
+      {(item?.attributes?.status === "pending" || item?.attributes?.status === "assigned") && (
+        <AppButton
+          title={"Delay Order"}
+          style={{ marginTop: 10 }}
+          onPress={() => navigation.navigate(CHANGE_ORDER_DATE, { orderId: item?.id, item: item })}
+        />
+      )}
+      {item?.attributes?.status === "payed" &&
+        item?.attributes?.PaymentStatus === "payed" && (
+          <AppButton
+            title={"finish Order"}
+            style={{ backgroundColor: Colors.success }}
+            onPress={() =>
+              navigation.navigate(REVIEW_ORDER_SCREEN, {
+                orderID: item?.id,
+                item: item,
+              })
+            }
+          />
+        )}
+      {item?.attributes?.status === "payment_required" &&
+        item?.attributes?.PaymentStatus === "payed" && (
+          <AppButton
+            title={"finish Order"}
+            style={{ backgroundColor: Colors.success }}
+            onPress={() =>
+              navigation.navigate(REVIEW_ORDER_SCREEN, {
+                orderID: item?.id,
+                item: item,
+              })
+            }
+          />
+        )}
+      {item?.attributes?.status === "payment_required" &&
+        item?.attributes?.PaymentStatus !== "payed" && (
+          item?.attributes?.additional_prices?.data?.length === 0 && item?.attributes?.provider_fee === 0
+        ) && (
+          <AppButton
+            title={"Pay"}
+            style={{ backgroundColor: Colors.success }}
+            onPress={() => handleGenererateInitator()}
+          />
+        )}
+
+    </>
+  )
+})

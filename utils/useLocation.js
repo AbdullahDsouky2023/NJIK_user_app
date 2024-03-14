@@ -13,7 +13,7 @@ export default function UseLocation() {
     const userData = useSelector((state)=>state?.user?.userData)
     const [locationCorrdinate,setLocationCoordinate]=useState(null)
     const { t} = useTranslation()
-  
+    const [zipCode, setZipCode] = useState(null); // New state for zip code
     const requestLocationPermission = async () => {
       try {
 
@@ -79,34 +79,35 @@ export default function UseLocation() {
       }
       }, []);
 
-      const handleSetCurrentLocation =   async (coordinate) => {
+      const handleSetCurrentLocation = async (coordinate) => {
         try {
-           const readableLocation = await  reverseGeoCode(coordinate)
-           if (readableLocation) {
-               const fromatedLocation = getAddressFromObject(readableLocation)
-               setCurrentLocation({
-                readable:fromatedLocation,
-                coordinate 
-               })
-               await AsyncStorage.setItem("userLocation",JSON.stringify({
-                readable:fromatedLocation,
-                coordinate 
-               }))
-               if(!userData?.location){
-                await updateUserData(userData?.id,{
-                  location:fromatedLocation
-                })
-              }
-               console.log("setting the location",{
-                readable:fromatedLocation,
-                coordinate 
-               })
+          const readableLocation = await reverseGeoCode(coordinate);
+          if (readableLocation) {
+            const formattedLocation = getAddressFromObject(readableLocation);
+            setCurrentLocation({
+              readable: formattedLocation,
+              coordinate,
+            });
+            // Set the zip code
+            setZipCode(readableLocation?.postalCode);
+            await AsyncStorage.setItem("userLocation", JSON.stringify({
+              readable: formattedLocation,
+              coordinate,
+            }));
+            if (!userData?.location) {
+              await updateUserData(userData?.id, {
+                location: formattedLocation,
+              });
             }
-            
+            console.log("setting the location", {
+              readable: formattedLocation,
+              coordinate,
+            });
+          }
         } catch (error) {
-           console.log("handleSetCurrentLocation",JSON.stringify(error.message))
+          console.log("handleSetCurrentLocation", JSON.stringify(error.message));
         }
-       };
+     };
        const reverseGeoCode = async (location) => {
         try {
         //    const parseLocation =  JSON.parse(location)
@@ -133,7 +134,7 @@ export default function UseLocation() {
           subregion,
           timezone
         } = locationObject;
-      
+      console.log("the postal Code is ",postalCode)
         let address = '';
         // if (street || name) {
         //   address += street || name;
@@ -160,7 +161,9 @@ export default function UseLocation() {
   return (
     {
         location:currentLocation,
-        coordinate:locationCorrdinate
+        coordinate:locationCorrdinate,
+        zipCode: zipCode, // Return the zip code
+
     }
  )
 }

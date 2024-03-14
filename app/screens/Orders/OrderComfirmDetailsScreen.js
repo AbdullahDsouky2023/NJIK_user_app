@@ -425,7 +425,8 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
                       }}
                       width={50}
                       style={{
-                        height: height * 0.25,
+                        height: "auto",
+                        minHeight:width*0.4,
                         width: width*0.6,
                         objectFit: "fill",
                         borderRadius: 10,

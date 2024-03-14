@@ -1,6 +1,7 @@
 import * as Crypto from 'expo-crypto';
 import axios  from 'axios';
 import {EXPO_PUBLIC_MERCHANT_KEY ,EXPO_PUBLIC_MERCHANT_PASSWORD} from "@env"
+import { GetZipCode, getZipCode } from './helpers';
 
 async function generateHash(orderDetails, merchantPass) {
     const { orderId, amount, currency, description } = orderDetails;
@@ -34,10 +35,9 @@ async function initiatePayment(orderDetails) {
  formData.append('payer_address', orderDetails.payerAddress);
  formData.append('payer_country', orderDetails.payerCountry);
  formData.append('payer_city', orderDetails.payerCity);
- formData.append('payer_zip', orderDetails.payerZip);
  formData.append('payer_email', orderDetails.payerEmail);
  formData.append('payer_phone', orderDetails.payerPhone);
- formData.append('term_url_3ds', 'https://gemini.google.com/'); 
+ formData.append('term_url_3ds', "https://njik.sa/"); 
  formData.append("merchant_success_url","?success")
  formData.append( "merchant_failure_url", "?status=failure")
  
@@ -45,8 +45,12 @@ async function initiatePayment(orderDetails) {
  formData.append('req_token', 'N');
  formData.append('recurring_init', 'Y');
  const payerIp = await fetchUserIP();
+ const zipcode = await getZipCode()
+
  if (payerIp) {
     formData.append('payer_ip', payerIp);
+    formData.append('payer_zip', zipcode);
+    console.log("the ip is ",payerIp,zipcode)
  } else {
     console.error("Failed to fetch IP address");
     // Handle the error appropriately, e.g., throw an error or return

@@ -8,7 +8,11 @@ import { CommonActions } from "@react-navigation/native";
 import { ORDER_SUCCESS_SCREEN } from "../../navigation/routes";
 import { useTranslation } from "react-i18next";
 import AppText from "../../component/AppText";
-import { PayOrderForReserve } from "../../../utils/orders";
+import { PayOrderForReserve, updateOrderData } from "../../../utils/orders";
+import LoadingModal from "../../component/Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserByPhoneNumber, updateUserData } from "../../../utils/user";
+import { setUserData } from "../../store/features/userSlice";
 
 const { width } = Dimensions.get('screen');
 
@@ -18,13 +22,40 @@ const PaymentScreen = ({ navigation,route }) => {
         currentPaymentMethodIndex: 2,
         showSuccessDialog: false,
     })
-
+    const user = useSelector((state) => state?.user?.userData);
+const dispatch = useDispatch()
     const updateState = (data) => setState((state) => ({ ...state, ...data }))
+    const [isLoading,setIsLoading]=useState(false)
+const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.params
 
     const {
         currentPaymentMethodIndex,
         showSuccessDialog,
     } = state;
+    const handlePayWithWallet = async(amount)=>{
+        try{
+            const res = await updateUserData(user?.id,{
+              wallet_amount:Number(user?.wallet_amount)-Number(amount),
+              
+            })
+            const res2 = await updateOrderData(orderId,{
+                payed_with_wallet:true
+
+            })
+            if(res){
+              console.log("Success Update User",res)
+              const gottenuser = await getUserByPhoneNumber(user?.phoneNumber);
+      
+              dispatch(setUserData(gottenuser));
+            //   Alert.alert("  تمت عمليةالشحن بنجاح ")
+      
+            }else {
+              Alert.alert("عذراً هناك مشكلة")
+            }
+          }catch(err){
+            console.log("error updating the user ",err.message)
+          }
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
@@ -35,36 +66,23 @@ const PaymentScreen = ({ navigation,route }) => {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: Sizes.fixPadding * 8.0 }}
                 >
-                 
-                    {/* {paymentMethod({
-                        icon: require('../../assets/images/payment_icon/amazon_pay.png'),
-                        paymentType: 'Amazon Pay',
-                        index: 2,
-                    })} */}
                     <PaymentMethod
                         icon={require('../../assets/images/payment_icon/card.png')}
                         paymentType='Card'
                         index={1}
                     />
                     <PaymentMethod
-                        icon={require('../../assets/images/payment_icon/cash_on_delivery.png')}
-                        paymentType='Cash'
+                        icon={require('../../assets/images/payment_icon/wallet.png')}
+                        paymentType='Wallet'
                         index={2}
                     />
-                    {/* {paymentMethod({
-                        icon: require('../../assets/images/payment_icon/paypal.png'),
-                        paymentType: 'PayPal',
-                        index: 4,
-                    })}
-                    {paymentMethod({
-                        icon: require('../../assets/images/payment_icon/skrill.png'),
-                        paymentType: 'Skrill',
-                        index: 5,
-                    })} */}
+                    
                 </ScrollView>
                 {payButton()}
             </View>
+            <LoadingModal visible={isLoading}/>
             {successDialog()}
+            
         </SafeAreaView>
     )
 
@@ -73,13 +91,14 @@ const PaymentScreen = ({ navigation,route }) => {
             <Dialog
                 visible={showSuccessDialog}
                 style={styles.dialogWrapStyle}
+                onDismiss={() => updateState({ showSuccessDialog: false })}
             >
                 <View style={{ backgroundColor: Colors.whiteColor, alignItems: 'center' }}>
                     <View style={styles.successIconWrapStyle}>
-                        <MaterialIcons name="done" size={40} color={Colors.primaryColor} />
+                        <MaterialIcons name="error" size={40} color={Colors.primaryColor} />
                     </View>
-                    <Text style={{ ...Fonts.grayColor18Medium, marginTop: Sizes.fixPadding + 10.0 }}>
-                       تم حجز الطلب بنجاح!
+                    <Text style={{ ...Fonts.blackColor20Medium, marginTop: Sizes.fixPadding + 10.0 }}>
+                       رصيدك الحالي غير كافي
                     </Text>
                 </View>
             </Dialog>
@@ -92,17 +111,26 @@ const PaymentScreen = ({ navigation,route }) => {
                 <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={async() => {
-                        // updateState({ showSuccessDialog: true })
-                        // setTimeout(() => {
-                            // updateState({ showSuccessDialog: false })
-                            await PayOrderForReserve(route?.params?.orderId)
-                            navigation.dispatch(
-                                CommonActions.reset({
-                                  index: 0,
-                                  routes: [{ name: ORDER_SUCCESS_SCREEN}],
-                                })
-                              );
-                        // }, 2000);
+                        console.log("paythe payment ",currentPaymentMethodIndex)
+                        if(currentPaymentMethodIndex === 1){
+
+                            setIsLoading(true)
+                            handleGenererateInitator()
+                            setTimeout(() => {
+                                
+                                setIsLoading(false)
+                            }, 1000);
+                        }else if(currentPaymentMethodIndex === 2){
+                            if(totalAmount >=user?.wallet_amount){
+
+                                updateState({ showSuccessDialog: true })
+                                console.log(totalAmount >=user?.wallet_amount)
+                            }else {
+                                handlePayOrder()
+                                handlePayWithWallet(totalAmount)
+                            }
+                        
+                        }
                     }
                     }
                     style={styles.payButtonWrapStyle}

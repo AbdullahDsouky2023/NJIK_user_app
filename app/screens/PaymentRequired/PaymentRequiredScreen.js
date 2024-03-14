@@ -384,7 +384,14 @@ initiatePayment(orderDetails)
           textStyle={{ fontSize: RFPercentage(1.7) }}
 
           style={styles.buttonStyles}
-          onPress={() => handleGenererateInitator()}
+          onPress={() =>{
+            navigation.navigate("Payment",{
+              handleGenererateInitator,
+              handlePayOrder,
+              orderId:item?.id,
+              totalAmount:calculateTotalWithTax(item?.attributes?.totalPrice)
+            })
+          }}
           />
         <AppButton
           title={" ما اتفقنا على كذا"}
