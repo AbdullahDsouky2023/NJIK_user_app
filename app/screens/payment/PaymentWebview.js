@@ -35,6 +35,7 @@ const [showDialog,setShowDialog]=useState(false)
         if (currentOperationStatus !== null) {
             if(currentOperationStatus === "decline"){
             //   Alert.alert("the operation was declined man bad news")
+            AddPaymentSuccessfull()
               Dialog.show({
                 type: ALERT_TYPE.DANGER,
                 title: 'عملية مرفوضة',

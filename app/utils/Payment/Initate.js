@@ -19,7 +19,7 @@ async function generateHash(orderDetails, merchantPass) {
        Crypto.CryptoDigestAlgorithm.SHA1,
        md5Hash
     );
-   console.log("chat ",sha1Hash === "9586e838d8f15c29d88c7cfcce03ca4ceed705fd")
+   console.log("chat sha1Hashsha1Hash",sha1Hash,)
     return sha1Hash;
    }
 async function initiatePayment(orderDetails) {
@@ -65,10 +65,11 @@ async function initiatePayment(orderDetails) {
     method: 'post',
     url: paymentUrl,
     headers: {
-        'Content-Type': 'multipart/form-data', // Set the appropriate content type
+        'Content-Type': 'multipart/form-data', 
         'Accept': '*/*',
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive',
+      //   "Host":"https://192.168.1.7.com/"
     },
     data: formData,
     maxBodyLength: Infinity,
@@ -96,16 +97,34 @@ async function initiatePayment(orderDetails) {
    payer_zip:zipcode,
    hash:hash
   };
+  console.log("form data is ",formDataObject)
  try {
     const response = await axios(config);
     console.log(JSON.stringify(response.data));
+    Alert.alert(JSON.stringify(response.data))
     return response.data;
  } catch (error) {
-    console.error('Error initiating payment:', error);
-    Alert.alert("Error initate Data",JSON.stringify(formDataObject), [ { text: "OK", }, ]);
+   console.error('Error initiating payment:', error.message);
+   // Check if the error contains a response from the server
+   if (error.response) {
+       // The server responded with a status code that falls out of the range of 2xx
+       console.error('Server responded with an error:', error.response.data);
+       // Display the error message from the server along with the config data
+       Alert.alert("Error initiating payment",`${ JSON.stringify(error.response.data)} ${JSON.stringify(config?.data)}`, [{ text: "OK", }]);
+   } else if (error.request) {
+       // The request was made but no response was received
+       console.error('No response received:', error.request);
+       Alert.alert("Error initiating payment", "No response received from the server", [{ text: "OK", }]);
+       console.log("Request config:", config); // Log the config for debugging
+   } else {
+       // Something happened in setting up the request that triggered an Error
+       console.error('Error', error.message);
+       Alert.alert("Error initiating payment", error.message, [{ text: "OK", }]);
+       console.log("Request config:", config); // Log the config for debugging
+   }
+   throw error;
+}
 
-    throw error;
- }
 }
 async function fetchUserIP() {
    try {

@@ -179,7 +179,7 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
   return(
     <Dialog.Container
       visible={visible}
-      onDismiss={()=>setVisible(false)}
+      onBackdropPress={()=>setVisible(false)}
       contentStyle={styles.dialogContainerStyle}
     >
       
@@ -212,11 +212,7 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
             style={styles.button}
             onPress={()=>handleGenererateInitator(amount)}
           />
-          <AppButton
-            title={"Cancle"}
-            style={styles.button}
-            onPress={()=>setVisible(false)}
-          />
+          
           </View>
                 </Dialog.Container>
   )
