@@ -147,7 +147,7 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
     const lastName = nameParts.slice(1).join(' '); // The rest are the last name
     const orderDetails = {
       orderId: `CHARGE_${uniqueId}`,
-      amount: orderAmmount.toFixed(2),
+      // amount: orderAmmount.toFixed(2),
       currency: CURRENCY,
       description: `Charge Wallet With amount of ${Number(amount).toFixed(2)}`,
       payerFirstName: firstName,
@@ -172,7 +172,7 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
       })
       .catch(error => {
         console.error('Error genereation payment:', error)
-        Alert.alert("Error genereation ", JSON.stringify(orderDetails), [ { text: "OK", }, ]);
+        // Alert.alert("Error genereation ", JSON.stringify(orderDetails), [ { text: "OK", }, ]);
 
       });
   }
@@ -207,7 +207,7 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
           <View style={styles.buttonsContainer}>
           <AppButton
             title={"Confirm"}
-            disabled={!amount || amount < 10}
+            // disabled={!amount || amount < 10}
             
             style={styles.button}
             onPress={()=>handleGenererateInitator(amount)}

@@ -41,8 +41,8 @@ async function initiatePayment(orderDetails) {
  formData.append('term_url_3ds', "https://njik.sa/"); 
  formData.append("merchant_success_url","?success")
  formData.append( "merchant_failure_url", "?status=failure")
- 
- formData.append('auth', 'N');
+
+//  formData.append('auth', 'N');
  formData.append('req_token', 'Y');
  formData.append('recurring_init', 'N');
  const payerIp = await fetchUserIP();
@@ -73,14 +73,36 @@ async function initiatePayment(orderDetails) {
     data: formData,
     maxBodyLength: Infinity,
  };
-
+ const formDataObject = {
+   action: 'SALE',
+   edfa_merchant_id: EXPO_PUBLIC_MERCHANT_KEY, // Replace with your actual merchant ID
+   order_id: orderDetails.orderId,
+   order_amount: orderDetails.amount,
+   order_currency: orderDetails.currency,
+   order_description: orderDetails.description,
+   payer_first_name: orderDetails.payerFirstName,
+   payer_last_name: orderDetails.payerLastName,
+   payer_address: orderDetails.payerAddress,
+   payer_country: orderDetails.payerCountry,
+   payer_city: orderDetails.payerCity,
+   payer_email: orderDetails.payerEmail,
+   payer_phone: orderDetails.payerPhone,
+   term_url_3ds: "https://njik.sa/",
+   merchant_success_url: "?success",
+   merchant_failure_url: "?status=failure",
+   req_token: 'Y',
+   recurring_init: 'N',
+   payer_ip:payerIp,
+   payer_zip:zipcode,
+   hash:hash
+  };
  try {
     const response = await axios(config);
     console.log(JSON.stringify(response.data));
     return response.data;
  } catch (error) {
     console.error('Error initiating payment:', error);
-   //  Alert.alert("Error initate Data",error?.message, [ { text: "OK", }, ]);
+    Alert.alert("Error initate Data",JSON.stringify(formDataObject), [ { text: "OK", }, ]);
 
     throw error;
  }

@@ -52,16 +52,17 @@ export default function usePaymentProcess() {
   };
 }
 
-export const AddNewPaymentProcess = async (data) => {
+export const AddNewPaymentProcess = async (values,userId) => {
     try {
       const res = await api.post("/api/payment-processes", {
         data: {
-          ...data
+          ...values,
+          userId
         },
       });
   
-      return res?.data?.data?.id ? res?.data?.data?.id : null;
+      return res?.data?.data
     } catch (error) {
-      console.log("Error:", error.message,values); // Log the error response
+      console.log("Error:", error.message); // Log the error response
     }
   };

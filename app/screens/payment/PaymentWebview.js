@@ -11,6 +11,7 @@ import { Dialog as PaperDialog } from 'react-native-paper';
 import { Colors, Sizes,Fonts } from '../../constant/styles';
 import AppText from '../../component/AppText';
 import { useSelector } from 'react-redux';
+import { AddNewPaymentProcess } from '../../../utils/payment_process';
 
 const { width , height } = Dimensions.get('screen')
 export default function PaymentWebview({ route, navigation }) {
@@ -85,13 +86,24 @@ const [showDialog,setShowDialog]=useState(false)
   const AddPaymentSuccessfull = async(data)=>{
       try{
         const response = await checkOrderStatus(orderId)
-        console.log("the response is ",response)
-        const res = await AddNewPaymentProcess({
+        console.log("Data passed to AddNewPaymentProcess:", {
             ...response?.responseBody,
-            userId:user?.id
-        })
-        console.log("the ress res is ",res)
-        return res
+            userId: user?.id
+        });
+        const res = await AddNewPaymentProcess(
+         response?.responseBody,
+         user?.id?.toString()
+                 );
+        console.log("Result of AddNewPaymentProcess:", res);
+        if(res){
+
+            console.log("the ress res is ",{
+                ...response?.responseBody,
+                userId:user?.id?.toString()
+            })
+            return res
+        }
+        return null
     }catch(err){
 
     }
