@@ -147,7 +147,7 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
     const lastName = nameParts.slice(1).join(' '); // The rest are the last name
     const orderDetails = {
       orderId: `CHARGE_${uniqueId}`,
-      // amount: orderAmmount.toFixed(2),
+      amount: orderAmmount.toFixed(2),
       currency: CURRENCY,
       description: `Charge Wallet With amount of ${Number(amount).toFixed(2)}`,
       payerFirstName: firstName,
