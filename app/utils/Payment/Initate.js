@@ -117,8 +117,8 @@ async function fetchUserIP() {
        console.log("the cucfrent redpon ", responseData);
        return responseData;
    } catch (error) {
-       console.error('Error fetching data: ', error);
-       throw error; // Rethrow the error if you want to handle it in the calling code
+      Alert.alert("Error Fetching Data", error.message, [ { text: "OK", }, ]);
+      throw error; // Rethrow the error if you want to handle it in the calling code
    }
 };
 
