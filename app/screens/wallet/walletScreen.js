@@ -31,6 +31,7 @@ import { getUserByPhoneNumber, updateUserData } from "../../../utils/user";
 import { setUserData } from "../../store/features/userSlice";
 import LoadingModal from "../../component/Loading";
 import UseLocation from "../../../utils/useLocation";
+import SuccessModel from "../../component/SuccessModal";
 
 const { width } = Dimensions.get("screen");
 export default function WalletScreen() {
@@ -43,6 +44,7 @@ export default function WalletScreen() {
   const user = useSelector((state) => state?.user?.userData);
 
   const [modalVisible, setShowModalVisible] = useState(false);
+
   const [amount, setAmmount] = useState(0);
   const updateState = (data) => setState((state) => ({ ...state, ...data }))
   const { currentPaymentMethodIndex, showSuccessDialog } = state;
@@ -53,7 +55,7 @@ export default function WalletScreen() {
       <ScrollView>
         <View style={styles.wrapper}>
           <AppText text={"Your Balance"} style={styles.text} />
-          <AppText text={`${user?.wallet_amount} ` + t(CURRENCY)} style={styles.amount} />
+          <AppText text={`${user?.wallet_amount || 0} ` + t(CURRENCY)} style={styles.amount} />
         </View>
 
         <View style={styles.wrapper}>
@@ -85,11 +87,13 @@ export default function WalletScreen() {
         </View>
         <HandleGetAmountComponentModal
           visible={modalVisible}
+          updateState={updateState}
           // onPress={() => handleModalDismiss()}
           setVisible={setShowModalVisible}
           setIsLoading={setIsLoading}
         />
         <LoadingModal visible={loading}/>
+        <SuccessModel visible={showSuccessDialog} onPress={()=>updateState({showSuccessDialog:false})}/>
       </ScrollView>
     </View>
   );
@@ -97,7 +101,7 @@ export default function WalletScreen() {
 
 
 
-const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading})=>{
+const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updateState})=>{
   const  { t } = useTranslation()
   const [amount,setAmmount]=useState(null)
   const dispatch = useDispatch()
@@ -121,7 +125,7 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading})=>{
         const gottenuser = await getUserByPhoneNumber(user?.phoneNumber);
 
         dispatch(setUserData(gottenuser));
-        Alert.alert("  تمت عمليةالشحن بنجاح ")
+        updateState({showSuccessDialog:true})
 
       }else {
         Alert.alert("عذراً هناك مشكلة")
@@ -145,16 +149,14 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading})=>{
       orderId: `CHARGE_${uniqueId}`,
       amount: orderAmmount.toFixed(2),
       currency: CURRENCY,
-      description: `Charge Wallet With amount of ${orderAmmount.toFixed(2)}`,
+      description: `Charge Wallet With amount of ${Number(amount).toFixed(2)}`,
       payerFirstName: firstName,
       payerLastName: lastName,
       payerAddress: user?.location,
       payerCountry: CHECkOUT_COUNTRY,
       payerCity: user?.city,
-      payerZip: '12345',
       payerEmail: user?.email,
       payerPhone: user?.phoneNumber,
-      payerIp: '192.168.1.1'
     };
     setVisible(false)
     setAmmount(null)
@@ -168,7 +170,11 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading})=>{
         })
         console.log('Payment initiated successfully:', response?.redirect_url)
       })
-      .catch(error => console.error('Error initiating payment:', error));
+      .catch(error => {
+        console.error('Error initiating payment:', error)
+        Alert.alert("Error", error.message, [ { text: "OK", }, ]);
+
+      });
   }
   return(
     <Dialog.Container

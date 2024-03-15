@@ -34,7 +34,7 @@ async function initiatePayment(orderDetails) {
  formData.append('payer_last_name', orderDetails.payerLastName);
  formData.append('payer_address', orderDetails.payerAddress);
  formData.append('payer_country', orderDetails.payerCountry);
- formData.append('payer_city', orderDetails.payerCity);
+ formData.append('payer_city',"fsfs");
  formData.append('payer_email', orderDetails.payerEmail);
  formData.append('payer_phone', orderDetails.payerPhone);
  formData.append('term_url_3ds', "https://njik.sa/"); 
@@ -42,8 +42,8 @@ async function initiatePayment(orderDetails) {
  formData.append( "merchant_failure_url", "?status=failure")
  
  formData.append('auth', 'N');
- formData.append('req_token', 'N');
- formData.append('recurring_init', 'Y');
+ formData.append('req_token', 'Y');
+ formData.append('recurring_init', 'N');
  const payerIp = await fetchUserIP();
  const zipcode = await getZipCode()
 
@@ -114,7 +114,7 @@ async function fetchUserIP() {
        }
 
        const responseData = await response.json();
-       console.log(responseData);
+       console.log("the cucfrent redpon ", responseData);
        return responseData;
    } catch (error) {
        console.error('Error fetching data: ', error);

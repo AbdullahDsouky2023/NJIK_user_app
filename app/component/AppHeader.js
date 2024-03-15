@@ -40,7 +40,7 @@ export default function AppHeader({ subPage = false}) {
         <TouchableWithoutFeedback >
 
           <View style={styles.WalletContainer}>
-            <AppText style={{fontSize:15,color:'white'}} text={`${user?.wallet_amount} ${t(CURRENCY)}`}/>
+            <AppText style={{fontSize:15,color:'white'}} text={`${user?.wallet_amount || 0 } ${t(CURRENCY)}`}/>
           </View>
             </TouchableWithoutFeedback>
           ) }

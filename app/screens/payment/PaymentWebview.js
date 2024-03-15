@@ -1,5 +1,5 @@
 // Import necessary modules
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState,useEffect } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { CECKOUT_WEBVIEW_SCREEN, SUCESS_PAYMENT_SCREEN } from '../../navigation/routes';
@@ -8,7 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { checkOrderStatus } from '../../utils/Payment/Initate';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { Dialog as PaperDialog } from 'react-native-paper';
-import { Colors, Fonts, Sizes } from "../../constant/styles";
+import { Colors, Sizes,Fonts } from '../../constant/styles';
 import AppText from '../../component/AppText';
 
 const { width , height } = Dimensions.get('screen')
@@ -18,6 +18,7 @@ export default function PaymentWebview({ route, navigation }) {
     const handlePayOrder = route?.params?.handlePayOrderFun
     const [lastMessage, setLastMessage] = useState(null);
     const webViewRef = useRef(null)
+    const [currentOperationStatus,SetCurrentOperationStatus]=useState(null)
     const [orderStatusChecked, setOrderStatusChecked] = useState(false);
 const [showDialog,setShowDialog]=useState(false)
     const handleWebViewError = (syntheticEvent) => {
@@ -26,6 +27,34 @@ const [showDialog,setShowDialog]=useState(false)
         // Handle the error, e.g., show an alert or navigate to an error screen
         Alert.alert('Error loading payment page');
     };
+    useEffect(() => {
+        if (currentOperationStatus !== null) {
+            if(currentOperationStatus === "decline"){
+            //   Alert.alert("the operation was declined man bad news")
+              Dialog.show({
+                type: ALERT_TYPE.DANGER,
+                title: 'عملية مرفوضة',
+                button: 'إغلاق',
+                onHide: () => navigation.navigate("App")
+
+            })
+            }
+            else if(currentOperationStatus === "settled"){
+            //   Alert.alert("the operation was declined man bad news")
+          
+              Dialog.show({
+                type: ALERT_TYPE.SUCCESS,
+                title: 'عملية ناجحة 🎉🎉',
+                textBody:"تمت عملية الدفع بنجاح",
+                button: 'إغلاق',
+                onHide: () => handlePayOrder()
+               
+
+            })
+            }
+            console.log("you have to return status of the order to the user with status of 2:", currentOperationStatus);
+        }
+    }, [currentOperationStatus]); 
 
     const debugging = `
     const consoleLog = (type, log) => window.ReactNativeWebView.postMessage(JSON.stringify({
@@ -34,6 +63,12 @@ const [showDialog,setShowDialog]=useState(false)
         'type': type,
         'log': log
       }
+    }));
+    window.ReactNativeWebView.postMessage(JSON.stringify({
+        'type': 'DATA',
+        'data': {
+            // Extract data from the page here
+        }
     }));
   
     console = {
@@ -72,6 +107,7 @@ const [showDialog,setShowDialog]=useState(false)
                 }
                 try {
                     const jsonObject = JSON.parse(Data);
+                    console.log("Data response ",Data)
                     const ErrorMessage = jsonObject?.errors[0]?.error_message
                     if (ErrorMessage) {
                         reloadWebView()
@@ -93,35 +129,24 @@ const [showDialog,setShowDialog]=useState(false)
         }
     };
 
-    const CheckOrderStatusAndDisplayMessage = () => {
+    const CheckOrderStatusAndDisplayMessage = async() => {
         if (orderStatusChecked) return;
+try {
+    
 
-        checkOrderStatus(orderId)
-            .then(data => {
-                if (data?.responseBody?.status === "settled") {
-                    navigation.goBack()
-                    handlePayOrder()
-
-
-                } else {
+       const data  = await  checkOrderStatus(orderId)
+            if(data)  {
                     setOrderStatusChecked(true); // Mark the status as checked
-                        
-                 
-                    setShowDialog(true)
-                    navigation.goBack()
-                    Alert.alert("عملية مرفوضة ","هناك  مشكلة في البطاقة المدخلة حاول مرة اخري")
-                    // Dialog.show({
-                    //     type: ALERT_TYPE.DANGER,
-                    //     title: 'عملية مرفوضة',
-                    //     button: 'إغلاق',
-                    //     onHide: () => navigation.navigate("App")
-
-                    // })
-
-                }
-                console.log('Success:', data?.responseBody !== "The order ORD1134 has already been paid, the link is expired")
-            })
-            .catch(error => console.log('Error:', error));
+                    if(data?.responseBody?.status){
+                        SetCurrentOperationStatus(data?.responseBody?.status)
+                        return (data?.responseBody?.status)
+                    }
+                
+            }
+            
+        } catch (error) {
+            console.log('Error:', error)
+        }
     }
 
 
@@ -139,12 +164,22 @@ const [showDialog,setShowDialog]=useState(false)
                     startInLoadingState={true}
                     onNavigationStateChange={async (navState) => {
                         try {
+                            console.log("the current url of the page is:", navState.url);
 
                             if (navState?.url.includes("https://pay.expresspay.sa/interaction/")) {
 
                                 CheckOrderStatusAndDisplayMessage()
-                            } else if (navState?.url.includes("https://gemini.google.com/")) {
-                                CheckOrderStatusAndDisplayMessage()
+                                console.log("the user has been redirected to the redirect page")
+                            } else if (navState?.url.includes("https://njik.sa/")) {
+                                setOrderStatusChecked(false)
+                                
+                                const status = CheckOrderStatusAndDisplayMessage()
+                                console.log("you have to return status of the order to the user with status of 1:",status)
+                                console.log("you have to return status of the order to the user with status of2 :",currentOperationStatus)
+                                // navigation.goBack()
+                            }else   if (navState.url !== url) {
+                                console.log("User navigated away from the WebView",url);
+                                // You can perform any additional actions here, such as setting state or navigating to another screen
                             }
 
 
@@ -159,6 +194,7 @@ const [showDialog,setShowDialog]=useState(false)
 
                     source={{ uri: url }}
 
+                    originWhitelist={['*']}
 
                     injectedJavaScript={debugging}
                     onMessage={handleWebViewMessage}
@@ -168,7 +204,6 @@ const [showDialog,setShowDialog]=useState(false)
 
             </View>
             <AlertDialog
-            
             setShowSuccessDialog={setShowDialog}
             showSuccessDialog={showDialog}
             />

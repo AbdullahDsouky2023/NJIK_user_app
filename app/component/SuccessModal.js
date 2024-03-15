@@ -13,6 +13,7 @@ export default function SuccessModel({ visible,onPress ,sub }) {
     <Dialog.Container
       visible={visible}
       contentStyle={styles.dialogContainerStyle}
+      onBackdropPress={onPress}
     >
       <View style={{ backgroundColor: "white", alignItems: "center" }}>
       <LottieView
@@ -27,7 +28,7 @@ export default function SuccessModel({ visible,onPress ,sub }) {
         source={require('../assets/success.json')}
       />
 
-        <AppButton title={"عودة"} onPress={onPress} />
+        <AppButton title={"رجوع"} onPress={onPress} />
       </View>
     </Dialog.Container>
   );
