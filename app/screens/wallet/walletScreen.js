@@ -171,8 +171,8 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
         console.log('Payment initiated successfully:', response?.redirect_url)
       })
       .catch(error => {
-        console.error('Error initiating payment:', error)
-        Alert.alert("Error", error.message, [ { text: "OK", }, ]);
+        console.error('Error genereation payment:', error)
+        Alert.alert("Error genereation ", JSON.stringify(orderDetails), [ { text: "OK", }, ]);
 
       });
   }

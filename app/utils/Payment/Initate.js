@@ -2,6 +2,7 @@ import * as Crypto from 'expo-crypto';
 import axios  from 'axios';
 import {EXPO_PUBLIC_MERCHANT_KEY ,EXPO_PUBLIC_MERCHANT_PASSWORD} from "@env"
 import { GetZipCode, getZipCode } from './helpers';
+import { Alert } from 'react-native';
 
 async function generateHash(orderDetails, merchantPass) {
     const { orderId, amount, currency, description } = orderDetails;
@@ -34,7 +35,7 @@ async function initiatePayment(orderDetails) {
  formData.append('payer_last_name', orderDetails.payerLastName);
  formData.append('payer_address', orderDetails.payerAddress);
  formData.append('payer_country', orderDetails.payerCountry);
- formData.append('payer_city',"fsfs");
+ formData.append('payer_city',orderDetails.payerCity);
  formData.append('payer_email', orderDetails.payerEmail);
  formData.append('payer_phone', orderDetails.payerPhone);
  formData.append('term_url_3ds', "https://njik.sa/"); 
@@ -48,8 +49,8 @@ async function initiatePayment(orderDetails) {
  const zipcode = await getZipCode()
 
  if (payerIp) {
-    formData.append('payer_ip', payerIp);
-    formData.append('payer_zip', zipcode);
+    formData.append('payer_ip', payerIp || "UNKOWN");
+    formData.append('payer_zip', zipcode || "UNKOWN");
     console.log("the ip is ",payerIp,zipcode)
  } else {
     console.error("Failed to fetch IP address");
@@ -79,6 +80,8 @@ async function initiatePayment(orderDetails) {
     return response.data;
  } catch (error) {
     console.error('Error initiating payment:', error);
+   //  Alert.alert("Error initate Data",error?.message, [ { text: "OK", }, ]);
+
     throw error;
  }
 }
@@ -117,7 +120,6 @@ async function fetchUserIP() {
        console.log("the cucfrent redpon ", responseData);
        return responseData;
    } catch (error) {
-      Alert.alert("Error Fetching Data", error.message, [ { text: "OK", }, ]);
       throw error; // Rethrow the error if you want to handle it in the calling code
    }
 };

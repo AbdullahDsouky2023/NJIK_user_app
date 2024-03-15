@@ -10,6 +10,7 @@ import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-a
 import { Dialog as PaperDialog } from 'react-native-paper';
 import { Colors, Sizes,Fonts } from '../../constant/styles';
 import AppText from '../../component/AppText';
+import { useSelector } from 'react-redux';
 
 const { width , height } = Dimensions.get('screen')
 export default function PaymentWebview({ route, navigation }) {
@@ -18,6 +19,8 @@ export default function PaymentWebview({ route, navigation }) {
     const handlePayOrder = route?.params?.handlePayOrderFun
     const [lastMessage, setLastMessage] = useState(null);
     const webViewRef = useRef(null)
+    const user = useSelector((state) => state?.user?.userData);
+
     const [currentOperationStatus,SetCurrentOperationStatus]=useState(null)
     const [orderStatusChecked, setOrderStatusChecked] = useState(false);
 const [showDialog,setShowDialog]=useState(false)
@@ -41,7 +44,7 @@ const [showDialog,setShowDialog]=useState(false)
             }
             else if(currentOperationStatus === "settled"){
             //   Alert.alert("the operation was declined man bad news")
-          
+            AddPaymentSuccessfull()
               Dialog.show({
                 type: ALERT_TYPE.SUCCESS,
                 title: 'عملية ناجحة 🎉🎉',
@@ -79,6 +82,20 @@ const [showDialog,setShowDialog]=useState(false)
         error: (...args) => consoleLog('error', args),
      };
   `;
+  const AddPaymentSuccessfull = async(data)=>{
+      try{
+        const response = await checkOrderStatus(orderId)
+        console.log("the response is ",response)
+        const res = await AddNewPaymentProcess({
+            ...response?.responseBody,
+            userId:user?.id
+        })
+        console.log("the ress res is ",res)
+        return res
+    }catch(err){
+
+    }
+  }
     const reloadWebView = () => {
         if (webViewRef.current) {
             webViewRef.current.reload();
