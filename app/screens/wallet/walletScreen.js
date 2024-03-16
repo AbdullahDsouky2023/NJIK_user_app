@@ -137,6 +137,7 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
   }
   const handleGenererateInitator = (amount) => {
     console.log("amount is ",amount)
+    setIsLoading(true)
     const orderAmmount = calculateTotalWithTax(Number(amount))
     const uniqueId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
@@ -174,7 +175,16 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
         console.error('Error genereation payment:', error)
         // Alert.alert("Error genereation ", JSON.stringify(orderDetails), [ { text: "OK", }, ]);
 
-      });
+      }).finally(()=>{
+
+        
+        setIsLoading(false)
+        
+      }
+        )
+      
+
+      ;
   }
   return(
     <Dialog.Container
@@ -200,14 +210,14 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
                 onChangeText={handleSetAmount}
                 style={styles.input}
               />
-           
+           <AppText text={CURRENCY} style={styles.currencyStyle}/>
             </View>
           </TouchableWithoutFeedback>
           
           <View style={styles.buttonsContainer}>
           <AppButton
             title={"Confirm"}
-            // disabled={!amount || amount < 10}
+            disabled={!amount || amount < 10}
             
             style={styles.button}
             onPress={()=>handleGenererateInitator(amount)}
@@ -280,10 +290,11 @@ const styles = StyleSheet.create({
   amountContainer: {
     paddingTop: 18,
     display: "flex",
+    paddingLeft:width*0.15,
     alignItems: "center",
     // justifyContent:'center',
     flexDirection: "row",
-    gap: 10,
+    gap: 20,
   },
   HeaderContainer: {
     display: "flex",
@@ -305,4 +316,10 @@ const styles = StyleSheet.create({
     // gap:5,
     justifyContent:'center'
   },
+  currencyStyle:{
+    color:Colors.primaryColor,
+    
+    fontSize:RFPercentage(2.5)
+    
+  }
 });
