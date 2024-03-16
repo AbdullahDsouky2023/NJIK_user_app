@@ -243,6 +243,7 @@ export default function OrderDetails({ navigation, route }) {
         <OrderImagesComponent orderImages={item?.attributes?.orderImages} />
         <OrderAddionalPricesComponent
           item={item}
+          handlePayOrder={handlePayOrder}
           handleGenererateInitator={handleGenererateInitator}
           handleRejectAddionalPrices={handleRejectAddionalPrices}
 
@@ -588,8 +589,9 @@ const OrderImagesComponent = memo(({ orderImages }) => {
   )
 })
 
-const OrderAddionalPricesComponent = memo(({ item, handleGenererateInitator, handleRejectAddionalPrices }) => {
+const OrderAddionalPricesComponent = memo(({ item, handleGenererateInitator, handlePayOrder,handleRejectAddionalPrices }) => {
   const { t}= useTranslation()
+  const navigation = useNavigation()
   const RenderCondition = (item?.attributes?.additional_prices?.data?.length > 0) || (item?.attributes?.provider_fee > 0)
   if(!RenderCondition) return
   return (
@@ -618,7 +620,14 @@ const OrderAddionalPricesComponent = memo(({ item, handleGenererateInitator, han
     {
       item?.attributes?.addtional_prices_state === 'pending' &&
       <View style={{ alignItems: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-        <AppButton title={"Accept and Pay"} onPress={() => handleGenererateInitator()} style={{ backgroundColor: Colors.success }} />
+        <AppButton title={"Accept and Pay"} onPress={() =>{
+          navigation.navigate("Payment",{
+            handleGenererateInitator,
+            handlePayOrder,
+            orderId:item?.id,
+            totalAmount:calculateTotalWithTax(item?.attributes?.totalPrice)
+          })
+        }} style={{ backgroundColor: Colors.success }} />
         <AppButton title={"Reject"} onPress={() => handleRejectAddionalPrices(item?.id)} style={{ backgroundColor: Colors.redColor }} />
       </View>
     }
