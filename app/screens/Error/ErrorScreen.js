@@ -17,8 +17,8 @@ export function ErrorScreen({hanleRetry}) {
         height:"100%",
         backgroundColor:Colors.whiteColor
     }}>
-        <AppText text={"مشكله في الشبكه"}/> 
-        <AppButton title={"اعادة المحاوله"} onPress={hanleRetry}/>
+        <AppText text={"مشكلة في الشبكة"}/> 
+        <AppButton title={"إعادة المحاولة"} onPress={hanleRetry}/>
       </View>
           </View>
     )

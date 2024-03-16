@@ -275,6 +275,7 @@ const styles = StyleSheet.create({
     // marginTop: -10,
     fontSize: RFPercentage(2.8),
     borderColor: Colors.primaryColor,
+    textAlign:'center'
   },
   amountContainer: {
     paddingTop: 18,

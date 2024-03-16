@@ -46,7 +46,7 @@ const MAX_RETRIES = 5
   const validationSchema = yup.object().shape({
     message: yup
       .string()
-      // .required(t("Full name is required"))
+      .required(("هذا الحقل مطلوب"))
       .min(10, "الشكوي  المدخله قصيره جدا")
       .max(500, "الشكوي  المدخله طويله جدا"),
   });
@@ -181,7 +181,7 @@ const MAX_RETRIES = 5
               initialValues={{
                 fullName: "",
                 emailAddress: "",
-                location: "",
+                message: "",
                 images: [],
               }}
               onSubmit={(data) => handleFormSubmit(data)}
@@ -218,7 +218,7 @@ const MAX_RETRIES = 5
 
               <FormImagePicker name="images" width={width} />
 
-              <SubmitButton title="Confirm" />
+              <SubmitButton title="Confirm"  />
             </AppForm>
           </View>
         </ScrollView>

@@ -35,6 +35,8 @@ const [showDialog,setShowDialog]=useState(false)
         if (currentOperationStatus !== null) {
             if(currentOperationStatus === "decline"){
             //   Alert.alert("the operation was declined man bad news")
+            // reloadWebView()
+            console.log("declined operatoin1")
             AddPaymentSuccessfull()
               Dialog.show({
                 type: ALERT_TYPE.DANGER,
@@ -89,7 +91,7 @@ const [showDialog,setShowDialog]=useState(false)
         const response = await checkOrderStatus(orderId)
         console.log("Data passed to AddNewPaymentProcess:", {
             ...response?.responseBody,
-            userId: user?.id
+            userId:`user_${user?.id}`
         });
         const res = await AddNewPaymentProcess(
          response?.responseBody,
@@ -141,6 +143,7 @@ const [showDialog,setShowDialog]=useState(false)
                     const ErrorMessage = jsonObject?.errors[0]?.error_message
                     if (ErrorMessage) {
                         reloadWebView()
+                        console.log("declined operatoin2")
 
                         Dialog.show({
                             type: ALERT_TYPE.DANGER,
@@ -194,7 +197,7 @@ try {
                     startInLoadingState={true}
                     onNavigationStateChange={async (navState) => {
                         try {
-                            console.log("the current url of the page is:", navState.url);
+                            console.log("the current url of the page is22:", navState.url);
 
                             if (navState?.url.includes("https://pay.expresspay.sa/interaction/")) {
 

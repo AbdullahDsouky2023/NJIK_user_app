@@ -121,13 +121,13 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
                                 setIsLoading(false)
                             }, 1000);
                         }else if(currentPaymentMethodIndex === 2){
-                            if(totalAmount <= user?.wallet_amount){
-                                updateState({ showSuccessDialog: true })
-                                console.log(totalAmount >=user?.wallet_amount)
+                            if(user?.wallet_amount >= totalAmount  ){
                                 
-                            }else {
                                 handlePayOrder()
                                 handlePayWithWallet(totalAmount)
+                            }else {
+                                updateState({ showSuccessDialog: true })
+                                console.log(totalAmount >=user?.wallet_amount)
                             }
                         
                         }
