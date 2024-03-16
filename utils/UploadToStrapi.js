@@ -14,6 +14,9 @@ export const uploadToStrapi = async (image, strapi_upload_url) => {
   const response = await fetch(`${strapi_upload_url}/api/upload`, {
     method: "POST",
     body: formData,
+    headers:{
+      Authorization:'123456'
+    }
   });
 
   if (!response.ok) {

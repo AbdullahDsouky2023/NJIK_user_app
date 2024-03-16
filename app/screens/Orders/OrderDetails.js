@@ -544,7 +544,7 @@ const LocationAndNotesComponent = memo(({ location, description }) => {
 
 
 const OrderImagesComponent = memo(({ orderImages }) => {
-  if (!orderImages) return
+  if (orderImages?.length === 0) return
   return (
     <View style={styles.descriptionContainer}>
       <>
