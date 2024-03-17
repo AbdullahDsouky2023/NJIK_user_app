@@ -127,7 +127,7 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
                                 handlePayWithWallet(totalAmount)
                             }else {
                                 updateState({ showSuccessDialog: true })
-                                console.log(totalAmount >=user?.wallet_amount)
+                                console.log(totalAmount,user?.wallet_amount)
                             }
                         
                         }

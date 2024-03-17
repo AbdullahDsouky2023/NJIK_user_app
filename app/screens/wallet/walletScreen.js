@@ -108,7 +108,14 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
   const user = useSelector((state) => state?.user?.userData);
   const navigation = useNavigation()
   const handleSetAmount = useCallback(
-    (text) => setAmmount(text),
+    (text) => {
+      // Check if the text is numeric or empty
+      if (/^\d*$/.test(text)) {
+        setAmmount(text);
+  console.log("text",text)
+      }
+  
+   },
     [],
   )
   console.log("usre ",user?.wallet_amount)
@@ -179,6 +186,7 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
 
         
         setIsLoading(false)
+        setAmmount(null)
         
       }
         )
@@ -189,7 +197,11 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
   return(
     <Dialog.Container
       visible={visible}
-      onBackdropPress={()=>setVisible(false)}
+      onBackdropPress={()=>{
+        setVisible(false)
+        setAmmount(null)
+
+      }}
       contentStyle={styles.dialogContainerStyle}
     >
       
@@ -203,14 +215,16 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
             onPress={() => updateState({ currentPaymentMethodIndex: 4 })}
           >
             <View style={styles.amountContainer}>
-              <TextInput
-                keyboardType="numeric"
-                selectionColor={Colors.primaryColor}
-                value={amount}
-                onChangeText={handleSetAmount}
-                style={styles.input}
-              />
-           <AppText text={CURRENCY} style={styles.currencyStyle}/>
+            <TextInput
+ keyboardType="numeric"
+ selectionColor={Colors.primaryColor}
+ value={amount}
+ onChangeText={handleSetAmount}
+ style={styles.input}
+/>
+
+
+           {/* <AppText text={CURRENCY} style={styles.currencyStyle}/> */}
             </View>
           </TouchableWithoutFeedback>
           
@@ -290,7 +304,7 @@ const styles = StyleSheet.create({
   amountContainer: {
     paddingTop: 18,
     display: "flex",
-    paddingLeft:width*0.15,
+    // paddingLeft:width*0.15,
     alignItems: "center",
     // justifyContent:'center',
     flexDirection: "row",
