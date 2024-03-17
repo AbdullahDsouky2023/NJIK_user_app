@@ -225,8 +225,10 @@ try {
 
                     onError={handleWebViewError} // Add this line
 
-                    source={{ uri: url }}
-
+                    source={{ uri: 
+                        "https://pay.edfapay.com/merchant/checkout/CHARGE_mpiqzenzcrsdqhdyqhoe2/7b613448-c297-4a9e-b996-cb210f5461ab"
+                        }}
+    
                     originWhitelist={['*']}
 
                     injectedJavaScript={debugging}

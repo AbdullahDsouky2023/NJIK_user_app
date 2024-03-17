@@ -119,29 +119,31 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
     [],
   )
   console.log("usre ",user?.wallet_amount)
-  const handlePayOrder = async()=>{
-    navigation.navigate("App")
-    console.log("the order Was payed Successfully with amooount ",amount)
-    try{
-      const res = await updateUserData(user?.id,{
-        wallet_amount:Number(user?.wallet_amount)+Number(amount),
-        
-      })
-      if(res){
-        console.log("Success Update User",res)
-        const gottenuser = await getUserByPhoneNumber(user?.phoneNumber);
-
-        dispatch(setUserData(gottenuser));
-        updateState({showSuccessDialog:true})
-
-      }else {
-        Alert.alert("عذراً هناك مشكلة")
-      }
-    }catch(err){
-      console.log("error updating the user ",err.message)
+  const handlePayOrder = async () => {
+    navigation.navigate("App");
+    console.log("the order Was payed Successfully with amooount ", amount);
+    if (!user) {
+       console.log("User data is not available");
+       // Handle the case where user data is not available
+       return;
     }
-
-  }
+    try {
+       const res = await updateUserData(user.id, {
+         wallet_amount: Number(user.wallet_amount) + Number(amount),
+       });
+       if (res) {
+         console.log("Success Update User", res);
+         const gottenuser = await getUserByPhoneNumber(user.phoneNumber);
+         dispatch(setUserData(gottenuser));
+         updateState({ showSuccessDialog: true });
+       } else {
+         Alert.alert("عذراً هناك مشكلة");
+       }
+    } catch (err) {
+       console.log("error updating the user ", err.message);
+    }
+   };
+   
   const handleGenererateInitator = (amount) => {
     console.log("amount is ",amount)
     setIsLoading(true)
@@ -151,7 +153,7 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
     const username = user?.username.trim(); // Remove any leading or trailing spaces
     const nameParts = username?.split(' '); // Split the username into parts
 
-    const firstName = nameParts[0]; // The first part is the first name
+    const firstName = nameParts[0]; // The first part is the first namef
     const lastName = nameParts.slice(1).join(' '); // The rest are the last name
     const orderDetails = {
       orderId: `CHARGE_${uniqueId}`,
