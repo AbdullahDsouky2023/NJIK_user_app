@@ -61,6 +61,12 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow App to use your location"
         }
+      ],
+      [
+        "expo-updates",
+        {
+          "username": "abdullah_dsouky"
+        }
       ]
     ],
     "runtimeVersion": {
