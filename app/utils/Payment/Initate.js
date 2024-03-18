@@ -1,6 +1,6 @@
 import * as Crypto from 'expo-crypto';
 import axios  from 'axios';
-import {EXPO_PUBLIC_MERCHANT_KEY ,EXPO_PUBLIC_MERCHANT_PASSWORD} from "@env"
+import {EXPO_PUBLIC_MERCHANT_KEY ,EXPO_PUBLIC_MERCHANT_PASSWORD,EXPO_PUBLIC_PAYMENT_ENDPOINT} from "@env"
 import { GetZipCode, getZipCode } from './helpers';
 import { Alert } from 'react-native';
 
@@ -23,7 +23,7 @@ async function generateHash(orderDetails, merchantPass) {
     return sha1Hash;
    }
 async function initiatePayment(orderDetails) {
- const paymentUrl = 'https://api.edfapay.com/payment/initiate';
+ const paymentUrl = `${EXPO_PUBLIC_PAYMENT_ENDPOINT}/initiate`;
  const formData = new FormData();
  formData.append('action', 'SALE');
  formData.append('edfa_merchant_id', EXPO_PUBLIC_MERCHANT_KEY); // Replace with your actual merchant ID
@@ -32,12 +32,12 @@ async function initiatePayment(orderDetails) {
  formData.append('order_currency', orderDetails.currency);
  formData.append('order_description', orderDetails.description);
  formData.append('payer_first_name', orderDetails.payerFirstName);
- formData.append('payer_last_name', orderDetails.payerLastName);
- formData.append('payer_address', orderDetails.payerAddress);
- formData.append('payer_country', orderDetails.payerCountry);
- formData.append('payer_city',orderDetails.payerCity);
- formData.append('payer_email', orderDetails.payerEmail);
- formData.append('payer_phone', orderDetails.payerPhone);
+ formData.append('payer_last_name', orderDetails.payerLastName || "user");
+ formData.append('payer_address', orderDetails.payerAddress || "NOT PROVIDED");
+ formData.append('payer_country', orderDetails.payerCountry || "UNKNOWN");
+ formData.append('payer_city',orderDetails.payerCity || "UNKOWN");
+ formData.append('payer_email', orderDetails.payerEmail || "UNKOWN");
+ formData.append('payer_phone', orderDetails.payerPhone || "UNKNOW");
  formData.append('term_url_3ds', "https://njik.sa/"); 
  formData.append("merchant_success_url","?success")
  formData.append( "merchant_failure_url", "?status=failure")
@@ -82,7 +82,7 @@ async function initiatePayment(orderDetails) {
    order_currency: orderDetails.currency,
    order_description: orderDetails.description,
    payer_first_name: orderDetails.payerFirstName,
-   payer_last_name: orderDetails.payerLastName,
+   payer_last_name: orderDetails.payerLastName ,
    payer_address: orderDetails.payerAddress,
    payer_country: orderDetails.payerCountry,
    payer_city: orderDetails.payerCity,
@@ -109,16 +109,21 @@ async function initiatePayment(orderDetails) {
        // The server responded with a status code that falls out of the range of 2xx
       //  console.error('Server responded with an error:', error.response.data);
        // Display the error message from the server along with the config data
-       Alert.alert("Error initiating payment",`${ JSON.stringify(error.response.data)} ${JSON.stringify(config?.data)}${JSON.stringify(formData)}`, [{ text: "OK", }]);
+       Alert.alert("هناك مشكلة حاول مرة أخري")
+      //  Alert.alert("Error initiating payment",`${ JSON.stringify(error.response.data)} ${JSON.stringify(config?.data)}`, [{ text: "OK", }]);
    } else if (error.request) {
        // The request was made but no response was received
        console.error('No response received:', error.request);
-       Alert.alert("Error initiating payment", "No response received from the server", [{ text: "OK", }]);
+       Alert.alert("هناك مشكلة حاول مرة أخري")
+
+      //  Alert.alert("Error initiating payment", "No response received from the server", [{ text: "OK", }]);
       //  console.log("Request config:", config); // Log the config for debugging
    } else {
        // Something happened in setting up the request that triggered an Error
        console.error('Error', error.message);
-       Alert.alert("Error initiating payment", error.message, [{ text: "OK", }]);
+       Alert.alert("هناك مشكلة حاول مرة أخري")
+
+      //  Alert.alert("Error initiating payment", error.message, [{ text: "OK", }]);
       //  console.log("Request config:", config); // Log the config for debugging
    }
    throw error;
@@ -136,7 +141,7 @@ async function fetchUserIP() {
    }
   }
  export  const checkOrderStatus = async (orderID) => {
-   const url = 'https://api.edfapay.com/payment/status';
+   const url = `${EXPO_PUBLIC_PAYMENT_ENDPOINT}/status`;
    const data = {
        order_id: orderID,
        merchant_id: EXPO_PUBLIC_MERCHANT_KEY
