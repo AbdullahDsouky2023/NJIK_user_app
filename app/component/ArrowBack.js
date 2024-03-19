@@ -9,7 +9,7 @@ export default function ArrowBack({ back }) {
   const handlePress = () => {
     if (back) {
       // Handle custom back action if provided
-      back();
+     navigation.navigate(back)
     } else if (navigation.canGoBack()) {
       // Navigate back if possible
       navigation.goBack();

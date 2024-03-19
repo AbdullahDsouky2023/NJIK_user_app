@@ -95,7 +95,7 @@ const [showDialog,setShowDialog]=useState(false)
         });
         const res = await AddNewPaymentProcess(
          response?.responseBody,
-         user?.id?.toString()
+         `user_${user?.id}`
                  );
         console.log("Result of AddNewPaymentProcess:", res);
         if(res){

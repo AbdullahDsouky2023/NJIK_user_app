@@ -126,9 +126,8 @@ export default function StarsComponent({ route }) {
             {
               text: "قيم الآن",
               onPress: () => {
-                Linking.openURL(
-                  "https://play.google.com/store/apps/details?id=your.app.id"
-                );
+                const appId= "com.NijkDevelopment.Nijk"
+                Linking.openURL(`https://play.google.com/store/apps/details?id=${appId}`)
               },
             },
             {
