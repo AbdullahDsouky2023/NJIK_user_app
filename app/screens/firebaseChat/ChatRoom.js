@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { collection, addDoc, onSnapshot, } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, doc, setDoc, getDoc, } from 'firebase/firestore';
 import { auth, db } from '../../../firebaseConfig';
 import { GiftedChat, Send, Actions, MessageImage } from 'react-native-gifted-chat';
 import { Colors } from '../../constant/styles';
@@ -20,12 +20,13 @@ import LoadingScreen from '../loading/LoadingScreen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { ActivityIndicator } from 'react-native-paper';
 import AppText from '../../component/AppText';
+import useNotifications from '../../../utils/notifications';
 // import LoadingScreen from '../loading/LoadingScreen';
 // import LoadingScreen from '../../screens/loading/LoadingScreen';
 
 const { height, width } = Dimensions.get('screen');
 
-const ChatRoom = () => {
+const ChatRoom = ({route}) => {
 
   const currentChannelName = useSelector((state) => state?.orders?.currentChatChannel);
   const { t } = useTranslation();
@@ -37,7 +38,7 @@ const ChatRoom = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [recording, setCurrentISRecording] = useState(false);
   const MAX_RETRIES =  5; // Maximum number of upload attempts
-
+  const {sendPushNotification,token}= useNotifications()
   const userId = user?.id
 
 
@@ -98,6 +99,24 @@ const ChatRoom = () => {
 
   }, [CurrentChatRoom])
 
+  //update precence 
+  const updateProviderPresence = async (chatRoomId, userId, isPresent) => {
+    const presenceRef = doc(db, `chatRooms/${chatRoomId}/users/${userId}`);
+    await setDoc(presenceRef, { isPresent }, { merge: true });
+   };
+   
+   // Call this function when the provider enters a chat room
+  useEffect(()=>{
+    if(CurrentChatRoom){
+
+      updateProviderPresence(CurrentChatRoom[0]?._id, userId ||  ExtractUserID(currentChannelName) , true);
+      console.log("the user is online ")
+      return()=>{
+        updateProviderPresence(CurrentChatRoom[0]?._id, userId ||  ExtractUserID(currentChannelName), false);
+        console.log("the user is offline ")
+      }
+    }
+  },[CurrentChatRoom])
   const onSend = async (newMessagesArray = []) => {
     // Handle image messages
 
@@ -134,20 +153,6 @@ const ChatRoom = () => {
         const uploadedMessages = await Promise.all(promises);
         setMessages((prevMessages) => GiftedChat.append(prevMessages, uploadedMessages));
 
-        // const newMessage = {
-        //   _id: Math.random().toString(), // Generate a unique ID
-        //   text: null, // No text for image messages
-        //   createdAt: new Date(), // Current date and time
-        //   image: "",
-        //   user: {
-        //     _id: userId, // The ID of the current user
-        //   },
-        // };
-
-        // // Append the new message to the messages array
-        // setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessage));
-        // Send image messages to Firestore
-        // setMessages(prevMessages => GiftedChat.append(prevMessages, uploadedMessages));
         uploadedMessages.forEach(async (message) => {
           await addMessageToFirestore(message);
         });
@@ -173,7 +178,7 @@ const ChatRoom = () => {
 
         // Save the new message to Firestore
         await addMessageToFirestore(newMessage);
-        // setMessages(prevMessages => GiftedChat.append(prevMessages, [newMessage]));
+
       }
     } catch (err) {
       console.log(err);
@@ -273,6 +278,27 @@ const ChatRoom = () => {
       ...message,
       createdAt: new Date(),
     });
+    try {
+      const providerId = ExractProviderId(currentChannelName)
+      const providerPresenceRef = doc(db, `chatRooms/${CurrentChatRoom[0]?._id}/users/${providerId}`);
+      console.log("Attempting to get document at path:",user?.username);
+      const providerDoc = await getDoc(providerPresenceRef);
+      if (providerDoc.exists()) {
+        if(!providerDoc?.data()?.isPresent){
+
+          const providerToken = route?.params?.item?.attributes?.provider?.data?.attributes?.expoPushNotificationToken
+          sendPushNotification(providerToken,"رسالة جديدة 📩",`لديك رسالة جديدة من ${user?.username} 📩`)
+          console.log("Provider document exists:", providerDoc.data());
+        }
+        } else {
+          console.log("Provider document does not exist.");
+      }
+     } catch (error) {
+      console.error("Error getting provider document:", error);
+     }
+     
+
+
   };
   // Add this function inside your ChatRoom component
   const handleImageSelected = async (imageUri) => {
@@ -594,3 +620,14 @@ const ExtractUserID = (currentChannelName)=>{
    console.log("User ID not found");
   }
 }
+const ExractProviderId = (chatRoom)=>{
+  const providerIdMatch = chatRoom.match(/provider_(\d+)/);
+  
+  if (providerIdMatch && providerIdMatch[1]) {
+   const providerId = providerIdMatch[1]; // This will be the string "43"
+   return providerId
+  } else {
+   console.log("Provider ID not found");
+  }
+  
+  }

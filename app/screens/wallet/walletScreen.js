@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from "react-native";
-import React, { useState ,memo,useCallback} from "react";
+import React, { useState, memo, useCallback } from "react";
 import { Colors, Sizes } from "../../constant/styles";
 import { StyleSheet } from "react-native";
 import AppText from "../../component/AppText";
@@ -35,8 +35,8 @@ import SuccessModel from "../../component/SuccessModal";
 
 const { width } = Dimensions.get("screen");
 export default function WalletScreen() {
-  const { t} = useTranslation()
-  const [loading,setIsLoading]= useState(false)
+  const { t } = useTranslation()
+  const [loading, setIsLoading] = useState(false)
   const [state, setState] = useState({
     currentPaymentMethodIndex: 1,
     showSuccessDialog: false,
@@ -48,8 +48,8 @@ export default function WalletScreen() {
   const [amount, setAmmount] = useState(0);
   const updateState = (data) => setState((state) => ({ ...state, ...data }))
   const { currentPaymentMethodIndex, showSuccessDialog } = state;
-  
-    return (
+
+  return (
     <View style={styles.container}>
       <ArrowBack subPage={true} />
       <ScrollView>
@@ -74,14 +74,28 @@ export default function WalletScreen() {
             updateState={updateState}
             currentPaymentMethodIndex={currentPaymentMethodIndex}
           />
-         
+          <PaymentMethod
+            icon={require("../../assets/images/payment_icon/card.png")}
+            paymentType="Card"
+            index={2}
+            updateState={updateState}
+            currentPaymentMethodIndex={currentPaymentMethodIndex}
+          />
+          <PaymentMethod
+            icon={require("../../assets/images/payment_icon/card.png")}
+            paymentType="Card"
+            index={3}
+            updateState={updateState}
+            currentPaymentMethodIndex={currentPaymentMethodIndex}
+          />
+
           <AppButton
             title={"Confirm"}
-            disabled={!(currentPaymentMethodIndex===1)}
-            
+            disabled={!(currentPaymentMethodIndex === 1 || 2 || 3)}
+
             // style={styles.button}
-            onPress={()=>setShowModalVisible(true)}
-            // textStyle={{ color: Colors.whiteColor }}
+            onPress={() => setShowModalVisible(true)}
+          // textStyle={{ color: Colors.whiteColor }}
           />
 
         </View>
@@ -92,8 +106,8 @@ export default function WalletScreen() {
           setVisible={setShowModalVisible}
           setIsLoading={setIsLoading}
         />
-        <LoadingModal visible={loading}/>
-        <SuccessModel visible={showSuccessDialog} onPress={()=>updateState({showSuccessDialog:false})}/>
+        <LoadingModal visible={loading} />
+        <SuccessModel visible={showSuccessDialog} onPress={() => updateState({ showSuccessDialog: false })} />
       </ScrollView>
     </View>
   );
@@ -101,9 +115,9 @@ export default function WalletScreen() {
 
 
 
-const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updateState})=>{
-  const  { t } = useTranslation()
-  const [amount,setAmmount]=useState(null)
+const HandleGetAmountComponentModal = memo(({ visible, setVisible, setIsLoading, updateState }) => {
+  const { t } = useTranslation()
+  const [amount, setAmmount] = useState(null)
   const dispatch = useDispatch()
   const user = useSelector((state) => state?.user?.userData);
   const navigation = useNavigation()
@@ -112,40 +126,40 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
       // Check if the text is numeric or empty
       if (/^\d*$/.test(text)) {
         setAmmount(text);
-  console.log("text",text)
+        console.log("text", text)
       }
-  
-   },
+
+    },
     [],
   )
-  console.log("usre ",user?.wallet_amount)
+  console.log("usre ", user?.wallet_amount)
   const handlePayOrder = async () => {
     navigation.navigate("App");
     console.log("the order Was payed Successfully with amooount ", amount);
     if (!user) {
-       console.log("User data is not available");
-       // Handle the case where user data is not available
-       return;
+      console.log("User data is not available");
+      // Handle the case where user data is not available
+      return;
     }
     try {
-       const res = await updateUserData(user.id, {
-         wallet_amount: Number(user.wallet_amount) + Number(amount),
-       });
-       if (res) {
-         console.log("Success Update User", res);
-         const gottenuser = await getUserByPhoneNumber(user.phoneNumber);
-         dispatch(setUserData(gottenuser));
-         updateState({ showSuccessDialog: true });
-       } else {
-         Alert.alert("عذراً هناك مشكلة");
-       }
+      const res = await updateUserData(user.id, {
+        wallet_amount: Number(user.wallet_amount) + Number(amount),
+      });
+      if (res) {
+        console.log("Success Update User", res);
+        const gottenuser = await getUserByPhoneNumber(user.phoneNumber);
+        dispatch(setUserData(gottenuser));
+        updateState({ showSuccessDialog: true });
+      } else {
+        Alert.alert("عذراً هناك مشكلة");
+      }
     } catch (err) {
-       console.log("error updating the user ", err.message);
+      console.log("error updating the user ", err.message);
     }
-   };
-   
+  };
+
   const handleGenererateInitator = (amount) => {
-    console.log("amount is ",amount)
+    console.log("amount is ", amount)
     setIsLoading(true)
     const orderAmmount = calculateTotalWithTax(Number(amount))
     const uniqueId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -184,63 +198,63 @@ const HandleGetAmountComponentModal=memo(({visible,setVisible,setIsLoading,updat
         console.error('Error genereation payment:', error)
         // Alert.alert("Error genereation ", JSON.stringify(orderDetails), [ { text: "OK", }, ]);
 
-      }).finally(()=>{
+      }).finally(() => {
 
-        
+
         setIsLoading(false)
         setAmmount(null)
-        
+
       }
-        )
-      
+      )
+
 
       ;
   }
-  return(
+  return (
     <Dialog.Container
       visible={visible}
-      onBackdropPress={()=>{
+      onBackdropPress={() => {
         setVisible(false)
         setAmmount(null)
 
       }}
       contentStyle={styles.dialogContainerStyle}
     >
-      
+
       <AppText
         text={"Enter Amount"}
         centered={true}
         style={styles.amountText}
       />
-    <TouchableWithoutFeedback
-            index={4}
-            onPress={() => updateState({ currentPaymentMethodIndex: 4 })}
-          >
-            <View style={styles.amountContainer}>
-            <TextInput
- keyboardType="numeric"
- selectionColor={Colors.primaryColor}
- value={amount}
- onChangeText={handleSetAmount}
- style={styles.input}
-/>
-
-
-           {/* <AppText text={CURRENCY} style={styles.currencyStyle}/> */}
-            </View>
-          </TouchableWithoutFeedback>
-          
-          <View style={styles.buttonsContainer}>
-          <AppButton
-            title={"Confirm"}
-            disabled={!amount || amount < 10}
-            
-            style={styles.button}
-            onPress={()=>handleGenererateInitator(amount)}
+      <TouchableWithoutFeedback
+        index={4}
+        onPress={() => updateState({ currentPaymentMethodIndex: 4 })}
+      >
+        <View style={styles.amountContainer}>
+          <TextInput
+            keyboardType="numeric"
+            selectionColor={Colors.primaryColor}
+            value={amount}
+            onChangeText={handleSetAmount}
+            style={styles.input}
           />
-          
-          </View>
-                </Dialog.Container>
+
+
+          {/* <AppText text={CURRENCY} style={styles.currencyStyle}/> */}
+        </View>
+      </TouchableWithoutFeedback>
+
+      <View style={styles.buttonsContainer}>
+        <AppButton
+          title={"Confirm"}
+          disabled={!amount || amount < 10}
+
+          style={styles.button}
+          onPress={() => handleGenererateInitator(amount)}
+        />
+
+      </View>
+    </Dialog.Container>
   )
 })
 const styles = StyleSheet.create({
@@ -254,14 +268,14 @@ const styles = StyleSheet.create({
   },
   amount: {
     color: Colors.primaryColor,
-    fontSize:RFPercentage(2.3)
+    fontSize: RFPercentage(2.3)
   },
   wrapper: {
     display: "flex",
     alignItems: "center",
     marginTop: 19,
     width: width * 0.9,
-    gap:6,
+    gap: 6,
     marginHorizontal: width * 0.05,
     borderRadius: 15,
     paddingVertical: 10,
@@ -269,10 +283,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.piege,
   },
   button: {
-    width:width*0.3
+    width: width * 0.3
   },
-  CloseButton:{
-    backgroundColor:'red'
+  CloseButton: {
+    backgroundColor: 'red'
   },
   buttonsContainer: {
     display: "flex",
@@ -289,19 +303,19 @@ const styles = StyleSheet.create({
   amountText: {
     paddingHorizontal: 10,
     color: Colors.blackColor,
-    fontSize:RFPercentage(2.5)
+    fontSize: RFPercentage(2.5)
     // paddingTop:10
   },
   input: {
     color: "red",
     borderWidth: 2,
-    borderRadius:10,
-    paddingVertical:10,
+    borderRadius: 10,
+    paddingVertical: 10,
     paddingHorizontal: 30,
     // marginTop: -10,
     fontSize: RFPercentage(2.8),
     borderColor: Colors.primaryColor,
-    textAlign:'center'
+    textAlign: 'center'
   },
   amountContainer: {
     paddingTop: 18,
@@ -325,17 +339,17 @@ const styles = StyleSheet.create({
   },
   dialogContainerStyle: {
     borderRadius: Sizes.fixPadding,
-    width:width*0.9,
+    width: width * 0.9,
     // paddingBottom: Sizes.fixPadding * 3.0,
-    display:'flex',
-    alignItems:'center',
+    display: 'flex',
+    alignItems: 'center',
     // gap:5,
-    justifyContent:'center'
+    justifyContent: 'center'
   },
-  currencyStyle:{
-    color:Colors.primaryColor,
-    
-    fontSize:RFPercentage(2.5)
-    
+  currencyStyle: {
+    color: Colors.primaryColor,
+
+    fontSize: RFPercentage(2.5)
+
   }
 });

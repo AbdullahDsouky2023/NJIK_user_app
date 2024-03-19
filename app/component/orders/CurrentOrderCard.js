@@ -142,7 +142,9 @@ function CurrentOrderCard({ item, onPress }) {
                     setcurrentChatChannel(item?.attributes?.chat_channel_id)
                   );
 
-                  navigation.navigate(CHAT_ROOM_fireBase);
+                  navigation.navigate(CHAT_ROOM_fireBase,{
+                    item:item,
+                  });
                 }}
               >
                 <Entypo name="chat" size={22} color="white" />
