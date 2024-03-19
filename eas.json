@@ -19,14 +19,13 @@
         "EXPO_PUBLIC_MERCHANT_PASSWORD": "00d005e3da5931bfe64178bf36018a60",
         "EXPO_PUBLIC_AUTH_SECRECT": "005e3da5931bNIJK_DEVELOPMENT7b613448cb210f5461ab",
         "EXPO_PUBLIC_PAYMENT_ENDPOINT": "https://api.edfapay.com/payment",
-
-        "EXPO_PUBLIC_FIREBASE_APIKEY"  :"AIzaSyCkFySoGyh-fH1ir8OZxbnmO33VEWg10Dk",
-        "EXPO_PUBLIC_FIREBASE_AUTHDOMAIN"  :"home-services-user-b9504.firebaseapp.com",
-        "EXPO_PUBLIC_FIREBASE_PROJECTID"  :"home-services-user-b9504",
-        "EXPO_PUBLIC_FIREBASE_STORAGEBUCKET":  "home-services-user-b9504.appspot.com",
-        "EXPO_PUBLIC_FIREBASE_MESSAGINGSENDERID":  "886597742556",
-        "EXPO_PUBLIC_FIREBASE_APPId" : "1:886597742556:web:869a9f71557314fd722919"
-     },
+        "EXPO_PUBLIC_FIREBASE_APIKEY": "AIzaSyCkFySoGyh-fH1ir8OZxbnmO33VEWg10Dk",
+        "EXPO_PUBLIC_FIREBASE_AUTHDOMAIN": "home-services-user-b9504.firebaseapp.com",
+        "EXPO_PUBLIC_FIREBASE_PROJECTID": "home-services-user-b9504",
+        "EXPO_PUBLIC_FIREBASE_STORAGEBUCKET": "home-services-user-b9504.appspot.com",
+        "EXPO_PUBLIC_FIREBASE_MESSAGINGSENDERID": "886597742556",
+        "EXPO_PUBLIC_FIREBASE_APPId": "1:886597742556:web:869a9f71557314fd722919"
+      },
       "channel": "preview12"
     },
     "preview2": {
@@ -43,14 +42,14 @@
         "EXPO_PUBLIC_MERCHANT_PASSWORD": "00d005e3da5931bfe64178bf36018a60",
         "EXPO_PUBLIC_AUTH_SECRECT": "005e3da5931bNIJK_DEVELOPMENT7b613448cb210f5461ab",
         "EXPO_PUBLIC_PAYMENT_ENDPOINT": "https://api.edfapay.com/payment",
-        "EXPO_PUBLIC_FIREBASE_APIKEY"  :"AIzaSyCkFySoGyh-fH1ir8OZxbnmO33VEWg10Dk",
-        "EXPO_PUBLIC_FIREBASE_AUTHDOMAIN"  :"home-services-user-b9504.firebaseapp.com",
-        "EXPO_PUBLIC_FIREBASE_PROJECTID"  :"home-services-user-b9504",
-        "EXPO_PUBLIC_FIREBASE_STORAGEBUCKET":  "home-services-user-b9504.appspot.com",
-        "EXPO_PUBLIC_FIREBASE_MESSAGINGSENDERID":  "886597742556",
-        "EXPO_PUBLIC_FIREBASE_APPId" : "1:886597742556:web:869a9f71557314fd722919"
+        "EXPO_PUBLIC_FIREBASE_APIKEY": "AIzaSyCkFySoGyh-fH1ir8OZxbnmO33VEWg10Dk",
+        "EXPO_PUBLIC_FIREBASE_AUTHDOMAIN": "home-services-user-b9504.firebaseapp.com",
+        "EXPO_PUBLIC_FIREBASE_PROJECTID": "home-services-user-b9504",
+        "EXPO_PUBLIC_FIREBASE_STORAGEBUCKET": "home-services-user-b9504.appspot.com",
+        "EXPO_PUBLIC_FIREBASE_MESSAGINGSENDERID": "886597742556",
+        "EXPO_PUBLIC_FIREBASE_APPId": "1:886597742556:web:869a9f71557314fd722919"
       },
-      "channel": "preview12"
+      "channel": "preview2"
     },
     "preview": {
       "distribution": "internal",
