@@ -69,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
   
     const ListHeaderComponent = React.memo(()=>
     <View >
-      {/* <OffersBanner /> */}
+      <OffersBanner />
       <ServicesList />
       <CurrentOffersScreen/> 
     </View>
