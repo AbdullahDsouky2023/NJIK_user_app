@@ -59,14 +59,7 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
         await Updates.reloadAsync();
       }
       const data = await postOrder(currentOrderData);
-      if (currentOrderData?.coupons?.connect[0]?.id) {
-        await updateUserData(userData?.id, {
-          coupons: {
-            connect: [{ id: currentOrderData?.coupons?.connect[0]?.id }],
-          },
-          
-        });
-      }
+      
       if (data) {
         dispatch(clearCurrentOrder());
         dispatch(clearCart());
@@ -88,6 +81,18 @@ export default function OrderComfirmDetailsScreen({ navigation, route }) {
             });
              
         }
+        }
+        if (currentOrderData?.coupons?.connect[0]?.id) {
+          await updateUserData(userData?.id, {
+            coupons: {
+              connect: [{ id: currentOrderData?.coupons?.connect[0]?.id }],
+            },
+          });
+            await updateOrderData(data, {
+              coupons: {
+                connect: [{ id: currentOrderData?.coupons?.connect[0]?.id }],
+              }
+          });
         }
           navigation.dispatch(
             CommonActions.reset({

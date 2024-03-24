@@ -92,10 +92,13 @@ const OfferItem = memo(({item})=>{
   return (
     <TouchableWithoutFeedback
                 onPress={() => {
-                  navigation.navigate(ITEM_DETAILS, {
-                    item: ItemData,
-                  });
-                }}
+                  if(ItemData){
+
+                    navigation.navigate(ITEM_DETAILS, {
+                      item: ItemData,
+                    });
+                  }}
+                }
               >
                 <Image
                   source={{
@@ -214,6 +217,6 @@ const styles = StyleSheet.create({
     height:height*0.133,
     width: width * 0.9,
     borderRadius: 15,
-    objectFit: "contain",
+    objectFit: "fill",
   },
 });

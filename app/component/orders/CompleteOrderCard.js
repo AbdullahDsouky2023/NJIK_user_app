@@ -10,7 +10,7 @@ import {
 import { Entypo, Octicons } from "@expo/vector-icons";
 import { RFPercentage } from 'react-native-responsive-fontsize'
 
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect,useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Colors } from "../../constant/styles";
@@ -24,10 +24,32 @@ import { useDispatch } from "react-redux";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 import { useTranslation } from "react-i18next";
 import Pdf from "../../screens/Invoice/pdf";
+import { GetOrderData } from "../../../utils/orders";
  function CompleteOrderCard({ item, onPress }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { t } = useTranslation()
+  const [CurrentOrderData, setCurrentOrderData ] = useState(null)
+
+  useEffect(()=>{
+    GetOrderDataComplete()
+  }, [])
+  const GetOrderDataComplete = async() => {
+    try{
+      if(item?.id){
+  console.log("item ,", item?.id)
+
+  const currentOrderData = await GetOrderData(item?.id)
+  if(currentOrderData){
+        
+        setCurrentOrderData(currentOrderData)
+      }
+    }
+    }catch(err){
+      console.log("err")
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.orderCardContainer}>
@@ -174,7 +196,7 @@ import Pdf from "../../screens/Invoice/pdf";
             />
           </View>
 
-          <Pdf item={item} >
+          <Pdf item={item} CurrentOrderData={CurrentOrderData} >
           <FontAwesome5 name="receipt" size={24} color={Colors.whiteColor} />
 
             </Pdf>

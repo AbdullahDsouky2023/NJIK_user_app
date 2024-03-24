@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet, SafeAreaView, StatusBar, ScrollView, Image, Dimensions, TouchableOpacity } from "react-native";
+import React, { useState,useEffect } from "react";
+import { Text, View, StyleSheet, SafeAreaView, StatusBar, ScrollView, Image, Dimensions, TouchableOpacity, Alert } from "react-native";
 import { Colors, Fonts, Sizes } from "../../constant/styles";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Dialog } from "react-native-paper";
@@ -8,12 +8,13 @@ import { CommonActions } from "@react-navigation/native";
 import { ORDER_SUCCESS_SCREEN } from "../../navigation/routes";
 import { useTranslation } from "react-i18next";
 import AppText from "../../component/AppText";
-import { PayOrderForReserve, updateOrderData } from "../../../utils/orders";
+import { GetOrderData, PayOrderForReserve, updateOrderData } from "../../../utils/orders";
 import LoadingModal from "../../component/Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserByPhoneNumber, updateUserData } from "../../../utils/user";
+import { getUserByPhoneNumber, updateProviderData, updateUserData } from "../../../utils/user";
 import { setUserData } from "../../store/features/userSlice";
-
+import MultiPaymentMethod from '../../component/Payment/MultiPaymentMethods'
+import PaymentMethod from '../../component/Payment/PaymentMethod'
 const { width } = Dimensions.get('screen');
 
 const PaymentScreen = ({ navigation,route }) => {
@@ -26,12 +27,32 @@ const PaymentScreen = ({ navigation,route }) => {
 const dispatch = useDispatch()
     const updateState = (data) => setState((state) => ({ ...state, ...data }))
     const [isLoading,setIsLoading]=useState(false)
+    const [CurrentOrderData, setCurrentOrderData ] = useState(null)
+
 const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.params
 
     const {
         currentPaymentMethodIndex,
         showSuccessDialog,
     } = state;
+    useEffect(()=>{
+        GetOrderDataComplete()
+      }, [])
+      const GetOrderDataComplete = async() => {
+        try{
+          if(orderId){
+      console.log("item ,", orderId)
+    
+      const currentOrderData = await GetOrderData(orderId)
+      if(currentOrderData){
+            
+            setCurrentOrderData(currentOrderData)
+          }
+        }
+        }catch(err){
+          console.log("err")
+        }
+      }
     const handlePayWithWallet = async(amount)=>{
         try{
             const res = await updateUserData(user?.id,{
@@ -56,7 +77,12 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
             console.log("error updating the user ",err.message)
           }
     }
-
+    const multiPaymentArray = [
+        require("../../assets/images/payment_icon/visa.png"),
+        require("../../assets/images/payment_icon/master.png"),
+        require("../../assets/images/payment_icon/mada.png"),
+    
+      ]
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
             <StatusBar backgroundColor={Colors.primaryColor} />
@@ -66,15 +92,54 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: Sizes.fixPadding * 8.0 }}
                 >
+                   <MultiPaymentMethod
+          icons = {multiPaymentArray}
+            paymentType="Card"
+            index={1}
+            updateState={updateState}
+            currentPaymentMethodIndex={currentPaymentMethodIndex}
+          />
                     <PaymentMethod
-                        icon={require('../../assets/images/payment_icon/card.png')}
-                        paymentType='Card'
-                        index={1}
-                    />
-                    <PaymentMethod
-                        icon={require('../../assets/images/payment_icon/wallet.png')}
+                        icon={require('../../assets/images/payment_icon/stc.png')}
                         paymentType='Wallet'
                         index={2}
+                        updateState={updateState}
+                        currentPaymentMethodIndex={currentPaymentMethodIndex}
+                    />
+                    <PaymentMethod
+                        icon={require('../../assets/images/payment_icon/urpay.png')}
+                        paymentType='Wallet'
+                        index={3}
+                        updateState={updateState}
+                        currentPaymentMethodIndex={currentPaymentMethodIndex}
+                    />
+                    <PaymentMethod
+                        icon={require('../../assets/images/payment_icon/apple.png')}
+                        paymentType='Wallet'
+                        index={4}
+                        updateState={updateState}
+                        currentPaymentMethodIndex={currentPaymentMethodIndex}
+                    />
+                    <PaymentMethod
+                        icon={require('../../assets/images/payment_icon/cash.png')}
+                        paymentType='Wallet'
+                        index={5}
+                        updateState={updateState}
+                        currentPaymentMethodIndex={currentPaymentMethodIndex}
+                    />
+                    <PaymentMethod
+                        icon={require('../../assets/images/payment_icon/tabby.png')}
+                        paymentType='Wallet'
+                        index={6}
+                        updateState={updateState}
+                        currentPaymentMethodIndex={currentPaymentMethodIndex}
+                    />
+                    <PaymentMethod
+                        icon={require('../../assets/images/payment_icon/tamara.png')}
+                        paymentType='Wallet'
+                        index={7}
+                        updateState={updateState}
+                        currentPaymentMethodIndex={currentPaymentMethodIndex}
                     />
                     
                 </ScrollView>
@@ -98,7 +163,7 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
                         <MaterialIcons name="error" size={40} color={Colors.primaryColor} />
                     </View>
                     <Text style={{ ...Fonts.blackColor20Medium, marginTop: Sizes.fixPadding + 10.0 }}>
-                       رصيدك الحالي غير كافي
+                       هناك مشكلة حاول مرة اخري
                     </Text>
                 </View>
             </Dialog>
@@ -106,31 +171,51 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
     }
 
     function payButton() {
+        const CalculateProviderFeeForCash = ()=>{
+            const fee = totalAmount * 0.2
+            return Number(fee).toFixed(2)
+        }
         return (
             <View style={styles.payButtonOuterWrapStyle}>
                 <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={async() => {
-                        console.log("paythe payment ",currentPaymentMethodIndex)
-                        if(currentPaymentMethodIndex === 1){
-
-                            setIsLoading(true)
-                            handleGenererateInitator()
-                            setTimeout(() => {
+                        console.log("paythe paymendt ",CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount)
+                        if(currentPaymentMethodIndex === 5){
+                            if(CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount >= CalculateProviderFeeForCash()  ){
+                            const providerID = CurrentOrderData?.attributes?.provider?.data?.id
+                            const FeeDisCounted = Number(CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount) - Number(CalculateProviderFeeForCash());
+                           
+                            handlePayOrder()
+                            FeeDisCounted > 0 &&   await updateProviderData(providerID,{
+                                wallet_amount:FeeDisCounted  
+                            })}else {
+                                                              updateState({ showSuccessDialog: true })
+// 
                                 
-                                setIsLoading(false)
-                            }, 1000);
-                        }else if(currentPaymentMethodIndex === 2){
-                            if(user?.wallet_amount >= totalAmount  ){
-                                
-                                handlePayOrder()
-                                handlePayWithWallet(totalAmount)
-                            }else {
-                                updateState({ showSuccessDialog: true })
-                                console.log(totalAmount,user?.wallet_amount)
                             }
-                        
+                            // console.log("handle pay wit cath",),)
+                        }else {
+                            
+                            
+                                                        setIsLoading(true)
+                                                        handleGenererateInitator()
+                                                        setTimeout(() => {
+                                                            
+                                                            setIsLoading(false)
+                                                        }, 1000);
                         }
+                        // else if(currentPaymentMethodIndex === 2){
+                        //     if(user?.wallet_amount >= totalAmount  ){
+                                
+                        //         handlePayOrder()
+                        //         handlePayWithWallet(totalAmount)
+                        //     }else {
+                        //         updateState({ showSuccessDialog: true })
+                        //         console.log(totalAmount,user?.wallet_amount)
+                        //     }
+                        
+                        // }
                     }
                     }
                     style={styles.payButtonWrapStyle}
@@ -143,50 +228,6 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
         )
     }
 
-    function PaymentMethod({ icon, paymentType, index }) {
-        const {t} = useTranslation()
-        return (
-            <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => updateState({ currentPaymentMethodIndex: index })}
-                style={{
-                    borderColor: currentPaymentMethodIndex == index ? Colors.primaryColor : '#E0E0E0',
-                    ...styles.paymentMethodWrapStyle
-                }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <AppText numberOfLines={1} style={{
-                         ...Fonts.primaryColor18Medium,
-                         marginLeft: Sizes.fixPadding,
-                         width: width / 2.2,
-                     }}
-                        text={paymentType} />
-                    <Image
-                        source={icon}
-                        style={{
-                            width: 55.0,
-                            height: 55.0,
-                        }}
-                        resizeMode="contain"
-                    />
-                </View>
-                <View style={{
-                    borderColor: currentPaymentMethodIndex == index ? Colors.primaryColor : '#E0E0E0',
-                    ...styles.radioButtonStyle
-                }}>
-                    {
-                        currentPaymentMethodIndex == index ?
-                            <View style={{
-                                width: 12.0,
-                                height: 12.0,
-                                borderRadius: 6.0,
-                                backgroundColor: Colors.primaryColor
-                            }}>
-                            </View> : null
-                    }
-                </View>
-            </TouchableOpacity>
-        )
-    }
 
     function header() {
         return (

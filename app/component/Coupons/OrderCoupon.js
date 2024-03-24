@@ -46,8 +46,8 @@ export default function OrderCoupon() {
 
   const handleDeleteCoupon = ()=>{
     setAddedCoupon(null)
-    dispatch(RemoveDiscount(PriceBefore))
-    dispatch(RemoveCartServiceDiscount(PriceBefore))
+    // dispatch(RemoveDiscount(PriceBefore))
+    // dispatch(RemoveCartServiceDiscount(PriceBefore))
     dispatch(setCurrentOrderProperties(
         {
             coupons: {
@@ -78,11 +78,11 @@ export default function OrderCoupon() {
             const CurrentPrice = Math.floor(currentOrderPrice - (discountPercentage * currentOrderPrice));
             refRBSheet.current.close()
             setAddedCoupon(isValideCoupon)
-            dispatch(AddDiscount(CurrentPrice.toString()))
-            if(Number( cartServicesPrice > 0)){
-              dispatch(AddCartServicesDiscount(CurrentPrice.toString()))
+            // dispatch(AddDiscount(CurrentPrice.toString()))
+            // if(Number( cartServicesPrice > 0)){
+            //   dispatch(AddCartServicesDiscount(CurrentPrice.toString()))
 
-            }
+            // }
             setPriceBefore( currentOrderPrice.toString())
             dispatch(setCurrentOrderProperties(
                 {

@@ -17,6 +17,7 @@ import ArrowBack from "../../component/ArrowBack";
 import PaymentMethod from "../../component/Payment/PaymentMethod";
 import { CECKOUT_WEBVIEW_SCREEN, CHECkOUT_COUNTRY, CURRENCY } from "../../navigation/routes";
 import { ColorSpace } from "react-native-reanimated";
+import MultiPaymentMethod from '../../component/Payment/MultiPaymentMethods'
 import { FontAwesome5 } from "@expo/vector-icons";
 import { v4 as uuidv4 } from 'uuid';
 import { T } from "ramda";
@@ -48,7 +49,12 @@ export default function WalletScreen() {
   const [amount, setAmmount] = useState(0);
   const updateState = (data) => setState((state) => ({ ...state, ...data }))
   const { currentPaymentMethodIndex, showSuccessDialog } = state;
+  const multiPaymentArray = [
+    require("../../assets/images/payment_icon/visa.png"),
+    require("../../assets/images/payment_icon/master.png"),
+    require("../../assets/images/payment_icon/mada.png"),
 
+  ]
   return (
     <View style={styles.container}>
       <ArrowBack subPage={true} />
@@ -67,31 +73,46 @@ export default function WalletScreen() {
               centered={false}
             />
           </View>
-          <PaymentMethod
-            icon={require("../../assets/images/payment_icon/card.png")}
+          <MultiPaymentMethod
+          icons = {multiPaymentArray}
             paymentType="Card"
             index={1}
             updateState={updateState}
             currentPaymentMethodIndex={currentPaymentMethodIndex}
           />
+         
           <PaymentMethod
-            icon={require("../../assets/images/payment_icon/card.png")}
+            icon={require("../../assets/images/payment_icon/stc.png")}
             paymentType="Card"
             index={2}
             updateState={updateState}
             currentPaymentMethodIndex={currentPaymentMethodIndex}
           />
           <PaymentMethod
-            icon={require("../../assets/images/payment_icon/card.png")}
+            icon={require("../../assets/images/payment_icon/urpay.png")}
             paymentType="Card"
             index={3}
             updateState={updateState}
             currentPaymentMethodIndex={currentPaymentMethodIndex}
           />
-
+          <PaymentMethod
+            icon={require("../../assets/images/payment_icon/apple.png")}
+            paymentType="Card"
+            index={4}
+            updateState={updateState}
+            currentPaymentMethodIndex={currentPaymentMethodIndex}
+          />
+          <PaymentMethod
+            icon={require("../../assets/images/payment_icon/sadad.png")}
+            paymentType="Card"
+            index={5}
+            updateState={updateState}
+            currentPaymentMethodIndex={currentPaymentMethodIndex}
+          />
+      
           <AppButton
             title={"Confirm"}
-            disabled={!(currentPaymentMethodIndex === 1 || 2 || 3)}
+            disabled={!(currentPaymentMethodIndex )}
 
             // style={styles.button}
             onPress={() => setShowModalVisible(true)}
@@ -161,7 +182,7 @@ const HandleGetAmountComponentModal = memo(({ visible, setVisible, setIsLoading,
   const handleGenererateInitator = (amount) => {
     console.log("amount is ", amount)
     setIsLoading(true)
-    const orderAmmount = calculateTotalWithTax(Number(amount))
+    const orderAmmount = Number(amount)
     const uniqueId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
     const username = user?.username.trim(); // Remove any leading or trailing spaces
@@ -247,7 +268,7 @@ const HandleGetAmountComponentModal = memo(({ visible, setVisible, setIsLoading,
       <View style={styles.buttonsContainer}>
         <AppButton
           title={"Confirm"}
-          disabled={!amount || amount < 10}
+          disabled={!amount || amount < 50}
 
           style={styles.button}
           onPress={() => handleGenererateInitator(amount)}

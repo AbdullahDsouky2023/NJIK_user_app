@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Carousel from "react-native-snap-carousel-v4";
 // import { ScrollView } from "react-native";
 import { RFPercentage } from 'react-native-responsive-fontsize'
@@ -11,14 +11,16 @@ import { Image, FlatList } from "react-native";
 
 import AppText from "../../component/AppText";
 import { Colors, Sizes } from "../../constant/styles";
-import useOrders, { PayOrder } from "../../../utils/orders";
+import useOrders, { GetOrderData, PayOrder, updateOrderData } from "../../../utils/orders";
 import PriceTextComponent from "../../component/PriceTextComponent";
 import LoadingScreen from "../loading/LoadingScreen";
 import ArrowBack from "../../component/ArrowBack";
 import { ScrollView } from "react-native-virtualized-view";
 import { CECKOUT_WEBVIEW_SCREEN, CHAT_ROOM_fireBase, CHECkOUT_COUNTRY, CURRENCY, HOME, ORDERS_DETAILS, ORDER_SUCCESS_SCREEN, SUCESS_PAYMENT_SCREEN } from "../../navigation/routes";
-import { FontAwesome,AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import ReserveButton from "../../component/ReverveButton";
+import { setUserData } from "../../store/features/userSlice";
+
 import AppButton from "../../component/AppButton";
 import { setcurrentChatChannel } from "../../store/features/ordersSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +30,8 @@ import { CommonActions } from "@react-navigation/native";
 import Pdf from "../Invoice/pdf";
 import * as Linking from "expo-linking";
 import initiatePayment from "../../utils/Payment/Initate";
-import { CalculateTax, calculateTotalWithTax } from "../../utils/Payment/helpers";
+import { CalculatePriceWithCoupon, CalculateTax, CalculteServicePriceWithoutAddionalPrices, calculateTotalWithTax ,getValueDiscountFromBalance} from "../../utils/Payment/helpers";
+import { getUserByPhoneNumber, updateProviderData, updateUserData } from "../../../utils/user";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -40,6 +43,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
   const { t } = useTranslation();
   const orders = useSelector((state) => state?.orders?.orders);
   const user = useSelector((state) => state?.user?.userData);
+  const [CurrentOrderData, setCurrentOrderData ] = useState(null)
 
   // Added checks to ensure objects are defined before accessing their properties
   const categoryName1 = item?.attributes?.service_carts?.data?.[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes;
@@ -60,17 +64,37 @@ export default function PaymentRequiredScreen({ navigation, route }) {
         );
       }
       if (res) {
-         // Inside your sign-out function:
-         navigation.dispatch(
+        // Inside your sign-out function:
+        const walletDiscount = getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet 
+        if(walletDiscount > 0 ) {
+          const value =Number(user?.wallet_amount) - Number(walletDiscount)
+        const res = await updateUserData(user?.id,{
+          wallet_amount:value?.toFixed(2)
+        })
+        await updateOrderData(item?.id,{
+          payed_amount_with_wallet:Number(walletDiscount)
+        })
+        if(res){
+              console.log("Success Update User",res)
+              const gottenuser = await getUserByPhoneNumber(user?.phoneNumber);
+      
+              dispatch(setUserData(gottenuser));
+            //   Alert.alert("  تمت عمليةالشحن بنجاح ")
+      
+            }
+        }
+        navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: SUCESS_PAYMENT_SCREEN , params:{
-              item,
-              firstReview:true
-            }}], // Replace 'Login' with the name of your login screen
+            routes: [{
+              name: SUCESS_PAYMENT_SCREEN, params: {
+                item,
+                firstReview: true
+              }
+            }], // Replace 'Login' with the name of your login screen
           })
         );
-      
+
       } else {
         Alert.alert(t("Something Went Wrong, Please try again!"));
       }
@@ -80,45 +104,77 @@ export default function PaymentRequiredScreen({ navigation, route }) {
       setIsLoading(false);
     }
   };
-  const handleGenererateInitator = ()=>{
-    const orderAmmount = calculateTotalWithTax(item?.attributes?.totalPrice)
+  const handleGenererateInitator = () => {
+    const orderAmmount = getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayInCash
 
     const username = user.username.trim(); // Remove any leading or trailing spaces
     const nameParts = username.split(' '); // Split the username into parts
-    
+
     const firstName = nameParts[0]; // The first part is the first name
     const lastName = nameParts.slice(1).join(' '); // The rest are the last name
-    
-    
-    
-    
-// Example usage
-const orderDetails = {
-  orderId: `ORDER${item?.id}`,
-  amount: orderAmmount.toFixed(2),
-  currency: CURRENCY,
-  description: item?.description || "no description",
-  payerFirstName:firstName,
-  payerLastName: lastName,
-  payerAddress: user?.location,
-  payerCountry:CHECkOUT_COUNTRY,
-  payerCity:user?.city,
-  payerZip: '12345',
-  payerEmail: user?.email,
-  payerPhone: user?.phoneNumber,
-  payerIp: '192.168.1.1'
- };
- 
-initiatePayment(orderDetails)
- .then(response => {
-  navigation.navigate(CECKOUT_WEBVIEW_SCREEN,{
-    url:response?.redirect_url,
-    orderId: `ORDER${item?.id}`,
-    handlePayOrderFun:handlePayOrder
-  })
-  console.log('Payment initiated successfully:', response?.redirect_url)})
- .catch(error => console.error('Error initiating payment:', error));
+
+
+
+
+    // Example usage
+    const orderDetails = {
+      orderId: `ORDER${item?.id}`,
+      amount: orderAmmount,
+      currency: CURRENCY,
+      description: item?.description || "no description",
+      payerFirstName: firstName,
+      payerLastName: lastName,
+      payerAddress: user?.location,
+      payerCountry: CHECkOUT_COUNTRY,
+      payerCity: user?.city,
+      payerZip: '12345',
+      payerEmail: user?.email,
+      payerPhone: user?.phoneNumber,
+      payerIp: '192.168.1.1'
+    };
+
+    initiatePayment(orderDetails)
+      .then(response => {
+        navigation.navigate(CECKOUT_WEBVIEW_SCREEN, {
+          url: response?.redirect_url,
+          orderId: `ORDER${item?.id}`,
+          handlePayOrderFun: handlePayOrder
+        })
+        console.log('Payment initiated successfully:', response?.redirect_url)
+      })
+      .catch(error => console.error('Error initiating payment:', error));
   }
+  useEffect(()=>{
+    GetOrderDataComplete()
+  }, [])
+  const GetOrderDataComplete = async() => {
+    try{
+      if(item?.id){
+  console.log("item ,", item?.id)
+
+  const currentOrderData = await GetOrderData(item?.id)
+  if(currentOrderData){
+        
+        setCurrentOrderData(currentOrderData)
+      }
+    }
+    }catch(err){
+      console.log("err")
+    }
+  }
+  const CalculateTotalPriceWithFee = (item) => {
+    //45 5
+    let TotalPrice = calculateTotalWithTax(item?.attributes?.totalPrice);
+    console.log("the total price is ",TotalPrice)
+    if (CurrentOrderData?.attributes?.coupons?.data[0]) {
+        const CouponPrice = CalculatePriceWithCoupon(CalculteServicePriceWithoutAddionalPrices(item), CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount;
+        TotalPrice = TotalPrice - CouponPrice ;
+        console.log("the tootla price ",CouponPrice,TotalPrice)
+    }
+    // Convert to string with fixed decimal places at the end
+    return Number(TotalPrice).toFixed(2);
+}
+console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attributes)
   if (isLoading) return <LoadingScreen />;
   return (
     <View style={styles.wrapper}>
@@ -160,184 +216,167 @@ initiatePayment(orderDetails)
 
           } />
           <ItemComponent name="التاريخ" iconName={"clock-o"} data={item?.attributes?.date} />
-          <ItemComponent2 name="الموقع" iconName={"map-marker"} data={item?.attributes?.location} />
-          <ItemComponent name="الخدمة"   iconName={"gear"}data={
-            categoryName1?.name || categoryName2?.name || categoryName3?.name
 
-          } />
           <ItemComponent name=" اسم الفني" iconName="user" data={
             item?.attributes?.provider?.data?.attributes?.name
 
           } />
+          <View style={[styles.shadowStyles,styles.itemContainer,{flexDirection:'column',gap:-20,padding:0,paddingBottom:5}]}>
 
-          {/* <ArrowBack subPage={true} /> */}
-          {(item?.attributes?.services?.data?.length > 0) ? (
-                 <FlatList
-                 data={item?.attributes?.services?.data}
-                 showsHorizontalScrollIndicator={false}
-                 showsVerticalScrollIndicator={false}
-                 initialNumToRender={10}
-          
-                 keyExtractor={(item, index) => item.id}
-                 style={{
-                   display: "flex",
-                   flexDirection: "row",
-                   direction: "rtl",
-                   flexWrap: "wrap",
-                   marginTop: 15,
-                   gap: 15,
-                   padding:5,
-                   paddingVertical:10,
-                   borderRadius:7,
-                   width: width*0.9,
-                   backgroundColor: Colors.whiteColor,
-                   shadowColor: "#000",
-                   shadowOffset: {
-                     width: 0,
-                     height: 1,
-                   },
-                   shadowOpacity: 0.2,
-                   shadowRadius: 1.41,
-                   elevation: 4,
-                   gap: 10,
-          
-                 }}
-                 renderItem={({ item }) => {
-                   return (
-                     <View
-                       style={{
-                         display: "flex",
-                         flexDirection: "row",
-                         alignItems: "center",
-                         flexWrap: 'wrap',
-                         backgroundColor:'white',
-                         width: width * 0.80,
-                         gap: 15,
-                       }}
-                     >
-                       <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
-          
-                       <AppText
-                         centered={false}
-                         text={item?.attributes?.name}
-                         style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
-                       />
-                      
-                     </View>
-                   );
-                 }}
-               />
-          ) : (item?.attributes?.packages?.data?.length > 0) ? (
-            <FlatList
-            data={item?.attributes?.packages?.data}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            initialNumToRender={10}
-  
-            keyExtractor={(item, index) => item.id}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              direction: "rtl",
-              flexWrap: "wrap",
-              marginTop: 15,
-              gap: 15,
-              padding:5,
-              paddingVertical:10,
-              borderRadius:7,
-              width: width*0.9,
-              backgroundColor: Colors.whiteColor,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 1,
-              },
-              shadowOpacity: 0.2,
-              shadowRadius: 1.41,
-              elevation: 4,
-              gap: 10,
-  
-            }}
-            renderItem={({ item }) => {
-              return (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    flexWrap: 'wrap',
-                    backgroundColor:'white',
-                    width: width * 0.80,
-                    gap: 15,
-                  }}
-                >
-                  <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
-  
-                  <AppText
-                    centered={false}
-                    text={item?.attributes?.name}
-                    style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
-                  />
-                 
-                </View>
-              );
-            }}
-          />) : (item?.attributes?.service_carts?.data?.length > 0) ?
-          <FlatList
-          data={item?.attributes?.service_carts?.data}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          initialNumToRender={10}
+            <ItemComponent name="الخدمة" iconName={"gear"} NoShadowed={true} data={
+              categoryName1?.name || categoryName2?.name || categoryName3?.name
 
-          keyExtractor={(item, index) => item.id}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            direction: "rtl",
-            flexWrap: "wrap",
-            marginTop: 15,
-            gap: 15,
-            padding:5,
-            borderRadius:7,
-            width: width*0.9,
-            backgroundColor: Colors.whiteColor,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowOpacity: 0.2,
-            shadowRadius: 1.41,
-            elevation: 4,
-            gap: 10,
+            } />
 
-          }}
-          renderItem={({ item }) => {
-            return (
-              <View
+            {(item?.attributes?.services?.data?.length > 0) ? (
+              <FlatList
+
+                data={item?.attributes?.services?.data}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                initialNumToRender={10}
+
+                keyExtractor={(item, index) => item.id}
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  alignItems: "center",
-                  flexWrap: 'wrap',
-                  backgroundColor:'white',
-                  width: width * 0.80,
+                  direction: "rtl",
+                  flexWrap: "wrap",
+                  marginTop: 15,
                   gap: 15,
-                }}
-              >
-                <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+                  padding: 5,
+                  paddingVertical: 10,
+                  borderRadius: 7,
+                  width: width * 0.9,
+                  backgroundColor: Colors.whiteColor,
+                 
+                  gap: 10,
 
-                <AppText
-                  centered={false}
-                  text={item?.attributes?.service?.data?.attributes?.name}
-                  style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
-                />
-               
-              </View>
-            );
-          }}
-        />
-            : null}
+                }}
+                renderItem={({ item }) => {
+                  return (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        flexWrap: 'wrap',
+                        backgroundColor: 'white',
+                        width: width * 0.80,
+                        gap: 15,
+                      }}
+                    >
+                      <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
+                      <AppText
+                        centered={false}
+                        text={item?.attributes?.name}
+                        style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
+                      />
+
+                    </View>
+                  );
+                }}
+              />
+            ) : (item?.attributes?.packages?.data?.length > 0) ? (
+              <FlatList
+                data={item?.attributes?.packages?.data}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                initialNumToRender={10}
+
+                keyExtractor={(item, index) => item.id}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  direction: "rtl",
+                  flexWrap: "wrap",
+                  marginTop: 15,
+                  gap: 15,
+                  padding: 5,
+                  paddingVertical: 10,
+                  borderRadius: 7,
+                  width: width * 0.9,
+                  backgroundColor: Colors.whiteColor,
+                
+                  gap: 10,
+
+                }}
+                renderItem={({ item }) => {
+                  return (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        flexWrap: 'wrap',
+                        backgroundColor: 'white',
+                        width: width * 0.80,
+                        gap: 15,
+                      }}
+                    >
+                      <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
+                      <AppText
+                        centered={false}
+                        text={item?.attributes?.name}
+                        style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
+                      />
+
+                    </View>
+                  );
+                }}
+              />) : (item?.attributes?.service_carts?.data?.length > 0) ?
+              <FlatList
+                data={item?.attributes?.service_carts?.data}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                initialNumToRender={10}
+
+                keyExtractor={(item, index) => item.id}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  direction: "rtl",
+                  flexWrap: "wrap",
+                  marginTop: 15,
+                  gap: 15,
+                  padding: 5,
+                  borderRadius: 7,
+                  width: width * 0.9,
+                  backgroundColor: Colors.whiteColor,
+                 
+                  gap: 10,
+
+                }}
+                renderItem={({ item }) => {
+                  return (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        flexWrap: 'wrap',
+                        backgroundColor: 'white',
+                        width: width * 0.80,
+                        gap: 15,
+                      }}
+                    >
+                      <MaterialIcons name="miscellaneous-services" size={24} color={Colors.grayColor} />
+
+                      <AppText
+                        centered={false}
+                        text={item?.attributes?.service?.data?.attributes?.name}
+                        style={[styles.name, { fontSize: RFPercentage(1.75), width: width * 0.7 }]}
+                      />
+
+                    </View>
+                  );
+                }}
+              />
+              : null}
+          </View>
+
           <View>
             <AppText
               centered={false}
@@ -345,20 +384,20 @@ initiatePayment(orderDetails)
               style={styles.name}
             />
           </View>
-          <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${
-            (item?.attributes?.totalPrice)
-
-          } ${t(CURRENCY)}`} />
+          {/* Prices here */}
+          <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${(CalculteServicePriceWithoutAddionalPrices(item))} ${t(CURRENCY)}`} />
+          {CurrentOrderData?.attributes?.coupons?.data[0] && <ItemComponent name={"خصم الكوبون"} iconName={"money"}
+           data={`${(CalculatePriceWithCoupon(CalculteServicePriceWithoutAddionalPrices(item),CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount)} ${t(CURRENCY)}`} />}
 
 
           {
             item?.attributes?.provider_fee > 0 &&
-<ItemComponent name={"اجرة الفني"} iconName="money" data={        `${item?.attributes?.provider_fee} ${t(CURRENCY)}`}/>
+            <ItemComponent name={"اجرة الفني"} iconName="money" data={`${item?.attributes?.provider_fee} ${t(CURRENCY)}`} />
           }
-          {item?.attributes?.additional_prices?.data?.length > 0 &&
+          {CurrentOrderData?.attributes?.additional_prices?.data?.length > 0 &&
             <>
               <FlatList
-                data={item?.attributes?.additional_prices?.data}
+                data={CurrentOrderData?.attributes?.additional_prices?.data}
                 showsVerticalScrollIndicator={false}
                 initialNumToRender={10}
 
@@ -371,10 +410,12 @@ initiatePayment(orderDetails)
 
             </>
           }
+          <ItemComponent name={"سعر الكشف والزيارة"} iconName={"money"} data={`${item?.attributes?.visit_price} ${t(CURRENCY)}`} />
+          <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet} ${t(CURRENCY)}`} />
           <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${CalculateTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
           {/* <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${t(CURRENCY)}`} /> */}
-          <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${calculateTotalWithTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
-          
+          <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayInCash}  ${t(CURRENCY)}`} />
+
 
         </ScrollView>
       </ScrollView>
@@ -384,29 +425,37 @@ initiatePayment(orderDetails)
           textStyle={{ fontSize: RFPercentage(1.7) }}
 
           style={styles.buttonStyles}
-          onPress={() =>{
-            navigation.navigate("Payment",{
-              handleGenererateInitator,
-              handlePayOrder,
-              orderId:item?.id,
-              totalAmount:calculateTotalWithTax(item?.attributes?.totalPrice)
-            })
+          onPress={() => {
+            const amountToPay = getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayInCash
+            console.log("the user will pay ",amountToPay)
+            if(amountToPay === 0 ){
+              handlePayOrder()
+            }else if(amountToPay > 0 ) {
+              console.log("the amount it ",getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet)
+              navigation.navigate("Payment", {
+                handleGenererateInitator,
+                handlePayOrder,
+                orderId: item?.id,
+                totalAmount: amountToPay,
+                decreadedAmountFromWallet:getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet
+              })
+            }
           }}
-          />
+        />
         <AppButton
           title={" ما اتفقنا على كذا"}
           style={styles.buttonStyles2}
           textStyle={{ fontSize: RFPercentage(1.7) }}
           onPress={() => {
-    
-            // console.log("f222eeees",item?.attributes?.provider_fee >0,item?.attributes?.additional_prices?.data?.length )
-            if ( item?.attributes?.additional_prices?.data?.length > 0  || item?.attributes?.provider_fee > 0){
-              navigation.navigate(ORDERS_DETAILS,{item:item});
-              
-            }else {
+
+            // console.log("f222eeees",item?.attributes?.provider_fee >0,item?.attributes?.additional_prices?.data?.data?.length )
+            if (CurrentOrderData?.attributes?.additional_prices?.data?.length > 0 || item?.attributes?.provider_fee > 0) {
+              navigation.navigate(ORDERS_DETAILS, { item: item });
+
+            } else {
               navigation.navigate(CHAT_ROOM_fireBase)
               dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id))
-              
+
             }
             dispatch(setcurrentChatChannel(item?.attributes?.chat_channel_id))
           }}
@@ -439,15 +488,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 1,
     marginVertical: 10,
     backgroundColor: Colors.whiteColor,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 4,
     gap: 10,
+    
   },
   descriptionContainer: {
     display: "flex",
@@ -524,39 +566,50 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingBottom: width * 0.3,
 
-  }
+  },
+  shadowStyles :{
+  shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 4,
 
+}
 });
 
-const ItemComponent = ({ name, data, iconName }) => {
+const ItemComponent = ({ name, data, iconName,NoShadowed }) => {
   return (
-    <View style={[styles.itemContainer, { justifyContent: 'space-between' }]}>
+    <View style={[styles.itemContainer,!NoShadowed && styles.shadowStyles, { justifyContent: 'space-between' }]}>
       <View style={{ display: 'flex', flexDirection: 'row', gap: 15, alignItems: 'center', }}>
         <FontAwesome name={iconName} size={RFPercentage(2.2)} color={Colors.grayColor} />
 
         <AppText centered={false} text={name} style={[styles.title, { fontSize: RFPercentage(2.1) }]} />
       </View>
       <AppText
+      
         centered={false}
         text={data}
-        style={[styles.price, { fontSize: RFPercentage(2) }]}
+        style={[styles.price, { fontSize: RFPercentage(1.9) }]}
       />
     </View>
   )
 }
 const ItemComponent2 = ({ name, data, iconName }) => {
   return (
-    <View style={[styles.itemContainer, { justifyContent: 'space-between' }]}>
+    <View style={[styles.itemContainer, styles.shadowStyles,{ justifyContent: 'space-between' }]}>
       <View style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', width: width * 0.7 }}>
         <FontAwesome name={iconName} size={RFPercentage(2.2)} color={Colors.grayColor} />
 
         <AppText centered={false} text={name} style={styles.title} />
       </View>
-      <View style={{backgroundColor:Colors.primaryColor,width:50,display:'flex',alignItems:'center', padding:10, borderRadius:10}}>
+      <View style={{ backgroundColor: Colors.primaryColor, width: 50, display: 'flex', alignItems: 'center', padding: 10, borderRadius: 10 }}>
 
-        <FontAwesome name={iconName} onPress={()=>{
-            Linking.openURL("https://maps.app.goo.gl/UXMEAg7v7eAQCQAp9")
-        }} size={RFPercentage(2.3)}  color={Colors.whiteColor} />
+        <FontAwesome name={iconName} onPress={() => {
+          Linking.openURL("https://maps.app.goo.gl/UXMEAg7v7eAQCQAp9")
+        }} size={RFPercentage(2.3)} color={Colors.whiteColor} />
       </View>
       {/* <AppText
         centered={false}

@@ -9,7 +9,10 @@ const SlideItem = ({ item }) => {
   const navigation = useNavigation();
   const uri = item?.attributes?.image?.data?.attributes?.url;
   const handlePress = useCallback(() => {
-    navigation.navigate(ITEM_DETAILS, { item: item?.attributes?.service?.data });
+    if( item?.attributes?.service?.data ){
+console.log("the daata",item)
+      navigation.navigate(ITEM_DETAILS, { item: item?.attributes?.service?.data });
+    }
   }, [item, navigation]);
   return (
     <TouchableWithoutFeedback onPress={handlePress}>

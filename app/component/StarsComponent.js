@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { Hoverable } from "react-native-web-hover";
 import * as Linking from "expo-linking";
 import { MaterialCommunityIcons,AntDesign } from "@expo/vector-icons";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import AppText from "./AppText";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { Alert } from "react-native";
@@ -22,7 +22,7 @@ import useNotifications from "../../utils/notifications";
 import AppButton from "./AppButton";
 import LoadingScreen from "../screens/loading/LoadingScreen";
 import { Colors, mainFont } from "../constant/styles";
-import useOrders, { AddOrderReview } from "../../utils/orders";
+import useOrders, { AddOrderReview, GetOrderData } from "../../utils/orders";
 import { HOME } from "../navigation/routes";
 import ArrowBack from "./ArrowBack";
 import Pdf from "../screens/Invoice/pdf";
@@ -35,6 +35,8 @@ export default function StarsComponent({ route }) {
   const [isLoading, setIsLoading] = useState(false);
   const [focus, setFocus] = useState(null);
   const [description, setDescription] = useState(null);
+  const [CurrentOrderData, setCurrentOrderData ] = useState(null)
+
   const  { t }= useTranslation()
   const TemporaryImage =
     "https://cdn-icons-png.flaticon.com/128/6998/6998122.png";
@@ -146,7 +148,25 @@ export default function StarsComponent({ route }) {
       setIsLoading(false);
     }
   };
+  useEffect(()=>{
+    GetOrderDataComplete()
+  }, [])
+  const GetOrderDataComplete = async() => {
+    try{
+      if(route?.params?.orderID){
+  console.log("item ,", route?.params?.orderID)
 
+  const currentOrderData = await GetOrderData(route?.params?.orderID)
+  if(currentOrderData){
+        
+        setCurrentOrderData(currentOrderData)
+      }
+    }
+    }catch(err){
+      console.log("err")
+    }
+  }
+  // console.log("current order dat2a",CurrentOrderData?.attributes?.coupons)
   if (isLoading) {
     return <LoadingScreen />;
   }
@@ -238,7 +258,7 @@ export default function StarsComponent({ route }) {
         />
         <View style={{marginVertical:10}}>
 
-<Pdf item={route?.params?.item} chatContainerStyles={{width:160,borderRadius:50,height:55,alignSelf:'center'}}>
+<Pdf item={route?.params?.item} chatContainerStyles={{width:160,borderRadius:50,height:55,alignSelf:'center'}} CurrentOrderData={CurrentOrderData}>
   <View style={{display:'flex',flexDirection:'row',gap:15,alignItems:'center',justifyContent:'center',alignSelf:'center'}}>
 
   <AppText text={"تحميل الفاتورة"} style={{color:Colors.whiteColor,fontSize:RFPercentage(2.2)}}/>

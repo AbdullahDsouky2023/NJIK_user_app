@@ -101,6 +101,15 @@ export const CreateCartService = async (cartItem) => {
     console.error("Error creating the service item   :", error.message); // Log the error response
   }
 };
+export const GetOrderData = async (id) => {
+  try {
+    const data = await api.get(`/api/orders/${id}?populate=*`);
+    if ( data?.data?.data?.id) return data?.data?.data
+    return null;
+  } catch (error) {
+    console.error("Error geting data order   :", error.message); // Log the error response
+  }
+};
 export const AddOrderReview = async (id,review) => {
   try {
     const data = await api.put(`/api/orders/${id}`,{
@@ -135,12 +144,13 @@ connect:[{id:ComplainId}]
 
 export default function useOrders() {
   const user = useSelector((state) => state?.user?.user);
+  console.log("refetchig again")
 
   const fetchOrders = async () => {
     try {
       let allOrders = [];
       let page =  1; // Start with the first page
-   
+   console.log("refetchig again")
       while (true) {
         const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page,  10)}`);
    
@@ -182,12 +192,14 @@ export default function useOrders() {
 
 export function useAllOrders() {
   const user = useSelector((state) => state?.user?.user);
+  console.log("refetchig again2")
 
   const fetchOrders = async () => {
     try {
       let allOrders = [];
       let page =   1; // Start with the first page
-   
+      console.log("refetchig again")
+
       while (true) {
         const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page,   10)}`);
    

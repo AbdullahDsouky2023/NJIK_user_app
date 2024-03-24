@@ -5,9 +5,9 @@ import { Colors } from "../../constant/styles";
 import { View } from "react-native";
 import AppText from "../AppText";
 const { height , width } = Dimensions.get('screen')
-export default function  ItemComponent ({ name, data, iconName,ServiceFontSize })  {
+export default function  ItemComponent ({ name, data,NoShadow, iconName,ServiceFontSize })  {
     return (
-      <View style={[styles.itemContainer, { justifyContent: 'space-between' }]}>
+      <View style={[styles.itemContainer,!NoShadow && styles.shadowStyles ,{ justifyContent: 'space-between' }]}>
         <View style={{ display: 'flex', flexDirection: 'row', gap: 15, alignItems: 'center', }}>
           <FontAwesome name={iconName} size={RFPercentage(2.2)} color={Colors.grayColor} />
   
@@ -16,7 +16,7 @@ export default function  ItemComponent ({ name, data, iconName,ServiceFontSize }
         <AppText
           centered={false}
           text={data}
-          style={[styles.price, { fontSize: ServiceFontSize || RFPercentage(2) }]}
+          style={[styles.price, { fontSize: ServiceFontSize || RFPercentage(1.9) }]}
         />
       </View>
     )
@@ -45,14 +45,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 1,
     marginVertical: 10,
     backgroundColor: Colors.whiteColor,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 4,
+    
     gap: 10,
   },
   descriptionContainer: {
@@ -130,6 +123,17 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingBottom: width * 0.3,
 
+  },
+  shadowStyles :{
+    shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 1.41,
+      elevation: 4,
+  
   }
 
 });

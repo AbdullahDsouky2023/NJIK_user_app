@@ -1,5 +1,5 @@
 // Pdf.js
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { View, Button, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -7,11 +7,25 @@ import Invoice from './Invoice'; // Import your Invoice component
 import { FontAwesome5 } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
 import { Colors } from '../../constant/styles';
-import { CalculateTax, calculateTotalWithTax } from '../../utils/Payment/helpers';
+import { CalculatePriceWithCoupon, CalculateTax, calculateTotalWithTax } from '../../utils/Payment/helpers';
 const { height } = Dimensions.get('screen')
-export default function Pdf({ item ,chatContainerStyles,children}) {
-  const qrCodeValue = item?.id; // Replace with your item ID
-  const qrCodeSize = 100; // Adjust the size as needed
+export default function Pdf({ item ,chatContainerStyles,children,CurrentOrderData}) {
+
+
+  
+
+  
+  const CalculateTotalPriceWithFee = (item) => {
+    let TotalPrice = calculateTotalWithTax(item?.attributes?.totalPrice);
+    console.log("the incoifce")
+    if (CurrentOrderData?.attributes?.coupons?.data[0]) {
+        const CouponPrice = CalculatePriceWithCoupon(item?.attributes?.totalPrice, CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount;
+        TotalPrice = TotalPrice - CouponPrice ;
+        console.log("the tootla price infoive ",CouponPrice,TotalPrice)
+    }
+    // Convert to string with fixed decimal places at the end
+    return Number(TotalPrice).toFixed(2);
+}
   const cartServiveItems = item?.attributes?.service_carts?.data?.length > 0 && item?.attributes?.service_carts?.data?.map((item) => (
     `
     <tr>
@@ -93,6 +107,31 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
                       ${item?.attributes?.provider_fee}   
                                  </td>
                                  </tr>`
+
+     const CouponDiscount = CurrentOrderData?.attributes?.coupons?.data[0] && (`
+                                 <tr>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #f2652a;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
+                    خصم الكوبون
+                      </td>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"></td>
+                      <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
+                   ${CalculatePriceWithCoupon(item?.attributes?.totalPrice,CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount}
+                                 </td>
+                                 </tr>`
+                                 )
+
+    const WalletDiscount =  item?.attributes?.payed_amount_with_wallet && (`
+                                 <tr>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #f2652a;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
+                   التكلفة المحضومة من الرصيد 
+                      </td>
+                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"></td>
+                      <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
+                   ${item?.attributes?.payed_amount_with_wallet}
+                                 </td>
+                                 </tr>`
+                                 )
+
 
   const printToFile = async () => {
     try {
@@ -289,6 +328,8 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
                     ${packageItems ? packageItems : ""}
                     ${additionalPriceItems ? additionalPriceItems : ""}
                     ${ProviderFee ? ProviderFee : ""}
+                    ${CouponDiscount ? CouponDiscount : ""}
+                    ${WalletDiscount ? WalletDiscount : ""}
                     ${TaxesFees}
                     <tr>
                       <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td>
@@ -330,7 +371,7 @@ export default function Pdf({ item ,chatContainerStyles,children}) {
                         <strong>اجمالي التكلفة</strong>
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
-                        <strong> ${calculateTotalWithTax(item?.attributes?.totalPrice)}  <span style="padding-right:15px;color:#f2652a">ريال سعودي</span> </strong>
+                        <strong> ${CalculateTotalPriceWithFee(item)}  <span style="padding-right:15px;color:#f2652a">ريال سعودي</span> </strong>
                       </td>
                     </tr>
                     

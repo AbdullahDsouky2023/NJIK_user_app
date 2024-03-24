@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 const { width , height } = Dimensions.get("screen");
 
 import AppText from "../../component/AppText";
-export default function  PaymentMethod({ icon, paymentType, index ,currentPaymentMethodIndex,updateState}) {
+export default function  MultiPaymentMethod({ icons, paymentType, index ,currentPaymentMethodIndex,updateState}) {
     const {t} = useTranslation()
     return (
         <TouchableOpacity
@@ -21,21 +21,25 @@ export default function  PaymentMethod({ icon, paymentType, index ,currentPaymen
                 borderColor: currentPaymentMethodIndex == index ? Colors.primaryColor : '#E0E0E0',
                 ...styles.paymentMethodWrapStyle
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent:'center',height: height*0.03,width:width*0.7 }}>
+            <View style={{ flexDirection: 'row',gap:10, alignItems: 'center', justifyContent:'center',height: height*0.03,width:width*0.7 }}>
                 {/* <AppText numberOfLines={1} style={{
                      ...Fonts.primaryColor18Medium,
                      marginLeft: Sizes.fixPadding,
                      width: width / 2.2,
                  }}
                     text={paymentType} /> */}
-                <Image
+               {
+                icons.map((icon)=>(
+                    <Image
                     source={icon}
                     style={{
-                        width: width*0.6,
-                        height: 50,
+                        width: width*0.15,
+                        height: 30,
                     }}
                     resizeMode="contain"
                 />
+                ))
+               }
             </View>
             {/* <View style={{
                 borderColor: currentPaymentMethodIndex == index ? Colors.primaryColor : '#E0E0E0',
@@ -72,7 +76,7 @@ const styles = StyleSheet.create({
         borderWidth: 1.0,
         marginHorizontal: Sizes.fixPadding * 2.0,
         paddingHorizontal: Sizes.fixPadding * 2.0,
-        paddingVertical: Sizes.fixPadding * 2.5,
+        paddingVertical: Sizes.fixPadding * 2.0,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',

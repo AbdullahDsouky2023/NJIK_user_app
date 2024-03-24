@@ -36,7 +36,7 @@ import { Colors } from "../../constant/styles";
 import DelayOrderCard from "../../component/orders/DelayOrderCard ";
 import ItemComponent from "../../component/Payment/ItemComponent";
 import initiatePayment from "../../utils/Payment/Initate";
-import { calculateTotalWithTax } from "../../utils/Payment/helpers";
+import { calculateTotalWithTax ,CalculteServicePriceWithoutAddionalPrices} from "../../utils/Payment/helpers";
 
 
 
@@ -225,7 +225,9 @@ export default function OrderDetails({ navigation, route }) {
             } />
           }
         </View>
-        <ItemComponent name="الخدمة" iconName={"gear"} data={
+        <View style={[styles.shadowStyles,styles.itemContainer,{flexDirection:'column',gap:-20,padding:0,paddingBottom:5}]}>
+
+        <ItemComponent name="الخدمة" NoShadow={true} iconName={"gear"} data={
           categoryName1 || categoryName2 || categoryName3
 
         } />
@@ -237,8 +239,9 @@ export default function OrderDetails({ navigation, route }) {
           ) : (item?.attributes?.service_carts?.data?.length > 0) ?
             <CartServicesList data={item?.attributes?.service_carts?.data} />
             : null}
+            </View>
         </View>
-        <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? `${item?.attributes?.totalPrice} ${t(CURRENCY)}` : "السعر بعد الزيارة"} name={"Price"} />
+        <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? `${CalculteServicePriceWithoutAddionalPrices(item)} ${t(CURRENCY)}` : "السعر بعد الزيارة"} name={"Price"} />
         <LocationAndNotesComponent location={item?.attributes?.location} description={item?.attributes?.description} />
         <OrderImagesComponent orderImages={item?.attributes?.orderImages} />
         <OrderAddionalPricesComponent
@@ -297,14 +300,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginVertical: 10,
     backgroundColor: Colors.whiteColor,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 4,
+    
     gap: 10,
   },
   descriptionContainer: {
@@ -368,7 +364,15 @@ const styles = StyleSheet.create({
     gap: 4,
     backgroundColor: Colors.piege,
     borderColor: Colors.grayColor
-  }
+  },
+  shadowStyles: {shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 1,
+  },
+  shadowOpacity: 0.2,
+  shadowRadius: 1.41,
+  elevation: 4,}
 });
 
 
@@ -414,14 +418,6 @@ const ServicesList = memo(({ data }) => {
         borderRadius: 7,
         width: width * 0.9,
         backgroundColor: Colors.whiteColor,
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41,
-        elevation: 4,
         gap: 10,
 
       }}
@@ -473,14 +469,6 @@ const CartServicesList = memo(({ data }) => {
         borderRadius: 7,
         width: width * 0.9,
         backgroundColor: Colors.whiteColor,
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41,
-        elevation: 4,
         gap: 10,
 
       }}
@@ -621,12 +609,13 @@ const OrderAddionalPricesComponent = memo(({ item, handleGenererateInitator, han
       item?.attributes?.addtional_prices_state === 'pending' &&
       <View style={{ alignItems: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
         <AppButton title={"Accept and Pay"} onPress={() =>{
-          navigation.navigate("Payment",{
-            handleGenererateInitator,
-            handlePayOrder,
-            orderId:item?.id,
-            totalAmount:calculateTotalWithTax(item?.attributes?.totalPrice)
-          })
+          navigation.goBack()
+          // navigation.navigate("Payment",{
+          //   handleGenererateInitator,
+          //   handlePayOrder,
+          //   orderId:item?.id,
+          //   totalAmount:calculateTotalWithTax(item?.attributes?.totalPrice)
+          // })
         }} style={{ backgroundColor: Colors.success }} />
         <AppButton title={"Reject"} onPress={() => handleRejectAddionalPrices(item?.id)} style={{ backgroundColor: Colors.redColor }} />
       </View>

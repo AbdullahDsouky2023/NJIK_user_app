@@ -51,12 +51,13 @@ export default function useCartServices() {
   };
 }export  function useAllOrders() {
   const user = useSelector((state) => state?.user?.user);
+  console.log("retching cardhio22")
 
   const fetchOrders = async () => {
     try {
       let allOrders = [];
       let page = 1; // Start with the first page
-  
+  console.log("retching cardhio22")
       while (true) {
         const response = await api.get(`/api/orders?populate=deep,4&pagination[page]=${parseInt(page, 10)}`);
   
