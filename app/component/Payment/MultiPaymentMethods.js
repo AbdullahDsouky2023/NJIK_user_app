@@ -29,8 +29,9 @@ export default function  MultiPaymentMethod({ icons, paymentType, index ,current
                  }}
                     text={paymentType} /> */}
                {
-                icons.map((icon)=>(
+                icons.map((icon,index)=>(
                     <Image
+                    key={index}
                     source={icon}
                     style={{
                         width: width*0.15,

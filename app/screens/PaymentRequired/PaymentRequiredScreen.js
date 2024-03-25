@@ -65,24 +65,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
       }
       if (res) {
         // Inside your sign-out function:
-        const walletDiscount = getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet 
-        if(walletDiscount > 0 ) {
-          const value =Number(user?.wallet_amount) - Number(walletDiscount)
-        const res = await updateUserData(user?.id,{
-          wallet_amount:value?.toFixed(2)
-        })
-        await updateOrderData(item?.id,{
-          payed_amount_with_wallet:Number(walletDiscount)
-        })
-        if(res){
-              console.log("Success Update User",res)
-              const gottenuser = await getUserByPhoneNumber(user?.phoneNumber);
-      
-              dispatch(setUserData(gottenuser));
-            //   Alert.alert("  تمت عمليةالشحن بنجاح ")
-      
-            }
-        }
+       
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
@@ -138,7 +121,8 @@ export default function PaymentRequiredScreen({ navigation, route }) {
         navigation.navigate(CECKOUT_WEBVIEW_SCREEN, {
           url: response?.redirect_url,
           orderId: `ORDER${item?.id}`,
-          handlePayOrderFun: handlePayOrder
+          handlePayOrderFun: handlePayOrder,
+          decreadedAmountFromWallet:getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet
         })
         console.log('Payment initiated successfully:', response?.redirect_url)
       })
@@ -174,6 +158,34 @@ export default function PaymentRequiredScreen({ navigation, route }) {
     // Convert to string with fixed decimal places at the end
     return Number(TotalPrice).toFixed(2);
 }
+const handleWidthrawAmountFromWallet = async()=>{
+  try{
+
+       const walletDiscount =getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet
+       if(walletDiscount > 0 ) {
+        const value =Number(user?.wallet_amount) - Number(walletDiscount)
+      const res = await updateUserData(user?.id,{
+        wallet_amount:value?.toFixed(2)
+      })
+      await updateOrderData(item?.id,{
+        payed_amount_with_wallet:Number(walletDiscount),
+      //   paymentO
+      })
+      if(res){
+          console.log("Success Update User",res)
+          const gottenuser = await getUserByPhoneNumber(user?.phoneNumber);
+          
+          dispatch(setUserData(gottenuser));
+          //   Alert.alert("  تمت عمليةالشحن بنجاح ")
+          
+      }
+  
+}
+}catch(err){
+      console.log("err handle oeration",err)
+  }
+}
+
 console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attributes)
   if (isLoading) return <LoadingScreen />;
   return (
@@ -427,8 +439,10 @@ console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attr
           style={styles.buttonStyles}
           onPress={() => {
             const amountToPay = getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayInCash
-            console.log("the user will pay ",amountToPay)
-            if(amountToPay === 0 ){
+            console.log("the user will pay ",amountToPay === 0)
+            if(Number(amountToPay) === 0 ){
+              console.log("the amountToPay will pay ",amountToPay)
+              handleWidthrawAmountFromWallet()
               handlePayOrder()
             }else if(amountToPay > 0 ) {
               console.log("the amount it ",getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet)

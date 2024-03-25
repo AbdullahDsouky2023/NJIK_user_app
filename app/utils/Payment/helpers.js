@@ -89,7 +89,7 @@ export const getValueDiscountFromBalance = (balance, orderAmount) => {
     }
 
     return {
-        amountToPayWithWallet:amountToPayWithWallet?.toFixed(2),
-        amountToPayInCash:amountToPayInCash?.toFixed(2)
+        amountToPayWithWallet:Number(amountToPayWithWallet)?.toFixed(2),
+        amountToPayInCash:Number(amountToPayInCash)?.toFixed(2)
     };
 }

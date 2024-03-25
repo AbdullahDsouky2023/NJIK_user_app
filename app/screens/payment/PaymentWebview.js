@@ -10,8 +10,11 @@ import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-a
 import { Dialog as PaperDialog } from 'react-native-paper';
 import { Colors, Sizes,Fonts } from '../../constant/styles';
 import AppText from '../../component/AppText';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddNewPaymentProcess } from '../../../utils/payment_process';
+import { getUserByPhoneNumber, updateUserData } from '../../../utils/user';
+import { setUserData } from '../../store/features/userSlice';
+import { updateOrderData } from '../../../utils/orders';
 
 const { width , height } = Dimensions.get('screen')
 export default function PaymentWebview({ route, navigation }) {
@@ -21,6 +24,7 @@ export default function PaymentWebview({ route, navigation }) {
     const [lastMessage, setLastMessage] = useState(null);
     const webViewRef = useRef(null)
     const user = useSelector((state) => state?.user?.userData);
+    const dispatch = useDispatch()
 
     const [currentOperationStatus,SetCurrentOperationStatus]=useState(null)
     const [orderStatusChecked, setOrderStatusChecked] = useState(false);
@@ -48,6 +52,7 @@ const [showDialog,setShowDialog]=useState(false)
             }
             else if(currentOperationStatus === "settled"){
             //   Alert.alert("the operation was declined man bad news")
+            HandleUserBalanceAfterOperation()
             AddPaymentSuccessfull()
               Dialog.show({
                 type: ALERT_TYPE.SUCCESS,
@@ -181,8 +186,38 @@ try {
             console.log('Error:', error)
         }
     }
-
-
+ 
+    const HandleUserBalanceAfterOperation = async()=>{
+        try{
+            const   orderIdMatch = orderId.match(/ORDER(\d+)/);
+  
+            if (orderIdMatch && orderIdMatch[1]) {
+             const OrderCurrentID = orderIdMatch[1]; 
+             console.log("order id is yahhh",OrderCurrentID)
+             const walletDiscount =route?.params?.decreadedAmountFromWallet
+             if(walletDiscount > 0 ) {
+              const value =Number(user?.wallet_amount) - Number(walletDiscount)
+            const res = await updateUserData(user?.id,{
+              wallet_amount:value?.toFixed(2)
+            })
+            await updateOrderData(OrderCurrentID,{
+              payed_amount_with_wallet:Number(walletDiscount),
+            //   paymentO
+            })
+            if(res){
+                console.log("Success Update User",res)
+                const gottenuser = await getUserByPhoneNumber(user?.phoneNumber);
+                
+                dispatch(setUserData(gottenuser));
+                //   Alert.alert("  تمت عمليةالشحن بنجاح ")
+                
+            }
+        }
+    }
+    }catch(err){
+            console.log("err handle oeration")
+        }
+    }
 
     return (
         <AlertNotificationRoot>
