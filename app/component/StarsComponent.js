@@ -119,7 +119,7 @@ export default function StarsComponent({ route }) {
         });
         sendPushNotification(
           providerNotificationToken,
-          `تم انهاء الطلب بواسطه ${selectedOrder[0]?.attributes?.user?.data?.attributes?.username}`
+          `تم إنهاء الطلب بواسطة ${selectedOrder[0]?.attributes?.user?.data?.attributes?.username}`
         );
         Alert.alert(
           "تم بنجاح",

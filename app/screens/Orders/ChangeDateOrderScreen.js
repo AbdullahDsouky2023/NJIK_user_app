@@ -74,7 +74,7 @@ const ChangeDateOrderScreen = ({ navigation, route }) => {
               item?.attributes?.provider?.data?.attributes
               ?.expoPushNotificationToken,
               "تغيير موعد الطلب",
-              `تم تغيير موعد الطلب الي ${formattedDate?.toString()}`
+              `تم تغيير موعد الطلب إلى ${formattedDate?.toString()}`
               );
             }
         if( item?.attributes?.user?.data?.attributes
@@ -84,7 +84,7 @@ const ChangeDateOrderScreen = ({ navigation, route }) => {
               item?.attributes?.user?.data?.attributes
               ?.expoPushNotificationToken,
               "تغيير موعد الطلب",
-              `تم تغيير موعد الطلب الي ${formattedDate?.toString()}`
+              `تم تغيير موعد الطلب إلى ${formattedDate?.toString()}`
               );
             }
             navigation.goBack();

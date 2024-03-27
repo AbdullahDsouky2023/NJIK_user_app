@@ -43,29 +43,65 @@ export async function getZipCode() {
 // caalue the coupon amount 
 export const CalculatePriceWithCoupon = (orderAmount, CouponValue) => {
     const discountPercentage = Number(CouponValue) / 100;
-    const discountAmount = orderAmount * discountPercentage;
-    const totalPrice = orderAmount - discountAmount;
+    const discountAmount = Number(orderAmount * discountPercentage).toFixed(2);
+    const totalPrice = Number(orderAmount - discountAmount).toFixed(2);
     return {
         totalPrice,
         discountAmount,
         discountPercentage
     };
 }
+/**
+ * Calculates the original price based on the discount amount.
+ * @param {number} currentPrice - The current price.
+ * @param {number} discountAmount - The discount amount (percentage).
+ * @returns {Object} An object containing the original price and discount percentage.
+ */
+export const CalculatePriceWithoutCoupon = (currentPrice, discountAmount) => {
+    console.log("Current price:", currentPrice, "Discount amount:", discountAmount);
+
+    if (!discountAmount || discountAmount <= 0 || discountAmount >= 100) {
+        // No discount or invalid discount amount
+        return {
+            originalPrice: currentPrice || "يتم الحساب",
+            discountPercentage: 0,
+        };
+    }
+
+    // Calculate the discount percentage
+    const discountPercentage = discountAmount / 100;
+
+    // Calculate the original price
+    const originalPrice = Number(currentPrice / (1 - discountPercentage)).toFixed(2);
+
+    return {
+        originalPrice: originalPrice,
+        discountPercentage: discountAmount,
+    };
+};
+
+// Example usage:
+const currentPrice = 100; // Example current price
+const discountAmount = 20; // Example discount amount (percentage)
+const result = CalculatePriceWithoutCoupon(currentPrice, discountAmount);
+console.log("Original price:", result.originalPrice);
+console.log("Discount percentage:", result.discountPercentage);
 
 //1250 be 1000 without addional
  export const CalculteServicePriceWithoutAddionalPrices = (item)=>{
     let PurePrice = 0
     const addionalPrices = item?.attributes?.additional_prices?.data
     const  totalPrice = item?.attributes?.totalPrice
-    const providerFee = item?.attributes?.providerFee
-    if(addionalPrices){
+    const providerFee = item?.attributes?.provider_fee
+    if(addionalPrices?.length > 0){
 
         PurePrice = addionalPrices.reduce((accumulator, currentItem) => {
             return accumulator + currentItem?.attributes?.Price;
         }, 0);
     }
-    if(providerFee){
-        PurePrice+=providerFee
+    if(providerFee > 0 ){
+        return totalPrice
+
     }
     console.log("pure",PurePrice,totalPrice,totalPrice - PurePrice)
     return totalPrice - PurePrice
@@ -93,3 +129,47 @@ export const getValueDiscountFromBalance = (balance, orderAmount) => {
         amountToPayInCash:Number(amountToPayInCash)?.toFixed(2)
     };
 }
+
+
+
+/**
+ * Calculates the provider's profit after payment.
+ * @param {Object} orderData - The order data containing necessary attributes.
+ * @returns {number} The provider's profit.
+ */
+export const calculateProviderProfitAfterPayment = (orderData) => {
+    try {
+        // Extract necessary data from orderData
+        const totalPrice = orderData?.attributes?.totalPrice || 0;
+        const providerFee = orderData?.attributes?.provider_fee || 0;
+        const coupons = orderData?.attributes?.coupons?.data || [];
+
+        // Calculate the base price after applying coupons
+        let basePrice = totalPrice;
+      
+        // Calculate the provider's profit
+        let providerProfit = 0;
+        if (providerFee > 0) {
+            providerProfit = basePrice - providerFee;
+        } else {
+            const totalServicePrice = CalculteServicePriceWithoutAddionalPrices(orderData) || 0;
+            const additionalPriceAmount = basePrice - totalServicePrice;
+
+            // Ensure the additional price amount is non-negative
+            const adjustedAdditionalPrice = Math.max(additionalPriceAmount, 0);
+
+            // Calculate the provider's profit based on total service price and additional prices
+            const baseProfit = totalServicePrice * 0.80;
+            providerProfit = baseProfit + adjustedAdditionalPrice;
+        }
+
+        return providerProfit;
+    } catch (error) {
+        console.error("Error calculating provider profit:", error);
+        return 0; // Return a default value or handle the error appropriately
+    }
+};
+
+
+
+

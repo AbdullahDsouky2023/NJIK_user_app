@@ -20,7 +20,7 @@ import { CURRENCY } from "../../navigation/routes";
 import ItemComponent from "../../component/Payment/ItemComponent";
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTranslation } from "react-i18next";
-import { CalculatePriceWithCoupon, CalculateTax, CalculteServicePriceWithoutAddionalPrices, calculateTotalWithTax } from "../../utils/Payment/helpers";
+import { CalculatePriceWithCoupon, CalculatePriceWithoutCoupon, CalculateTax, CalculteServicePriceWithoutAddionalPrices, calculateTotalWithTax } from "../../utils/Payment/helpers";
 const { width, height } = Dimensions.get("screen");
 
 export default function CompleteOrderDetails({ navigation, route }) {
@@ -51,11 +51,9 @@ export default function CompleteOrderDetails({ navigation, route }) {
   }
   const CalculateTotalPriceWithFee = (item) => {
     let TotalPrice = calculateTotalWithTax(item?.attributes?.totalPrice);
-    if (CurrentOrderData?.attributes?.coupons?.data[0]) {
-        const CouponPrice = CalculatePriceWithCoupon(item?.attributes?.totalPrice, CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount;
-        TotalPrice = TotalPrice - CouponPrice ;
-        console.log("the tootla price ",CouponPrice,TotalPrice)
-    }
+   if(item?.attributes?.payed_amount_with_wallet > 0){
+    TotalPrice -= item?.attributes?.payed_amount_with_wallet
+   }
     // Convert to string with fixed decimal places at the end
     return Number(TotalPrice).toFixed(2);
 }
@@ -245,9 +243,15 @@ export default function CompleteOrderDetails({ navigation, route }) {
           item?.attributes?.provider?.data?.attributes?.name
 
         } />
-        <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${CalculteServicePriceWithoutAddionalPrices(item)} ${t(CURRENCY)}`} />
-        {CurrentOrderData?.attributes?.coupons?.data[0] && <ItemComponent name={"خصم الكوبون"} iconName={"money"} 
-           data={`${(CalculatePriceWithCoupon(CalculteServicePriceWithoutAddionalPrices(item),CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount)} ${t(CURRENCY)}`} />}
+        <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? 
+                  `${CalculatePriceWithoutCoupon(
+                    CalculteServicePriceWithoutAddionalPrices(CurrentOrderData),CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)
+                    ?.originalPrice} ${t(CURRENCY)}`
+                  : "السعر بعد الزيارة"} name={"Price"} />
+                {CurrentOrderData?.attributes?.coupons?.data[0] && <ItemComponent name={"خصم الكوبون"} iconName={"money"}
+                  data={`${(CalculatePriceWithCoupon(CalculatePriceWithoutCoupon(CalculteServicePriceWithoutAddionalPrices(CurrentOrderData),CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.originalPrice,CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount)} ${t(CURRENCY)}`} 
+                  />}
+                
 
         <View>
           <AppText
@@ -281,7 +285,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
 
         <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${CalculateTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
         <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${item?.attributes?.payed_amount_with_wallet } ${t(CURRENCY)}`} />
-        {/* <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${CalculateTotalPriceWithFee(item)} ${t(CURRENCY)}`} /> */}
+        <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${CalculateTotalPriceWithFee(item)} ${t(CURRENCY)}`} />
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={" ملاحظات"} style={styles.title} />
           <AppText
@@ -345,7 +349,11 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
     paddingHorizontal: 18,
+    display:'flex',
+    flexDirection:'row',
+    gap:100,
     backgroundColor: Colors.whiteColor,
+
   },
   shadowStyles :{
     shadowColor: "#000",

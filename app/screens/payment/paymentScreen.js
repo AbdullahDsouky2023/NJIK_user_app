@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, SafeAreaView, StatusBar, ScrollView, Image, Dimensions, TouchableOpacity, Alert } from "react-native";
 import { Colors, Fonts, Sizes } from "../../constant/styles";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,74 +15,74 @@ import { getUserByPhoneNumber, updateProviderData, updateUserData } from "../../
 import { setUserData } from "../../store/features/userSlice";
 import MultiPaymentMethod from '../../component/Payment/MultiPaymentMethods'
 import PaymentMethod from '../../component/Payment/PaymentMethod'
-const { width } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('screen');
 
-const PaymentScreen = ({ navigation,route }) => {
+const PaymentScreen = ({ navigation, route }) => {
 
     const [state, setState] = useState({
         currentPaymentMethodIndex: 2,
         showSuccessDialog: false,
     })
     const user = useSelector((state) => state?.user?.userData);
-const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const updateState = (data) => setState((state) => ({ ...state, ...data }))
-    const [isLoading,setIsLoading]=useState(false)
-    const [CurrentOrderData, setCurrentOrderData ] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [CurrentOrderData, setCurrentOrderData] = useState(null)
 
-const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.params
+    const { handleGenererateInitator, totalAmount, handlePayOrder, orderId } = route?.params
 
     const {
         currentPaymentMethodIndex,
         showSuccessDialog,
     } = state;
-    useEffect(()=>{
+    useEffect(() => {
         GetOrderDataComplete()
-      }, [])
-      const GetOrderDataComplete = async() => {
-        try{
-          if(orderId){
-      console.log("item ,", orderId)
-    
-      const currentOrderData = await GetOrderData(orderId)
-      if(currentOrderData){
-            
-            setCurrentOrderData(currentOrderData)
-          }
+    }, [])
+    const GetOrderDataComplete = async () => {
+        try {
+            if (orderId) {
+                console.log("item ,", orderId)
+
+                const currentOrderData = await GetOrderData(orderId)
+                if (currentOrderData) {
+
+                    setCurrentOrderData(currentOrderData)
+                }
+            }
+        } catch (err) {
+            console.log("err")
         }
-        }catch(err){
-          console.log("err")
-        }
-      }
-    const handlePayWithWallet = async(amount)=>{
-        try{
-            const res = await updateUserData(user?.id,{
-              wallet_amount:Number(user?.wallet_amount)-Number(amount),
-              
-            })
-            const res2 = await updateOrderData(orderId,{
-                payed_with_wallet:true
+    }
+    const handlePayWithWallet = async (amount) => {
+        try {
+            const res = await updateUserData(user?.id, {
+                wallet_amount: Number(user?.wallet_amount) - Number(amount),
 
             })
-            if(res){
-              console.log("Success Update User",res)
-              const gottenuser = await getUserByPhoneNumber(user?.phoneNumber);
-      
-              dispatch(setUserData(gottenuser));
-            //   Alert.alert("  تمت عمليةالشحن بنجاح ")
-      
-            }else {
-              Alert.alert("عذراً هناك مشكلة")
+            const res2 = await updateOrderData(orderId, {
+                payed_with_wallet: true
+
+            })
+            if (res) {
+                console.log("Success Update User", res)
+                const gottenuser = await getUserByPhoneNumber(user?.phoneNumber);
+
+                dispatch(setUserData(gottenuser));
+                //   Alert.alert("  تمت عمليةالشحن بنجاح ")
+
+            } else {
+                Alert.alert("عذراً هناك مشكلة")
             }
-          }catch(err){
-            console.log("error updating the user ",err.message)
-          }
+        } catch (err) {
+            console.log("error updating the user ", err.message)
+        }
     }
     const multiPaymentArray = [
         require("../../assets/images/payment_icon/visa.png"),
         require("../../assets/images/payment_icon/master.png"),
         require("../../assets/images/payment_icon/mada.png"),
-    
-      ]
+
+    ]
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bodyBackColor }}>
             <StatusBar backgroundColor={Colors.primaryColor} />
@@ -90,19 +90,23 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
                 {header()}
                 <ScrollView
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ paddingBottom: Sizes.fixPadding * 8.0 }}
+                    contentContainerStyle={{ paddingBottom: Sizes.fixPadding * 8.0, display: 'flex', gap: 18 }}
                 >
-                   <MultiPaymentMethod
-          icons = {multiPaymentArray}
-            paymentType="Card"
-            index={1}
-            updateState={updateState}
-            currentPaymentMethodIndex={currentPaymentMethodIndex}
-          />
+                    <MultiPaymentMethod
+                        icons={multiPaymentArray}
+                        paymentType="Card"
+                        index={1}
+                        updateState={updateState}
+
+                        PaymentStyles={styles.PaymentStyles}
+                        currentPaymentMethodIndex={currentPaymentMethodIndex}
+                    />
                     <PaymentMethod
                         icon={require('../../assets/images/payment_icon/stc.png')}
                         paymentType='Wallet'
                         index={2}
+                                   PaymentStyles={styles.PaymentStyles}
+
                         updateState={updateState}
                         currentPaymentMethodIndex={currentPaymentMethodIndex}
                     />
@@ -110,6 +114,10 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
                         icon={require('../../assets/images/payment_icon/urpay.png')}
                         paymentType='Wallet'
                         index={3}
+
+                                   PaymentStyles={styles.PaymentStyles}
+
+
                         updateState={updateState}
                         currentPaymentMethodIndex={currentPaymentMethodIndex}
                     />
@@ -117,37 +125,46 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
                         icon={require('../../assets/images/payment_icon/apple.png')}
                         paymentType='Wallet'
                         index={4}
-                        updateState={updateState}
-                        currentPaymentMethodIndex={currentPaymentMethodIndex}
-                    />
-                    <PaymentMethod
-                        icon={require('../../assets/images/payment_icon/cash.png')}
-                        paymentType='Wallet'
-                        index={5}
+                                   PaymentStyles={styles.PaymentStyles}
+
+
                         updateState={updateState}
                         currentPaymentMethodIndex={currentPaymentMethodIndex}
                     />
                     <PaymentMethod
                         icon={require('../../assets/images/payment_icon/tabby.png')}
                         paymentType='Wallet'
-                        index={6}
+                        index={5}
+                                   PaymentStyles={styles.PaymentStyles}
+
+
                         updateState={updateState}
                         currentPaymentMethodIndex={currentPaymentMethodIndex}
                     />
                     <PaymentMethod
                         icon={require('../../assets/images/payment_icon/tamara.png')}
                         paymentType='Wallet'
-                        index={7}
+                        index={6}
+                                   PaymentStyles={styles.PaymentStyles}
+
+
                         updateState={updateState}
                         currentPaymentMethodIndex={currentPaymentMethodIndex}
                     />
-                    
+
+                    {/* <PaymentMethod
+                        icon={require('../../assets/images/payment_icon/cash.png')}
+                        paymentType='Wallet'
+                        index={7}
+                        updateState={updateState}
+                        currentPaymentMethodIndex={currentPaymentMethodIndex}
+                    /> */}
                 </ScrollView>
                 {payButton()}
             </View>
-            <LoadingModal visible={isLoading}/>
+            <LoadingModal visible={isLoading} />
             {successDialog()}
-            
+
         </SafeAreaView>
     )
 
@@ -163,7 +180,7 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
                         <MaterialIcons name="error" size={40} color={Colors.primaryColor} />
                     </View>
                     <Text style={{ ...Fonts.blackColor20Medium, marginTop: Sizes.fixPadding + 10.0 }}>
-                       هناك مشكلة حاول مرة اخري
+                        هناك مشكلة حاول مرة اخري
                     </Text>
                 </View>
             </Dialog>
@@ -171,7 +188,7 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
     }
 
     function payButton() {
-        const CalculateProviderFeeForCash = ()=>{
+        const CalculateProviderFeeForCash = () => {
             const fee = totalAmount * 0.2
             return Number(fee).toFixed(2)
         }
@@ -179,49 +196,50 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
             <View style={styles.payButtonOuterWrapStyle}>
                 <TouchableOpacity
                     activeOpacity={0.6}
-                    onPress={async() => {
-                        console.log("paythe paymendt ",CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount)
-                        if(currentPaymentMethodIndex === 5){
-                            if(CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount >= CalculateProviderFeeForCash()  ){
-                            const providerID = CurrentOrderData?.attributes?.provider?.data?.id
-                            const FeeDisCounted = Number(CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount) - Number(CalculateProviderFeeForCash());
-                           
-                            handlePayOrder()
-                            FeeDisCounted > 0 &&   await updateProviderData(providerID,{
-                                wallet_amount:FeeDisCounted  
-                            })}else {
-                                                              updateState({ showSuccessDialog: true })
-// 
-                                
+                    onPress={async () => {
+                        console.log("paythe paymendt ", CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount)
+                        if (currentPaymentMethodIndex === 7) {
+                            if (CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount >= CalculateProviderFeeForCash()) {
+                                const providerID = CurrentOrderData?.attributes?.provider?.data?.id
+                                const FeeDisCounted = Number(CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount) - Number(CalculateProviderFeeForCash());
+
+                                handlePayOrder()
+                                FeeDisCounted > 0 && await updateProviderData(providerID, {
+                                    wallet_amount: FeeDisCounted
+                                })
+                            } else {
+                                updateState({ showSuccessDialog: true })
+                                // 
+
                             }
                             // console.log("handle pay wit cath",),)
-                        }else {
-                            
-                            
-                                                        setIsLoading(true)
-                                                        handleGenererateInitator()
-                                                        setTimeout(() => {
-                                                            
-                                                            setIsLoading(false)
-                                                        }, 1000);
+                        } else {
+
+
+                            setIsLoading(true)
+                            handleGenererateInitator()
+                            setTimeout(() => {
+
+                                setIsLoading(false)
+                            }, 1000);
                         }
                         // else if(currentPaymentMethodIndex === 2){
                         //     if(user?.wallet_amount >= totalAmount  ){
-                                
+
                         //         handlePayOrder()
                         //         handlePayWithWallet(totalAmount)
                         //     }else {
                         //         updateState({ showSuccessDialog: true })
                         //         console.log(totalAmount,user?.wallet_amount)
                         //     }
-                        
+
                         // }
                     }
                     }
                     style={styles.payButtonWrapStyle}
                 >
                     <Text style={{ ...Fonts.whiteColor19Medium }}>
-                       تأكيد
+                        تأكيد
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -233,9 +251,9 @@ const {handleGenererateInitator,totalAmount,handlePayOrder,orderId} = route?.par
         return (
             <View style={styles.headerWrapStyle}>
                 <Text style={{ ...Fonts.whiteColor19Medium, marginLeft: Sizes.fixPadding + 5.0 }}>
-                    أختيار وسيله الدفع
+                    أختيار وسيلة الدفع
                 </Text>
-               {/* <ArsrowBack/> */}
+                {/* <ArsrowBack/> */}
             </View>
         )
     }
@@ -246,8 +264,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primaryColor,
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent:"space-between",
-        height: 56.0,
+        justifyContent: "space-between",
+        height: 50,
         paddingHorizontal: Sizes.fixPadding * 2.0,
         marginBottom: Sizes.fixPadding,
     },
@@ -265,7 +283,7 @@ const styles = StyleSheet.create({
     },
     radioButtonStyle: {
         width: 20.0,
-        height: 20.0,
+        height: 20,
         borderRadius: 10.0,
         borderWidth: 1.0,
         backgroundColor: Colors.whiteColor,
@@ -306,7 +324,7 @@ const styles = StyleSheet.create({
         borderColor: Colors.primaryColor,
         borderWidth: 1.0,
         width: 70.0,
-        height: 70.0,
+        height: 70,
         borderRadius: 35.0,
         alignItems: 'center',
         justifyContent: 'center',
@@ -316,7 +334,12 @@ const styles = StyleSheet.create({
         paddingVertical: Sizes.fixPadding + 5.0,
         paddingHorizontal: Sizes.fixPadding * 2.0,
         marginBottom: Sizes.fixPadding
-    }
+    },
+    PaymentStyles:
+  { 
+    height:height*0.09,
+    width:width*0.90
+  }
 })
 
 export default PaymentScreen;

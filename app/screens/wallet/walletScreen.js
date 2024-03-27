@@ -34,7 +34,7 @@ import LoadingModal from "../../component/Loading";
 import UseLocation from "../../../utils/useLocation";
 import SuccessModel from "../../component/SuccessModal";
 
-const { width } = Dimensions.get("screen");
+const { width ,height} = Dimensions.get("screen");
 export default function WalletScreen() {
   const { t } = useTranslation()
   const [loading, setIsLoading] = useState(false)
@@ -73,10 +73,13 @@ export default function WalletScreen() {
               centered={false}
             />
           </View>
+          <View style={{marginBottom:10,display:'flex',alignItems:'center',}}>
           <MultiPaymentMethod
           icons = {multiPaymentArray}
             paymentType="Card"
             index={1}
+            PaymentStyles={styles.PaymentStyles}
+
             updateState={updateState}
             currentPaymentMethodIndex={currentPaymentMethodIndex}
           />
@@ -85,6 +88,7 @@ export default function WalletScreen() {
             icon={require("../../assets/images/payment_icon/stc.png")}
             paymentType="Card"
             index={2}
+            PaymentStyles={styles.PaymentStyles}
             updateState={updateState}
             currentPaymentMethodIndex={currentPaymentMethodIndex}
           />
@@ -92,6 +96,8 @@ export default function WalletScreen() {
             icon={require("../../assets/images/payment_icon/urpay.png")}
             paymentType="Card"
             index={3}
+            PaymentStyles={styles.PaymentStyles}
+
             updateState={updateState}
             currentPaymentMethodIndex={currentPaymentMethodIndex}
           />
@@ -100,6 +106,8 @@ export default function WalletScreen() {
             paymentType="Card"
             index={4}
             updateState={updateState}
+            PaymentStyles={styles.PaymentStyles}
+
             currentPaymentMethodIndex={currentPaymentMethodIndex}
           />
           <PaymentMethod
@@ -107,14 +115,17 @@ export default function WalletScreen() {
             paymentType="Card"
             index={5}
             updateState={updateState}
+            PaymentStyles={styles.PaymentStyles}
+
             currentPaymentMethodIndex={currentPaymentMethodIndex}
           />
+          </View>
       
           <AppButton
             title={"Confirm"}
             disabled={!(currentPaymentMethodIndex )}
-
-            // style={styles.button}
+            textStyle={{fontSize:RFPercentage(2.7)}}
+            style={styles.button}
             onPress={() => setShowModalVisible(true)}
           // textStyle={{ color: Colors.whiteColor }}
           />
@@ -304,7 +315,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.piege,
   },
   button: {
-    width: width * 0.3
+    width: width * 0.4,
+    marginTop:5
   },
   CloseButton: {
     backgroundColor: 'red'
@@ -333,7 +345,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 30,
-    // marginTop: -10,
+    marginBottom: 15,
     fontSize: RFPercentage(2.8),
     borderColor: Colors.primaryColor,
     textAlign: 'center'
@@ -372,5 +384,9 @@ const styles = StyleSheet.create({
 
     fontSize: RFPercentage(2.5)
 
+  },PaymentStyles:
+  { 
+    height:height*0.08,
+    width:width*0.85
   }
 });

@@ -24,7 +24,7 @@ export default function ContactUsModal({visible,hideModal}) {
        };
        
        const handleEmailPress = () => {
-        let emailAddress = "fs@njik.sa"; // Replace with your email address
+        let emailAddress = "cs@njik.sa"; // Replace with your email address
         let subject = "Hello"; // Replace with your subject
         let body = "Hello, World!"; // Replace with your body
         let encodedSubject = encodeURIComponent(subject);

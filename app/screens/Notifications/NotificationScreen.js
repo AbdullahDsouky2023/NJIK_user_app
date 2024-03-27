@@ -10,7 +10,7 @@ import AppText from "../../component/AppText";
 import { ScrollView } from "react-native-virtualized-view";
 import NotificationItem from "../../component/notifications/NotificationItem";
 import AppButton from "../../component/AppButton";
-const { width } = Dimensions.get('screen')
+const { width, height } = Dimensions.get('screen')
 export default function NotificationScreen() {
   const [notifications, setNotifications] = useState(null);
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function NotificationScreen() {
       <StatusBar backgroundColor={Colors.primaryColor} />
         <ArrowBack />
       
-      <ScrollView style={{padding:20}}>
+      <ScrollView style={{paddingHorizontal:20,}}>
         {
           notifications?.length > 0 ?
           <FlatList
@@ -49,8 +49,9 @@ export default function NotificationScreen() {
           data={notifications}
           style={{
             display: "flex",
-            gap: 20,
+            gap: 10,
             flexWrap:'wrap',
+            marginBottom:10,
             // backgroundColor:'red',
             flexDirection:'column'
           }}
@@ -58,11 +59,14 @@ export default function NotificationScreen() {
             return <NotificationItem  
             text={item?.request?.content?.title} 
             time={item?.date}
+            body={item?.request?.content?.body}
             onDeleteNotfication={()=>deleteNotification(item)} />;
           }}
+          inverted={true} // This line inverts the order of items
+
           keyExtractor={(item, index) => item + index}
           />
-        :<AppText text={"There is no notifications yet"} style={{marginTop:width*0.5}}/>}
+        :<AppText text={"There is no notifications yet"} style={{marginTop:height*0.35}}/>}
       </ScrollView>
     </SafeAreaView>
   );

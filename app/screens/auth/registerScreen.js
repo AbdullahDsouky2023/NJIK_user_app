@@ -97,7 +97,7 @@ const RegisterScreen = ({ navigation, route }) => {
           })
         );
       } else {
-        Alert.alert("الاسم او البريد الالكتروني مستخدم من قبل ");
+        Alert.alert("الاسم او البريد الالكترونى مستخدم من قبل ");
       }
     } catch (err) {
       console.log("error creating the resi", err.message);

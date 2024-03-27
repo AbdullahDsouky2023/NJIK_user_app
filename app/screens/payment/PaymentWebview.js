@@ -1,5 +1,5 @@
 // Import necessary modules
-import React, { useRef, useState,useEffect } from 'react';
+import React, { useRef, useState,useEffect,useCallback } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { CECKOUT_WEBVIEW_SCREEN, SUCESS_PAYMENT_SCREEN } from '../../navigation/routes';
@@ -12,9 +12,10 @@ import { Colors, Sizes,Fonts } from '../../constant/styles';
 import AppText from '../../component/AppText';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddNewPaymentProcess } from '../../../utils/payment_process';
-import { getUserByPhoneNumber, updateUserData } from '../../../utils/user';
+import { getUserByPhoneNumber, updateProviderData, updateUserData } from '../../../utils/user';
 import { setUserData } from '../../store/features/userSlice';
-import { updateOrderData } from '../../../utils/orders';
+import { GetOrderData, updateOrderData, useOrderInfo } from '../../../utils/orders';
+import { calcuateProviderProfitAfterPayment, calculateProviderProfitAfterPayment } from '../../utils/Payment/helpers';
 
 const { width , height } = Dimensions.get('screen')
 export default function PaymentWebview({ route, navigation }) {
@@ -25,7 +26,11 @@ export default function PaymentWebview({ route, navigation }) {
     const webViewRef = useRef(null)
     const user = useSelector((state) => state?.user?.userData);
     const dispatch = useDispatch()
+    const [CurrentOrderData, setCurrentOrderData ] = useState(null)
 
+    // if(orderData){
+        console.log("HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",CurrentOrderData?.id)
+    // }
     const [currentOperationStatus,SetCurrentOperationStatus]=useState(null)
     const [orderStatusChecked, setOrderStatusChecked] = useState(false);
 const [showDialog,setShowDialog]=useState(false)
@@ -53,6 +58,7 @@ const [showDialog,setShowDialog]=useState(false)
             else if(currentOperationStatus === "settled"){
             //   Alert.alert("the operation was declined man bad news")
             HandleUserBalanceAfterOperation()
+            HandleProviderProfitAfterSuccessPayment()
             AddPaymentSuccessfull()
               Dialog.show({
                 type: ALERT_TYPE.SUCCESS,
@@ -218,7 +224,48 @@ try {
             console.log("err handle oeration")
         }
     }
+    useEffect(()=>{
+        GetOrderDataComplete(orderId)
+      }, [orderId])
+      const GetOrderDataComplete = async() => {
+        try{
+            const   orderIdMatch = orderId.match(/ORDER(\d+)/);
 
+            if (orderIdMatch && orderIdMatch[1]) {
+                const OrderCurrentID = orderIdMatch[1]; 
+           
+           const currentOrderData = await GetOrderData(OrderCurrentID)
+           if(currentOrderData){
+               
+               setCurrentOrderData(currentOrderData)
+            //    console.log("provider hoook is it ssdsadadad ,", currentOrderData)
+            
+        }
+    }    
+        }catch(err){
+          console.log("err",err)
+        }
+      }
+      const HandleProviderProfitAfterSuccessPayment = async()=>{
+        try{
+            if(CurrentOrderData?.id){
+                const  amount =  calculateProviderProfitAfterPayment(CurrentOrderData)
+                const providerCurrentWalletAmount = CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount
+                const FinalAmount = Number(amount)+Number(providerCurrentWalletAmount)
+               await  updateProviderData(CurrentOrderData?.attributes?.provider?.data?.id,{
+                    wallet_amount:FinalAmount.toFixed(2)
+                })
+                console.log("the order data is there***************",)
+            }
+        }catch(err){
+            console.log("HandleProviderProfitAfterSuccessPayment",err)
+        }
+      }
+      if(CurrentOrderData?.id){
+        const  amount =  calculateProviderProfitAfterPayment(CurrentOrderData)
+        const providerCurrentWalletAmount = CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount
+        console.log("the order data is there***************",Number(amount),Number(providerCurrentWalletAmount))
+    }
     return (
         <AlertNotificationRoot>
 

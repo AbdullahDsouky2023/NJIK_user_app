@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Carousel from "react-native-snap-carousel-v4";
 // import { ScrollView } from "react-native";
 import { RFPercentage } from 'react-native-responsive-fontsize'
@@ -30,7 +30,7 @@ import { CommonActions } from "@react-navigation/native";
 import Pdf from "../Invoice/pdf";
 import * as Linking from "expo-linking";
 import initiatePayment from "../../utils/Payment/Initate";
-import { CalculatePriceWithCoupon, CalculateTax, CalculteServicePriceWithoutAddionalPrices, calculateTotalWithTax ,getValueDiscountFromBalance} from "../../utils/Payment/helpers";
+import { CalculatePriceWithCoupon, CalculatePriceWithoutCoupon, CalculateTax, CalculteServicePriceWithoutAddionalPrices, calculateProviderProfitAfterPayment, calculateTotalWithTax, getValueDiscountFromBalance } from "../../utils/Payment/helpers";
 import { getUserByPhoneNumber, updateProviderData, updateUserData } from "../../../utils/user";
 
 const { width, height } = Dimensions.get("screen");
@@ -43,7 +43,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
   const { t } = useTranslation();
   const orders = useSelector((state) => state?.orders?.orders);
   const user = useSelector((state) => state?.user?.userData);
-  const [CurrentOrderData, setCurrentOrderData ] = useState(null)
+  const [CurrentOrderData, setCurrentOrderData] = useState(null)
 
   // Added checks to ensure objects are defined before accessing their properties
   const categoryName1 = item?.attributes?.service_carts?.data?.[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes;
@@ -60,12 +60,12 @@ export default function PaymentRequiredScreen({ navigation, route }) {
         sendPushNotification(
           providerNotificationToken,
           "تم  دفع الطلب",
-          `تم  دفع الطلب  بواسطه ${user?.username}`
+          `تم  دفع الطلب  بواسطة ${user?.username}`
         );
       }
       if (res) {
         // Inside your sign-out function:
-       
+
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
@@ -88,7 +88,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
     }
   };
   const handleGenererateInitator = () => {
-    const orderAmmount = getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayInCash
+    const orderAmmount = getValueDiscountFromBalance(user?.wallet_amount, CalculateTotalPriceWithFee(item))?.amountToPayInCash
 
     const username = user.username.trim(); // Remove any leading or trailing spaces
     const nameParts = username.split(' '); // Split the username into parts
@@ -122,71 +122,85 @@ export default function PaymentRequiredScreen({ navigation, route }) {
           url: response?.redirect_url,
           orderId: `ORDER${item?.id}`,
           handlePayOrderFun: handlePayOrder,
-          decreadedAmountFromWallet:getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet
+          decreadedAmountFromWallet: getValueDiscountFromBalance(user?.wallet_amount, CalculateTotalPriceWithFee(item))?.amountToPayWithWallet
         })
         console.log('Payment initiated successfully:', response?.redirect_url)
       })
       .catch(error => console.error('Error initiating payment:', error));
   }
-  useEffect(()=>{
+  useEffect(() => {
     GetOrderDataComplete()
   }, [])
-  const GetOrderDataComplete = async() => {
-    try{
-      if(item?.id){
-  console.log("item ,", item?.id)
+  const GetOrderDataComplete = async () => {
+    try {
+      if (item?.id) {
+        console.log("item ,", item?.id)
 
-  const currentOrderData = await GetOrderData(item?.id)
-  if(currentOrderData){
-        
-        setCurrentOrderData(currentOrderData)
+        const currentOrderData = await GetOrderData(item?.id)
+        if (currentOrderData) {
+
+          setCurrentOrderData(currentOrderData)
+        }
       }
-    }
-    }catch(err){
+    } catch (err) {
       console.log("err")
     }
   }
   const CalculateTotalPriceWithFee = (item) => {
     //45 5
     let TotalPrice = calculateTotalWithTax(item?.attributes?.totalPrice);
-    console.log("the total price is ",TotalPrice)
-    if (CurrentOrderData?.attributes?.coupons?.data[0]) {
-        const CouponPrice = CalculatePriceWithCoupon(CalculteServicePriceWithoutAddionalPrices(item), CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount;
-        TotalPrice = TotalPrice - CouponPrice ;
-        console.log("the tootla price ",CouponPrice,TotalPrice)
-    }
+    console.log("the total price is ", TotalPrice)
+    // if (CurrentOrderData?.attributes?.coupons?.data[0]) {
+    //     const CouponPrice = CalculatePriceWithCoupon(CalculteServicePriceWithoutAddionalPrices(item), CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount;
+    //     TotalPrice = TotalPrice - CouponPrice ;
+    //     console.log("the tootla price ",CouponPrice,TotalPrice)
+    // }
     // Convert to string with fixed decimal places at the end
     return Number(TotalPrice).toFixed(2);
-}
-const handleWidthrawAmountFromWallet = async()=>{
-  try{
+  }
+  const handleWidthrawAmountFromWallet = async () => {
+    try {
 
-       const walletDiscount =getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet
-       if(walletDiscount > 0 ) {
-        const value =Number(user?.wallet_amount) - Number(walletDiscount)
-      const res = await updateUserData(user?.id,{
-        wallet_amount:value?.toFixed(2)
-      })
-      await updateOrderData(item?.id,{
-        payed_amount_with_wallet:Number(walletDiscount),
-      //   paymentO
-      })
-      if(res){
-          console.log("Success Update User",res)
+      const walletDiscount = getValueDiscountFromBalance(user?.wallet_amount, CalculateTotalPriceWithFee(item))?.amountToPayWithWallet
+      if (walletDiscount > 0) {
+        const value = Number(user?.wallet_amount) - Number(walletDiscount)
+        const res = await updateUserData(user?.id, {
+          wallet_amount: value?.toFixed(2)
+        })
+        await updateOrderData(item?.id, {
+          payed_amount_with_wallet: Number(walletDiscount),
+          //   paymentO
+        })
+        if (res) {
+          console.log("Success Update User", res)
           const gottenuser = await getUserByPhoneNumber(user?.phoneNumber);
-          
+
           dispatch(setUserData(gottenuser));
           //   Alert.alert("  تمت عمليةالشحن بنجاح ")
-          
-      }
-  
-}
-}catch(err){
-      console.log("err handle oeration",err)
-  }
-}
 
-console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attributes)
+        }
+
+      }
+    } catch (err) {
+      console.log("err handle oeration", err)
+    }
+  }
+  const HandleProviderProfitAfterSuccessPayment = async () => {
+    try {
+      if (CurrentOrderData?.id) {
+        const amount = calculateProviderProfitAfterPayment(CurrentOrderData)
+        const providerCurrentWalletAmount = CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount
+        const FinalAmount = Number(amount) + Number(providerCurrentWalletAmount)
+        await updateProviderData(CurrentOrderData?.attributes?.provider?.data?.id, {
+          wallet_amount: FinalAmount.toFixed(2)
+        })
+        console.log("the order data is there***************",)
+      }
+    } catch (err) {
+      console.log("HandleProviderProfitAfterSuccessPayment", err)
+    }
+  }
+  console.log("daa", CurrentOrderData?.attributes?.additional_prices?.data[0]?.attributes)
   if (isLoading) return <LoadingScreen />;
   return (
     <View style={styles.wrapper}>
@@ -206,7 +220,7 @@ console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attr
           }}
           onPress={() => navigation.navigate("App")}
         />
-        <View style={{ marginVertical: 10, paddingVertical: 8, backgroundColor: Colors.primaryColor, width: width * 0.5, alignSelf: 'center', borderRadius: 10 }}>
+        <View style={{ marginVertical: 1, paddingVertical: 8, backgroundColor: Colors.primaryColor, width: width * 0.5, alignSelf: 'center', borderRadius: 10 }}>
           <AppText text={"الدفع"} style={{ color: Colors.whiteColor, fontSize: RFPercentage(2.8) }} />
         </View>
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -233,7 +247,7 @@ console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attr
             item?.attributes?.provider?.data?.attributes?.name
 
           } />
-          <View style={[styles.shadowStyles,styles.itemContainer,{flexDirection:'column',gap:-20,padding:0,paddingBottom:5}]}>
+          <View style={[styles.shadowStyles, styles.itemContainer, { flexDirection: 'column', gap: -20, padding: 0, paddingBottom: 5 }]}>
 
             <ItemComponent name="الخدمة" iconName={"gear"} NoShadowed={true} data={
               categoryName1?.name || categoryName2?.name || categoryName3?.name
@@ -261,7 +275,7 @@ console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attr
                   borderRadius: 7,
                   width: width * 0.9,
                   backgroundColor: Colors.whiteColor,
-                 
+
                   gap: 10,
 
                 }}
@@ -310,7 +324,7 @@ console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attr
                   borderRadius: 7,
                   width: width * 0.9,
                   backgroundColor: Colors.whiteColor,
-                
+
                   gap: 10,
 
                 }}
@@ -357,7 +371,7 @@ console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attr
                   borderRadius: 7,
                   width: width * 0.9,
                   backgroundColor: Colors.whiteColor,
-                 
+
                   gap: 10,
 
                 }}
@@ -397,9 +411,9 @@ console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attr
             />
           </View>
           {/* Prices here */}
-          <ItemComponent name={"اجمالي الفاتورة"} iconName={"money"} data={`${(CalculteServicePriceWithoutAddionalPrices(item))} ${t(CURRENCY)}`} />
+          <ItemComponent name={"إجمالي الفاتورة"} iconName={"money"} data={`${CalculatePriceWithoutCoupon(CalculteServicePriceWithoutAddionalPrices(CurrentOrderData), CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.originalPrice} ${t(CURRENCY)}`} />
           {CurrentOrderData?.attributes?.coupons?.data[0] && <ItemComponent name={"خصم الكوبون"} iconName={"money"}
-           data={`${(CalculatePriceWithCoupon(CalculteServicePriceWithoutAddionalPrices(item),CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount)} ${t(CURRENCY)}`} />}
+            data={`${(CalculatePriceWithCoupon(CalculatePriceWithoutCoupon(CalculteServicePriceWithoutAddionalPrices(CurrentOrderData), CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.originalPrice, CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount)} ${t(CURRENCY)}`} />}
 
 
           {
@@ -423,10 +437,10 @@ console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attr
             </>
           }
           <ItemComponent name={"سعر الكشف والزيارة"} iconName={"money"} data={`${item?.attributes?.visit_price} ${t(CURRENCY)}`} />
-          <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet} ${t(CURRENCY)}`} />
           <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${CalculateTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
+          <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${getValueDiscountFromBalance(user?.wallet_amount, CalculateTotalPriceWithFee(item))?.amountToPayWithWallet} ${t(CURRENCY)}`} />
           {/* <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${0} ${t(CURRENCY)}`} /> */}
-          <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayInCash}  ${t(CURRENCY)}`} />
+          <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${getValueDiscountFromBalance(user?.wallet_amount, CalculateTotalPriceWithFee(item))?.amountToPayInCash}  ${t(CURRENCY)}`} />
 
 
         </ScrollView>
@@ -438,20 +452,21 @@ console.log("daa",CurrentOrderData?.attributes?.additional_prices?.data[0]?.attr
 
           style={styles.buttonStyles}
           onPress={() => {
-            const amountToPay = getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayInCash
-            console.log("the user will pay ",amountToPay === 0)
-            if(Number(amountToPay) === 0 ){
-              console.log("the amountToPay will pay ",amountToPay)
+            const amountToPay = getValueDiscountFromBalance(user?.wallet_amount, CalculateTotalPriceWithFee(item))?.amountToPayInCash
+            console.log("the user will pay ", amountToPay === 0)
+            if (Number(amountToPay) === 0) {
+              console.log("the amountToPay will pay ", amountToPay)
               handleWidthrawAmountFromWallet()
               handlePayOrder()
-            }else if(amountToPay > 0 ) {
-              console.log("the amount it ",getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet)
+              HandleProviderProfitAfterSuccessPayment()
+            } else if (amountToPay > 0) {
+              console.log("the amount it ", getValueDiscountFromBalance(user?.wallet_amount, CalculateTotalPriceWithFee(item))?.amountToPayWithWallet)
               navigation.navigate("Payment", {
                 handleGenererateInitator,
                 handlePayOrder,
                 orderId: item?.id,
                 totalAmount: amountToPay,
-                decreadedAmountFromWallet:getValueDiscountFromBalance(user?.wallet_amount,CalculateTotalPriceWithFee(item))?.amountToPayWithWallet
+                decreadedAmountFromWallet: getValueDiscountFromBalance(user?.wallet_amount, CalculateTotalPriceWithFee(item))?.amountToPayWithWallet
               })
             }
           }}
@@ -484,7 +499,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 18,
     backgroundColor: Colors.whiteColor,
-    position: 'relative'
+    position: 'relative',
+
   },
   name: {
     fontSize: RFPercentage(1.7),
@@ -500,10 +516,10 @@ const styles = StyleSheet.create({
     // borderWidth: 0.7,
     borderRadius: 10,
     marginHorizontal: 1,
-    marginVertical: 10,
+    marginVertical: 3,
     backgroundColor: Colors.whiteColor,
     gap: 10,
-    
+
   },
   descriptionContainer: {
     display: "flex",
@@ -581,8 +597,8 @@ const styles = StyleSheet.create({
     paddingBottom: width * 0.3,
 
   },
-  shadowStyles :{
-  shadowColor: "#000",
+  shadowStyles: {
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -591,19 +607,19 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 4,
 
-}
+  }
 });
 
-const ItemComponent = ({ name, data, iconName,NoShadowed }) => {
+const ItemComponent = ({ name, data, iconName, NoShadowed }) => {
   return (
-    <View style={[styles.itemContainer,!NoShadowed && styles.shadowStyles, { justifyContent: 'space-between' }]}>
+    <View style={[styles.itemContainer, !NoShadowed && styles.shadowStyles, { justifyContent: 'space-between' }]}>
       <View style={{ display: 'flex', flexDirection: 'row', gap: 15, alignItems: 'center', }}>
         <FontAwesome name={iconName} size={RFPercentage(2.2)} color={Colors.grayColor} />
 
         <AppText centered={false} text={name} style={[styles.title, { fontSize: RFPercentage(2.1) }]} />
       </View>
       <AppText
-      
+
         centered={false}
         text={data}
         style={[styles.price, { fontSize: RFPercentage(1.9) }]}
@@ -613,7 +629,7 @@ const ItemComponent = ({ name, data, iconName,NoShadowed }) => {
 }
 const ItemComponent2 = ({ name, data, iconName }) => {
   return (
-    <View style={[styles.itemContainer, styles.shadowStyles,{ justifyContent: 'space-between' }]}>
+    <View style={[styles.itemContainer, styles.shadowStyles, { justifyContent: 'space-between' }]}>
       <View style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', width: width * 0.7 }}>
         <FontAwesome name={iconName} size={RFPercentage(2.2)} color={Colors.grayColor} />
 

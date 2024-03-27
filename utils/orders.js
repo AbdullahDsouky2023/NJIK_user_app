@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 // import api from './index';
-
+import { useState,useEffect} from 'react'
 import api from './index'
 import { useSelector } from "react-redux";
 
@@ -236,4 +236,31 @@ export function useAllOrders() {
     isError,
     refetch
   };
+}
+
+
+export const useOrderInfo=(orderId)=>{
+  const [CurrentOrderData, setCurrentOrderData ] = useState(null)
+
+  useEffect(()=>{
+    GetOrderDataComplete()
+  }, [])
+  const GetOrderDataComplete = async() => {
+    try{
+      if(orderId){
+  console.log("provider hoook is it ssdsadadad ,", orderId)
+
+  const currentOrderData = await GetOrderData(orderId)
+  if(currentOrderData){
+        
+        setCurrentOrderData(currentOrderData)
+      }
+    }
+    }catch(err){
+      console.log("err")
+    }
+  }
+  return {
+    orderData:CurrentOrderData
+  }
 }

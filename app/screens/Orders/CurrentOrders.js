@@ -6,7 +6,7 @@ import CurrentOrderCard from "../../component/orders/CurrentOrderCard";
 import { FlatList } from "react-native";
 import { Colors } from "../../constant/styles";
 import AppText from "../../component/AppText";
-import useOrders, { useAllOrders } from "../../../utils/orders";
+import useOrders, { useAllOrders,useOrderInfo } from "../../../utils/orders";
 import LoadingScreen from "../loading/LoadingScreen";
 import { CommonActions } from "@react-navigation/native";
 const { width, height } = Dimensions.get("screen");
@@ -60,7 +60,7 @@ function CurrentOrders({ navigation }) {
     },
     [currentOrders,refetch],
   )
-  
+  console.log("your current order ",currentOrders)
   useEffect(() => {
     fetchData()
   }, [data])

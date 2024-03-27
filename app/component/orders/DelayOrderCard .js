@@ -40,7 +40,7 @@ export default function DelayOrderCard ({item}) {
             sendPushNotification(
               providerNotificationToken,
               "تم قبول تأجيل  الطلب",
-              `تم قبول تأجيل  الطلب بواسطه ${user?.username}`
+              `تم قبول تأجيل  الطلب بواسطة ${user?.username}`
             );
           }
           if (res) {
@@ -81,7 +81,7 @@ export default function DelayOrderCard ({item}) {
             sendPushNotification(
               providerNotificationToken,
               "تم  رفض  تأجيل  الطلب",
-              `تم  رفض  تأجيل  الطلب" بواسطه ${user?.username}`
+              `تم  رفض  تأجيل  الطلب" بواسطة ${user?.username}`
             );
           }
           if (res) {

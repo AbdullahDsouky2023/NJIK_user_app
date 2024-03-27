@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 const { width , height } = Dimensions.get("screen");
 
 import AppText from "../../component/AppText";
-export default function  MultiPaymentMethod({ icons, paymentType, index ,currentPaymentMethodIndex,updateState}) {
+export default function  MultiPaymentMethod({ icons, PaymentStyles, index ,selectedHeight,selectedWidth,currentPaymentMethodIndex,updateState}) {
     const {t} = useTranslation()
     return (
         <TouchableOpacity
@@ -19,9 +19,11 @@ export default function  MultiPaymentMethod({ icons, paymentType, index ,current
         onPress={() => updateState({ currentPaymentMethodIndex: index })}
         style={{
                 borderColor: currentPaymentMethodIndex == index ? Colors.primaryColor : '#E0E0E0',
-                ...styles.paymentMethodWrapStyle
+                ...styles.paymentMethodWrapStyle,
+                ...PaymentStyles
+
             }}>
-            <View style={{ flexDirection: 'row',gap:10, alignItems: 'center', justifyContent:'center',height: height*0.03,width:width*0.7 }}>
+            <View style={{ flexDirection: 'row',gap:10, alignItems: 'center', justifyContent:'center',height:selectedHeight|| height*0.025,width:selectedWidth || width*0.8 }}>
                 {/* <AppText numberOfLines={1} style={{
                      ...Fonts.primaryColor18Medium,
                      marginLeft: Sizes.fixPadding,
@@ -35,7 +37,7 @@ export default function  MultiPaymentMethod({ icons, paymentType, index ,current
                     source={icon}
                     style={{
                         width: width*0.15,
-                        height: 30,
+                        height: 50,
                     }}
                     resizeMode="contain"
                 />
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginVertical: Sizes.fixPadding,
+        marginVertical: Sizes.fixPadding*0.2,
     },
     radioButtonStyle: {
         width: 20.0,

@@ -7,7 +7,7 @@ import Invoice from './Invoice'; // Import your Invoice component
 import { FontAwesome5 } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
 import { Colors } from '../../constant/styles';
-import { CalculatePriceWithCoupon, CalculateTax, calculateTotalWithTax } from '../../utils/Payment/helpers';
+import { CalculatePriceWithCoupon, CalculatePriceWithoutCoupon, CalculateTax, CalculteServicePriceWithoutAddionalPrices, calculateTotalWithTax } from '../../utils/Payment/helpers';
 const { height } = Dimensions.get('screen')
 export default function Pdf({ item ,chatContainerStyles,children,CurrentOrderData}) {
 
@@ -18,11 +18,11 @@ export default function Pdf({ item ,chatContainerStyles,children,CurrentOrderDat
   const CalculateTotalPriceWithFee = (item) => {
     let TotalPrice = calculateTotalWithTax(item?.attributes?.totalPrice);
     console.log("the incoifce")
-    if (CurrentOrderData?.attributes?.coupons?.data[0]) {
-        const CouponPrice = CalculatePriceWithCoupon(item?.attributes?.totalPrice, CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount;
-        TotalPrice = TotalPrice - CouponPrice ;
-        console.log("the tootla price infoive ",CouponPrice,TotalPrice)
-    }
+    // if (CurrentOrderData?.attributes?.coupons?.data[0]) {
+    //     const CouponPrice = CalculatePriceWithCoupon(item?.attributes?.totalPrice, CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount;
+    //     TotalPrice = TotalPrice - CouponPrice ;
+    //     console.log("the tootla price infoive ",CouponPrice,TotalPrice)
+    // }
     // Convert to string with fixed decimal places at the end
     return Number(TotalPrice).toFixed(2);
 }
@@ -115,7 +115,7 @@ export default function Pdf({ item ,chatContainerStyles,children,CurrentOrderDat
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center"></td>
                       <td dir="rtl" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right"> 
-                   ${CalculatePriceWithCoupon(item?.attributes?.totalPrice,CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount}
+                   ${CalculatePriceWithCoupon(CalculatePriceWithoutCoupon(CalculteServicePriceWithoutAddionalPrices(CurrentOrderData),CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.originalPrice,CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount}
                                  </td>
                                  </tr>`
                                  )

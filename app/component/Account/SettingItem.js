@@ -26,7 +26,9 @@ export default function SettingItem({ item }) {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: "Check out this awesome app!",
+        message: "https://njik.sa/: اكتشف معنا واستمتع بجميع المميزات التي تقدمها نجيك على التطبيق و الموقع الإلكتروني. لا تفوت الفرصة لتجربة تجربة ممتازة معنا!"
+
+        ,
         // You can also add a URL to your app here
       });
 
@@ -68,7 +70,7 @@ export default function SettingItem({ item }) {
       Linking.openURL("https://njik.sa/");
     } 
     else if (icon === "question") {
-      Linking.openURL("https://njik.sa/");
+      Linking.openURL("https://njik.sa/سياسة-الخصوصية");
     } 
     else if (icon === "present") {
         navigation.navigate(OFFERS_SCREEN, { name:"العروض" });

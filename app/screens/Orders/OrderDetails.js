@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import { ScrollView } from "react-native-virtualized-view";
 
 import useOrders, {
+  GetOrderData,
   PayOrder,
   cancleOrder,
   updateOrderData,
@@ -36,7 +37,7 @@ import { Colors } from "../../constant/styles";
 import DelayOrderCard from "../../component/orders/DelayOrderCard ";
 import ItemComponent from "../../component/Payment/ItemComponent";
 import initiatePayment from "../../utils/Payment/Initate";
-import { calculateTotalWithTax ,CalculteServicePriceWithoutAddionalPrices} from "../../utils/Payment/helpers";
+import { CalculatePriceWithCoupon, CalculatePriceWithoutCoupon, calculateTotalWithTax ,CalculteServicePriceWithoutAddionalPrices} from "../../utils/Payment/helpers";
 
 
 
@@ -57,9 +58,31 @@ export default function OrderDetails({ navigation, route }) {
   const [cartServicesSelected, setCartServicesSelected] = useState([])
   const { sendPushNotification } = useNotifications();
   const { t } = useTranslation();
+  const [CurrentOrderData, setCurrentOrderData ] = useState(null)
+  const paymentComponentsRenderCondition = (item?.attributes?.additional_prices?.data?.length > 0) || (CurrentOrderData?.attributes?.coupons?.data?.length >0 )|| (item?.attributes?.provider_fee > 0)
+
   const categoryName1 = item?.attributes?.service_carts?.data[0]?.attributes?.service?.data?.attributes?.category?.data?.attributes?.name
   const categoryName2 = item?.attributes?.services.data[0]?.attributes?.category?.data?.attributes?.name
   const categoryName3 = item?.attributes?.packages?.data[0]?.attributes?.name
+  useEffect(()=>{
+    GetOrderDataComplete()
+  }, [])
+  const GetOrderDataComplete = async() => {
+    try{
+      if(item?.id){
+  console.log("item ,", item?.id)
+
+  const currentOrderData = await GetOrderData(item?.id)
+  if(currentOrderData){
+        
+        setCurrentOrderData(currentOrderData)
+      }
+    }
+    }catch(err){
+      console.log("err")
+    }
+  }
+
   const handleOrderCancle = async (id) => {
     try {
       setIsLoading(true);
@@ -89,7 +112,7 @@ export default function OrderDetails({ navigation, route }) {
         sendPushNotification(
           providerNotificationToken,
           "تم دفع الطلب",
-          `تم دفع الطلب بواسطه ${user?.username}`
+          `تم دفع الطلب بواسطة ${user?.username}`
         );
       }
       if (res) {
@@ -130,7 +153,7 @@ export default function OrderDetails({ navigation, route }) {
   }
   const handleRejectAddionalPrices = async (id) => {
     try {
-
+setIsLoading(true)
       const res = await updateOrderData(id, {
         additional_prices: null,
         PaymentStatus: 'pending',
@@ -151,8 +174,8 @@ export default function OrderDetails({ navigation, route }) {
       if (providerNotificationToken) {
         sendPushNotification(
           providerNotificationToken,
-          "تم رفض  عملية الد فع ",
-          `تم رفض  عملية الد فع  ${user?.username} الرجاء ادخال سعر اخر`
+          "تم رفض عملية الدفع ",
+          `تم رفض عملية الدفع بواسطة ${user?.username} الرجاء إدخال سعر آخر`
         );
       }
       if (res) {
@@ -241,16 +264,28 @@ export default function OrderDetails({ navigation, route }) {
             : null}
             </View>
         </View>
-        <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? `${CalculteServicePriceWithoutAddionalPrices(item)} ${t(CURRENCY)}` : "السعر بعد الزيارة"} name={"Price"} />
-        <LocationAndNotesComponent location={item?.attributes?.location} description={item?.attributes?.description} />
-        <OrderImagesComponent orderImages={item?.attributes?.orderImages} />
-        <OrderAddionalPricesComponent
+        <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? 
+          `${CalculatePriceWithoutCoupon(
+            CalculteServicePriceWithoutAddionalPrices(CurrentOrderData),CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)
+            ?.originalPrice} ${t(CURRENCY)}`
+           : "السعر بعد الزيارة"} name={"Price"} />
+        {CurrentOrderData?.attributes?.coupons?.data[0] && <ItemComponent name={"خصم الكوبون"} iconName={"money"}
+           data={`${(CalculatePriceWithCoupon(CalculatePriceWithoutCoupon(CalculteServicePriceWithoutAddionalPrices(CurrentOrderData),CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.originalPrice,CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount)} ${t(CURRENCY)}`} 
+          />}
+           <OrderAddionalPricesComponent
           item={item}
           handlePayOrder={handlePayOrder}
           handleGenererateInitator={handleGenererateInitator}
           handleRejectAddionalPrices={handleRejectAddionalPrices}
 
         />
+                {paymentComponentsRenderCondition && 
+                     <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${item?.attributes?.totalPrice}  ${t(CURRENCY)}`} />
+                }
+
+        <LocationAndNotesComponent location={item?.attributes?.location} description={item?.attributes?.description} />
+        <OrderImagesComponent orderImages={item?.attributes?.orderImages} />
+        
         <View>
           {
             item?.attributes?.delay_request?.data?.attributes?.accepted === 'pending ' &&

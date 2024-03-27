@@ -21,7 +21,7 @@ export default function OrderCreationSuccess({navigation,route}) {
   const handleReturn = ()=> {
     dispatch(setOrders(orders?.data))
     navigation.navigate('App')
-    sendPushNotification(token,"تم حجز الطلب بنجاح")
+    sendPushNotification(token,"🎉🎉 تم حجز الطلب بنجاح")
 
   }
   // console.log("the current order d dal ltdhe item ddcdurreara",data)

@@ -8,22 +8,32 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Colors, Sizes } from "../../constant/styles";
 import { Avatar } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
+import { intlFormat } from "date-fns";
 
 const { width } = Dimensions.get("screen");
-const NotificationItem = ({ text, onDeleteNotfication,time:selecttime }) => {
+const NotificationItem = ({ text, onDeleteNotfication,time:selecttime,body }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [time, setTime] = useState(new Date(selecttime));
   if(!text) return ;
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setTime(new Date(selecttime));
+      const formattedTime = new intlFormat.DateTimeFormat('ar-EG', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      }).format(new Date(selecttime));
+      setTime(formattedTime);
+      console.log("the data is ",formattedTime)
     }, 60000); // Updates every minute
 
     return () => {
       clearInterval(timer);
     };
-  }, []);
-
+  })
   const renderLeftActions = (progress, dragX) => {
     const trans = dragX.interpolate({
       inputRange: [0, 50, 100, 101],
@@ -88,6 +98,14 @@ const NotificationItem = ({ text, onDeleteNotfication,time:selecttime }) => {
             centered={false}
             style={{ fontSize: 13, color: Colors.primaryColor }}
           />
+        {
+          body &&
+          <AppText
+          text={body}
+            centered={false}
+            style={{ fontSize: 13, color: Colors.blackColor }}
+          />
+        }
         
           <AppText text= {time.toDateString()} style={styles.date} centered={false}/>
         </View>
