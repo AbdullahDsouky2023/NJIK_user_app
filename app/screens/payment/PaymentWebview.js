@@ -16,6 +16,7 @@ import { getUserByPhoneNumber, updateProviderData, updateUserData } from '../../
 import { setUserData } from '../../store/features/userSlice';
 import { GetOrderData, updateOrderData, useOrderInfo } from '../../../utils/orders';
 import { calcuateProviderProfitAfterPayment, calculateProviderProfitAfterPayment } from '../../utils/Payment/helpers';
+import useNotifications from '../../../utils/notifications';
 
 const { width , height } = Dimensions.get('screen')
 export default function PaymentWebview({ route, navigation }) {
@@ -23,6 +24,7 @@ export default function PaymentWebview({ route, navigation }) {
     const orderId = route?.params?.orderId
     const handlePayOrder = route?.params?.handlePayOrderFun
     const [lastMessage, setLastMessage] = useState(null);
+    const {sendPushNotification} = useNotifications()
     const webViewRef = useRef(null)
     const user = useSelector((state) => state?.user?.userData);
     const dispatch = useDispatch()
@@ -255,6 +257,7 @@ try {
                await  updateProviderData(CurrentOrderData?.attributes?.provider?.data?.id,{
                     wallet_amount:FinalAmount.toFixed(2)
                 })
+                await  sendPushNotification(CurrentOrderData?.attributes?.provider?.data?.attributes?.expoPushNotificationToken,"استلام دفع 💰💰",`تم استلام دفع طلب من ${CurrentOrderData?.attributes?.user?.data?.attributes?.username}`)
                 console.log("the order data is there***************",)
             }
         }catch(err){

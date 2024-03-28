@@ -84,6 +84,10 @@ export default function CompleteOrderDetails({ navigation, route }) {
 
         } />
         <ItemComponent name="التاريخ" iconName={"clock-o"} data={item?.attributes?.date} />
+        <ItemComponent name=" اسم الفنى" iconName="user" data={
+          item?.attributes?.provider?.data?.attributes?.name
+
+        } />
         <View style={[styles.shadowStyles,styles.itemContainer,{flexDirection:'column',gap:-20,padding:0,paddingBottom:5}]}>
 
         <ItemComponent  NoShadow={true} name="الخدمة" iconName={"gear"} data={
@@ -239,10 +243,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
           />
           : null}
           </View>
-        <ItemComponent name=" اسم الفنى" iconName="user" data={
-          item?.attributes?.provider?.data?.attributes?.name
-
-        } />
+     
         <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? 
                   `${CalculatePriceWithoutCoupon(
                     CalculteServicePriceWithoutAddionalPrices(CurrentOrderData),CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)
@@ -263,7 +264,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
 
         {
           item?.attributes?.provider_fee > 0 &&
-          <ItemComponent name={"اجرة الفني"} iconName={"money"} data={`${item?.attributes?.provider_fee} ${t(CURRENCY)}`} />
+          <ItemComponent name={"أجرة الفني"} iconName={"money"} data={`${item?.attributes?.provider_fee} ${t(CURRENCY)}`} />
         }
         {item?.attributes?.additional_prices?.data?.length > 0 &&
           <>
@@ -285,7 +286,7 @@ export default function CompleteOrderDetails({ navigation, route }) {
 
         <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${CalculateTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
         <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${item?.attributes?.payed_amount_with_wallet } ${t(CURRENCY)}`} />
-        <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${CalculateTotalPriceWithFee(item)} ${t(CURRENCY)}`} />
+        {/* <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${t(CURRENCY)}`} /> */}
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={" ملاحظات"} style={styles.title} />
           <AppText

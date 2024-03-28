@@ -150,7 +150,15 @@ export const calculateProviderProfitAfterPayment = (orderData) => {
         // Calculate the provider's profit
         let providerProfit = 0;
         if (providerFee > 0) {
-            providerProfit = basePrice - providerFee;
+            const additionalPriceAmount = orderData?.attributes?.additional_prices?.data?.reduce((accumulator, currentItem) => {
+                    return accumulator + currentItem?.attributes?.Price;
+                }, 0);
+            
+            if(additionalPriceAmount > 0){
+                providerProfit+=additionalPriceAmount
+            }
+            console.log("the provider provider",providerProfit,additionalPriceAmount)
+            providerProfit +=  providerFee;
         } else {
             const totalServicePrice = CalculteServicePriceWithoutAddionalPrices(orderData) || 0;
             const additionalPriceAmount = basePrice - totalServicePrice;

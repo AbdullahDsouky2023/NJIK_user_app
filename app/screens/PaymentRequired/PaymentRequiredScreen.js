@@ -418,7 +418,7 @@ export default function PaymentRequiredScreen({ navigation, route }) {
 
           {
             item?.attributes?.provider_fee > 0 &&
-            <ItemComponent name={"اجرة الفني"} iconName="money" data={`${item?.attributes?.provider_fee} ${t(CURRENCY)}`} />
+            <ItemComponent name={"أجرة الفني"} iconName="money" data={`${item?.attributes?.provider_fee} ${t(CURRENCY)}`} />
           }
           {CurrentOrderData?.attributes?.additional_prices?.data?.length > 0 &&
             <>
