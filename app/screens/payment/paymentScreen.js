@@ -15,6 +15,8 @@ import { getUserByPhoneNumber, updateProviderData, updateUserData } from "../../
 import { setUserData } from "../../store/features/userSlice";
 import MultiPaymentMethod from '../../component/Payment/MultiPaymentMethods'
 import PaymentMethod from '../../component/Payment/PaymentMethod'
+import AppButton from "../../component/AppButton";
+import { paymentMethodsArray } from "../../data/payment";
 const { width, height } = Dimensions.get('screen');
 
 const PaymentScreen = ({ navigation, route }) => {
@@ -28,13 +30,39 @@ const PaymentScreen = ({ navigation, route }) => {
     const updateState = (data) => setState((state) => ({ ...state, ...data }))
     const [isLoading, setIsLoading] = useState(false)
     const [CurrentOrderData, setCurrentOrderData] = useState(null)
-
     const { handleGenererateInitator, totalAmount, handlePayOrder, orderId } = route?.params
-
+    
     const {
         currentPaymentMethodIndex,
         showSuccessDialog,
     } = state;
+    const handleConfirmPayment = async () => {
+        console.log("paythe paymendt ", CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount)
+        if (currentPaymentMethodIndex === 7) {
+            if (CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount >= CalculateProviderFeeForCash()) {
+                const providerID = CurrentOrderData?.attributes?.provider?.data?.id
+                const FeeDisCounted = Number(CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount) - Number(CalculateProviderFeeForCash());
+
+                handlePayOrder()
+                FeeDisCounted > 0 && await updateProviderData(providerID, {
+                    wallet_amount: FeeDisCounted
+                })
+            } else {
+                updateState({ showSuccessDialog: true })
+                // 
+
+            }
+            // console.log("handle pay wit cath",),)
+        } else {
+
+
+            setIsLoading(true)
+            handleGenererateInitator()
+            setTimeout(() => {
+
+                setIsLoading(false)
+            }, 1000);
+        }}
     useEffect(() => {
         GetOrderDataComplete()
     }, [])
@@ -163,12 +191,12 @@ const PaymentScreen = ({ navigation, route }) => {
                 {payButton()}
             </View>
             <LoadingModal visible={isLoading} />
-            {successDialog()}
+            {AlertDialog(`لا يشمل  ${paymentMethodsArray[currentPaymentMethodIndex-1]}  الضمان`,handleConfirmPayment)}
 
         </SafeAreaView>
     )
 
-    function successDialog() {
+    function AlertDialog(text,onPress) {
         return (
             <Dialog
                 visible={showSuccessDialog}
@@ -177,11 +205,12 @@ const PaymentScreen = ({ navigation, route }) => {
             >
                 <View style={{ backgroundColor: Colors.whiteColor, alignItems: 'center' }}>
                     <View style={styles.successIconWrapStyle}>
-                        <MaterialIcons name="error" size={40} color={Colors.primaryColor} />
+                        <MaterialIcons name="warning" size={40} color={Colors.primaryColor} />
                     </View>
-                    <Text style={{ ...Fonts.blackColor20Medium, marginTop: Sizes.fixPadding + 10.0 }}>
-                        هناك مشكلة حاول مرة اخري
+                    <Text style={{ ...Fonts.blackColor20Medium, marginTop: Sizes.fixPadding + 10.0,textAlign:'center' }}>
+                        {text}
                     </Text>
+                    <AppButton title={"موافق"} onPress={onPress} />
                 </View>
             </Dialog>
         )
@@ -196,33 +225,8 @@ const PaymentScreen = ({ navigation, route }) => {
             <View style={styles.payButtonOuterWrapStyle}>
                 <TouchableOpacity
                     activeOpacity={0.6}
-                    onPress={async () => {
-                        console.log("paythe paymendt ", CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount)
-                        if (currentPaymentMethodIndex === 7) {
-                            if (CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount >= CalculateProviderFeeForCash()) {
-                                const providerID = CurrentOrderData?.attributes?.provider?.data?.id
-                                const FeeDisCounted = Number(CurrentOrderData?.attributes?.provider?.data?.attributes?.wallet_amount) - Number(CalculateProviderFeeForCash());
-
-                                handlePayOrder()
-                                FeeDisCounted > 0 && await updateProviderData(providerID, {
-                                    wallet_amount: FeeDisCounted
-                                })
-                            } else {
-                                updateState({ showSuccessDialog: true })
-                                // 
-
-                            }
-                            // console.log("handle pay wit cath",),)
-                        } else {
-
-
-                            setIsLoading(true)
-                            handleGenererateInitator()
-                            setTimeout(() => {
-
-                                setIsLoading(false)
-                            }, 1000);
-                        }
+                    onPress={
+                ()=>   updateState({ showSuccessDialog: true })
                         // else if(currentPaymentMethodIndex === 2){
                         //     if(user?.wallet_amount >= totalAmount  ){
 
@@ -235,7 +239,7 @@ const PaymentScreen = ({ navigation, route }) => {
 
                         // }
                     }
-                    }
+                    
                     style={styles.payButtonWrapStyle}
                 >
                     <Text style={{ ...Fonts.whiteColor19Medium }}>

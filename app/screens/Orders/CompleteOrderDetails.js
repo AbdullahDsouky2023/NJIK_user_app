@@ -243,7 +243,8 @@ export default function CompleteOrderDetails({ navigation, route }) {
           />
           : null}
           </View>
-     
+          <ItemComponent name={"إجمالي الفاتورة"} iconName={"money"} data={`${calculateTotalWithTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
+
         <ItemComponent iconName={"money"} data={item?.attributes?.totalPrice > 0 ? 
                   `${CalculatePriceWithoutCoupon(
                     CalculteServicePriceWithoutAddionalPrices(CurrentOrderData),CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)
@@ -286,7 +287,6 @@ export default function CompleteOrderDetails({ navigation, route }) {
 
         <ItemComponent name={"ضريبة القيمة المضافة "} iconName={"money"} data={`${CalculateTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
         <ItemComponent name={"التكلفة المخصومة من الرصيد"} iconName={"money"} data={`${item?.attributes?.payed_amount_with_wallet } ${t(CURRENCY)}`} />
-        {/* <ItemComponent name={"الإجمالي بعد الخصم"} iconName={"money"} data={`${item?.attributes?.totalPrice} ${t(CURRENCY)}`} /> */}
         <View style={styles.descriptionContainer}>
           <AppText centered={false} text={" ملاحظات"} style={styles.title} />
           <AppText

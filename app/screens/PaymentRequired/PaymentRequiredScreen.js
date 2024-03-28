@@ -411,8 +411,10 @@ export default function PaymentRequiredScreen({ navigation, route }) {
             />
           </View>
           {/* Prices here */}
-          <ItemComponent name={"إجمالي الفاتورة"} iconName={"money"} data={`${CalculatePriceWithoutCoupon(CalculteServicePriceWithoutAddionalPrices(CurrentOrderData), CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.originalPrice} ${t(CURRENCY)}`} />
-          {CurrentOrderData?.attributes?.coupons?.data[0] && <ItemComponent name={"خصم الكوبون"} iconName={"money"}
+          <ItemComponent name={"إجمالي الفاتورة"} iconName={"money"} data={`${calculateTotalWithTax(item?.attributes?.totalPrice)} ${t(CURRENCY)}`} />
+
+          <ItemComponent name={"سعر الخدمة"} iconName={"money"} data={`${CalculatePriceWithoutCoupon(CalculteServicePriceWithoutAddionalPrices(CurrentOrderData), CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.originalPrice} ${t(CURRENCY)}`} />
+          {CurrentOrderData?.attributes?.coupons?.data[0] && <ItemComponent name={"خصم الكوبون"} iconName={"tags"}
             data={`${(CalculatePriceWithCoupon(CalculatePriceWithoutCoupon(CalculteServicePriceWithoutAddionalPrices(CurrentOrderData), CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.originalPrice, CurrentOrderData?.attributes?.coupons?.data[0]?.attributes?.value)?.discountAmount)} ${t(CURRENCY)}`} />}
 
 

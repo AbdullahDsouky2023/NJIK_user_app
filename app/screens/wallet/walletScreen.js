@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
   wrapper: {
     display: "flex",
     alignItems: "center",
-    marginTop: 19,
+    marginTop: 10,
     width: width * 0.9,
     gap: 6,
     marginHorizontal: width * 0.05,
